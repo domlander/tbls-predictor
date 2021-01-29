@@ -1,4 +1,6 @@
+import React from 'react'
 import styled from 'styled-components'
+import { signIn, signOut, useSession } from 'next-auth/client'
 
 const Title = styled.h1`
   color: red;
@@ -6,5 +8,17 @@ const Title = styled.h1`
 `
 
 export default function Home() {
-  return <Title>My page</Title>
+  const [session] = useSession()
+
+  return <>
+    <Title>My page</Title>
+    {!session && <>
+      Not signed in <br />
+      <button onClick={signIn}>Sign in</button>
+    </>}
+    {session && <>
+      Signed in as {session.user.email} <br />
+      <button onClick={signOut}>Sign out</button>
+    </>}
+  </>
 }
