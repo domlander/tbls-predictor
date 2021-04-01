@@ -2,30 +2,23 @@
 
 Predict scores for the footy to inflate your ego by beating your mates in a completely new way.
 
-## How to use it?
+## What's the URL?
 
-This is an amalgamation of 2 existing examples:
+This project is WIP and is not ready for general use yet.
 
-- [with-typescript](https://github.com/vercel/next.js/tree/canary/examples/with-typescript)
-- [with-styled-components](https://github.com/vercel/next.js/tree/canary/examples/with-styled-components)
+## Tech Stack
 
-## Problems
+- [Next.js](https://nextjs.org/)
+- [NextAuth.js](https://github.com/nextauthjs/next-auth)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Prisma 2](https://www.prisma.io/)
+- [Styled components](https://styled-components.com/)
 
-# Prisma doesn't handle many-to-many relationships well / the documentation isn't clear
+This project was initialised using one of the Next.js example projects:
 
-- Solution: For implicit relationships, where you want to create a league and link a user, do this:
+- [with-typescript-styled-components](https://github.com/vercel/next.js/tree/canary/examples/with-typescript-styled-components)
 
-```
-const league = await prisma.league.create({
-    data: {
-      name: "TBLS"
-      users: {
-        connect: {
-          id: user.id
-        }
-      }
-    }
-  })
-```
+## Technical challenges
 
-For explicit many-to-many relationships, follow the answer provided here: https://github.com/prisma/prisma/issues/2162
+1. Initially wanted to use Mongo, but data is highly relational which meant SQL was a better fit.
+1. Prisma's documentation isn't clear with regards to explicit many-to-many relationships. Followed the answer provided here as an implementation guide: https://github.com/prisma/prisma/issues/2162
