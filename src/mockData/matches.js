@@ -1,0 +1,173 @@
+const matches = [
+  {
+    week: 1,
+    fixtures: [
+      {
+        id: 1,
+        homeTeam: "Arsenal",
+        awayTeam: "Leicester",
+        homeGoals: 1,
+        awayGoals: 2,
+        date: "2020-08-21T19:45:00",
+      },
+      {
+        id: 2,
+        homeTeam: "Everton",
+        awayTeam: "Brighton",
+        homeGoals: 2,
+        awayGoals: 0,
+        date: "2020-08-22T12:30:00",
+      },
+      {
+        id: 3,
+        homeTeam: "Fulham",
+        awayTeam: "Man City",
+        homeGoals: 1,
+        awayGoals: 3,
+        date: "2020-08-22T15:00:00",
+      },
+      {
+        id: 4,
+        homeTeam: "Man Utd",
+        awayTeam: "Newcastle Utd",
+        homeGoals: 2,
+        awayGoals: 1,
+        date: "2020-08-22T15:00:00",
+      },
+      {
+        id: 5,
+        homeTeam: "Sheffield Utd",
+        awayTeam: "Wolves",
+        homeGoals: 0,
+        awayGoals: 0,
+        date: "2020-08-22T15:00:00",
+      },
+      {
+        id: 6,
+        homeTeam: "West Brom",
+        awayTeam: "Crystal Palace",
+        homeGoals: 0,
+        awayGoals: 2,
+        date: "2020-08-22T15:00:00",
+      },
+      {
+        id: 7,
+        homeTeam: "Aston Villa",
+        awayTeam: "Burnley",
+        homeGoals: 1,
+        awayGoals: 0,
+        date: "2020-08-22T15:00:00",
+      },
+      {
+        id: 8,
+        homeTeam: "Southampton",
+        awayTeam: "West Ham",
+        homeGoals: 2,
+        awayGoals: 2,
+        date: "2020-08-22T17:30:00",
+      },
+      {
+        id: 9,
+        homeTeam: "Leeds Utd",
+        awayTeam: "Liverpool",
+        homeGoals: 2,
+        awayGoals: 3,
+        date: "2020-08-23T14:00:00",
+      },
+      {
+        id: 10,
+        homeTeam: "Spurs",
+        awayTeam: "Chelsea",
+        homeGoals: 2,
+        awayGoals: 1,
+        date: "2020-08-23T16:05:00",
+      }
+    ]
+  }, {
+    week: 2,
+    fixtures: [
+      {
+        id: 11,
+        homeTeam: "Arsenal",
+        awayTeam: "Leicester",
+        homeGoals: null,
+        awayGoals: null,
+        date: "2020-08-21T19:45:00",
+      },
+      {
+        id: 12,
+        homeTeam: "Everton",
+        awayTeam: "Brighton",
+        homeGoals: null,
+        awayGoals: null,
+        date: "2020-08-22T12:30:00",
+      },
+      {
+        id: 13,
+        homeTeam: "Fulham",
+        awayTeam: "Man City",
+        homeGoals: null,
+        awayGoals: null,
+        date: "2020-08-22T15:00:00",
+      },
+      {
+        id: 14,
+        homeTeam: "Man Utd",
+        awayTeam: "Newcastle Utd",
+        homeGoals: null,
+        awayGoals: null,
+        date: "2020-08-22T15:00:00",
+      },
+      {
+        id: 15,
+        homeTeam: "Sheffield Utd",
+        awayTeam: "Wolves",
+        homeGoals: null,
+        awayGoals: null,
+        date: "2020-08-22T15:00:00",
+      },
+      {
+        id: 16,
+        homeTeam: "West Brom",
+        awayTeam: "Crystal Palace",
+        homeGoals: null,
+        awayGoals: null,
+        date: "2020-08-22T15:00:00",
+      },
+      {
+        id: 17,
+        homeTeam: "Aston Villa",
+        awayTeam: "Burnley",
+        homeGoals: null,
+        awayGoals: null,
+        date: "2020-08-22T15:00:00",
+      },
+      {
+        id: 18,
+        homeTeam: "Southampton",
+        awayTeam: "West Ham",
+        homeGoals: null,
+        awayGoals: null,
+        date: "2020-08-22T17:30:00",
+      },
+      {
+        id: 9,
+        homeTeam: "Leeds Utd",
+        awayTeam: "Liverpool",
+        homeGoals: null,
+        awayGoals: null,
+        date: "2020-08-23T14:00:00",
+      },
+      {
+        id: 10,
+        homeTeam: "Spurs",
+        awayTeam: "Chelsea",
+        homeGoals: null,
+        awayGoals: null,
+        date: "2020-08-23T16:05:00",
+      }
+    ]
+  }
+]
+
+export default matches
