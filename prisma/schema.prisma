@@ -97,6 +97,7 @@ model Applicant {
 model Fixture {
   id          Int          @id @default(autoincrement())
   gameweek    Int          @db.SmallInt
+  kickoff     DateTime
   homeTeam    String       @map("home_team") @db.VarChar(255)
   awayTeam    String       @map("away_team") @db.VarChar(255)
   homeGoals   Int?         @map("home_goals") @db.SmallInt
