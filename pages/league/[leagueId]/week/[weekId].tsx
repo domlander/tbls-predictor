@@ -10,22 +10,25 @@ import PredictionTable from "@/components/PredictionTable";
 import GameweekNavigator from "@/components/GameweekNavigator";
 import { League } from "@/types";
 import { convertUrlParamToNumber } from "@/utils";
+import { Fixture } from "@prisma/client";
 import redirectInternal from "../../../../utils/redirects";
 
 interface Props {
   league: League;
   gameweek: number;
+  fixtures: Fixture[];
   isUserLeagueAdmin: boolean;
 }
 
 const handleSubmitPredictions = (e: FormEvent<HTMLFormElement>) => {
   e.preventDefault();
-  console.log("e", e.target);
+  // console.log("e", e.target);
 };
 
 const LeaguePage = ({
-  league: { leagueId, name },
+  league: { leagueId, name, gameweekStart, gameweekEnd },
   gameweek,
+  fixtures = [],
   isUserLeagueAdmin,
 }: Props) => {
   const prevGwUrl = `/league/${leagueId}/week/${gameweek - 1}`;
@@ -44,8 +47,14 @@ const LeaguePage = ({
         gameweek={gameweek}
         prevGwUrl={prevGwUrl}
         nextGwUrl={nextGwUrl}
+        maxGameweeks={gameweekEnd - gameweekStart + 1}
       />
-      <PredictionTable handleSubmitPredictions={handleSubmitPredictions} />
+      <PredictionTable
+        fixtures={fixtures}
+        handleSubmitPredictions={handleSubmitPredictions}
+        // TODO: This should be true if the gameweek if complete
+        gameweekFinished={false}
+      />
     </Container>
   );
 };
@@ -74,9 +83,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   });
 
-  if (!league) {
-    return redirectInternal("/leagues");
-  }
+  const fixtures = await prisma.fixture.findMany({
+    where: {
+      gameweek: weekId,
+    },
+  });
+
+  if (!league) return redirectInternal("/leagues");
 
   return {
     props: {
@@ -84,7 +97,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       league: {
         leagueId: league.id,
         name: league.name,
+        gameweekStart: league.gameweekStart,
+        gameweekEnd: league.gameweekEnd,
       },
+      fixtures: JSON.parse(JSON.stringify(fixtures)),
       gameweek: weekId,
     },
   };
