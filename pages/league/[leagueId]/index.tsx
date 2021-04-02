@@ -1,9 +1,11 @@
-import { convertUrlParamToNumber } from '@/utils';
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps } from "next";
+import { getSession } from "next-auth/client";
 
-const RedirectURL = () => {
-  return null;
-}
+import prisma from "prisma/client";
+import { convertUrlParamToNumber } from "@/utils";
+import redirectInternal from "../../../utils/redirects";
+
+const RedirectURL = () => null;
 
 /*
   - If the User hits this page they have gone to "/league/{their league ID}"
@@ -12,28 +14,33 @@ const RedirectURL = () => {
     That means showing them their predictions if we're in a gameweek, or showing them next weeks predictions if
     we are post-GW
 */
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  if (!params?.leagueId) {
-    return {
-      redirect: {
-        destination: "/leagues",
-        permanent: false,
-      }
-    };
-  }
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { params } = context;
+
+  const session = await getSession(context);
+  if (!session) return redirectInternal("/");
+
+  // Get the logged in user
+  const user = await prisma.user.findUnique({
+    where: {
+      email: session?.user.email || "",
+    },
+    include: {
+      leagues: true,
+    },
+  });
+
+  if (!params?.leagueId || !user?.leagues) return redirectInternal("/leagues");
 
   // Get the league ID
-  const leagueId = convertUrlParamToNumber(params.leagueId)
+  const leagueId = convertUrlParamToNumber(params.leagueId);
 
-  // TODO: If the league does not belong to the user, redirect them home
+  // If the user is not a member of this league, redirect them to leagues
+  if (!user.leagues.some((league) => league.id === leagueId))
+    return redirectInternal("/leagues");
 
   // TODO: Currently sending them to GW 1, but we should send them to the right GW
-  return {
-    redirect: {
-      destination: `/league/${leagueId}/week/1`,
-      permanent: false,
-    }
-  };
-}
+  return redirectInternal(`/league/${leagueId}/week/1`);
+};
 
 export default RedirectURL;

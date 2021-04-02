@@ -1,5 +1,8 @@
 import { User } from ".prisma/client";
 
-export function  isUserBelongToLeague(participants: User[], userId: number) {
-  return participants.some(p => p.id === userId)
+export default function isUserBelongToLeague(
+  userId: number,
+  participants: User[]
+) {
+  return participants.some((p) => p.id === userId);
 }

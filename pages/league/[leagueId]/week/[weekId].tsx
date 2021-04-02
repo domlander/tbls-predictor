@@ -52,9 +52,7 @@ const LeaguePage = ({
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
-  if (!session) {
-    return redirectInternal("/");
-  }
+  if (!session) return redirectInternal("/");
 
   // Get the logged in user
   const user = await prisma.user.findUnique({
