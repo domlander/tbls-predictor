@@ -75,7 +75,6 @@ model League {
   gameweekStart   Int          @default(1) @map("gameweek_start") @db.SmallInt
   gameweekEnd     Int          @default(17) @map("gameweek_end") @db.SmallInt
   createdAt       DateTime     @default(now()) @map("created_at") @db.Timestamp(6)
-  predictions     Prediction[]
   users           User[]
   applicants      Applicant[]
 
@@ -109,15 +108,13 @@ model Fixture {
 
 model Prediction {
   id            Int     @id @default(autoincrement())
-  leagueId      Int     @map("league_id")
   fixtureId     Int     @map("fixture_id")
   userId        Int     @map("user_id")
   homeGoals     Int?    @map("home_goals") @db.SmallInt
-  homeTeam      Int?    @map("home_team") @db.SmallInt
+  awayGoals     Int?    @map("away_goals") @db.SmallInt
   score         Int?    @db.SmallInt
   big_boy_bonus Boolean
   fixtures      Fixture @relation(fields: [fixtureId], references: [id])
-  leagues       League  @relation(fields: [leagueId], references: [id])
   users         User    @relation(fields: [userId], references: [id])
 
   @@map("predictions")

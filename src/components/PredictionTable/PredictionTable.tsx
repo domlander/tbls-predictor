@@ -3,10 +3,10 @@ import styled from "styled-components";
 
 import colours from "@/styles/colours";
 import PredictionTableRow from "@/components/PredictionTableRow";
-import { Fixture } from "@prisma/client";
+import { FixtureWithPrediction } from "@/types";
 
 interface Props {
-  fixtures: Fixture[];
+  fixtures: FixtureWithPrediction[];
   handleSubmitPredictions: (e: FormEvent<HTMLFormElement>) => void;
   gameweekFinished: boolean;
 }
@@ -15,14 +15,16 @@ const PredictionTable = ({
   fixtures,
   handleSubmitPredictions,
   gameweekFinished,
-}: Props) =>
-  fixtures?.length ? (
+}: Props) => {
+  console.log({ fixtures });
+
+  return fixtures?.length ? (
     <Container>
       <form onSubmit={(e) => handleSubmitPredictions(e)}>
         <Table>
           <tbody>
             {fixtures.map((fixture) => (
-              <PredictionTableRow key={fixture.id} fixture={fixture} />
+              <PredictionTableRow key={fixture.fixtureId} fixture={fixture} />
             ))}
           </tbody>
         </Table>
@@ -38,6 +40,7 @@ const PredictionTable = ({
       </form>
     </Container>
   ) : null;
+};
 
 const Container = styled.div`
   margin: 0 0.2rem;

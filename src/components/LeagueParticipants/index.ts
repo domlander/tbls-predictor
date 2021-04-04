@@ -1,1 +1,1 @@
-export { default } from './LeagueParticipants'
+export { default } from "./LeagueParticipants";
