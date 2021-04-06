@@ -107,7 +107,6 @@ model Fixture {
 }
 
 model Prediction {
-  id            Int     @id @default(autoincrement())
   fixtureId     Int     @map("fixture_id")
   userId        Int     @map("user_id")
   homeGoals     Int?    @map("home_goals") @db.SmallInt
@@ -117,6 +116,7 @@ model Prediction {
   fixtures      Fixture @relation(fields: [fixtureId], references: [id])
   users         User    @relation(fields: [userId], references: [id])
 
+  @@id([fixtureId, userId])
   @@map("predictions")
 }
 
