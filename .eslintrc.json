@@ -22,9 +22,9 @@
     // https://stackoverflow.com/a/64024916/3872362
     "no-use-before-define": "off",
     "radix": "off",
-    "no-unused-vars": "warn",
+    "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": [
-      "warn",
+      "error",
       {
         "args": "none"
       }

@@ -1,31 +1,89 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
 
 import colours from "@/styles/colours";
 import PredictionTableRow from "@/components/PredictionTableRow";
-import { FixtureWithPrediction } from "@/types";
+import { EditablePrediction } from "@/types";
+import { Fixture, Prediction } from "@prisma/client";
 
 interface Props {
-  fixtures: FixtureWithPrediction[];
-  handleSubmitPredictions: (e: FormEvent<HTMLFormElement>) => void;
+  gameweek: number;
+  fixtures: Fixture[];
+  predictions: EditablePrediction[];
   gameweekFinished: boolean;
 }
 
 const PredictionTable = ({
+  gameweek,
   fixtures,
-  handleSubmitPredictions,
+  predictions: initialPredictions,
   gameweekFinished,
 }: Props) => {
-  console.log({ fixtures });
+  const [predictions, setPredictions] = useState(initialPredictions);
+
+  const handleSubmitPredictions = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const updatedPredictions: Partial<Prediction>[] = predictions.map(
+      (prediction) => ({
+        fixtureId: prediction.fixtureId,
+        homeGoals: parseInt(prediction.homeGoals || "") ?? null,
+        awayGoals: parseInt(prediction.awayGoals || "") ?? null,
+      })
+    );
+
+    fetch("/api/upsertPredictions", {
+      method: "post",
+      headers: {
+        Accept: "application/json, text/plain, */*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ gameweek, updatedPredictions }),
+    });
+  };
+
+  const updateGoals = (
+    fixtureId: number,
+    isHomeTeam: boolean,
+    goals: string
+  ): void => {
+    const index = predictions.findIndex((x) => x.fixtureId === fixtureId);
+    const updatedPredictions = [
+      ...predictions.slice(0, index),
+      {
+        fixtureId,
+        homeGoals: isHomeTeam ? goals : predictions[index].homeGoals,
+        awayGoals: isHomeTeam ? predictions[index].awayGoals : goals,
+      },
+      ...predictions.slice(index + 1),
+    ];
+
+    setPredictions(updatedPredictions);
+  };
 
   return fixtures?.length ? (
     <Container>
-      <form onSubmit={(e) => handleSubmitPredictions(e)}>
+      <form onSubmit={handleSubmitPredictions}>
         <Table>
           <tbody>
-            {fixtures.map((fixture) => (
-              <PredictionTableRow key={fixture.fixtureId} fixture={fixture} />
-            ))}
+            {fixtures.map((fixture) => {
+              const prediction = predictions.find(
+                (p) => p.fixtureId === fixture.id
+              );
+
+              return (
+                <PredictionTableRow
+                  key={fixture.id}
+                  fixtureId={fixture.id}
+                  kickoff={fixture.kickoff}
+                  homeTeam={fixture.homeTeam}
+                  awayTeam={fixture.awayTeam}
+                  homeGoals={prediction?.homeGoals || ""}
+                  awayGoals={prediction?.awayGoals || ""}
+                  updateGoals={updateGoals}
+                />
+              );
+            })}
           </tbody>
         </Table>
         {

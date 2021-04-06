@@ -1,4 +1,4 @@
-import React, { FormEvent } from "react";
+import React from "react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 import styled from "styled-components";
@@ -8,27 +8,24 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import PredictionTable from "@/components/PredictionTable";
 import GameweekNavigator from "@/components/GameweekNavigator";
-import { FixtureWithPrediction } from "@/types";
+import { EditablePrediction } from "@/types";
 import { convertUrlParamToNumber } from "@/utils";
-import { League } from "@prisma/client";
+import { Fixture, League } from "@prisma/client";
 import redirectInternal from "../../../../utils/redirects";
 
 interface Props {
   league: League;
   gameweek: number;
-  fixtures: FixtureWithPrediction[];
+  fixtures: Fixture[];
+  predictions: EditablePrediction[];
   isUserLeagueAdmin: boolean;
 }
-
-const handleSubmitPredictions = (e: FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  console.log("e", e.target);
-};
 
 const LeaguePage = ({
   league: { id: leagueId, name, gameweekStart, gameweekEnd },
   gameweek,
   fixtures,
+  predictions,
   isUserLeagueAdmin,
 }: Props) => (
   <Container>
@@ -46,10 +43,10 @@ const LeaguePage = ({
       maxGameweeks={gameweekEnd - gameweekStart + 1}
     />
     <PredictionTable
+      gameweek={gameweek}
       fixtures={fixtures}
-      handleSubmitPredictions={handleSubmitPredictions}
-      // TODO: This should be true if the gameweek if complete
-      gameweekFinished={false}
+      predictions={predictions}
+      gameweekFinished={false} // TODO: This should be true if the gameweek if complete
     />
   </Container>
 );
@@ -95,28 +92,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   });
 
-  const fixturesWithPredictions: FixtureWithPrediction[] = [];
-
-  fixtures.forEach((fixture) => {
-    const homeGoals =
-      predictions.find((prediction) => prediction.fixtureId === fixture.id)
-        ?.homeGoals || null;
-
-    const awayGoals =
-      predictions.find((prediction) => prediction.fixtureId === fixture.id)
-        ?.awayGoals || null;
-
-    fixturesWithPredictions.push({
+  const editablePredictions: EditablePrediction[] = [];
+  fixtures.map((fixture) => {
+    const prediction = predictions.find((p) => p.fixtureId === fixture.id);
+    return editablePredictions.push({
       fixtureId: fixture.id,
-      kickoff: fixture.kickoff,
-      homeTeam: fixture.homeTeam,
-      awayTeam: fixture.awayTeam,
-      homeGoals,
-      awayGoals,
+      homeGoals: prediction?.homeGoals?.toString() || "",
+      awayGoals: prediction?.awayGoals?.toString() || "",
     });
   });
-
-  console.log({ fixturesWithPredictions });
 
   return {
     props: {
@@ -127,7 +111,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         gameweekStart: league.gameweekStart,
         gameweekEnd: league.gameweekEnd,
       },
-      fixtures: JSON.parse(JSON.stringify(fixturesWithPredictions)),
+      fixtures: JSON.parse(JSON.stringify(fixtures)),
+      predictions: JSON.parse(JSON.stringify(editablePredictions)),
       gameweek: weekId,
     },
   };

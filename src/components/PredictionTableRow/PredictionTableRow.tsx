@@ -1,57 +1,52 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import colours from "@/styles/colours";
 import { formatDate } from "@/utils";
-import { FixtureWithPrediction } from "@/types";
+import { Fixture } from "@prisma/client";
 
 interface Props {
-  fixture: FixtureWithPrediction;
+  fixtureId: Fixture["id"];
+  kickoff: Fixture["kickoff"];
+  homeTeam: Fixture["homeTeam"];
+  awayTeam: Fixture["awayTeam"];
+  homeGoals: string;
+  awayGoals: string;
+  updateGoals(fixtureId: number, isHomeTeam: boolean, homeGoals: string): void;
 }
 
 const PredictionTableRow = ({
-  fixture: {
-    fixtureId,
-    kickoff,
-    homeTeam,
-    awayTeam,
-    homeGoals: initialHomeGoals,
-    awayGoals: initialAwayGoals,
-  },
-}: Props) => {
-  const [homeGoals, setHomeGoals] = useState(
-    initialHomeGoals?.toString() || ""
-  );
-  const [awayGoals, setAwayGoals] = useState(
-    initialAwayGoals?.toString() || ""
-  );
-
-  return (
-    <TableRow>
-      <Date>{formatDate(kickoff)}</Date>
-      <HomeTeam>{homeTeam}</HomeTeam>
-      <Score>
-        <ScoreInput
-          name={`home-score-${fixtureId}`}
-          type="text"
-          maxLength={1}
-          value={homeGoals}
-          onChange={(e) => setHomeGoals(e.target.value)}
-        />
-      </Score>
-      <Score>
-        <ScoreInput
-          name={`away-score-${fixtureId}`}
-          type="text"
-          maxLength={1}
-          value={awayGoals}
-          onChange={(e) => setAwayGoals(e.target.value)}
-        />
-      </Score>
-      <AwayTeam>{awayTeam}</AwayTeam>
-    </TableRow>
-  );
-};
-
+  fixtureId,
+  kickoff,
+  homeTeam,
+  awayTeam,
+  homeGoals,
+  awayGoals,
+  updateGoals,
+}: Props) => (
+  <TableRow>
+    <Date>{formatDate(kickoff)}</Date>
+    <HomeTeam>{homeTeam}</HomeTeam>
+    <Score>
+      <ScoreInput
+        name={`home-score-${fixtureId}`}
+        type="text"
+        maxLength={1}
+        value={homeGoals}
+        onChange={(e) => updateGoals(fixtureId, true, e.target.value)}
+      />
+    </Score>
+    <Score>
+      <ScoreInput
+        name={`away-score-${fixtureId}`}
+        type="text"
+        maxLength={1}
+        value={awayGoals}
+        onChange={(e) => updateGoals(fixtureId, false, e.target.value)}
+      />
+    </Score>
+    <AwayTeam>{awayTeam}</AwayTeam>
+  </TableRow>
+);
 const TableRow = styled.tr`
   height: 1.5rem;
 `;
