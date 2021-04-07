@@ -1,27 +1,12 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 import React from "react";
-import styled from "styled-components";
 
 import prisma from "prisma/client";
 import { User } from "@prisma/client";
-import Header from "@/components/Header";
-import LeagueApplicants from "@/components/LeagueApplicants";
-import LeagueParticipants from "@/components/LeagueParticipants";
 import { convertUrlParamToNumber } from "@/utils";
+import LeagueAdmin from "src/containers/LeagueAdmin";
 import redirectInternal from "../../../utils/redirects";
-
-const Container = styled.div`
-  margin: 0 0.2rem;
-`;
-
-const Title = styled.h1`
-  color: purple;
-`;
-
-const Subtitle = styled.h2`
-  color: green;
-`;
 
 interface Props {
   leagueId: number;
@@ -30,14 +15,18 @@ interface Props {
   participants: User[];
 }
 
-const LeaguePage = ({ leagueId, name, applicants, participants }: Props) => (
-  <Container>
-    <Header />
-    <Title>{name}</Title>
-    <Subtitle>Requests</Subtitle>
-    <LeagueApplicants applicants={applicants} leagueId={leagueId} />
-    <LeagueParticipants participants={participants} />
-  </Container>
+const LeagueAdminPage = ({
+  leagueId,
+  name,
+  applicants,
+  participants,
+}: Props) => (
+  <LeagueAdmin
+    leagueId={leagueId}
+    name={name}
+    applicants={applicants}
+    participants={participants}
+  />
 );
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -105,4 +94,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default LeaguePage;
+export default LeagueAdminPage;

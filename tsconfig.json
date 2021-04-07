@@ -3,10 +3,7 @@
     "target": "esnext",
     "module": "esnext",
     "jsx": "preserve",
-    "lib": [
-      "dom",
-      "es2017"
-    ],
+    "lib": ["dom", "es2017"],
     "moduleResolution": "node",
     "allowJs": true,
     "noEmit": true,
@@ -24,23 +21,14 @@
     "isolatedModules": true,
     "baseUrl": ".",
     "paths": {
-      "@/components/*": [
-        "src/components/*"
-      ],
-      "@/styles/*": [
-        "src/styles/*"
-      ],
-      "@/types": [
-        "src/types/index"
-      ],
-      "@/utils": [
-        "src/utils/index"
-      ]
+      "@/containers/*": ["src/containers/*"],
+      "@/components/*": ["src/components/*"],
+      "@/styles/*": ["src/styles/*"],
+      "@/types": ["src/types/index"],
+      "@/utils": ["src/utils/index"]
     }
   },
-  "exclude": [
-    "node_modules"
-  ],
+  "exclude": ["node_modules"],
   "include": [
     "next-env.d.ts",
     "**/*.ts",

@@ -1,42 +1,17 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
-import Link from "next/link";
-import styled from "styled-components";
 import prisma from "prisma/client";
 
-import CreateNewLeagueForm from "@/components/CreateNewLeagueForm";
-import JoinNewLeagueForm from "@/components/JoinNewLeagueForm";
-import Header from "@/components/Header";
-import { League } from "@/types";
+import { League } from "@prisma/client";
+import Leagues from "src/containers/Leagues";
 import redirectInternal from "../utils/redirects";
 
 interface Props {
   leagues: Array<League>;
 }
 
-const LeaguesPage = ({ leagues }: Props) => (
-  <>
-    <Title>League</Title>
-    <Header />
-    {leagues?.length ? (
-      <>
-        <h2>My Leagues</h2>
-        <div>
-          {leagues.map((league) => (
-            <div key={league.id}>
-              <Link href={`/league/${league.id}`}>
-                <a>{league.name}</a>
-              </Link>
-            </div>
-          ))}
-        </div>
-      </>
-    ) : null}
-    <JoinNewLeagueForm />
-    <CreateNewLeagueForm />
-  </>
-);
+const LeaguesPage = ({ leagues }: Props) => <Leagues leagues={leagues} />;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   // Get the current session
@@ -61,8 +36,3 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 };
 
 export default LeaguesPage;
-
-const Title = styled.h1`
-  color: green;
-  font-size: 50px;
-`;
