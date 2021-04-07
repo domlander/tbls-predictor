@@ -66,7 +66,8 @@ const Container = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  margin: 1rem 0;
+  margin: 1rem auto;
+  max-width: 500px;
 `;
 
 const Title = styled.h1`

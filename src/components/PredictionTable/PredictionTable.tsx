@@ -101,7 +101,8 @@ const PredictionTable = ({
 };
 
 const Container = styled.div`
-  margin: 0 0.2rem;
+  margin: 0 auto;
+  max-width: 500px;
 `;
 
 const SaveButton = styled.input`
