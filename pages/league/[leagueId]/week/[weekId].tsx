@@ -105,12 +105,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       isUserLeagueAdmin: league.administratorId === user.id,
-      league: {
-        leagueId: league.id,
-        name: league.name,
-        gameweekStart: league.gameweekStart,
-        gameweekEnd: league.gameweekEnd,
-      },
+      league: JSON.parse(JSON.stringify(league)),
       fixtures: JSON.parse(JSON.stringify(fixtures)),
       predictions: JSON.parse(JSON.stringify(editablePredictions)),
       gameweek: weekId,
