@@ -1,7 +1,7 @@
 import { getSession } from "next-auth/client";
 import prisma from "prisma/client";
 
-const isUserBelongToLeague = (participants, userId) =>
+const isUserAlreadyBelongToLeague = (participants, userId) =>
   participants.some((p) => p.id === userId);
 
 const isUserAppliedToLeague = (applicants, userId) =>
@@ -20,13 +20,11 @@ export default async (req, res) => {
   const session = await getSession({ req });
   const leagueId = parseInt(req.body.id);
 
-  if (!session?.user.id) {
+  if (!session?.user.id)
     return res.status(400).send("Cannot process request. User not found.");
-  }
 
-  if (!leagueId || typeof leagueId !== "number" || leagueId < 1) {
+  if (!leagueId || typeof leagueId !== "number" || leagueId < 1)
     return res.status(400).send("Cannot process request. League ID not valid.");
-  }
 
   const userId = session?.user.id;
   const league = await prisma.league.findUnique({
@@ -39,11 +37,10 @@ export default async (req, res) => {
     },
   });
 
-  if (!league) {
+  if (!league)
     return res.status(400).send("Cannot process request. League not found.");
-  }
 
-  if (isUserBelongToLeague(league.users, userId)) {
+  if (isUserAlreadyBelongToLeague(league.users, userId)) {
     return res
       .status(400)
       .send("Cannot process request. User already belongs to league.");
@@ -57,10 +54,17 @@ export default async (req, res) => {
       );
   }
 
-  await prisma.leagueApplicants.create({
-    data: {
+  await prisma.applicant.upsert({
+    where: {
+      userId_leagueId: { userId, leagueId },
+    },
+    create: {
+      userId,
       leagueId,
-      applicantId: session.user.id,
+      status: "applied",
+    },
+    update: {
+      status: "applied",
     },
   });
 
