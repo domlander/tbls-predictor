@@ -27,10 +27,17 @@ const WeekContainer = ({
     <Header />
     <Title>{name}</Title>
     {isUserLeagueAdmin && (
-      <Link href={`/league/${leagueId}/admin`}>
-        <a>Admin</a>
-      </Link>
+      <div>
+        <Link href={`/league/${leagueId}/admin`}>
+          <a>Admin</a>
+        </Link>
+      </div>
     )}
+    <div>
+      <Link href={`/league/${leagueId}/table`}>
+        <a>Table</a>
+      </Link>
+    </div>
     <GameweekNavigator
       gameweek={gameweek}
       prevGwUrl={`/league/${leagueId}/week/${gameweek - 1}`}
