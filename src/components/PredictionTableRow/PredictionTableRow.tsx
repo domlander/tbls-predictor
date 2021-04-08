@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import colours from "@/styles/colours";
-import { formatUTCDate } from "@/utils";
+import { formatFixtureKickoffTime } from "@/utils";
 import { Fixture } from "@prisma/client";
 
 interface Props {
@@ -33,7 +33,7 @@ const PredictionTableRow = ({
 
   return (
     <TableRow predictionsLocked={predictionsLocked}>
-      <Kickoff>{formatUTCDate(kickoff)}</Kickoff>
+      <Kickoff>{formatFixtureKickoffTime(kickoff)}</Kickoff>
       <HomeTeam>{homeTeam}</HomeTeam>
       <Score>
         <ScoreInput
@@ -73,7 +73,7 @@ const Td = styled.td`
 `;
 
 const Kickoff = styled(Td)`
-  width: 5em;
+  width: 6em;
   text-align: center;
 `;
 
