@@ -3,9 +3,9 @@ import prisma from "prisma/client";
 
 export default async (req, res) => {
   const session = await getSession({ req });
-  const { gameweek, updatedPredictions: predictions } = req.body;
+  const { updatedPredictions: predictions } = req.body;
 
-  if (typeof gameweek !== "number" || !predictions) {
+  if (!predictions) {
     res.status(400).send("Predictions not created/updated. Details missing.");
   }
 

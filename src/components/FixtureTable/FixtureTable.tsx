@@ -1,47 +1,27 @@
-import React, { FormEvent, useState } from "react";
+import React, { Dispatch, FormEvent, SetStateAction } from "react";
 import styled from "styled-components";
 
 import colours from "@/styles/colours";
-import PredictionTableRow from "@/components/PredictionTableRow";
+import FixtureTableRow from "@/components/FixtureTableRow";
 import { EditablePrediction } from "@/types";
-import { Fixture, Prediction } from "@prisma/client";
+import { Fixture } from "@prisma/client";
+import { isGameweekComplete, isPastDeadline } from "@/utils";
 
 interface Props {
-  gameweek: number;
   fixtures: Fixture[];
   predictions: EditablePrediction[];
-  gameweekFinished: boolean;
+  setPredictions: Dispatch<SetStateAction<EditablePrediction[]>>;
+  handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  isAlwaysEditable?: boolean;
 }
 
-const PredictionTable = ({
-  gameweek,
+const FixtureTable = ({
   fixtures,
-  predictions: initialPredictions,
-  gameweekFinished,
+  predictions,
+  setPredictions,
+  handleSubmit,
+  isAlwaysEditable = false,
 }: Props) => {
-  const [predictions, setPredictions] = useState(initialPredictions);
-
-  const handleSubmitPredictions = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const updatedPredictions: Partial<Prediction>[] = predictions.map(
-      (prediction) => ({
-        fixtureId: prediction.fixtureId,
-        homeGoals: parseInt(prediction.homeGoals || "") ?? null,
-        awayGoals: parseInt(prediction.awayGoals || "") ?? null,
-      })
-    );
-
-    fetch("/api/upsertPredictions", {
-      method: "post",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ gameweek, updatedPredictions }),
-    });
-  };
-
   const updateGoals = (
     fixtureId: number,
     isHomeTeam: boolean,
@@ -63,7 +43,7 @@ const PredictionTable = ({
 
   return fixtures?.length ? (
     <Container>
-      <form onSubmit={handleSubmitPredictions}>
+      <form onSubmit={handleSubmit}>
         <Table>
           <tbody>
             {fixtures.map((fixture) => {
@@ -72,7 +52,7 @@ const PredictionTable = ({
               );
 
               return (
-                <PredictionTableRow
+                <FixtureTableRow
                   key={fixture.id}
                   fixtureId={fixture.id}
                   kickoff={fixture.kickoff}
@@ -81,20 +61,20 @@ const PredictionTable = ({
                   homeGoals={prediction?.homeGoals || ""}
                   awayGoals={prediction?.awayGoals || ""}
                   updateGoals={updateGoals}
+                  allowEditScore={
+                    isAlwaysEditable || !isPastDeadline(fixture.kickoff)
+                  }
                 />
               );
             })}
           </tbody>
         </Table>
-        {
-          // TODO: Don't render a form if the gameweek is over
-          !gameweekFinished ? (
-            <SaveButton type="submit" value="Save" />
-          ) : (
-            // TODO: Show the user what they actually scored
-            <p>Result: 10 points</p>
-          )
-        }
+        {isGameweekComplete(fixtures) ? (
+          // TODO: Show the user what they actually scored
+          <p>Result: 10 points</p>
+        ) : (
+          <SaveButton type="submit" value="Save" />
+        )}
       </form>
     </Container>
   ) : null;
@@ -120,4 +100,4 @@ const Table = styled.table`
   border-radius: 0.1em;
 `;
 
-export default PredictionTable;
+export default FixtureTable;

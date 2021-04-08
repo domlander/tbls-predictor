@@ -28,7 +28,7 @@ const WeekPage = ({
     league={league}
     gameweek={gameweek}
     fixtures={fixtures}
-    predictions={predictions}
+    initialPredictions={predictions}
     isUserLeagueAdmin={isUserLeagueAdmin}
   />
 );
@@ -64,6 +64,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   });
   if (!fixtures) return redirectInternal("/leagues");
+
+  fixtures.sort(
+    (a, b) => new Date(a.kickoff).getTime() - new Date(b.kickoff).getTime()
+  );
 
   const predictions = await prisma.prediction.findMany({
     where: {

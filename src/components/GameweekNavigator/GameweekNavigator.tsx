@@ -10,7 +10,7 @@ interface Props {
   maxGameweeks: number;
 }
 
-const PredictionTable = ({
+const GameweekNavigator = ({
   gameweek,
   prevGwUrl,
   nextGwUrl,
@@ -74,4 +74,4 @@ const Title = styled.h1`
   text-align: center;
 `;
 
-export default PredictionTable;
+export default GameweekNavigator;
