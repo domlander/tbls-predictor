@@ -11,9 +11,16 @@ interface Props {
   awayTeam: Fixture["awayTeam"];
   homeGoals: string;
   awayGoals: string;
+  score: number | null;
   updateGoals(fixtureId: number, isHomeTeam: boolean, homeGoals: string): void;
   allowEditScore: boolean;
 }
+
+const scoreColours: { [id: number]: string } = {
+  3: "#dbdea4",
+  1: "#c4fdac",
+  0: "#ffdad8",
+};
 
 const FixtureTableRow = ({
   fixtureId,
@@ -22,11 +29,12 @@ const FixtureTableRow = ({
   awayTeam,
   homeGoals,
   awayGoals,
+  score,
   updateGoals,
   allowEditScore,
 }: Props) => (
   <TableRow allowEditScore={allowEditScore}>
-    <Kickoff>{formatFixtureKickoffTime(kickoff)}</Kickoff>
+    <Kickoff score={score}>{formatFixtureKickoffTime(kickoff)}</Kickoff>
     <HomeTeam>{homeTeam}</HomeTeam>
     <Score>
       <ScoreInput
@@ -64,9 +72,11 @@ const Td = styled.td`
   border: 1px solid ${colours.grey300};
 `;
 
-const Kickoff = styled(Td)`
+const Kickoff = styled(Td)<{ score: number | null }>`
   width: 6em;
   text-align: center;
+  background: ${({ score }) =>
+    score !== null ? scoreColours[score] : "inherit"};
 `;
 
 const TeamName = styled(Td)``;

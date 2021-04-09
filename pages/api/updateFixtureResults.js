@@ -1,5 +1,6 @@
 // import { getSession } from "next-auth/client";
 import prisma from "prisma/client";
+import evaluatePrediction from "../../utils/evaluatePrediction";
 
 /*
 
@@ -20,21 +21,91 @@ export default async (req, res) => {
     res.status(400).send("League not created. Scores missing.");
   }
 
+  const originalScores = await prisma.fixture.findMany({
+    where: {
+      kickoff: {
+        lte: new Date(),
+      },
+    },
+  });
+
+  // Filter out scores that haven't been updated
+  const filteredScores = scores.filter((score) => {
+    const originalScore = originalScores.find(
+      (os) => os.id === score.fixtureId
+    );
+
+    if (!originalScore) return false; // New fixture found since opening the page and submitting. Discard it as we can't have edited it. This fixture will appear on the page when the page is refreshed
+
+    return (
+      score.homeGoals !== originalScore.homeGoals ||
+      score.awayGoals !== originalScore.awayGoals
+    );
+  });
+
   // Update Fixture table with results
-  const scoresUpsert = scores.map((score) =>
-    prisma.fixture.update({
-      where: {
-        id: score.fixtureId,
-      },
-      data: {
-        homeGoals: score.homeGoals,
-        awayGoals: score.awayGoals,
-      },
-    })
+  const scoresUpsert = filteredScores.map(
+    ({ fixtureId, homeGoals, awayGoals }) =>
+      prisma.fixture.update({
+        where: {
+          id: fixtureId,
+        },
+        data: {
+          homeGoals,
+          awayGoals,
+        },
+      })
   );
   Promise.all(scoresUpsert);
 
-  // TODO - Update prediction table with User's score
+  // Find all predictions related to fixtures that have just been updated
+  const predictionsToEvaluate = await prisma.prediction.findMany({
+    where: {
+      fixtureId: {
+        in: filteredScores.map((fs) => fs.fixtureId),
+      },
+    },
+  });
 
-  res.send(200);
+  const evaluatedPredictions = [];
+  predictionsToEvaluate.forEach((prediction) => {
+    const fixture = filteredScores.find(
+      (fs) => fs.fixtureId === prediction.fixtureId
+    );
+
+    const predictedHomeGoals = prediction.homeGoals || 0; // If a user hasn't entered a prediction before the deadline, it becomes a zero
+    const predictedAwayGoals = prediction.awayGoals || 0;
+
+    const actualResult = [fixture.homeGoals, fixture.awayGoals];
+    const predictedResult = [predictedHomeGoals, predictedAwayGoals];
+    const score = evaluatePrediction(predictedResult, actualResult);
+
+    evaluatedPredictions.push({
+      ...prediction,
+      homeGoals: predictedHomeGoals,
+      awayGoals: predictedAwayGoals,
+      score,
+    });
+  });
+
+  // Update Prediction table with score and no prediction converted to zero's
+  const predictionsUpdate = evaluatedPredictions.map(
+    ({ fixtureId, userId, homeGoals, awayGoals, score }) =>
+      prisma.prediction.update({
+        where: {
+          fixtureId_userId: {
+            fixtureId,
+            userId,
+          },
+        },
+        data: {
+          homeGoals,
+          awayGoals,
+          score,
+        },
+      })
+  );
+  Promise.all(predictionsUpdate);
+
+  return res.send(200);
 };

@@ -41,6 +41,10 @@ const FixtureTable = ({
     setPredictions(updatedPredictions);
   };
 
+  const gameweekScore = predictions.every((p) => p.score !== null)
+    ? predictions.reduce((t, { score }) => t + (score || 0), 0)
+    : null;
+
   return fixtures?.length ? (
     <Container>
       <form onSubmit={handleSubmit}>
@@ -60,6 +64,7 @@ const FixtureTable = ({
                   awayTeam={fixture.awayTeam}
                   homeGoals={prediction?.homeGoals || ""}
                   awayGoals={prediction?.awayGoals || ""}
+                  score={prediction?.score ?? null}
                   updateGoals={updateGoals}
                   allowEditScore={
                     isAlwaysEditable || !isPastDeadline(fixture.kickoff)
@@ -73,7 +78,11 @@ const FixtureTable = ({
           // TODO: Show the user what they actually scored
           <SaveButton type="submit" value="Save" />
         ) : (
-          <p>Result: 10 points</p>
+          <p>
+            {gameweekScore
+              ? `Result: ${gameweekScore} points`
+              : "Calculating score..."}
+          </p>
         )}
       </form>
     </Container>
