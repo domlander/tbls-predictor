@@ -69,11 +69,11 @@ const FixtureTable = ({
             })}
           </tbody>
         </Table>
-        {isGameweekComplete(fixtures) ? (
+        {isAlwaysEditable || !isGameweekComplete(fixtures) ? (
           // TODO: Show the user what they actually scored
-          <p>Result: 10 points</p>
-        ) : (
           <SaveButton type="submit" value="Save" />
+        ) : (
+          <p>Result: 10 points</p>
         )}
       </form>
     </Container>
