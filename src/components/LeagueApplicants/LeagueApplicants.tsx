@@ -27,8 +27,6 @@ const LeagueApplicants = ({ applicants, leagueId }: Props) => {
     });
   };
 
-  console.log(applicants);
-
   // eslint-disable-next-line react/jsx-filename-extension
   if (!applicants?.length) return <p>No Applicants</p>;
 

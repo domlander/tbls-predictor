@@ -9,19 +9,15 @@ interface Props {
   participants: User[];
 }
 
-const LeagueTableContainer = ({ leagueName, participants }: Props) => {
-  console.log({ leagueName });
-
-  return (
-    <Container>
-      <Header />
-      <Title>{leagueName}</Title>
-      {participants.map((p) => (
-        <div key={p.id}>{p.username}</div>
-      ))}
-    </Container>
-  );
-};
+const LeagueTableContainer = ({ leagueName, participants }: Props) => (
+  <Container>
+    <Header />
+    <Title>{leagueName}</Title>
+    {participants.map((p) => (
+      <div key={p.id}>{p.username}</div>
+    ))}
+  </Container>
+);
 
 const Container = styled.div``;
 

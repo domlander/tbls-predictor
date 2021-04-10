@@ -6,6 +6,7 @@ import FixtureTableRow from "@/components/FixtureTableRow";
 import { EditablePrediction } from "@/types";
 import { Fixture } from "@prisma/client";
 import { isGameweekComplete, isPastDeadline } from "@/utils";
+import { calculateGameweekScore } from "utils/calculateGameweekScore";
 
 interface Props {
   fixtures: Fixture[];
@@ -41,9 +42,7 @@ const FixtureTable = ({
     setPredictions(updatedPredictions);
   };
 
-  const gameweekScore = predictions.every((p) => p.score !== null)
-    ? predictions.reduce((t, { score }) => t + (score || 0), 0)
-    : null;
+  const gameweekScore = calculateGameweekScore(predictions);
 
   return fixtures?.length ? (
     <Container>
