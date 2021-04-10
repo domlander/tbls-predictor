@@ -6,3 +6,4 @@ export * from "./isGameweekComplete";
 export * from "./isPastDeadline";
 export * from "./isUserAppliedToLeague";
 export * from "./isUserBelongToLeague";
+export * from "./positionify";

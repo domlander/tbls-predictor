@@ -3,18 +3,19 @@ import { getSession } from "next-auth/client";
 import React from "react";
 
 import prisma from "prisma/client";
-import { League, User } from "@prisma/client";
+import { League } from "@prisma/client";
 import { convertUrlParamToNumber } from "@/utils";
-import LeagueTable from "src/containers/LeagueTable";
+import { WeeklyScores } from "@/types";
+import LeagueSummary from "@/containers/LeagueSummary";
 import redirectInternal from "../../../utils/redirects";
 
 interface Props {
   leagueName: League["name"];
-  participants: User[];
+  weeklyScores: WeeklyScores;
 }
 
-const LeagueTablePage = ({ leagueName, participants }: Props) => (
-  <LeagueTable leagueName={leagueName} participants={participants} />
+const LeagueSummaryPage = ({ leagueName, weeklyScores }: Props) => (
+  <LeagueSummary leagueName={leagueName} weeklyScores={weeklyScores} />
 );
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -63,6 +64,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   });
   if (!league) return redirectInternal("/leagues");
 
+  // Find all the gameweeks that have been played or are in progress
   const gameweeks = league.users[0].predictions
     .reduce((acc, cur) => {
       if (!acc.includes(cur.fixtures.gameweek)) {
@@ -72,27 +74,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }, [])
     .sort((a, b) => a - b);
 
-  console.log("league", JSON.stringify(league, null, 2));
-
-  const usersScores = league.users.map((user) => ({
-    id: user.id,
-    username: user.username,
-    scores: user.predictions.reduce((weeklyScores, predo) => {
-      const { gameweek } = predo.fixtures;
-      weeklyScores[gameweek] = (weeklyScores[gameweek] || 0) + predo.score;
-      return weeklyScores;
-    }, {}),
-  }));
-  console.log("usersScores", JSON.stringify(usersScores, null, 2));
-
   const weeklyScores = gameweeks.map((gameweek) => ({
     week: gameweek,
-    users: usersScores.map(({ id, username, scores }) => ({
-      id,
-      username,
-      score: scores[gameweek],
-    })),
-    usersAgain: league.users.map((user) => ({
+    users: league.users.map((user) => ({
       id: user.id,
       username: user.username,
       score: user.predictions
@@ -105,63 +89,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       leagueName: league.name,
-      participants: [],
       weeklyScores,
     },
   };
 };
 
-export default LeagueTablePage;
-
-/*
-      weeklyScores: [
-        {
-          week: 1,
-          users: [
-            { username: "dom 722", score: 2 }
-            { username: "dom 723", score: 12 }
-          ]
-        },
-        {
-          week: 2,
-          users: [
-            { username: "dom 722", score: 4 }
-            { username: "dom 723", score: 0 }
-          ]
-        },
-      ]
-
-      weeklyScores [
-        {
-          "week": 1,
-          "users": [
-            {
-              "id": 1,
-              "username": "domtest722",
-              "score": 2
-            },
-            {
-              "id": 2,
-              "username": "dom 723",
-              "score": 12
-            }
-          ]
-        },
-        {
-          "week": 2,
-          "users": [
-            {
-              "id": 1,
-              "username": "domtest722",
-              "score": 0
-            },
-            {
-              "id": 2,
-              "username": "dom 723",
-              "score": 0
-            }
-          ]
-        }
-      ]
-
-  */
+export default LeagueSummaryPage;
