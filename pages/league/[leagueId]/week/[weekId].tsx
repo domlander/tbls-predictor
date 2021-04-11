@@ -86,6 +86,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       homeGoals: prediction?.homeGoals?.toString() || "",
       awayGoals: prediction?.awayGoals?.toString() || "",
       score: prediction?.score,
+      kickoff: fixture.kickoff,
     });
   });
 

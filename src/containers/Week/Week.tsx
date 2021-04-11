@@ -33,6 +33,7 @@ const WeekContainer = ({
         fixtureId: prediction.fixtureId,
         homeGoals: parseInt(prediction.homeGoals || "") ?? null,
         awayGoals: parseInt(prediction.awayGoals || "") ?? null,
+        kickoff: prediction.kickoff,
       })
     );
 
