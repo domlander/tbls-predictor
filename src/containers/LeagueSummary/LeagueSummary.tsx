@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import Header from "@/components/Header";
 import { League } from "@prisma/client";
-import { WeeklyScores } from "@/types";
+import { Participant, UserWeeklyScore, WeeklyScores } from "@/types";
 import WeeklyScoresTable from "@/components/WeeklyScoresTable";
 import LeagueTable from "@/components/LeagueTable";
 
@@ -14,23 +14,23 @@ interface Props {
 }
 
 const LeagueTableContainer = ({ leagueName, weeklyScores }: Props) => {
-  console.log("weeklyScores", JSON.stringify(weeklyScores, null, 2));
-
-  const participants = weeklyScores[0].users.map((user) => ({
+  const participants: Participant[] = weeklyScores[0].users.map((user) => ({
     id: user.id,
-    username: user.username,
+    username: user.username || "unknown",
   }));
-  console.log("participants", JSON.stringify(participants, null, 2));
 
-  const totalScores = participants.map((p) => ({
+  const totalScores: UserWeeklyScore[] = participants.map((p) => ({
     id: p.id,
     username: p.username,
-    score: weeklyScores.reduce(
-      (acc, cur) => acc + cur.users.find((u) => u.id === p.id).score || 0,
-      0
-    ),
+    score: weeklyScores.reduce((acc, cur) => {
+      const user = cur.users.find((u) => u.id === p.id);
+      return acc + (user?.score || 0);
+    }, 0),
   }));
-  console.log("totalScores", JSON.stringify(totalScores, null, 2));
+
+  const totalScoresOrdered: UserWeeklyScore[] = [...totalScores].sort(
+    (a, b) => (b.score || 0) - (a.score || 0)
+  );
 
   return (
     <Container>
@@ -41,7 +41,7 @@ const LeagueTableContainer = ({ leagueName, weeklyScores }: Props) => {
         </Link>
       </div>
       <Title>{leagueName}</Title>
-      <LeagueTable entries={totalScores} />
+      <LeagueTable totalScores={totalScoresOrdered} />
       <WeeklyScoresTable
         participants={participants}
         weeklyScores={weeklyScores}

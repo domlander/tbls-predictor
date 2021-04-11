@@ -2,11 +2,12 @@ import React from "react";
 import styled from "styled-components";
 
 import colours from "@/styles/colours";
+import { Participant, UserWeeklyScore, WeeklyScores } from "@/types";
 
 interface Props {
-  participants: any;
-  weeklyScores: any;
-  totalScores: any;
+  participants: Participant[];
+  weeklyScores: WeeklyScores[];
+  totalScores: UserWeeklyScore[];
 }
 
 const maxUsernameLength = 8;

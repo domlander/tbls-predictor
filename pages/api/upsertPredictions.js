@@ -2,7 +2,6 @@ import { getSession } from "next-auth/client";
 import prisma from "prisma/client";
 
 const isPastDeadline = (kickoff) => {
-  console.log({ kickoff });
   const now = new Date();
   const kickOffDate = new Date(kickoff);
   const deadline = new Date(
@@ -33,18 +32,19 @@ export default async (req, res) => {
       big_boy_bonus: false,
     };
 
-    if (!isPastDeadline(prediction.kickoff)) {
-      return prisma.prediction.upsert({
-        where: {
-          fixtureId_userId: {
-            fixtureId: prediction.fixtureId,
-            userId: session.user.id,
-          },
+    if (isPastDeadline(prediction.kickoff)) return;
+
+    // eslint-disable-next-line consistent-return
+    return prisma.prediction.upsert({
+      where: {
+        fixtureId_userId: {
+          fixtureId: prediction.fixtureId,
+          userId: session.user.id,
         },
-        create: data,
-        update: data,
-      });
-    }
+      },
+      create: data,
+      update: data,
+    });
   });
 
   Promise.all(predictionsUpsert);

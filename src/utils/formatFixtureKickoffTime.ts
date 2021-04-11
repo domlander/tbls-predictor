@@ -1,5 +1,10 @@
 import { days, months, pad } from "@/utils";
 
+/*
+
+  We may want to display kickoff format based on gameweek rather than individual fixture
+
+*/
 export function formatFixtureKickoffTime(dateInput: Date | string) {
   const fixture: Date =
     typeof dateInput === "string" ? new Date(dateInput) : dateInput;
@@ -19,14 +24,14 @@ export function formatFixtureKickoffTime(dateInput: Date | string) {
   const isMatchFarAway = fixture > thisDayNextWeek;
 
   const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  const isMatchInPast = fixture < yesterday;
+  yesterday.setDate(yesterday.getDate() - 6);
+  const isMatchLongAgo = fixture < yesterday;
 
   if (isMatchFarAway) {
     return `${day} ${dayOfMonth} ${month}`;
   }
 
-  if (isMatchInPast) {
+  if (isMatchLongAgo) {
     return `${dayOfMonth}/${pad(monthIndex + 1)} ${hours}:${minutes}`;
   }
 

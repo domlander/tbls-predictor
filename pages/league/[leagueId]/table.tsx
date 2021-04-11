@@ -11,7 +11,7 @@ import redirectInternal from "../../../utils/redirects";
 
 interface Props {
   leagueName: League["name"];
-  weeklyScores: WeeklyScores;
+  weeklyScores: WeeklyScores[];
 }
 
 const LeagueSummaryPage = ({ leagueName, weeklyScores }: Props) => (
@@ -65,8 +65,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!league) return redirectInternal("/leagues");
 
   // Find all the gameweeks that have been played or are in progress
-  const gameweeks = league.users[0].predictions
-    .reduce((acc, cur) => {
+  const gameweeks: number[] = league.users[0].predictions
+    .reduce((acc: number[], cur) => {
       if (!acc.includes(cur.fixtures.gameweek)) {
         acc.push(cur.fixtures.gameweek);
       }
@@ -74,7 +74,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }, [])
     .sort((a, b) => a - b);
 
-  const weeklyScores = gameweeks.map((gameweek) => ({
+  const weeklyScores: WeeklyScores[] = gameweeks.map((gameweek) => ({
     week: gameweek,
     users: league.users.map((user) => ({
       id: user.id,
@@ -84,7 +84,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         .reduce((acc, cur) => acc + (cur.score || 0), 0),
     })),
   }));
-  console.log("weeklyScores", JSON.stringify(weeklyScores, null, 2));
 
   return {
     props: {

@@ -2,38 +2,28 @@ import React from "react";
 import styled from "styled-components";
 
 import colours from "@/styles/colours";
-import { User } from "@prisma/client";
 import { positionify } from "@/utils";
-
-type LeagueTableEntry = {
-  id: User["id"];
-  username: User["username"];
-  score: number;
-};
+import { UserWeeklyScore } from "@/types";
 
 interface Props {
-  entries: LeagueTableEntry[];
+  totalScores: UserWeeklyScore[];
 }
 
-const LeagueTable = ({ entries }: Props) => {
-  const orderedEntries = entries.sort((a, b) => a.score - b.score);
-
-  return (
-    <Container>
-      <Table>
-        <Body>
-          {orderedEntries.map((x, i) => (
-            <Row>
-              <Item>{positionify(i + 1)}</Item>
-              <Item>{x.username}</Item>
-              <Item>{x.score}</Item>
-            </Row>
-          ))}
-        </Body>
-      </Table>
-    </Container>
-  );
-};
+const LeagueTable = ({ totalScores }: Props) => (
+  <Container>
+    <Table>
+      <Body>
+        {totalScores.map((user, i) => (
+          <Row key={user.id}>
+            <Item>{positionify(i + 1)}</Item>
+            <Item>{user.username}</Item>
+            <Item>{user.score}</Item>
+          </Row>
+        ))}
+      </Body>
+    </Table>
+  </Container>
+);
 
 const Container = styled.div`
   margin: 0 auto;
