@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import colours from "@/styles/colours";
+import colours, { scoreColours } from "@/styles/colours";
 import { formatFixtureKickoffTime } from "@/utils";
 import { Fixture } from "@prisma/client";
 
@@ -15,12 +15,6 @@ interface Props {
   updateGoals(fixtureId: number, isHomeTeam: boolean, homeGoals: string): void;
   allowEditScore: boolean;
 }
-
-const scoreColours: { [id: number]: string } = {
-  3: "#dbdea4",
-  1: "#c4fdac",
-  0: "#ffdad8",
-};
 
 const FixtureTableRow = ({
   fixtureId,
