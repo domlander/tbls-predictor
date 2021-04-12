@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             select: {
               fixtureId: true,
               score: true,
-              fixtures: {
+              fixture: {
                 select: {
                   gameweek: true,
                 },
@@ -67,8 +67,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   // Find all the gameweeks that have been played or are in progress
   const gameweeks: number[] = league.users[0].predictions
     .reduce((acc: number[], cur) => {
-      if (!acc.includes(cur.fixtures.gameweek)) {
-        acc.push(cur.fixtures.gameweek);
+      if (!acc.includes(cur.fixture.gameweek)) {
+        acc.push(cur.fixture.gameweek);
       }
       return acc;
     }, [])
@@ -80,7 +80,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       id: user.id,
       username: user.username,
       score: user.predictions
-        .filter((x) => x.fixtures.gameweek === gameweek)
+        .filter((x) => x.fixture.gameweek === gameweek)
         .reduce((acc, cur) => acc + (cur.score || 0), 0),
     })),
   }));

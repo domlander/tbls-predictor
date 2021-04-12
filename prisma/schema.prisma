@@ -113,8 +113,8 @@ model Prediction {
   awayGoals     Int?    @map("away_goals") @db.SmallInt
   score         Int?    @db.SmallInt
   big_boy_bonus Boolean
-  fixtures      Fixture @relation(fields: [fixtureId], references: [id])
-  users         User    @relation(fields: [userId], references: [id])
+  fixture       Fixture @relation(fields: [fixtureId], references: [id])
+  user          User    @relation(fields: [userId], references: [id])
 
   @@id([fixtureId, userId])
   @@map("predictions")
