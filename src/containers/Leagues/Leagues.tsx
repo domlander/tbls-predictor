@@ -13,8 +13,8 @@ interface Props {
 
 const LeaguesContainer = ({ leagues }: Props) => (
   <>
-    <Title>League</Title>
     <Header />
+    <Title>Leagues</Title>
     {leagues?.length ? (
       <>
         <h2>My Leagues</h2>

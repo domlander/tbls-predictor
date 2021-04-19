@@ -1,17 +1,6 @@
-import React from 'react'
-import styled from 'styled-components'
-import Header from '@/components/Header'
+import React from "react";
+import Home from "@/containers/Home";
 
-const Title = styled.h1`
-  color: red;
-  font-size: 50px;
-`
-
-export default function Home() {
-  return (
-    <>
-      <Title>Home</Title>
-      <Header />
-    </>
-  )
+export default function HomePage() {
+  return <Home />;
 }
