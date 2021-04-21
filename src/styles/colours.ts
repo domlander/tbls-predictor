@@ -7,8 +7,8 @@ export default {
   black500: "#333333",
 
   blue100: "#66FCF1",
-  blackblue100: "#151D26",
-  blackblue200: "#0D151C",
+  blackblue400: "#151D26",
+  blackblue500: "#0D151C",
 };
 
 export const scoreColours: { [id: number]: string } = {

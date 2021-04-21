@@ -13,14 +13,24 @@ export default {
   },
 } as Meta;
 
-const Template: Story<ButtonProps> = (args) => (
-  <Button {...args}>My Button</Button>
-);
+const Template: Story<ButtonProps> = (args) => <Button {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {
-  width: 134,
-  height: 47,
   backgroundColour: colours.grey200,
   borderRadius: 3,
+  children: "Submit",
+  colour: colours.blackblue400,
+  height: 48,
+  width: 134,
+};
+
+export const Secondary = Template.bind({});
+Secondary.args = {
+  backgroundColour: colours.blue100,
+  borderRadius: 3,
+  children: "Save",
+  colour: colours.blackblue500,
+  height: 48,
+  width: 343,
 };

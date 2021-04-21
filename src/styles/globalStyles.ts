@@ -1,11 +1,14 @@
-import { createGlobalStyle } from 'styled-components';
-import colours from './colours';
+import { createGlobalStyle } from "styled-components";
+import colours from "./colours";
 
 const GlobalStyle = createGlobalStyle`
+  * {
+    font-family: Nunito Sans, sans-serif;
+  }
+
   body {
     margin: 0;
     padding: 0;
-    font-family: Hind Madurai, Sans-Serif;
     font-size: 12px;
     color: ${colours.black500};
   }
@@ -14,13 +17,20 @@ const GlobalStyle = createGlobalStyle`
     border-collapse: collapse;
   }
 
-  input {
-    font-family: Hind Madurai, Sans-Serif;
+  h1, h2, h3, h4 ,h5, h6 {
+    font-family: Hind Madurai, sans-serif
   }
 
   h1 {
+    font-size: 40px;
+  }
+
+  h2 {
     font-size: 32px;
-    font-weight: 500;
+  }
+
+  h3 {
+    font-size: 24px;
   }
 `;
 
