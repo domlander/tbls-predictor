@@ -2,37 +2,45 @@ import React from "react";
 import styled from "styled-components";
 import colours from "../../../styles/colours";
 
-interface OtherProps {
+export type ChipType = {
   label: string;
-}
-
-interface StyleProps {
   backgroundColour: string;
-  height: number;
-  width: number;
+};
+
+export const perfectChip: ChipType = {
+  label: "PERFECT",
+  backgroundColour: colours.gold300,
+};
+
+export const correctChip: ChipType = {
+  label: "CORRECT",
+  backgroundColour: colours.green300,
+};
+
+export interface Props {
+  chipType: ChipType;
 }
 
-export type Props = StyleProps & OtherProps;
-
-const Chip = ({ backgroundColour, height, label, width }: Props) => (
-  <ChipOuter backgroundColour={backgroundColour} height={height} width={width}>
-    <ChipInner>{label}</ChipInner>
+const Chip = ({ chipType }: Props) => (
+  <ChipOuter chipType={chipType}>
+    <ChipInner>{chipType.label}</ChipInner>
   </ChipOuter>
 );
 
-const ChipOuter = styled.div<StyleProps>`
-  background-color: ${({ backgroundColour }) => backgroundColour};
-  border-radius: ${({ height }) => `${height / 2}px`};
+const ChipOuter = styled.div<Props>`
+  background-color: ${({ chipType }) => chipType.backgroundColour};
+  border-radius: 0.6em;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
-  height: ${({ height }) => `${height}px`};
-  width: ${({ width }) => `${width}px`};
+  align-items: center;
+  height: 1.2em;
+  width: 3.8em;
 `;
 
 const ChipInner = styled.div`
   color: ${colours.grey100};
-  font-size: 8px;
+  height: 1.2em;
+  font-size: 0.8em;
   text-align: center;
   font-family: "Hind Madurai";
 `;

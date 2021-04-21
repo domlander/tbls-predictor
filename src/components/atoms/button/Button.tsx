@@ -1,35 +1,30 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 
-interface FunctionalProps {
-  handleClick: () => void;
-  label: ReactNode;
-}
-
 interface StyleProps {
   backgroundColour: string;
-  borderRadius: number;
   colour: string;
-  height: number;
+  hoverColour: string;
   width: number;
 }
 
-export type ButtonProps = FunctionalProps & StyleProps;
+export type Props = StyleProps & {
+  handleClick: () => void;
+  label: ReactNode;
+};
 
 const Button = ({
   handleClick,
   backgroundColour,
-  borderRadius,
+  hoverColour,
   label,
   colour,
-  height,
   width,
-}: ButtonProps) => (
+}: Props) => (
   <ButtonStyles
     backgroundColour={backgroundColour}
-    borderRadius={borderRadius}
     colour={colour}
-    height={height}
+    hoverColour={hoverColour}
     onClick={handleClick}
     type="button"
     width={width}
@@ -40,13 +35,27 @@ const Button = ({
 
 const ButtonStyles = styled.button<StyleProps>`
   background-color: ${({ backgroundColour }) => backgroundColour};
-  border-radius: ${({ borderRadius }) => `${borderRadius}px`};
+  border-radius: 0.1em;
   border: 0;
   color: ${({ colour }) => colour};
   cursor: pointer;
-  font-size: 24px;
-  height: ${({ height }) => `${height}px`};
-  width: ${({ width }) => `${width}px`};
+  font-size: 2.4em;
+  height: 1.6em;
+  width: ${({ width }) => `${width}em`};
+  :focus {
+    outline: none;
+    border: 0.05em solid ${({ hoverColour }) => hoverColour};
+  }
+  :hover {
+    border: 0.05em solid ${({ hoverColour }) => hoverColour};
+  }
+  :active {
+    height: 1.5em;
+    width: ${({ width }) => `${width - 0.1}em`};
+    margin-top: 0.05em;
+    margin-left: 0.05em;
+    background-color: ${({ hoverColour }) => hoverColour};
+  }
 `;
 
 export default Button;

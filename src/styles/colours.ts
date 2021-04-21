@@ -8,6 +8,7 @@ export default {
   black500: "#333333",
 
   blue100: "#66FCF1",
+  blue200: "#4de3de",
 
   blackblue400: "#151D26",
   blackblue500: "#0D151C",

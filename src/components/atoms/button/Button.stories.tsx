@@ -2,7 +2,7 @@ import React from "react";
 import { Story, Meta } from "@storybook/react";
 
 import colours from "../../../styles/colours";
-import Button, { ButtonProps } from "./Button";
+import Button, { Props } from "./Button";
 
 // 👇 This default export determines where your story goes in the story list
 export default {
@@ -13,24 +13,22 @@ export default {
   },
 } as Meta;
 
-const Template: Story<ButtonProps> = (args) => <Button {...args} />;
+const Template: Story<Props> = (args) => <Button {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {
   backgroundColour: colours.grey200,
-  borderRadius: 3,
+  hoverColour: colours.grey300,
   label: "Submit",
   colour: colours.blackblue400,
-  height: 48,
-  width: 134,
+  width: 5.6,
 };
 
 export const Secondary = Template.bind({});
 Secondary.args = {
   backgroundColour: colours.blue100,
-  borderRadius: 3,
+  hoverColour: colours.blue200,
   label: "Save",
   colour: colours.blackblue500,
-  height: 48,
-  width: 343,
+  width: 14.3,
 };
