@@ -15,17 +15,20 @@ export const Date = Template.bind({});
 Date.args = {
   label: "Fri 19:30",
   alignText: "center",
+  locked: false,
 };
 
 export const AwayTeam = Template.bind({});
 AwayTeam.args = {
   label: "West Ham United",
   alignText: "left",
+  locked: false,
 };
 
 export const HomeTeamWithChip = Template.bind({});
 HomeTeamWithChip.args = {
   label: "Manchester United",
   alignText: "right",
+  locked: false,
   chip: correctChip,
 };
