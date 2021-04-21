@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 interface FunctionalProps {
   handleClick: () => void;
-  children?: ReactNode;
+  label: ReactNode;
 }
 
 interface StyleProps {
@@ -20,7 +20,7 @@ const Button = ({
   handleClick,
   backgroundColour,
   borderRadius,
-  children,
+  label,
   colour,
   height,
   width,
@@ -34,17 +34,16 @@ const Button = ({
     type="button"
     width={width}
   >
-    {children}
+    {label}
   </ButtonStyles>
 );
 
 const ButtonStyles = styled.button<StyleProps>`
   background-color: ${({ backgroundColour }) => backgroundColour};
-  border-radius: ${({ borderRadius }) => borderRadius};
+  border-radius: ${({ borderRadius }) => `${borderRadius}px`};
   border: 0;
   color: ${({ colour }) => colour};
   cursor: pointer;
-  font-family: "Nunito sans" sans-serif;
   font-size: 24px;
   height: ${({ height }) => `${height}px`};
   width: ${({ width }) => `${width}px`};

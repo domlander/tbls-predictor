@@ -4,11 +4,17 @@ export default {
   grey300: "#D6D6D6",
   grey400: "#C4C4C4",
   grey500: "#969696",
+
   black500: "#333333",
 
   blue100: "#66FCF1",
+
   blackblue400: "#151D26",
   blackblue500: "#0D151C",
+
+  green300: "#15A71B",
+
+  gold300: "#B8A006",
 };
 
 export const scoreColours: { [id: number]: string } = {
