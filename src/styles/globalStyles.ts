@@ -17,6 +17,15 @@ const GlobalStyle = createGlobalStyle`
     border-collapse: collapse;
   }
 
+  button {
+    padding: 0;
+    border: none;
+    outline: none;
+    font: inherit;
+    color: inherit;
+    background: none
+  }
+
   h1, h2, h3, h4 ,h5, h6 {
     font-family: Hind Madurai, sans-serif
   }

@@ -12,7 +12,11 @@ export type Props = StyleProps & {
   fixtureId: Fixture["id"];
   goals: string;
   isHome: boolean;
-  updateGoals(fixtureId: number, isHomeTeam: boolean, homeGoals: string): void;
+  updateGoals: (
+    fixtureId: number,
+    isHomeTeam: boolean,
+    homeGoals: string
+  ) => void;
 };
 
 const ScoreInput = ({

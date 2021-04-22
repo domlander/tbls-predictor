@@ -9,7 +9,7 @@ interface StyleProps {
 }
 
 export type Props = StyleProps & {
-  handleClick: () => void;
+  handleClick: (e: React.MouseEvent) => void;
   label: ReactNode;
 };
 

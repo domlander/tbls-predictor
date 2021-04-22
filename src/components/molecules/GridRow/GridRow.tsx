@@ -14,7 +14,11 @@ export type Props = StyleProps & {
   awayTeam: Fixture["awayTeam"];
   homeGoals: string;
   awayGoals: string;
-  updateGoals(fixtureId: number, isHomeTeam: boolean, homeGoals: string): void;
+  updateGoals: (
+    fixtureId: number,
+    isHomeTeam: boolean,
+    homeGoals: string
+  ) => void;
   chip?: ChipType;
   locked: boolean;
 };
