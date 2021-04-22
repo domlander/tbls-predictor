@@ -32,6 +32,7 @@ const Container = styled.div<StyleProps>`
   background-color: ${colours.blackblue400};
   color: ${({ locked }) => (locked ? colours.grey400 : colours.grey100)};
   font-size: 1em;
+  line-height: 1.2em;
   height: 3em;
   text-align: ${({ alignText }) => alignText};
   padding-left: ${({ alignText }) => (alignText === "left" ? "1.6em" : 0)};
