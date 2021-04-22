@@ -191,6 +191,18 @@ export default async (req, res) => {
         homeTeam: "Leicester",
         awayTeam: "West Brom",
       },
+      {
+        gameweek: 4,
+        kickoff: new Date("2021-05-21T20:15:00Z"),
+        homeTeam: "Aston Villa",
+        awayTeam: "Brighton",
+      },
+      {
+        gameweek: 4,
+        kickoff: new Date("2021-05-22T20:00:00Z"),
+        homeTeam: "Leicester",
+        awayTeam: "Southampton",
+      },
     ],
     skipDuplicates: true,
   });
