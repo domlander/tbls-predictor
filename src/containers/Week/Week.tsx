@@ -4,9 +4,9 @@ import Link from "next/link";
 
 import Header from "@/components/Header";
 import FixtureTable from "@/components/FixtureTable";
-import GameweekNavigator from "@/components/GameweekNavigator";
 import { EditablePrediction } from "@/types";
 import { Fixture, League, Prediction } from "@prisma/client";
+import WeekNavigator from "@/components/molecules/WeekNavigator";
 
 interface Props {
   league: League;
@@ -63,11 +63,18 @@ const WeekContainer = ({
           <a>Table</a>
         </Link>
       </div>
-      <GameweekNavigator
-        gameweek={gameweek}
-        prevGwUrl={`/league/${leagueId}/week/${gameweek - 1}`}
-        nextGwUrl={`/league/${leagueId}/week/${gameweek + 1}`}
-        maxGameweeks={gameweekEnd - gameweekStart + 1}
+      <WeekNavigator
+        week={gameweek}
+        prevGameweekUrl={
+          gameweek !== 1
+            ? `/league/${leagueId}/week/${gameweek - 1}`
+            : undefined
+        }
+        nextGameweekUrl={
+          gameweek < gameweekEnd - gameweekStart + 1
+            ? `/league/${leagueId}/week/${gameweek + 1}`
+            : undefined
+        }
       />
       <FixtureTable
         fixtures={fixtures}
