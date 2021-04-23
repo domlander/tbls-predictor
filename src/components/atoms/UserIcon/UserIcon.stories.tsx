@@ -6,12 +6,19 @@ import UserIcon, { Props } from "./UserIcon";
 export default {
   title: "Atoms/UserIcon",
   component: UserIcon,
-  argTypes: { handleClick: { action: "clicked" } },
 } as Meta;
 
 const Template: Story<Props> = (args) => <UserIcon {...args} />;
 
-export const Default = Template.bind({});
-Default.args = {
+export const Clickable = Template.bind({});
+Clickable.args = {
+  initial: "D",
+};
+Clickable.argTypes = {
+  handleClick: { action: "clicked" },
+};
+
+export const NotClickable = Template.bind({});
+NotClickable.args = {
   initial: "D",
 };

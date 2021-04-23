@@ -1,28 +1,39 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import colours from "../../../styles/colours";
 
 export interface Props {
   initial: string;
-  handleClick: (e: React.MouseEvent) => void;
+  handleClick?: (e: React.MouseEvent) => void;
 }
 
-const UserIcon = ({ initial, handleClick }: Props) => (
-  <Circle onClick={handleClick}>
-    <Name>{initial}</Name>
-  </Circle>
-);
+const UserIcon = ({ initial, handleClick }: Props) =>
+  handleClick ? (
+    <ClickableCircle onClick={handleClick}>
+      <Name>{initial}</Name>
+    </ClickableCircle>
+  ) : (
+    <Circle>
+      <Name>{initial}</Name>
+    </Circle>
+  );
 
-const Circle = styled.button`
+const sharedCircleStyles = css`
   background-color: ${colours.blackblue400};
-  cursor: pointer;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  align-self: right;
   height: 3.2em;
   width: 3.2em;
+`;
+const ClickableCircle = styled.button`
+  cursor: pointer;
+  ${sharedCircleStyles}
+`;
+
+const Circle = styled.div`
+  ${sharedCircleStyles}
 `;
 
 const Name = styled.p`
