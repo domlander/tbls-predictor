@@ -30,17 +30,9 @@ const GlobalStyle = createGlobalStyle`
     font-family: Hind Madurai, sans-serif
   }
 
-  h1 {
-    font-size: 40px;
-  }
-
-  h2 {
-    font-size: 32px;
-  }
-
-  h3 {
-    font-size: 24px;
-  }
+  h1 { font-size: 40px; }
+  h2 { font-size: 32px; }
+  h3 { font-size: 24px; }
 `;
 
 export default GlobalStyle;
