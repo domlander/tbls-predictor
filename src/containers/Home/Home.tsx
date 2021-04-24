@@ -1,12 +1,7 @@
 import React from "react";
-import styled from "styled-components";
 import { signIn, signOut, useSession } from "next-auth/client";
 import HeaderBar from "@/components/molecules/HeaderBar";
-
-const Title = styled.h1`
-  color: red;
-  font-size: 50px;
-`;
+import Heading from "@/components/atoms/Heading";
 
 export default function Home() {
   const [session, loading] = useSession();
@@ -16,7 +11,7 @@ export default function Home() {
   return (
     <>
       <HeaderBar initial="D" />
-      <Title>Home</Title>
+      <Heading level="h1">Home</Heading>
       {session ? (
         <div>
           <div>{session?.user.email}</div>

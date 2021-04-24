@@ -7,6 +7,7 @@ import { Participant, UserWeeklyScore, WeeklyScores } from "@/types";
 import WeeklyScoresTable from "@/components/WeeklyScoresTable";
 import LeagueTable from "@/components/LeagueTable";
 import HeaderBar from "@/components/molecules/HeaderBar";
+import Heading from "@/components/atoms/Heading";
 
 interface Props {
   leagueName: League["name"];
@@ -40,7 +41,7 @@ const LeagueTableContainer = ({ leagueName, weeklyScores }: Props) => {
           <a>Predictions</a>
         </Link>
       </div>
-      <Title>{leagueName}</Title>
+      <Heading level="h1">{leagueName}</Heading>
       <LeagueTable totalScores={totalScoresOrdered} />
       <WeeklyScoresTable
         participants={participants}
@@ -54,13 +55,6 @@ const LeagueTableContainer = ({ leagueName, weeklyScores }: Props) => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-`;
-
-const Title = styled.h1`
-  align-self: center;
-  color: orange;
-  font-size: 30px;
-  margin: 2em 0;
 `;
 
 export default LeagueTableContainer;

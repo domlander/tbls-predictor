@@ -5,6 +5,7 @@ import styled from "styled-components";
 import JoinNewLeagueForm from "@/components/JoinNewLeagueForm";
 import { League } from "@prisma/client";
 import HeaderBar from "@/components/molecules/HeaderBar";
+import Heading from "@/components/atoms/Heading";
 
 interface Props {
   leagues: Array<League>;
@@ -13,10 +14,10 @@ interface Props {
 const LeaguesContainer = ({ leagues }: Props) => (
   <>
     <HeaderBar initial="D" />
-    <Title>Leagues</Title>
+    <Heading level="h1">Leagues</Heading>
     {leagues?.length ? (
       <>
-        <h2>My Leagues</h2>
+        <Heading level="h2">My leagues</Heading>
         <div>
           {leagues.map((league) => (
             <div key={league.id}>
@@ -33,8 +34,3 @@ const LeaguesContainer = ({ leagues }: Props) => (
 );
 
 export default LeaguesContainer;
-
-const Title = styled.h1`
-  color: green;
-  font-size: 50px;
-`;

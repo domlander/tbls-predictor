@@ -1,11 +1,6 @@
 import React, { FormEvent, useState } from "react";
-import styled from "styled-components";
 import HeaderBar from "@/components/molecules/HeaderBar";
-
-const Title = styled.h1`
-  color: blue;
-  font-size: 50px;
-`;
+import Heading from "@/components/atoms/Heading";
 
 interface Props {
   username: string;
@@ -34,7 +29,7 @@ const AccountContainer = ({ username: initialUsername }: Props) => {
   return (
     <div>
       <HeaderBar initial="D" />
-      <Title>Account</Title>
+      <Heading level="h1">Account</Heading>
       <p>Welcome {username}</p>
       <form onSubmit={handleSubmit}>
         <h4>Change username</h4>

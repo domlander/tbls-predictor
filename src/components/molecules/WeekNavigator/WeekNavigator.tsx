@@ -23,7 +23,7 @@ const WeekNavigator = ({ prevGameweekUrl, nextGameweekUrl, week }: Props) => (
     ) : (
       image("/images/ArrowLeftDisabled.svg", "disabled navigation")
     )}
-    <Title level="h1">Week {week}</Title>
+    <Heading level="h1">Week {week}</Heading>
     {nextGameweekUrl ? (
       <Link href={nextGameweekUrl}>
         <a>{image("/images/ArrowRight.svg", "Go to next week")}</a>
@@ -40,10 +40,6 @@ const StyledWeekNavigator = styled.div`
   align-items: center;
   margin: 1rem auto;
   max-width: 500px;
-`;
-
-const Title = styled(Heading)`
-  text-align: center;
 `;
 
 export default WeekNavigator;
