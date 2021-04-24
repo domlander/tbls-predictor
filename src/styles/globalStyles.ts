@@ -10,7 +10,7 @@ const GlobalStyle = createGlobalStyle`
     margin: 0;
     padding: 0;
     font-size: 10px;
-    color: ${colours.black500};
+    color: ${colours.grey100};
   }
 
   table {
@@ -30,7 +30,11 @@ const GlobalStyle = createGlobalStyle`
     font-family: Hind Madurai, sans-serif
   }
 
-  h1 { font-size: 40px; }
+  h1 {
+    font-size: 40px;
+    margin: 0.8em 0;
+  }
+
   h2 { font-size: 32px; }
   h3 { font-size: 24px; }
 `;

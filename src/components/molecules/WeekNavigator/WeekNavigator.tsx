@@ -23,7 +23,7 @@ const WeekNavigator = ({ prevGameweekUrl, nextGameweekUrl, week }: Props) => (
     ) : (
       image("/images/ArrowLeftDisabled.svg", "disabled navigation")
     )}
-    <Title headingLevel="h1">Week {week}</Title>
+    <Title level="h1">Week {week}</Title>
     {nextGameweekUrl ? (
       <Link href={nextGameweekUrl}>
         <a>{image("/images/ArrowRight.svg", "Go to next week")}</a>

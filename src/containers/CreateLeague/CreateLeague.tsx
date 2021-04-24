@@ -1,11 +1,10 @@
-import React, { FC, FormEvent, useState } from "react";
+import Button from "@/components/atoms/Button";
+import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
+import colours from "@/styles/colours";
+import Heading from "@/components/atoms/Heading";
 
-const Label = styled.label`
-  display: block;
-`;
-
-const CreateNewLeagueForm: FC = () => {
+const CreateLeague = () => {
   const [leagueName, setLeagueName] = useState("");
   const [gameweekStart, setGameweekStart] = useState<number>(1);
   const [weeksToRun, setWeeksToRun] = useState<number>(17);
@@ -35,9 +34,9 @@ const CreateNewLeagueForm: FC = () => {
   };
 
   return (
-    <>
+    <Container>
+      <Heading level="h1">Create League</Heading>
       <form onSubmit={handleSubmit}>
-        <h2>Create League</h2>
         <Label>
           League name:
           <input
@@ -63,9 +62,22 @@ const CreateNewLeagueForm: FC = () => {
           />
         </Label>
         <input type="submit" value="Create new league" />
+        <Button />
       </form>
-    </>
+    </Container>
   );
 };
 
-export default CreateNewLeagueForm;
+export default CreateLeague;
+
+const Container = styled.div`
+  background-color: ${colours.blackblue400};
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Label = styled.label`
+  display: block;
+`;

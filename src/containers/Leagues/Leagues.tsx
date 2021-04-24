@@ -2,7 +2,6 @@ import React from "react";
 import Link from "next/link";
 import styled from "styled-components";
 
-import CreateNewLeagueForm from "@/components/CreateNewLeagueForm";
 import JoinNewLeagueForm from "@/components/JoinNewLeagueForm";
 import Header from "@/components/Header";
 import { League } from "@prisma/client";
@@ -30,7 +29,6 @@ const LeaguesContainer = ({ leagues }: Props) => (
       </>
     ) : null}
     <JoinNewLeagueForm />
-    <CreateNewLeagueForm />
   </>
 );
 

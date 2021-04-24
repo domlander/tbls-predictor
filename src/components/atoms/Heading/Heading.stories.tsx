@@ -12,18 +12,18 @@ const Template: Story<Props> = (args) => <Heading {...args} />;
 
 export const Primary = Template.bind({});
 Primary.args = {
-  headingLevel: "h1",
+  level: "h1",
   children: "Biggest Heading",
 };
 
 export const Secondary = Template.bind({});
 Secondary.args = {
-  headingLevel: "h2",
+  level: "h2",
   children: "Big Heading",
 };
 
 export const Smallest = Template.bind({});
 Smallest.args = {
-  headingLevel: "p",
+  level: "p",
   children: "Tiny Heading",
 };
