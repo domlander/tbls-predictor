@@ -1,31 +1,57 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import styled from "styled-components";
 import colours from "../../../styles/colours";
 
-interface Props {
-  placeholder?: string;
+// TODO: standardise height. Make width a choice between small | medium | large
+interface StyleProps {
+  height?: string;
+  width?: string;
 }
 
-const FormInput = ({ placeholder }: Props) => (
-  <FormInputStyles type="text" placeholder={placeholder} />
+type Props = StyleProps & {
+  placeholder?: string;
+  value?: string;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  maxLength?: number;
+};
+
+const FormInput = ({
+  placeholder,
+  value,
+  width,
+  height,
+  onChange,
+  maxLength,
+}: Props) => (
+  <FormInputStyles
+    type="text"
+    value={value}
+    placeholder={placeholder}
+    onChange={onChange}
+    width={width}
+    height={height}
+    maxLength={maxLength}
+  />
 );
 
-const FormInputStyles = styled.input`
+const FormInputStyles = styled.input<StyleProps>`
   background-color: ${colours.grey200};
   color: ${colours.black500};
   border-radius: 0.2em;
-  height: 3.5em;
+  height: ${({ height }) => height || "3.5em"};
   font-size: 1.6em;
   border: 0;
   padding-left: 1em;
-  ::placeholder {
+  width: ${({ width }) => width || "10em"};
+  :placeholder {
     color: ${colours.grey500};
   }
   :hover,
   :focus {
     outline: none;
     border: 0.1em solid ${colours.grey300};
-    height: 3.3em;
+    width: calc(${({ width }) => width || "10em"} - 0.1em);
+    height: calc(${({ height }) => height || "10em"} - 0.2em);
     padding-left: 0.9em;
   }
 `;

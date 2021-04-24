@@ -1,8 +1,11 @@
-import Button from "@/components/atoms/Button";
 import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
-import colours from "@/styles/colours";
+
 import Heading from "@/components/atoms/Heading";
+import HeaderBar from "@/components/molecules/HeaderBar";
+import Button from "@/components/atoms/Button";
+import colours from "@/styles/colours";
+import FormInput from "../../components/atoms/FormInput";
 
 const CreateLeague = () => {
   const [leagueName, setLeagueName] = useState("");
@@ -19,6 +22,8 @@ const CreateLeague = () => {
       gameweekStart
     );
 
+    if (!leagueName) return;
+
     fetch("../api/createLeague", {
       method: "post",
       headers: {
@@ -34,50 +39,75 @@ const CreateLeague = () => {
   };
 
   return (
-    <Container>
-      <Heading level="h1">Create League</Heading>
-      <form onSubmit={handleSubmit}>
-        <Label>
-          League name:
-          <input
-            type="text"
-            value={leagueName}
-            onChange={(e) => setLeagueName(e.target.value)}
-          />
-        </Label>
-        <Label>
-          Gameweek start:
-          <input
-            type="number"
-            value={gameweekStart}
-            onChange={(e) => setGameweekStart(parseInt(e.target.value))}
-          />
-        </Label>
-        <Label>
-          Weeks to run:
-          <input
-            type="number"
-            value={weeksToRun}
-            onChange={(e) => setWeeksToRun(parseInt(e.target.value))}
-          />
-        </Label>
-        <input type="submit" value="Create new league" />
-        <Button />
-      </form>
-    </Container>
+    <>
+      <HeaderBar initial="D" handleClick={() => {}} />
+      <Container>
+        <Heading level="h1">Create League</Heading>
+        <form onSubmit={handleSubmit}>
+          <Label>
+            <LabelText>Name:</LabelText>
+            <FormInput
+              value={leagueName}
+              onChange={(e) => setLeagueName(e.target.value)}
+              width="12em"
+              height="2.4em"
+            />
+          </Label>
+          {/* TODO: Find components for these when decided on a design */}
+          <Label>
+            <LabelText>Gameweek start:</LabelText>
+            <input
+              type="number"
+              value={gameweekStart}
+              onChange={(e) => setGameweekStart(parseInt(e.target.value))}
+            />
+          </Label>
+          <Label>
+            <LabelText>Weeks to run:</LabelText>
+            <input
+              type="number"
+              value={weeksToRun}
+              onChange={(e) => setWeeksToRun(parseInt(e.target.value))}
+            />
+          </Label>
+          {/* TODO: end */}
+          <ButtonContainer>
+            <Button
+              type="submit"
+              colour={colours.blackblue400}
+              backgroundColour={colours.grey200}
+              hoverColour={colours.grey300}
+            >
+              Create
+            </Button>
+          </ButtonContainer>
+        </form>
+      </Container>
+    </>
   );
 };
 
 export default CreateLeague;
 
 const Container = styled.div`
-  background-color: ${colours.blackblue400};
-  min-height: 100vh;
+  width: calc(100% - 32px);
+  max-width: 400px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: left;
+`;
+
+const ButtonContainer = styled.div`
+  margin: 32px 0;
 `;
 
 const Label = styled.label`
-  display: block;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const LabelText = styled.p`
+  font-size: 16px;
 `;

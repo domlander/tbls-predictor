@@ -5,31 +5,30 @@ interface StyleProps {
   backgroundColour: string;
   colour: string;
   hoverColour: string;
-  width: number;
 }
 
 export type Props = StyleProps & {
-  handleClick: (e: React.MouseEvent) => void;
-  label: ReactNode;
+  handleClick?: (e: React.MouseEvent) => void;
+  children: ReactNode;
+  type?: "button" | "submit";
 };
 
 const Button = ({
-  handleClick,
   backgroundColour,
   hoverColour,
-  label,
+  children,
   colour,
-  width,
+  handleClick,
+  type = "button",
 }: Props) => (
   <ButtonStyles
     backgroundColour={backgroundColour}
     colour={colour}
     hoverColour={hoverColour}
     onClick={handleClick}
-    type="button"
-    width={width}
+    type={type}
   >
-    {label}
+    {children}
   </ButtonStyles>
 );
 
@@ -40,18 +39,16 @@ const ButtonStyles = styled.button<StyleProps>`
   color: ${({ colour }) => colour};
   cursor: pointer;
   font-size: 2.4em;
-  height: 1.6em;
-  width: ${({ width }) => `${width}em`};
-  :focus {
+  height: 1.8em;
+  width: 100%;
+  :focus,
+  :hover {
     outline: none;
     border: 0.05em solid ${({ hoverColour }) => hoverColour};
   }
-  :hover {
-    border: 0.05em solid ${({ hoverColour }) => hoverColour};
-  }
   :active {
-    height: 1.5em;
-    width: ${({ width }) => `${width - 0.1}em`};
+    height: 1.7em;
+    width: calc(100% - 0.1em);
     margin-top: 0.05em;
     margin-left: 0.05em;
     background-color: ${({ hoverColour }) => hoverColour};

@@ -40,9 +40,12 @@ const HeaderLinks = styled.div``;
 const HeaderLink = styled.a`
   color: ${colours.grey400};
   font-size: 1.2em;
-  margin-left: 16px;
   width: 70px;
   cursor: pointer;
+  margin-left: 24px;
+  :first-child {
+    margin-left: 16px;
+  }
 `;
 
 const UserIconContainer = styled.div`

@@ -42,7 +42,7 @@ export default class MyDocument extends Document {
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Hind+Madurai&family=Nunito+Sans&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Nunito&family=Nunito+Sans&display=swap"
           />
         </Head>
         <body>

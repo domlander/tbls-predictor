@@ -11,6 +11,8 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     font-size: 10px;
     color: ${colours.grey100};
+    min-height: 100vh;
+    background-color: ${colours.blackblue400};
   }
 
   table {
@@ -27,7 +29,8 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h1, h2, h3, h4 ,h5, h6 {
-    font-family: Hind Madurai, sans-serif
+    font-family: Nunito, sans-serif;
+    font-weight: 400;
   }
 
   h1 {

@@ -1,6 +1,6 @@
-import colours from "@/styles/colours";
 import React, { ReactNode } from "react";
 import styled from "styled-components";
+import colours from "../../../styles/colours";
 
 export type Props = {
   id?: string;
@@ -16,6 +16,7 @@ const Heading = ({ id, level, children }: Props) => (
 
 const StyledHeading = styled.div`
   color: ${colours.grey200};
+  align-self: center;
 `;
 
 export default Heading;

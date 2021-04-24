@@ -10,7 +10,13 @@ export default {
 
 const Template: Story = (args) => <FormInput {...args} />;
 
-export const Default = Template.bind({});
-Default.args = {
+export const WithPlaceholder = Template.bind({});
+WithPlaceholder.args = {
   placeholder: "Email",
+};
+
+export const WithValue = Template.bind({});
+WithValue.args = {
+  value: "domtest722@mailinator.com",
+  width: "15em",
 };

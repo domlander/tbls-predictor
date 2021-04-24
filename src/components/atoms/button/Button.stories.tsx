@@ -16,16 +16,14 @@ export const Primary = Template.bind({});
 Primary.args = {
   backgroundColour: colours.grey200,
   hoverColour: colours.grey300,
-  label: "Submit",
+  children: "Submit",
   colour: colours.blackblue400,
-  width: 5.6,
 };
 
 export const Secondary = Template.bind({});
 Secondary.args = {
   backgroundColour: colours.blue100,
   hoverColour: colours.blue200,
-  label: "Save",
+  children: "Save",
   colour: colours.blackblue500,
-  width: 14.3,
 };

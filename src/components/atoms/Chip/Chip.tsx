@@ -34,7 +34,7 @@ const ChipOuter = styled.div<Props>`
   justify-content: center;
   align-items: center;
   height: 1.2em;
-  width: 3.8em;
+  width: 4.2em;
 `;
 
 const ChipInner = styled.div`
@@ -42,7 +42,7 @@ const ChipInner = styled.div`
   height: 1.2em;
   font-size: 0.8em;
   text-align: center;
-  font-family: "Hind Madurai";
+  font-family: "Nunito";
 `;
 
 export default Chip;
