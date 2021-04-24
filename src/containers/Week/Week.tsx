@@ -2,11 +2,11 @@ import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 
-import Header from "@/components/Header";
 import FixtureTable from "@/components/FixtureTable";
 import { EditablePrediction } from "@/types";
 import { Fixture, League, Prediction } from "@prisma/client";
 import WeekNavigator from "@/components/molecules/WeekNavigator";
+import HeaderBar from "@/components/molecules/HeaderBar";
 
 interface Props {
   league: League;
@@ -49,7 +49,7 @@ const WeekContainer = ({
 
   return (
     <Container>
-      <Header />
+      <HeaderBar initial="D" />
       <Title>{name}</Title>
       {isUserLeagueAdmin && (
         <div>

@@ -6,18 +6,27 @@ import colours from "../../../styles/colours";
 
 export interface Props {
   initial: string;
-  handleClick: (e: React.MouseEvent) => void;
+  handleClick?: (e: React.MouseEvent) => void;
 }
 
 const HeaderBar = ({ initial, handleClick }: Props) => (
   <Container>
     <HeaderLinks>
-      {/* TODO: Add prections page. We want prediction to be under /predictions/..., NOT /league/1/... */}
-      <Link href="/predictions">
+      {/* TODO: Add prections page. We want predictions to be under /predictions/week1, NOT /league/1/week/1 */}
+      {/* <Link href="/predictions">
         <HeaderLink>Predictions</HeaderLink>
       </Link>
       <Link href="/league">
         <HeaderLink>League</HeaderLink>
+      </Link> */}
+      <Link href="/">
+        <HeaderLink>Home</HeaderLink>
+      </Link>
+      <Link href="/leagues">
+        <HeaderLink>Leagues</HeaderLink>
+      </Link>
+      <Link href="/account">
+        <HeaderLink>Account</HeaderLink>
       </Link>
     </HeaderLinks>
     <UserIconContainer>

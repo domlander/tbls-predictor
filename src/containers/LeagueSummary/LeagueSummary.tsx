@@ -2,11 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 
-import Header from "@/components/Header";
 import { League } from "@prisma/client";
 import { Participant, UserWeeklyScore, WeeklyScores } from "@/types";
 import WeeklyScoresTable from "@/components/WeeklyScoresTable";
 import LeagueTable from "@/components/LeagueTable";
+import HeaderBar from "@/components/molecules/HeaderBar";
 
 interface Props {
   leagueName: League["name"];
@@ -34,7 +34,7 @@ const LeagueTableContainer = ({ leagueName, weeklyScores }: Props) => {
 
   return (
     <Container>
-      <Header />
+      <HeaderBar initial="D" />
       <div>
         <Link href="/league/9">
           <a>Predictions</a>
