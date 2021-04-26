@@ -11,12 +11,14 @@ export type Props = StyleProps & {
   handleClick?: (e: React.MouseEvent) => void;
   children: ReactNode;
   type?: "button" | "submit";
+  className?: string;
 };
 
 const Button = ({
   backgroundColour,
   hoverColour,
   children,
+  className,
   colour,
   handleClick,
   type = "button",
@@ -27,6 +29,7 @@ const Button = ({
     hoverColour={hoverColour}
     onClick={handleClick}
     type={type}
+    className={className}
   >
     {children}
   </ButtonStyles>

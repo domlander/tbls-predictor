@@ -51,7 +51,7 @@ const HeaderLink = styled.a`
   font-size: 1.2em;
   width: 70px;
   cursor: pointer;
-  margin-left: 24px;
+  margin-left: 40px;
   :first-child {
     margin-left: 16px;
   }

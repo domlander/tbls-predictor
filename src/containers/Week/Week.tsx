@@ -87,11 +87,12 @@ const WeekContainer = ({
   );
 };
 
-const Container = styled.div``;
-
-const Title = styled.h1`
-  color: purple;
-  font-size: 30px;
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: calc(100% - 16px);
+  margin-left: 8px;
 `;
 
 export default WeekContainer;

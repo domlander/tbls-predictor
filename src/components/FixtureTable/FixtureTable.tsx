@@ -2,12 +2,14 @@ import React, { Dispatch, FormEvent, SetStateAction } from "react";
 import styled from "styled-components";
 
 import colours from "@/styles/colours";
-import FixtureTableRow from "@/components/FixtureTableRow";
 import { EditablePrediction } from "@/types";
 import { Fixture } from "@prisma/client";
-import { isGameweekComplete } from "@/utils";
+import { formatFixtureKickoffTime, isGameweekComplete } from "@/utils";
 import { calculateGameweekScore } from "utils/calculateGameweekScore";
 import isPastDeadline from "utils/isPastDeadline";
+import GridRow from "../molecules/GridRow";
+import { correctChip, perfectChip } from "../atoms/Chip/Chip";
+import Button from "../atoms/Button";
 
 interface Props {
   fixtures: Fixture[];
@@ -48,35 +50,41 @@ const FixtureTable = ({
     <Container>
       <form onSubmit={handleSubmit}>
         <Table>
-          <tbody>
-            {fixtures.map((fixture) => {
-              const prediction = predictions.find(
-                (p) => p.fixtureId === fixture.id
-              );
+          {fixtures.map((fixture) => {
+            const prediction = predictions.find(
+              (p) => p.fixtureId === fixture.id
+            );
 
-              return (
-                <FixtureTableRow
-                  key={fixture.id}
-                  fixtureId={fixture.id}
-                  kickoff={fixture.kickoff}
-                  homeTeam={fixture.homeTeam}
-                  awayTeam={fixture.awayTeam}
-                  homeGoals={prediction?.homeGoals || ""}
-                  awayGoals={prediction?.awayGoals || ""}
-                  score={prediction?.score ?? null}
-                  updateGoals={updateGoals}
-                  allowEditScore={
-                    isAlwaysEditable || !isPastDeadline(fixture.kickoff)
-                  }
-                />
-              );
-            })}
-          </tbody>
+            let chip;
+            if (prediction?.score === 3) chip = perfectChip;
+            if (prediction?.score === 1) chip = correctChip;
+
+            return (
+              <GridRow
+                key={fixture.id}
+                fixtureId={fixture.id}
+                kickoff={formatFixtureKickoffTime(fixture.kickoff)}
+                homeTeam={fixture.homeTeam}
+                awayTeam={fixture.awayTeam}
+                homeGoals={prediction?.homeGoals || ""}
+                awayGoals={prediction?.awayGoals || ""}
+                updateGoals={updateGoals}
+                chip={chip}
+                locked={!isAlwaysEditable && isPastDeadline(fixture.kickoff)}
+              />
+            );
+          })}
         </Table>
         {isAlwaysEditable || !isGameweekComplete(fixtures) ? (
-          // TODO: Show the user what they actually scored
-          <SaveButton type="submit" value="Save" />
+          <SaveButton
+            colour={colours.blackblue500}
+            backgroundColour={colours.blue100}
+            hoverColour={colours.blue200}
+          >
+            Save
+          </SaveButton>
         ) : (
+          // TODO: Show the user what they actually scored
           <p>
             {gameweekScore
               ? `Result: ${gameweekScore} points`
@@ -89,21 +97,16 @@ const FixtureTable = ({
 };
 
 const Container = styled.div`
-  margin: 0 auto;
-  max-width: 500px;
+  margin: 0 8px;
 `;
 
-const SaveButton = styled.input`
-  margin: 1rem 0.25rem;
-  padding: 0.25rem 1.5rem;
-  color: ${colours.black500};
-  background-color: ${colours.grey100};
-  border: 1px solid ${colours.grey500};
+const SaveButton = styled(Button)`
+  margin-top: 16px;
 `;
 
-const Table = styled.table`
-  width: 100%;
-  margin: 0 auto;
+const Table = styled.div`
+  display: grid;
+  grid-template-columns: 7em 1fr auto auto 1fr;
   background: ${colours.grey100};
   border-radius: 0.1em;
 `;

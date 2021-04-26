@@ -1,6 +1,5 @@
 import React from "react";
 import Link from "next/link";
-import styled from "styled-components";
 
 import JoinNewLeagueForm from "@/components/JoinNewLeagueForm";
 import { League } from "@prisma/client";

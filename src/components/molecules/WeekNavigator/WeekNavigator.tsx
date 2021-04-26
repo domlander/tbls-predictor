@@ -36,10 +36,9 @@ const WeekNavigator = ({ prevGameweekUrl, nextGameweekUrl, week }: Props) => (
 
 const StyledWeekNavigator = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
-  margin: 1rem auto;
-  max-width: 500px;
+  margin: 1em 0;
 `;
 
 export default WeekNavigator;

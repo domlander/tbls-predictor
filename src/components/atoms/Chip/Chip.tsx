@@ -1,11 +1,7 @@
 import React from "react";
+import { ChipType } from "src/types/ChipType";
 import styled from "styled-components";
 import colours from "../../../styles/colours";
-
-export type ChipType = {
-  label: string;
-  backgroundColour: string;
-};
 
 export const perfectChip: ChipType = {
   label: "PERFECT",

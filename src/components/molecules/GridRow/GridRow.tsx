@@ -1,7 +1,7 @@
 import React from "react";
 import { Fixture } from "@prisma/client";
 
-import { ChipType } from "../../atoms/Chip";
+import { ChipType } from "src/types/ChipType";
 import GridItem from "../../atoms/GridItem";
 import ScoreInput from "../../atoms/ScoreInput";
 

@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
+import { ChipType } from "src/types/ChipType";
 import colours from "../../../styles/colours";
-import Chip, { ChipType } from "../Chip";
+import Chip from "../Chip";
 
 interface StyleProps {
   alignText: "left" | "center" | "right";
