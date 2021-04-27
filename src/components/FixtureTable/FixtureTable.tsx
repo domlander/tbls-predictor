@@ -107,8 +107,9 @@ const SaveButton = styled(Button)`
 const Table = styled.div`
   display: grid;
   grid-template-columns: 7em 1fr auto auto 1fr;
-  background: ${colours.grey100};
-  border-radius: 0.1em;
+  background: ${colours.grey200};
+  outline: 0.1em solid ${colours.grey200};
+  grid-gap: 0.1em;
 `;
 
 export default FixtureTable;

@@ -29,7 +29,6 @@ const GridItem = ({ label, chip, alignText, locked }: Props) => (
 
 const Container = styled.div<StyleProps>`
   position: relative;
-  border: 0.1em solid ${colours.grey400};
   background-color: ${colours.blackblue400};
   color: ${({ locked }) => (locked ? colours.grey400 : colours.grey100)};
   font-size: 1em;

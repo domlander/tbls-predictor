@@ -38,7 +38,6 @@ const StyledWeekNavigator = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  margin: 1em 0;
 `;
 
 export default WeekNavigator;

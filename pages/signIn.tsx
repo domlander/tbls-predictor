@@ -27,6 +27,9 @@ const SignInPage = () => (
 
 export default SignInPage;
 
+// TODO: We're currently using the Layout with the heading on this page, but we don't want to.
+// We are currently doing it this way, but the heading is loaded in the background.
+// We can't use useSession in _app.js, which is why we're loading the header.
 const Container = styled.div`
   background-color: ${colours.grey500};
   height: 100vh;

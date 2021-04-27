@@ -8,7 +8,7 @@ interface StyleProps {
 }
 
 export type Props = StyleProps & {
-  handleClick?: (e: React.MouseEvent) => void;
+  handleClick?: (e: React.MouseEvent<HTMLElement>) => void;
   children: ReactNode;
   type?: "button" | "submit";
   className?: string;

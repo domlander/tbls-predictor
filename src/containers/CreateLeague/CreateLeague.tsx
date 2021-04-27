@@ -72,9 +72,9 @@ const CreateLeague = () => {
           <ButtonContainer>
             <Button
               type="submit"
-              colour={colours.blackblue400}
-              backgroundColour={colours.grey200}
-              hoverColour={colours.grey300}
+              colour={colours.blackblue500}
+              backgroundColour={colours.blue100}
+              hoverColour={colours.blue200}
             >
               Create
             </Button>

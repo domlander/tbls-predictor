@@ -43,7 +43,7 @@ const ScoreInputStyles = styled.input<StyleProps>`
     isScoreEditable ? colours.grey100 : colours.grey400};
   font-size: 1em;
   text-align: center;
-  border: 0.1em solid ${colours.grey400};
+  border: 0;
   height: 2.8em;
   width: 2.4em;
   background-color: ${colours.blackblue400};

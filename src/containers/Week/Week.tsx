@@ -6,7 +6,7 @@ import FixtureTable from "@/components/FixtureTable";
 import { EditablePrediction } from "@/types";
 import { Fixture, League, Prediction } from "@prisma/client";
 import WeekNavigator from "@/components/molecules/WeekNavigator";
-import Heading from "@/components/atoms/Heading";
+import colours from "@/styles/colours";
 
 interface Props {
   league: League;
@@ -49,7 +49,11 @@ const WeekContainer = ({
 
   return (
     <Container>
-      <Heading level="h3">{name}</Heading>
+      <LeagueNameContainer>
+        <Link href={`/league/${leagueId}/table`}>
+          <A>{name}</A>
+        </Link>
+      </LeagueNameContainer>
       {isUserLeagueAdmin && (
         <div>
           <Link href={`/league/${leagueId}/admin`}>
@@ -57,11 +61,6 @@ const WeekContainer = ({
           </Link>
         </div>
       )}
-      <div>
-        <Link href={`/league/${leagueId}/table`}>
-          <a>Table</a>
-        </Link>
-      </div>
       <WeekNavigator
         week={gameweek}
         prevGameweekUrl={
@@ -84,6 +83,21 @@ const WeekContainer = ({
     </Container>
   );
 };
+
+const LeagueNameContainer = styled.div`
+  background-color: ${colours.grey400};
+  margin-top: 16px;
+  width: fit-content;
+  position: relative;
+  left: -8px;
+  padding: 6px 12px 6px 6px;
+  border-radius: 0 16px 16px 0;
+`;
+
+const A = styled.a`
+  color: ${colours.blackblue400};
+  font-size: 1.4em;
+`;
 
 const Container = styled.div`
   display: flex;
