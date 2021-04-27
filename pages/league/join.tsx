@@ -1,11 +1,11 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
-import CreateLeague from "@/containers/CreateLeague";
+import JoinLeague from "@/containers/JoinLeague";
 
-const CreateLeaguePage = () => <CreateLeague />;
+const JoinLeaguePage = () => <JoinLeague />;
 
-export default CreateLeaguePage;
+export default JoinLeaguePage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);

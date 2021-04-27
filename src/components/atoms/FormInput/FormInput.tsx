@@ -13,6 +13,7 @@ type Props = StyleProps & {
   value?: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   maxLength?: number;
+  type?: string;
 };
 
 const FormInput = ({
@@ -22,9 +23,10 @@ const FormInput = ({
   height,
   onChange,
   maxLength,
+  type = "text",
 }: Props) => (
   <FormInputStyles
-    type="text"
+    type={type}
     value={value}
     placeholder={placeholder}
     onChange={onChange}

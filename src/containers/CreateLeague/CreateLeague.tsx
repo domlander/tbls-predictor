@@ -2,7 +2,6 @@ import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
 
 import Heading from "@/components/atoms/Heading";
-import HeaderBar from "@/components/molecules/HeaderBar";
 import Button from "@/components/atoms/Button";
 import colours from "@/styles/colours";
 import FormInput from "../../components/atoms/FormInput";

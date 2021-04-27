@@ -1,7 +1,5 @@
 import React from "react";
 import Link from "next/link";
-
-import JoinNewLeagueForm from "@/components/JoinNewLeagueForm";
 import { League } from "@prisma/client";
 import Heading from "@/components/atoms/Heading";
 
@@ -12,9 +10,8 @@ interface Props {
 const LeaguesContainer = ({ leagues }: Props) => (
   <>
     <Heading level="h1">Leagues</Heading>
-    {leagues?.length ? (
+    {leagues?.length ? ( // TODO: Should we redirect the user to /league/join instead?
       <>
-        <Heading level="h2">My leagues</Heading>
         <div>
           {leagues.map((league) => (
             <div key={league.id}>
@@ -25,8 +22,9 @@ const LeaguesContainer = ({ leagues }: Props) => (
           ))}
         </div>
       </>
-    ) : null}
-    <JoinNewLeagueForm />
+    ) : (
+      <p>No Leagues!</p>
+    )}
   </>
 );
 

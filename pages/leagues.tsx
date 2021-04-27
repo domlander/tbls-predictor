@@ -35,7 +35,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       email: session?.user.email,
     },
   });
-  if (!user?.leagues) return redirectInternal("/");
+
+  // If the user does not belong to any leagues, get them to join a league
+  if (!user?.leagues) return redirectInternal("/league/join");
 
   return {
     props: {

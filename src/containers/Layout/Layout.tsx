@@ -40,6 +40,7 @@ export default Layout;
 const Container = styled.div`
   display: grid;
   grid-template-columns: [stack] 1fr;
+  // TODO Add a 16px margin and remove margins from everywhere else
 `;
 
 const MainContent = styled.div`
