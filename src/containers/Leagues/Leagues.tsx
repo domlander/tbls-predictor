@@ -3,7 +3,6 @@ import Link from "next/link";
 
 import JoinNewLeagueForm from "@/components/JoinNewLeagueForm";
 import { League } from "@prisma/client";
-import HeaderBar from "@/components/molecules/HeaderBar";
 import Heading from "@/components/atoms/Heading";
 
 interface Props {
@@ -12,7 +11,6 @@ interface Props {
 
 const LeaguesContainer = ({ leagues }: Props) => (
   <>
-    <HeaderBar initial="D" />
     <Heading level="h1">Leagues</Heading>
     {leagues?.length ? (
       <>

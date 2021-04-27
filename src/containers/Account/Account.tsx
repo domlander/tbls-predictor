@@ -28,7 +28,6 @@ const AccountContainer = ({ username: initialUsername }: Props) => {
 
   return (
     <div>
-      <HeaderBar initial="D" />
       <Heading level="h1">Account</Heading>
       <p>Welcome {username}</p>
       <form onSubmit={handleSubmit}>

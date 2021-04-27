@@ -14,8 +14,17 @@ interface Props {
 const LeaguesPage = ({ leagues }: Props) => <Leagues leagues={leagues} />;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  // Get the current session
   const session = await getSession(context);
+  if (!session) {
+    return {
+      props: {},
+      redirect: {
+        destination: "/signIn",
+        permanent: false,
+      },
+    };
+  }
+
   if (!session?.user.email) return redirectInternal("/");
 
   const user = await prisma.user.findUnique({

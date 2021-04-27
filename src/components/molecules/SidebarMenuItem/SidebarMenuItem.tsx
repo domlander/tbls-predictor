@@ -6,10 +6,11 @@ import colours from "../../../styles/colours";
 export interface Props {
   label: string;
   url: string;
+  onClick: () => void;
 }
 
-const SidebarMenuItem = ({ label, url }: Props) => (
-  <Container>
+const SidebarMenuItem = ({ label, url, onClick }: Props) => (
+  <Container onClick={onClick}>
     <Link href={url}>
       <A>{label}</A>
     </Link>

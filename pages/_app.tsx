@@ -4,6 +4,7 @@ import React from "react";
 import { Provider } from "next-auth/client";
 import { AppProps } from "next/dist/next-server/lib/router/router";
 import GlobalStyle from "@/styles/globalStyles";
+import Layout from "@/containers/Layout";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -15,7 +16,9 @@ export default function App({ Component, pageProps }: AppProps) {
       session={pageProps.session}
     >
       <GlobalStyle />
-      <Component {...pageProps} />
+      <Layout>
+        <Component {...pageProps} />
+      </Layout>
     </Provider>
   );
 }

@@ -12,15 +12,12 @@ interface Props {
 const AccountPage = ({ username }: Props) => <Account username={username} />;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  // Get the user's session based on the request
   const session = await getSession(context);
-
-  // If no user, redirect to login
   if (!session) {
     return {
       props: {},
       redirect: {
-        destination: "/",
+        destination: "/signIn",
         permanent: false,
       },
     };

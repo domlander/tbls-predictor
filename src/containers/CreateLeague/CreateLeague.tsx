@@ -40,7 +40,6 @@ const CreateLeague = () => {
 
   return (
     <>
-      <HeaderBar initial="D" handleClick={() => {}} />
       <Container>
         <Heading level="h1">Create League</Heading>
         <form onSubmit={handleSubmit}>

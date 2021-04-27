@@ -6,7 +6,7 @@ import colours from "../../../styles/colours";
 
 export interface Props {
   username: string;
-  handleClick: (e: React.MouseEvent) => void;
+  handleClick: () => void;
 }
 
 const SidebarHeader = ({ username, handleClick }: Props) => (
@@ -28,7 +28,6 @@ const SidebarHeader = ({ username, handleClick }: Props) => (
 const Container = styled.div`
   width: 100%;
   height: 50px;
-  margin-bottom: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;

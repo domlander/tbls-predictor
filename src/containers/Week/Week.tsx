@@ -6,7 +6,6 @@ import FixtureTable from "@/components/FixtureTable";
 import { EditablePrediction } from "@/types";
 import { Fixture, League, Prediction } from "@prisma/client";
 import WeekNavigator from "@/components/molecules/WeekNavigator";
-import HeaderBar from "@/components/molecules/HeaderBar";
 import Heading from "@/components/atoms/Heading";
 
 interface Props {
@@ -50,7 +49,6 @@ const WeekContainer = ({
 
   return (
     <Container>
-      <HeaderBar initial="D" />
       <Heading level="h3">{name}</Heading>
       {isUserLeagueAdmin && (
         <div>

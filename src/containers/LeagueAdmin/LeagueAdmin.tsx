@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { User } from "@prisma/client";
 import LeagueApplicants from "@/components/LeagueApplicants";
 import LeagueParticipants from "@/components/LeagueParticipants";
-import HeaderBar from "@/components/molecules/HeaderBar";
 import Heading from "@/components/atoms/Heading";
 
 interface Props {
@@ -21,7 +20,6 @@ const LeagueAdminContainer = ({
   participants,
 }: Props) => (
   <Container>
-    <HeaderBar initial="D" />
     <Heading level="h1">{name}</Heading>
     <Subtitle>Requests</Subtitle>
     <LeagueApplicants applicants={applicants} leagueId={leagueId} />

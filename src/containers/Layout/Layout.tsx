@@ -1,0 +1,57 @@
+import "reflect-metadata";
+
+import React, { useState } from "react";
+import styled from "styled-components";
+import HeaderBar from "@/components/molecules/HeaderBar";
+import Sidebar from "@/components/molecules/Sidebar";
+import { useSession } from "next-auth/client";
+
+interface Props {
+  children: React.ReactNode;
+}
+
+const Layout = ({ children }: Props) => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [session] = useSession();
+
+  return (
+    <Container>
+      <MainContent>
+        {session ? (
+          <HeaderBar
+            initial="D"
+            handleClick={() => setIsSidebarOpen((isOpen) => !isOpen)}
+          />
+        ) : null}
+        {children}
+      </MainContent>
+      <SidebarContainer isSidebarOpen={isSidebarOpen}>
+        <Sidebar
+          username="DomTest"
+          handleClick={() => setIsSidebarOpen((isOpen) => !isOpen)}
+        />
+      </SidebarContainer>
+    </Container>
+  );
+};
+
+export default Layout;
+
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: [stack] 1fr;
+`;
+
+const MainContent = styled.div`
+  grid-area: stack;
+  opacity: ${({ isSidebarOpen }) => (isSidebarOpen ? "25%" : "100%")};
+`;
+
+const SidebarContainer = styled.div`
+  grid-area: stack;
+  visibility: ${({ isSidebarOpen }) => (isSidebarOpen ? "visible" : "hidden")};
+  /* transform: translateY(-110vw);
+  will-change: transform;
+  transition: transform 0.6s cubic-bezier(0.16, 0.1, 0.3, 1),
+    visibility 0s linear 0.6s; */
+`;

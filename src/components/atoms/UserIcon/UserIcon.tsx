@@ -4,7 +4,7 @@ import colours from "../../../styles/colours";
 
 export interface Props {
   initial: string;
-  handleClick?: (e: React.MouseEvent) => void;
+  handleClick?: () => void;
 }
 
 const UserIcon = ({ initial, handleClick }: Props) =>

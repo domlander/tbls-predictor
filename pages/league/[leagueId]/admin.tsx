@@ -32,14 +32,21 @@ const LeagueAdminPage = ({
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
   if (!session) {
-    context.res.writeHead(302, { Location: "/" });
-    context.res.end();
+    return {
+      props: {},
+      redirect: {
+        destination: "/signIn",
+        permanent: false,
+      },
+    };
   }
+
+  if (!session?.user.email) return redirectInternal("/");
 
   // Get the logged in user
   const user = await prisma.user.findUnique({
     where: {
-      email: session?.user.email || "",
+      email: session?.user.email,
     },
   });
 

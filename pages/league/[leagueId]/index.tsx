@@ -15,15 +15,25 @@ const RedirectURL = () => null;
     we are post-GW
 */
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const { params } = context;
-
   const session = await getSession(context);
-  if (!session) return redirectInternal("/");
+  if (!session) {
+    return {
+      props: {},
+      redirect: {
+        destination: "/signIn",
+        permanent: false,
+      },
+    };
+  }
+
+  if (!session?.user.email) return redirectInternal("/");
+
+  const { params } = context;
 
   // Get the logged in user
   const user = await prisma.user.findUnique({
     where: {
-      email: session?.user.email || "",
+      email: session.user.email,
     },
     include: {
       leagues: true,
