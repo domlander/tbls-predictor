@@ -4,7 +4,7 @@ import WeekNavigator, { Props } from "./WeekNavigator";
 
 // 👇 This default export determines where your story goes in the story list
 export default {
-  title: "Atoms/WeekNavigator",
+  title: "Molecules/WeekNavigator",
   component: WeekNavigator,
 } as Meta;
 

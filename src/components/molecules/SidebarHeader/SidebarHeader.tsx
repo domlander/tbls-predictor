@@ -15,20 +15,24 @@ const SidebarHeader = ({ username, handleClick }: Props) => (
       <UserIcon initial={username[0]} />
       <Username>{username}</Username>
     </User>
-    <UserIconContainer onClick={handleClick}>
-      <Image src="/images/Cross.svg" alt="exit" width="18.5" height="19.5" />
-    </UserIconContainer>
+    <Icon
+      onClick={handleClick}
+      src="/images/Cross.svg"
+      alt="exit"
+      width="18.5"
+      height="19.5"
+    />
   </Container>
 );
 
 const Container = styled.div`
   width: 100%;
   height: 50px;
+  margin-bottom: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: ${colours.blackblue500};
-  margin-left: 16px;
 `;
 
 const User = styled.div`
@@ -44,7 +48,7 @@ const Username = styled.p`
   font-weight: 400;
 `;
 
-const UserIconContainer = styled.div`
+const Icon = styled(Image)`
   margin-right: 16px;
   cursor: pointer;
 `;
