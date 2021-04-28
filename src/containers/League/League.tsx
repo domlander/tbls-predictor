@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import Link from "next/link";
 
 import { League } from "@prisma/client";
 import { Participant, UserWeeklyScore, WeeklyScores } from "@/types";
@@ -13,7 +12,7 @@ interface Props {
   weeklyScores: WeeklyScores[];
 }
 
-const LeagueTableContainer = ({ leagueName, weeklyScores }: Props) => {
+const LeagueContainer = ({ leagueName, weeklyScores }: Props) => {
   const participants: Participant[] = weeklyScores[0].users.map((user) => ({
     id: user.id,
     username: user.username || "unknown",
@@ -34,11 +33,6 @@ const LeagueTableContainer = ({ leagueName, weeklyScores }: Props) => {
 
   return (
     <Container>
-      <div>
-        <Link href="/league/9">
-          <a>Predictions</a>
-        </Link>
-      </div>
       <Heading level="h1">{leagueName}</Heading>
       <LeagueTable totalScores={totalScoresOrdered} />
       <WeeklyScoresTable
@@ -55,4 +49,4 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-export default LeagueTableContainer;
+export default LeagueContainer;

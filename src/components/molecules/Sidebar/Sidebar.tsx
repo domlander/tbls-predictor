@@ -13,7 +13,11 @@ export type Props = {
 const Sidebar = ({ username, handleClick }: Props) => (
   <Container>
     <SidebarHeader username={username} handleClick={handleClick} />
-    <SidebarMenuItem onClick={handleClick} label="Predictions" url="/leagues" />
+    <SidebarMenuItem
+      onClick={handleClick}
+      label="Predictions"
+      url="/predictions"
+    />
     <SidebarMenuItem onClick={handleClick} label="My leagues" url="/leagues" />
     <SidebarMenuItem
       onClick={handleClick}

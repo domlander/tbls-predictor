@@ -5,31 +5,21 @@ import prisma from "prisma/client";
 
 import { EditablePrediction } from "@/types";
 import { convertUrlParamToNumber } from "@/utils";
-import { Fixture, League } from "@prisma/client";
-import Week from "src/containers/Week";
-import redirectInternal from "../../../../utils/redirects";
+import { Fixture } from "@prisma/client";
+import Predictions from "src/containers/Predictions";
+import redirectInternal from "../../../utils/redirects";
 
 interface Props {
-  league: League;
   gameweek: number;
   fixtures: Fixture[];
   predictions: EditablePrediction[];
-  isUserLeagueAdmin: boolean;
 }
 
-const WeekPage = ({
-  league,
-  gameweek,
-  fixtures,
-  predictions,
-  isUserLeagueAdmin,
-}: Props) => (
-  <Week
-    league={league}
+const PredictionsPage = ({ gameweek, fixtures, predictions }: Props) => (
+  <Predictions
     gameweek={gameweek}
     fixtures={fixtures}
     initialPredictions={predictions}
-    isUserLeagueAdmin={isUserLeagueAdmin}
   />
 );
 
@@ -54,19 +44,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   });
 
-  const leagueId = convertUrlParamToNumber(context.params?.leagueId);
   const weekId = convertUrlParamToNumber(context.params?.weekId);
 
-  if (!user || !leagueId || !weekId || leagueId <= 0 || weekId <= 0) {
+  if (!user || !weekId || weekId <= 0) {
     return redirectInternal("/leagues");
   }
-
-  const league = await prisma.league.findUnique({
-    where: {
-      id: leagueId || undefined,
-    },
-  });
-  if (!league) return redirectInternal("/leagues");
 
   const fixtures = await prisma.fixture.findMany({
     where: {
@@ -102,8 +84,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      isUserLeagueAdmin: league.administratorId === user.id,
-      league: JSON.parse(JSON.stringify(league)),
       fixtures: JSON.parse(JSON.stringify(fixtures)),
       predictions: JSON.parse(JSON.stringify(editablePredictions)),
       gameweek: weekId,
@@ -111,4 +91,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default WeekPage;
+export default PredictionsPage;

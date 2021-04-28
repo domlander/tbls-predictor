@@ -12,21 +12,11 @@ export interface Props {
 const HeaderBar = ({ initial, handleClick }: Props) => (
   <Container>
     <HeaderLinks>
-      {/* TODO: Add prections page. We want predictions to be under /predictions/week1, NOT /league/1/week/1 */}
-      {/* <Link href="/predictions">
+      <Link href="/predictions">
         <HeaderLink>Predictions</HeaderLink>
-      </Link>
-      <Link href="/league">
-        <HeaderLink>League</HeaderLink>
-      </Link> */}
-      <Link href="/">
-        <HeaderLink>Home</HeaderLink>
       </Link>
       <Link href="/leagues">
         <HeaderLink>Leagues</HeaderLink>
-      </Link>
-      <Link href="/account">
-        <HeaderLink>Account</HeaderLink>
       </Link>
     </HeaderLinks>
     <UserIconContainer>
