@@ -2,18 +2,16 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import prisma from "prisma/client";
 
-import { Fixture } from "@prisma/client";
-import { EditablePrediction } from "@/types";
 import UpdateResults from "@/containers/UpdateResults";
 import { getSession } from "next-auth/client";
+import { Fixture } from "@prisma/client";
 
 interface Props {
   fixtures: Fixture[];
-  scores: EditablePrediction[];
 }
 
-const UpdateResultsPage = ({ fixtures, scores }: Props) => (
-  <UpdateResults fixtures={fixtures} initialScores={scores} />
+const UpdateResultsPage = ({ fixtures }: Props) => (
+  <UpdateResults fixtures={fixtures} />
 );
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -39,15 +37,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   });
 
-  const scores: EditablePrediction[] = [];
-  fixtures.map((fixture) =>
-    scores.push({
-      fixtureId: fixture.id,
-      homeGoals: fixture.homeGoals?.toString() || "",
-      awayGoals: fixture.awayGoals?.toString() || "",
-    })
-  );
-
   fixtures.sort(
     (a, b) => new Date(a.kickoff).getTime() - new Date(b.kickoff).getTime()
   );
@@ -55,7 +44,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   return {
     props: {
       fixtures: JSON.parse(JSON.stringify(fixtures)),
-      scores: JSON.parse(JSON.stringify(scores)),
     },
   };
 };

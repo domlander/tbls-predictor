@@ -1,9 +1,8 @@
-import React, { Dispatch, FormEvent, SetStateAction } from "react";
+import React, { FormEvent } from "react";
 import styled from "styled-components";
 
 import colours from "@/styles/colours";
-import { EditablePrediction } from "@/types";
-import { Fixture } from "@prisma/client";
+import { FixtureWithPrediction } from "@/types";
 import { formatFixtureKickoffTime, isGameweekComplete } from "@/utils";
 import { calculateGameweekScore } from "utils/calculateGameweekScore";
 import isPastDeadline from "utils/isPastDeadline";
@@ -12,77 +11,62 @@ import { correctChip, perfectChip } from "../atoms/Chip/Chip";
 import Button from "../atoms/Button";
 
 interface Props {
-  fixtures: Fixture[];
-  predictions: EditablePrediction[];
-  setPredictions: Dispatch<SetStateAction<EditablePrediction[]>>;
+  predictions: FixtureWithPrediction[];
+  updateGoals: (
+    fixtureId: number,
+    isHomeTeam: boolean,
+    homeGoals: string
+  ) => void;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   isAlwaysEditable?: boolean;
 }
 
 const FixtureTable = ({
-  fixtures,
   predictions,
-  setPredictions,
+  updateGoals,
   handleSubmit,
   isAlwaysEditable = false,
 }: Props) => {
-  const updateGoals = (
-    fixtureId: number,
-    isHomeTeam: boolean,
-    goals: string
-  ): void => {
-    const index = predictions.findIndex((x) => x.fixtureId === fixtureId);
-    const updatedPredictions = [
-      ...predictions.slice(0, index),
-      {
-        fixtureId,
-        homeGoals: isHomeTeam ? goals : predictions[index].homeGoals,
-        awayGoals: isHomeTeam ? predictions[index].awayGoals : goals,
-      },
-      ...predictions.slice(index + 1),
-    ];
-
-    setPredictions(updatedPredictions);
-  };
   const gameweekScore = calculateGameweekScore(predictions);
 
-  return fixtures?.length ? (
+  if (!predictions?.length) return null;
+
+  return (
     <Container>
       <form onSubmit={handleSubmit}>
         <Table>
-          {fixtures.map((fixture) => {
-            const prediction = predictions.find(
-              (p) => p.fixtureId === fixture.id
-            );
-
+          {predictions.map((prediction) => {
             let chip;
-            if (prediction?.score === 3) chip = perfectChip;
-            if (prediction?.score === 1) chip = correctChip;
+            if (prediction?.predictionScore === 3) chip = perfectChip;
+            if (prediction?.predictionScore === 1) chip = correctChip;
 
             return (
               <GridRow
-                key={fixture.id}
-                fixtureId={fixture.id}
-                kickoff={formatFixtureKickoffTime(fixture.kickoff)}
-                homeTeam={fixture.homeTeam}
-                awayTeam={fixture.awayTeam}
-                homeGoals={prediction?.homeGoals || ""}
-                awayGoals={prediction?.awayGoals || ""}
+                key={prediction.fixtureId}
+                fixtureId={prediction.fixtureId}
+                kickoff={formatFixtureKickoffTime(prediction.kickoff)}
+                homeTeam={prediction.homeTeam}
+                awayTeam={prediction.awayTeam}
+                homeGoals={prediction?.predictedHomeGoals || ""}
+                awayGoals={prediction?.predictedAwayGoals || ""}
                 updateGoals={updateGoals}
                 chip={chip}
-                locked={!isAlwaysEditable && isPastDeadline(fixture.kickoff)}
+                locked={!isAlwaysEditable && isPastDeadline(prediction.kickoff)}
               />
             );
           })}
         </Table>
-        {isAlwaysEditable || !isGameweekComplete(fixtures) ? (
-          <SaveButton
-            colour={colours.blackblue500}
-            backgroundColour={colours.blue100}
-            hoverColour={colours.blue200}
-          >
-            Save
-          </SaveButton>
+        {isAlwaysEditable || !isGameweekComplete(predictions) ? (
+          <ButtonContainer>
+            <Button
+              type="submit"
+              colour={colours.blackblue500}
+              backgroundColour={colours.blue100}
+              hoverColour={colours.blue200}
+            >
+              Save
+            </Button>
+          </ButtonContainer>
         ) : (
           // TODO: Show the user what they actually scored
           <p>
@@ -93,14 +77,14 @@ const FixtureTable = ({
         )}
       </form>
     </Container>
-  ) : null;
+  );
 };
 
 const Container = styled.div`
   margin: 0 8px;
 `;
 
-const SaveButton = styled(Button)`
+const ButtonContainer = styled.div`
   margin-top: 16px;
 `;
 

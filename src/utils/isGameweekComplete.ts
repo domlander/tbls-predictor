@@ -1,6 +1,6 @@
-import { Fixture } from "@prisma/client";
+import { FixtureWithPrediction } from "@/types";
 
-export function isGameweekComplete(fixtures: Fixture[]) {
+export function isGameweekComplete(fixtures: FixtureWithPrediction[]) {
   return (
     fixtures.every((fixture) => fixture.homeGoals !== null) &&
     fixtures.every((fixture) => fixture.awayGoals !== null)
