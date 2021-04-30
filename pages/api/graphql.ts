@@ -1,5 +1,5 @@
 import { ApolloServer } from "apollo-server-micro";
-import { schema } from "../../apollo/schema";
+import { schema } from "apollo/schema";
 
 const apolloServer = new ApolloServer({ schema });
 
@@ -10,4 +10,6 @@ export const config = {
   },
 };
 
-export default apolloServer.createHandler({ path: "/api/graphql" });
+export default apolloServer.createHandler({
+  path: `${process.env.SITE}${process.env.GRAPHQL_API}`,
+});

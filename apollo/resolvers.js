@@ -1,13 +1,29 @@
 import prisma from "prisma/client";
 
-const myResolvers = {
+const resolvers = {
   Query: {
-    userById: (root, { id }, ctx) =>
-      prisma.user.findUnique({
-        where: {
-          id,
+    userById: async (root, { id }, ctx) => {
+      const user = await prisma.user.findUnique({ where: { id } });
+      return user;
+    },
+
+    userByEmail: async (root, { email }, ctx) => {
+      const user = await prisma.user.findUnique({ where: { email } });
+      return user;
+    },
+
+    userLeagues: async (root, { email }, ctx) => {
+      const user = await prisma.user.findUnique({
+        include: {
+          leagues: true,
         },
-      }),
+        where: {
+          email,
+        },
+      });
+
+      return user.leagues;
+    },
   },
   Mutation: {
     createLeague: (
@@ -30,25 +46,6 @@ const myResolvers = {
           },
         },
       }),
-  },
-};
-
-const products = [
-  {
-    id: 1,
-    name: "Cookie",
-    price: 300,
-  },
-  {
-    id: 2,
-    name: "Brownie",
-    price: 350,
-  },
-];
-
-const resolvers = {
-  Query: {
-    products: (_parent, _args, _context, _info) => products,
   },
 };
 

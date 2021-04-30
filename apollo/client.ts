@@ -6,12 +6,12 @@ let apolloClient;
 function createIsomorphLink() {
   if (typeof window === "undefined") {
     const { SchemaLink } = require("@apollo/client/link/schema");
-    const { schema } = require("../apollo/schema");
+    const { schema } = require("apollo/schema");
     return new SchemaLink({ schema });
   }
   const { HttpLink } = require("@apollo/client/link/http");
   return new HttpLink({
-    uri: "/api/graphql",
+    uri: `${process.env.SITE}${process.env.GRAPHQL_API}`,
     credentials: "same-origin",
   });
 }

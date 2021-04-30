@@ -1,8 +1,10 @@
 import { gql } from "@apollo/client";
 
-const myTypeDefs = gql`
+const typeDefs = gql`
   type Query {
-    userById(id: Int): User
+    userById(id: Int!): User
+    userByEmail(email: String!): User
+    userLeagues(email: String!): [League!]
   }
 
   type Mutation {
@@ -85,18 +87,6 @@ const myTypeDefs = gql`
     open
     started
     completed
-  }
-`;
-
-const typeDefs = gql`
-  type Product {
-    id: Int
-    name: String
-    price: Int
-  }
-
-  type Query {
-    products: [Product]
   }
 `;
 

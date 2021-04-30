@@ -12,14 +12,14 @@ interface Props {
 const LeaguesContainer = ({ leagues }: Props) => (
   <>
     <Heading level="h1">Leagues</Heading>
-    {leagues?.length ? ( // TODO: Should we redirect the user to /league/join instead?
+    {leagues?.length ? (
       <>
         <div>
-          {leagues.map((league) => (
-            <div key={league.id}>
+          {leagues.map(({ id, name }) => (
+            <div key={id}>
               <LeagueNameContainer>
-                <Link href={`/league/${league.id}`}>
-                  <A>{league.name}</A>
+                <Link href={`/league/${id}`}>
+                  <A>{name}</A>
                 </Link>
               </LeagueNameContainer>
             </div>
@@ -44,6 +44,7 @@ const LeagueNameContainer = styled.div`
 const A = styled.a`
   color: ${colours.blackblue400};
   font-size: 1.4em;
+  cursor: pointer;
 `;
 
 export default LeaguesContainer;
