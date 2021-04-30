@@ -6,7 +6,12 @@ import { AppProps } from "next/dist/next-server/lib/router/router";
 import GlobalStyle from "@/styles/globalStyles";
 import Layout from "@/containers/Layout";
 
+import { ApolloProvider } from "@apollo/client";
+import { useApollo } from "../apollo/client";
+
 export default function App({ Component, pageProps }: AppProps) {
+  const apolloClient = useApollo(pageProps.initialApolloState);
+
   return (
     <Provider
       options={{
@@ -15,10 +20,12 @@ export default function App({ Component, pageProps }: AppProps) {
       }}
       session={pageProps.session}
     >
-      <GlobalStyle />
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
+      <ApolloProvider client={apolloClient}>
+        <GlobalStyle />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ApolloProvider>
     </Provider>
   );
 }

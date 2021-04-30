@@ -1,6 +1,6 @@
 import prisma from "prisma/client";
 
-const resolvers = {
+const myResolvers = {
   Query: {
     userById: (root, { id }, ctx) =>
       prisma.user.findUnique({
@@ -30,6 +30,25 @@ const resolvers = {
           },
         },
       }),
+  },
+};
+
+const products = [
+  {
+    id: 1,
+    name: "Cookie",
+    price: 300,
+  },
+  {
+    id: 2,
+    name: "Brownie",
+    price: 350,
+  },
+];
+
+const resolvers = {
+  Query: {
+    products: (_parent, _args, _context, _info) => products,
   },
 };
 

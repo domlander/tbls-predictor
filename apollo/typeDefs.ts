@@ -1,6 +1,6 @@
-import { gql } from "apollo-server-micro";
+import { gql } from "@apollo/client";
 
-const typeDefs = gql`
+const myTypeDefs = gql`
   type Query {
     userById(id: Int): User
   }
@@ -85,6 +85,18 @@ const typeDefs = gql`
     open
     started
     completed
+  }
+`;
+
+const typeDefs = gql`
+  type Product {
+    id: Int
+    name: String
+    price: Int
+  }
+
+  type Query {
+    products: [Product]
   }
 `;
 
