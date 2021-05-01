@@ -1,36 +1,48 @@
 import React from "react";
 import Link from "next/link";
-import { League } from "@prisma/client";
-import Heading from "@/components/atoms/Heading";
 import styled from "styled-components";
+
+import { League } from "@prisma/client";
+import { useQuery } from "@apollo/client";
+import { GET_USER_LEAGUES } from "pages/leagues";
+import Heading from "@/components/atoms/Heading";
+import Loading from "@/components/atoms/Loading";
 import colours from "@/styles/colours";
 
-interface Props {
-  leagues: Array<League>;
-}
+const LeaguesContainer = () => {
+  const { data, loading, error } = useQuery(GET_USER_LEAGUES, {
+    variables: { email: "domtest722@mailinator.com" },
+    fetchPolicy: "cache-first",
+  });
 
-const LeaguesContainer = ({ leagues }: Props) => (
-  <>
-    <Heading level="h1">Leagues</Heading>
-    {leagues?.length ? (
-      <>
-        <div>
-          {leagues.map(({ id, name }) => (
-            <div key={id}>
-              <LeagueNameContainer>
-                <Link href={`/league/${id}`}>
-                  <A>{name}</A>
-                </Link>
-              </LeagueNameContainer>
-            </div>
-          ))}
-        </div>
-      </>
-    ) : (
-      <p>No Leagues!</p>
-    )}
-  </>
-);
+  if (loading) return <Loading />;
+  if (error) return <div>An error has occurred. Please try again later.</div>;
+
+  const leagues = data?.leagues || [];
+
+  return (
+    <>
+      <Heading level="h1">Leagues</Heading>
+      {leagues?.length ? (
+        <>
+          <div>
+            {leagues.map(({ id, name }: League) => (
+              <div key={id}>
+                <LeagueNameContainer>
+                  <Link href={`/league/${id}`}>
+                    <A>{name}</A>
+                  </Link>
+                </LeagueNameContainer>
+              </div>
+            ))}
+          </div>
+        </>
+      ) : (
+        <p>No Leagues!</p>
+      )}
+    </>
+  );
+};
 
 const LeagueNameContainer = styled.div`
   background-color: ${colours.grey200};

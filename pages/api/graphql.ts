@@ -11,5 +11,5 @@ export const config = {
 };
 
 export default apolloServer.createHandler({
-  path: `${process.env.SITE}${process.env.GRAPHQL_API}`,
+  path: "/api/graphql",
 });

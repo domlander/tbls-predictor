@@ -27,8 +27,8 @@ const SignInPage = () => (
 
 export default SignInPage;
 
-// TODO: We're currently using the Layout with the heading on this page, but we don't want to.
-// We are currently doing it this way, but the heading is loaded in the background.
+// TODO: We are wrapping all pages in _app.tsx with the Layout component, as every component needs the layout
+// except for this page. For now we are covering it up so the user cannot see it.
 // We can't use useSession in _app.js, which is why we're loading the header.
 const Container = styled.div`
   background-color: ${colours.grey500};

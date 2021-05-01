@@ -4,7 +4,7 @@ const typeDefs = gql`
   type Query {
     userById(id: Int!): User
     userByEmail(email: String!): User
-    userLeagues(email: String!): [League!]
+    leagues(email: String!): [League!]
   }
 
   type Mutation {

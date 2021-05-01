@@ -12,7 +12,7 @@ const resolvers = {
       return user;
     },
 
-    userLeagues: async (root, { email }, ctx) => {
+    leagues: async (root, { email }, ctx) => {
       const user = await prisma.user.findUnique({
         include: {
           leagues: true,
@@ -22,7 +22,7 @@ const resolvers = {
         },
       });
 
-      return user.leagues;
+      return user?.leagues || [];
     },
   },
   Mutation: {
