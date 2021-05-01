@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { League } from "@prisma/client";
 import { useQuery } from "@apollo/client";
-import { GET_USER_LEAGUES } from "pages/leagues";
+import { GET_USER_LEAGUES } from "apollo/queries";
 import Heading from "@/components/atoms/Heading";
 import Loading from "@/components/atoms/Loading";
 import colours from "@/styles/colours";

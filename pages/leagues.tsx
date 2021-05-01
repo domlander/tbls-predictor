@@ -1,20 +1,10 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
-import { gql } from "@apollo/client";
 
 // import { initializeApollo } from "apollo/client";
 import Leagues from "src/containers/Leagues";
 import redirectInternal from "../utils/redirects";
-
-export const GET_USER_LEAGUES = gql`
-  query leagues($email: String!) {
-    leagues(email: $email) {
-      id
-      name
-    }
-  }
-`;
 
 const LeaguesPage = () => <Leagues />;
 

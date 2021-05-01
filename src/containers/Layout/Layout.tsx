@@ -27,7 +27,7 @@ const Layout = ({ children }: Props) => {
       </MainContent>
       <SidebarContainer isSidebarOpen={isSidebarOpen}>
         <Sidebar
-          username="DomTest"
+          username={session?.user.name || ""}
           handleClick={() => setIsSidebarOpen((isOpen) => !isOpen)}
         />
       </SidebarContainer>
@@ -48,7 +48,7 @@ const MainContent = styled.div`
   opacity: ${({ isSidebarOpen }) => (isSidebarOpen ? "25%" : "100%")};
 `;
 
-const SidebarContainer = styled.div`
+const SidebarContainer = styled.div<{ isSidebarOpen: boolean }>`
   grid-area: stack;
   visibility: ${({ isSidebarOpen }) => (isSidebarOpen ? "visible" : "hidden")};
   /* transform: translateY(-110vw);

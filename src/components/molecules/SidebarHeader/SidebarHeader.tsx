@@ -12,8 +12,10 @@ export interface Props {
 const SidebarHeader = ({ username, handleClick }: Props) => (
   <Container>
     <User>
-      <UserIcon initial={username[0]} />
-      <Username>{username}</Username>
+      <UserIcon initial="D" />
+      <Username>
+        {username.length > 16 ? `${username.substring(0, 14)}...` : username}
+      </Username>
     </User>
     <Icon
       onClick={handleClick}
@@ -43,7 +45,7 @@ const User = styled.div`
 const Username = styled.p`
   margin-left: 16px;
   color: ${colours.grey200};
-  font-size: 1.8em;
+  font-size: 1.4em; // TODO: use font with consistent letter box-sizing, so we know how many letters to allow
   font-weight: 400;
 `;
 
