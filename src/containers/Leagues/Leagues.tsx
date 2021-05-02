@@ -8,11 +8,14 @@ import { GET_USER_LEAGUES } from "apollo/queries";
 import Heading from "@/components/atoms/Heading";
 import Loading from "@/components/atoms/Loading";
 import colours from "@/styles/colours";
+import { useSession } from "next-auth/client";
 
 const LeaguesContainer = () => {
+  const [session] = useSession();
+  if (!session?.user.email) return null;
+
   const { data, loading, error } = useQuery(GET_USER_LEAGUES, {
-    variables: { email: "domtest722@mailinator.com" },
-    fetchPolicy: "cache-first",
+    variables: { email: session.user.email },
   });
 
   if (loading) return <Loading />;
