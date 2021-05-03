@@ -13,3 +13,12 @@ export const REQUEST_TO_JOIN_LEAGUE = gql`
     }
   }
 `;
+
+export const CREATE_LEAGUE = gql`
+  mutation CreateLeague($input: CreateLeagueInput!) {
+    createLeague(input: $input) {
+      id
+      name
+    }
+  }
+`;

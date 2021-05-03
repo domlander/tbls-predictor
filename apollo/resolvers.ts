@@ -31,27 +31,48 @@ const resolvers = {
     },
   },
   Mutation: {
-    // createLeague: async (
-    //   root,
-    //   { league: { name, administratorId, gameweekStart, gameweekEnd, userId } },
-    //   ctx
-    // ) => {
-    //   await prisma.league.create({
-    //     data: {
-    //       name,
-    //       status: "open",
-    //       administratorId,
-    //       season: "2020/2021",
-    //       gameweekStart,
-    //       gameweekEnd: gameweekEnd > 38 ? 38 : gameweekEnd,
-    //       users: {
-    //         connect: {
-    //           id: userId,
-    //         },
-    //       },
-    //     },
-    //   });
-    // },
+    createLeague: async (
+      root,
+      { input: { userId, name, gameweekStart, gameweekEnd } },
+      ctx
+    ) => {
+      // TODO: Should not be able to start in a past gameweek
+      if (gameweekStart < 1 || gameweekStart > 38)
+        throw new UserInputError("Gameweek start week is not valid", {
+          argumentName: "gameweekStart",
+        });
+
+      if (gameweekEnd < 1)
+        throw new UserInputError("Gameweek end week is not valid", {
+          argumentName: "gameweekEnd",
+        });
+
+      if (gameweekStart > gameweekEnd)
+        throw new UserInputError(
+          "The final gameweek must be the same or after the first."
+        );
+
+      const league = await prisma.league.create({
+        data: {
+          name,
+          status: "open",
+          administratorId: userId,
+          season: "2020/2021",
+          gameweekStart,
+          gameweekEnd: Math.min(gameweekEnd, 38),
+          users: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+      });
+
+      return {
+        id: league.id,
+        name: league.name,
+      };
+    },
     requestToJoinLeague: async (root, { leagueId, userId }, ctx) => {
       if (leagueId < 1)
         throw new UserInputError("League ID not valid", {

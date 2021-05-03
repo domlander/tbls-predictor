@@ -8,16 +8,15 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    createLeague(league: CreateLeagueInput!): League
+    createLeague(input: CreateLeagueInput!): League
     requestToJoinLeague(userId: Int!, leagueId: Int!): Applicant
   }
 
   input CreateLeagueInput {
+    userId: Int!
     name: String!
-    administratorId: Int!
     gameweekStart: Int!
     gameweekEnd: Int!
-    userId: Int!
   }
 
   input UserInput {

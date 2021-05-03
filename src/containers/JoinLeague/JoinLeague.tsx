@@ -58,7 +58,7 @@ const JoinLeague = () => {
             disabled={loading}
             colour={colours.blackblue500}
             backgroundColour={colours.blue100}
-            hoverColour={colours.blue200}
+            hoverColour={colours.cyan500}
           >
             {loading ? "Loading..." : "Join"}
           </Button>

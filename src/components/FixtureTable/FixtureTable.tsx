@@ -62,7 +62,7 @@ const FixtureTable = ({
               type="submit"
               colour={colours.blackblue500}
               backgroundColour={colours.blue100}
-              hoverColour={colours.blue200}
+              hoverColour={colours.cyan500}
             >
               Save
             </Button>

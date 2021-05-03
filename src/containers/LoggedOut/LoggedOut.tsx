@@ -13,7 +13,7 @@ const LoggedOut = () => (
       type="button"
       colour={colours.blackblue400}
       backgroundColour={colours.grey200}
-      hoverColour={colours.grey300}
+      hoverColour={colours.grey400}
     >
       Sign in
     </SignInButton>

@@ -51,7 +51,7 @@ const ButtonStyles = styled.button<StyleProps>`
   :focus,
   :hover {
     outline: none;
-    border: 0.05em solid ${({ hoverColour }) => hoverColour};
+    border: 0.1em solid ${({ hoverColour }) => hoverColour};
   }
   :active {
     height: 1.7em;

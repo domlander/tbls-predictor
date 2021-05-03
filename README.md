@@ -1,15 +1,16 @@
 # TBLS Predictor League
 
-Predict scores for the footy to inflate your ego by beating your mates in a completely new way.
+Predict footy scores to beat your mates and inflate your ego in a completely new way.
 
 ## What's the URL?
 
-This project is WIP and is not ready for general use yet.
+This project is WIP and is not ready for general use yet. Soon! I promise :eyes:
 
 ## Tech Stack
 
 - [Next.js](https://nextjs.org/)
 - [NextAuth.js](https://github.com/nextauthjs/next-auth)
+- [Apollo](https://www.apollographql.com/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [Prisma 2](https://www.prisma.io/)
 - [Styled components](https://styled-components.com/)

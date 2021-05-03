@@ -1,7 +1,8 @@
-import colours from "@/styles/colours";
 import React from "react";
-import styled from "styled-components";
 import { signOut } from "next-auth/client";
+import styled from "styled-components";
+
+import colours from "../../../styles/colours";
 import SidebarHeader from "../SidebarHeader";
 import SidebarMenuItem from "../SidebarMenuItem";
 
