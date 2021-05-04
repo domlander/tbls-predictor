@@ -8,9 +8,10 @@ const typeDefs = gql`
   }
 
   type Mutation {
+    updateUsername(userId: Int!, username: String!): String
+    updatePredictions(input: [UpdatePredictionsInput!]!): Boolean
     createLeague(input: CreateLeagueInput!): League
     requestToJoinLeague(userId: Int!, leagueId: Int!): Applicant
-    updateUsername(userId: Int!, username: String!): String
     processJoinLeagueRequest(
       userId: Int!
       leagueId: Int!
@@ -24,6 +25,14 @@ const typeDefs = gql`
     name: String!
     gameweekStart: Int!
     gameweekEnd: Int!
+  }
+
+  input UpdatePredictionsInput {
+    userId: Int!
+    fixtureId: Int!
+    homeGoals: Int
+    awayGoals: Int
+    big_boy_bonus: Boolean
   }
 
   input UserInput {

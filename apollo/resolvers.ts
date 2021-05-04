@@ -50,6 +50,36 @@ const resolvers = {
 
       return user.username;
     },
+    updatePredictions: async (root, { input: predictions }, ctx) => {
+      const predictionsUpsert = predictions.map(
+        ({ userId, fixtureId, homeGoals, awayGoals, big_boy_bonus }) => {
+          const data = {
+            userId,
+            fixtureId,
+            homeGoals,
+            awayGoals,
+            big_boy_bonus,
+          };
+
+          // TODO: We can't trust the client. We need to run a find on the fixture table to get the bonafide kick off time.
+          // We need to get all the fixures by the id's in the predictions object. Consider the n+1 problem when doing this
+          // if (isPastDeadline(prediction.kickoff)) return;
+
+          // eslint-disable-next-line consistent-return
+          return prisma.prediction.upsert({
+            where: {
+              fixtureId_userId: { fixtureId, userId },
+            },
+            create: data,
+            update: data,
+          });
+        }
+      );
+
+      Promise.all(predictionsUpsert);
+
+      return true;
+    },
     createLeague: async (
       root,
       { input: { userId, name, gameweekStart, gameweekEnd } },

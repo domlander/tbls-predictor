@@ -1,10 +1,12 @@
 import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
+import { useSession } from "next-auth/client";
 
 import FixtureTable from "@/components/FixtureTable";
-import { FixtureWithPrediction } from "@/types";
-import { Prediction } from "@prisma/client";
+import { FixtureWithPrediction, UpdatePredictionsInputType } from "@/types";
 import WeekNavigator from "@/components/molecules/WeekNavigator";
+import { UPDATE_PREDICTIONS } from "apollo/mutations";
+import { useMutation } from "@apollo/client";
 
 interface Props {
   gameweek: number;
@@ -19,6 +21,8 @@ const PredictionsContainer = ({
   lastGameweek,
   fixtures,
 }: Props) => {
+  const [session] = useSession();
+  const [processRequest] = useMutation(UPDATE_PREDICTIONS);
   const [predictions, setPredictions] = useState(fixtures);
   const thisWeeksPredictions = predictions.filter(
     (prediction) => prediction.gameweek === gameweek
@@ -27,22 +31,17 @@ const PredictionsContainer = ({
   const handleSubmitPredictions = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const updatedPredictions: Partial<Prediction>[] = predictions
+    const updatedPredictions: UpdatePredictionsInputType[] = predictions
       .filter((p) => p.gameweek === gameweek)
       .map((prediction) => ({
+        userId: session?.user.id as number,
         fixtureId: prediction.fixtureId,
         homeGoals: parseInt(prediction.predictedHomeGoals || "") ?? null,
         awayGoals: parseInt(prediction.predictedAwayGoals || "") ?? null,
+        big_boy_bonus: false,
       }));
 
-    fetch("/api/upsertPredictions", {
-      method: "post",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ updatedPredictions }),
-    });
+    processRequest({ variables: { input: updatedPredictions } });
   };
 
   const updateGoals = (
