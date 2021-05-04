@@ -38,3 +38,9 @@ export const CREATE_LEAGUE = gql`
     }
   }
 `;
+
+export const UPDATE_USERNAME = gql`
+  mutation UpdateUsername($userId: Int!, $username: String!) {
+    updateUsername(userId: $userId, username: $username)
+  }
+`;

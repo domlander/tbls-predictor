@@ -29,6 +29,27 @@ const resolvers = {
     },
   },
   Mutation: {
+    updateUsername: async (root, { userId, username }, ctx) => {
+      // TODO: Should not be able to start in a past gameweek
+      if (username.length < 3 || username.length > 20)
+        throw new UserInputError(
+          "Select a username between 3 and 20 characters",
+          {
+            argumentName: "username",
+          }
+        );
+
+      const user = await prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          username,
+        },
+      });
+
+      return user.username;
+    },
     createLeague: async (
       root,
       { input: { userId, name, gameweekStart, gameweekEnd } },
