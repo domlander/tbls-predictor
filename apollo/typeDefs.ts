@@ -10,6 +10,12 @@ const typeDefs = gql`
   type Mutation {
     createLeague(input: CreateLeagueInput!): League
     requestToJoinLeague(userId: Int!, leagueId: Int!): Applicant
+    processJoinLeagueRequest(
+      userId: Int!
+      leagueId: Int!
+      applicantId: Int!
+      isAccepted: Boolean!
+    ): Boolean!
   }
 
   input CreateLeagueInput {

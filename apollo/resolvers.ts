@@ -11,12 +11,10 @@ const resolvers = {
       const user = await prisma.user.findUnique({ where: { id } });
       return user;
     },
-
     userByEmail: async (root, { email }, ctx) => {
       const user = await prisma.user.findUnique({ where: { email } });
       return user;
     },
-
     leagues: async (root, { email }, ctx) => {
       const user = await prisma.user.findUnique({
         include: {
@@ -72,6 +70,78 @@ const resolvers = {
         id: league.id,
         name: league.name,
       };
+    },
+    processJoinLeagueRequest: async (
+      root,
+      { userId, leagueId, applicantId, isAccepted },
+      ctx
+    ) => {
+      const league = await prisma.league.findUnique({
+        where: {
+          id: leagueId,
+        },
+        include: {
+          users: true,
+          applicants: true,
+        },
+      });
+
+      if (!league)
+        throw new ApolloError("Cannot process request. Try again later.");
+
+      if (userId !== league?.administratorId)
+        throw new ApolloError(
+          "Cannot process request. Current user is not an administrator of this league."
+        );
+
+      if (
+        !league.applicants.some(
+          (applicant) =>
+            applicant.userId === applicantId && applicant.status === "applied"
+        )
+      ) {
+        throw new ApolloError(
+          "Cannot process request. Trying to accept a user in to the league that is not an applicant."
+        );
+      }
+
+      if (isAccepted) {
+        // Add user to the league and update their application status
+        await prisma.league.update({
+          where: {
+            id: leagueId,
+          },
+          data: {
+            users: {
+              connect: {
+                id: applicantId,
+              },
+            },
+            applicants: {
+              update: {
+                where: {
+                  userId_leagueId: { userId: applicantId, leagueId },
+                },
+                data: {
+                  status: "accepted",
+                },
+              },
+            },
+          },
+        });
+      } else {
+        // Reject league join application
+        await prisma.applicant.update({
+          where: {
+            userId_leagueId: { userId: applicantId, leagueId },
+          },
+          data: {
+            status: "rejected",
+          },
+        });
+      }
+
+      return true;
     },
     requestToJoinLeague: async (root, { leagueId, userId }, ctx) => {
       if (leagueId < 1)
