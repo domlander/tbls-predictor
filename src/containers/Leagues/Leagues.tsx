@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 import { League } from "@prisma/client";
 import { useQuery } from "@apollo/client";
-import { GET_USER_LEAGUES } from "apollo/queries";
+import { USER_LEAGUES } from "apollo/queries";
 import Heading from "@/components/atoms/Heading";
 import Loading from "@/components/atoms/Loading";
 import colours from "@/styles/colours";
@@ -14,14 +14,14 @@ const LeaguesContainer = () => {
   const [session] = useSession();
   if (!session?.user.email) return null;
 
-  const { data, loading, error } = useQuery(GET_USER_LEAGUES, {
+  const { data, loading, error } = useQuery(USER_LEAGUES, {
     variables: { email: session.user.email },
   });
 
   if (loading) return <Loading />;
   if (error) return <div>An error has occurred. Please try again later.</div>;
 
-  const leagues = data?.leagues || [];
+  const leagues = data?.userLeagues || [];
 
   return (
     <>

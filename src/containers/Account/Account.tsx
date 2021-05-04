@@ -1,24 +1,31 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { useSession } from "next-auth/client";
 import styled from "styled-components";
+import { useMutation, useQuery } from "@apollo/client";
 
+import { USER } from "apollo/queries";
 import { UPDATE_USERNAME } from "apollo/mutations";
-import { useMutation } from "@apollo/client";
-import Button from "@/components/atoms/Button";
-import FormInput from "@/components/atoms/FormInput";
 import Heading from "@/components/atoms/Heading";
-import colours from "@/styles/colours";
+import Loading from "@/components/atoms/Loading";
+import ChangeUsernameForm from "@/components/ChangeUsernameForm";
 
-interface Props {
-  username: string;
-}
-
-const AccountContainer = ({ username }: Props) => {
+const AccountContainer = () => {
   const [session] = useSession();
-  const [currentUsername, setCurrentUsername] = useState(username);
-  const [formUsername, setFormUsername] = useState(username);
+  if (!session?.user.id) return null;
+
+  const { data: userData, loading, error } = useQuery(USER, {
+    variables: { id: session.user.id },
+  });
+
+  const [currentUsername, setCurrentUsername] = useState();
+  const [formUsername, setFormUsername] = useState("");
   const [userFeedback, setUserFeedback] = useState("");
   const [processRequest] = useMutation(UPDATE_USERNAME);
+
+  useEffect(() => {
+    setCurrentUsername(userData?.user.username || "");
+    setFormUsername(userData?.user.username || "");
+  }, [userData]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -36,35 +43,19 @@ const AccountContainer = ({ username }: Props) => {
       });
   };
 
+  if (loading) return <Loading />;
+  if (error) return <div>An error has occurred. Please try again later.</div>;
+
   return (
     <Container>
       <Heading level="h1">Account</Heading>
-      <form onSubmit={handleSubmit}>
-        <h2>Change username</h2>
-        <Label>
-          <LabelText>Username:</LabelText>
-          <FormInput
-            type="text"
-            value={formUsername}
-            onChange={(e) => setFormUsername(e.target.value)}
-            maxLength={20}
-            width="12em" // TODO: Should be variable width. Standardise this
-            height="2.4em"
-          />
-        </Label>
-        <ButtonContainer>
-          <Button
-            type="submit"
-            disabled={currentUsername === formUsername}
-            colour={colours.blackblue500}
-            backgroundColour={colours.blue100}
-            hoverColour={colours.cyan500}
-          >
-            Change
-          </Button>
-        </ButtonContainer>
-        {userFeedback && <Feedback>{userFeedback}</Feedback>}
-      </form>
+      <ChangeUsernameForm
+        username={formUsername}
+        setUsername={setFormUsername}
+        isFormDisabled={currentUsername === formUsername}
+        userFeedback={userFeedback}
+        handleSubmit={handleSubmit}
+      />
     </Container>
   );
 };
@@ -72,25 +63,6 @@ const AccountContainer = ({ username }: Props) => {
 const Container = styled.div`
   margin: auto 16px;
   max-width: 400px;
-`;
-
-const Label = styled.label`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const LabelText = styled.p`
-  font-size: 16px;
-`;
-
-const ButtonContainer = styled.div`
-  margin: 32px 0;
-`;
-
-const Feedback = styled.p`
-  font-size: 1.6em;
-  font-style: italic;
 `;
 
 export default AccountContainer;

@@ -24,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   // const apolloClient = initializeApollo();
   // await apolloClient.query({
-  //   query: GET_USER_LEAGUES,
+  //   query: USER_LEAGUES,
   //   variables: { email: session.user.email },
   // });
 

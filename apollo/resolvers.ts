@@ -7,15 +7,11 @@ import {
 
 const resolvers = {
   Query: {
-    userById: async (root, { id }, ctx) => {
+    user: async (root, { id }, ctx) => {
       const user = await prisma.user.findUnique({ where: { id } });
       return user;
     },
-    userByEmail: async (root, { email }, ctx) => {
-      const user = await prisma.user.findUnique({ where: { email } });
-      return user;
-    },
-    leagues: async (root, { email }, ctx) => {
+    userLeagues: async (root, { email }, ctx) => {
       const user = await prisma.user.findUnique({
         include: {
           leagues: true,

@@ -1,8 +1,17 @@
 import { gql } from "@apollo/client";
 
-export const GET_USER_LEAGUES = gql`
-  query leagues($email: String!) {
-    leagues(email: $email) {
+export const USER = gql`
+  query User($id: Int!) {
+    user(id: $id) {
+      id
+      username
+    }
+  }
+`;
+
+export const USER_LEAGUES = gql`
+  query UserLeagues($email: String!) {
+    userLeagues(email: $email) {
       id
       name
     }

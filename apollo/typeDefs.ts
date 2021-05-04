@@ -2,9 +2,8 @@ import { gql } from "@apollo/client";
 
 const typeDefs = gql`
   type Query {
-    userById(id: Int!): User
-    userByEmail(email: String!): User
-    leagues(email: String!): [League!]
+    user(id: Int!): User
+    userLeagues(email: String!): [League!]
   }
 
   type Mutation {
