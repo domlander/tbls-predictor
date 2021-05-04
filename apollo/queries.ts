@@ -10,6 +10,15 @@ export const USER = gql`
 `;
 
 export const USER_LEAGUES = gql`
+  query UserLeagues($id: Int!) {
+    userLeagues(id: $id) {
+      id
+      name
+    }
+  }
+`;
+
+export const LEAGUE = gql`
   query UserLeagues($email: String!) {
     userLeagues(email: $email) {
       id

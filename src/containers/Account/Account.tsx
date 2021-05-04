@@ -1,5 +1,4 @@
-import React, { FormEvent, useEffect, useState } from "react";
-import { useSession } from "next-auth/client";
+import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
 import { useMutation, useQuery } from "@apollo/client";
 
@@ -9,23 +8,23 @@ import Heading from "@/components/atoms/Heading";
 import Loading from "@/components/atoms/Loading";
 import ChangeUsernameForm from "@/components/ChangeUsernameForm";
 
-const AccountContainer = () => {
-  const [session] = useSession();
-  if (!session?.user.id) return null;
+interface Props {
+  userId: number;
+}
 
-  const { data: userData, loading, error } = useQuery(USER, {
-    variables: { id: session.user.id },
-  });
-
+const AccountContainer = ({ userId }: Props) => {
   const [currentUsername, setCurrentUsername] = useState();
   const [formUsername, setFormUsername] = useState("");
   const [userFeedback, setUserFeedback] = useState("");
   const [processRequest] = useMutation(UPDATE_USERNAME);
 
-  useEffect(() => {
-    setCurrentUsername(userData?.user.username || "");
-    setFormUsername(userData?.user.username || "");
-  }, [userData]);
+  const { loading, error } = useQuery(USER, {
+    variables: { id: userId },
+    onCompleted: (data) => {
+      setCurrentUsername(data.user.username);
+      setFormUsername(data.user.username);
+    },
+  });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,7 +33,7 @@ const AccountContainer = () => {
     else
       processRequest({
         variables: {
-          userId: session?.user.id,
+          userId,
           username: formUsername,
         },
       }).then(({ data }) => {

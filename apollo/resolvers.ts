@@ -11,13 +11,13 @@ const resolvers = {
       const user = await prisma.user.findUnique({ where: { id } });
       return user;
     },
-    userLeagues: async (root, { email }, ctx) => {
+    userLeagues: async (root, { id }, ctx) => {
       const user = await prisma.user.findUnique({
         include: {
           leagues: true,
         },
         where: {
-          email,
+          id,
         },
       });
 

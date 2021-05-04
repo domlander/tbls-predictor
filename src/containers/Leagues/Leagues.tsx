@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import styled from "styled-components";
 
@@ -8,20 +8,21 @@ import { USER_LEAGUES } from "apollo/queries";
 import Heading from "@/components/atoms/Heading";
 import Loading from "@/components/atoms/Loading";
 import colours from "@/styles/colours";
-import { useSession } from "next-auth/client";
 
-const LeaguesContainer = () => {
-  const [session] = useSession();
-  if (!session?.user.email) return null;
+interface Props {
+  userId: number;
+}
 
-  const { data, loading, error } = useQuery(USER_LEAGUES, {
-    variables: { email: session.user.email },
+const LeaguesContainer = ({ userId }: Props) => {
+  const [leagues, setLeagues] = useState([]);
+
+  const { loading, error } = useQuery(USER_LEAGUES, {
+    variables: { id: userId },
+    onCompleted: (data) => setLeagues(data?.userLeagues || []),
   });
 
   if (loading) return <Loading />;
   if (error) return <div>An error has occurred. Please try again later.</div>;
-
-  const leagues = data?.userLeagues || [];
 
   return (
     <>
@@ -31,11 +32,11 @@ const LeaguesContainer = () => {
           <div>
             {leagues.map(({ id, name }: League) => (
               <div key={id}>
-                <LeagueNameContainer>
+                <LeagueContainer>
                   <Link href={`/league/${id}`}>
                     <A>{name}</A>
                   </Link>
-                </LeagueNameContainer>
+                </LeagueContainer>
               </div>
             ))}
           </div>
@@ -47,7 +48,7 @@ const LeaguesContainer = () => {
   );
 };
 
-const LeagueNameContainer = styled.div`
+const LeagueContainer = styled.div`
   background-color: ${colours.grey200};
   width: fit-content;
   font-size: 1.4em;

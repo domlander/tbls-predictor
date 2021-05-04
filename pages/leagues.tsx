@@ -6,7 +6,10 @@ import { getSession } from "next-auth/client";
 import Leagues from "src/containers/Leagues";
 import redirectInternal from "../utils/redirects";
 
-const LeaguesPage = () => <Leagues />;
+interface Props {
+  userId: number;
+}
+const LeaguesPage = ({ userId }: Props) => <Leagues userId={userId} />;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
@@ -19,8 +22,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-
-  if (!session?.user.email) return redirectInternal("/");
+  if (!session?.user.id) return redirectInternal("/");
 
   // const apolloClient = initializeApollo();
   // await apolloClient.query({
@@ -30,6 +32,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
+      userId: session?.user.id,
       // initialApolloState: apolloClient.cache.extract(),
     },
   };
