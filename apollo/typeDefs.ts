@@ -1,10 +1,13 @@
 import { gql } from "@apollo/client";
 
 const typeDefs = gql`
+  scalar DateTime
+
   type Query {
     user(id: Int!): User
     userLeagues(id: Int!): [League!]
     leagueAdmin(input: LeagueAdminInput): LeagueAdminPayload
+    predictions(input: PredictionsInput): PredictionsPayload
   }
 
   type Mutation {
@@ -18,6 +21,18 @@ const typeDefs = gql`
       applicantId: Int!
       isAccepted: Boolean!
     ): Boolean!
+  }
+
+  input PredictionsInput {
+    userId: Int!
+    weekId: Int!
+  }
+
+  type PredictionsPayload {
+    fixturesWithPredictions: [FixtureWithPrediction]
+    thisGameweek: Int!
+    firstGameweek: Int!
+    lastGameweek: Int!
   }
 
   input LeagueAdminInput {
@@ -58,8 +73,8 @@ const typeDefs = gql`
     email: String
     emailVerified: String
     image: String
-    createdAt: String
-    updatedAt: String
+    createdAt: DateTime
+    updatedAt: DateTime
     predictions: [Prediction!]
     leagues: [League!]
     leagueApplications: [Applicant!]
@@ -73,7 +88,7 @@ const typeDefs = gql`
     season: String!
     gameweekStart: Int!
     gameweekEnd: Int!
-    createdAt: String!
+    createdAt: DateTime!
     users: [User!]!
     applicants: [Applicant!]
   }
@@ -82,13 +97,13 @@ const typeDefs = gql`
     user: User!
     league: League
     status: LeagueApplicantStatus
-    createdAt: String
+    createdAt: DateTime
   }
 
   type Fixture {
     id: Int!
     gameweek: Int!
-    kickoff: String!
+    kickoff: DateTime!
     homeTeam: String!
     awayTeam: String!
     homeGoals: Int
@@ -100,9 +115,9 @@ const typeDefs = gql`
     homeGoals: Int
     awayGoals: Int
     score: Int
-    big_boy_bonus: Boolean!
-    fixture: Fixture!
-    user: User!
+    big_boy_bonus: Boolean
+    fixture: Fixture
+    user: User
   }
 
   enum LeagueApplicantStatus {
@@ -115,6 +130,19 @@ const typeDefs = gql`
     open
     started
     completed
+  }
+
+  type FixtureWithPrediction {
+    fixtureId: Int!
+    gameweek: Int!
+    kickoff: DateTime!
+    homeTeam: String!
+    awayTeam: String!
+    homeGoals: Int
+    awayGoals: Int
+    predictedHomeGoals: Int
+    predictedAwayGoals: Int
+    predictedScore: Int
   }
 `;
 

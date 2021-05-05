@@ -37,6 +37,27 @@ export const LEAGUE_ADMIN = gql`
     }
   }
 `;
+export const PREDICTIONS = gql`
+  query Predictions($input: PredictionsInput!) {
+    predictions(input: $input) {
+      thisGameweek
+      firstGameweek
+      lastGameweek
+      fixturesWithPredictions {
+        fixtureId
+        gameweek
+        kickoff
+        homeTeam
+        awayTeam
+        homeGoals
+        awayGoals
+        predictedHomeGoals
+        predictedAwayGoals
+        predictedScore
+      }
+    }
+  }
+`;
 
 export const LEAGUE = gql`
   query UserLeagues($email: String!) {

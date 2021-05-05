@@ -6,24 +6,35 @@ import FixtureTable from "@/components/FixtureTable";
 import { FixtureWithPrediction, UpdatePredictionsInputType } from "@/types";
 import WeekNavigator from "@/components/molecules/WeekNavigator";
 import { UPDATE_PREDICTIONS } from "apollo/mutations";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
+import { PREDICTIONS } from "apollo/queries";
+import Loading from "@/components/atoms/Loading";
 
 interface Props {
-  gameweek: number;
-  fixtures: FixtureWithPrediction[];
-  firstGameweek: number;
-  lastGameweek: number;
+  userId: number;
+  weekId: number;
 }
 
-const PredictionsContainer = ({
-  gameweek,
-  firstGameweek,
-  lastGameweek,
-  fixtures,
-}: Props) => {
+const PredictionsContainer = ({ userId, weekId }: Props) => {
   const [session] = useSession();
+
+  const [predictions, setPredictions] = useState<FixtureWithPrediction[]>([]);
+  const [gameweek, setGameweek] = useState<number>();
+  const [firstGameweek, setFirstGameweek] = useState<number>();
+  const [lastGameweek, setLastGameweek] = useState<number>();
+
   const [processRequest] = useMutation(UPDATE_PREDICTIONS);
-  const [predictions, setPredictions] = useState(fixtures);
+
+  const { loading, error } = useQuery(PREDICTIONS, {
+    variables: { input: { userId, weekId } },
+    onCompleted: ({ predictions: predictionsData }) => {
+      setPredictions(predictionsData.fixturesWithPredictions);
+      setGameweek(predictionsData.thisGameweek);
+      setFirstGameweek(predictionsData.firstGameweek);
+      setLastGameweek(predictionsData.lastGameweek);
+    },
+  });
+
   const thisWeeksPredictions = predictions.filter(
     (prediction) => prediction.gameweek === gameweek
   );
@@ -71,21 +82,26 @@ const PredictionsContainer = ({
     setPredictions(updatedPredictions);
   };
 
+  if (loading) return <Loading />;
+  if (error) return <div>An error has occurred. Please try again later.</div>;
+
   return (
     <Container>
-      <WeekNavigator
-        week={gameweek}
-        prevGameweekUrl={
-          gameweek === firstGameweek
-            ? undefined
-            : `/predictions/${gameweek - 1}`
-        }
-        nextGameweekUrl={
-          gameweek < lastGameweek - firstGameweek + 1
-            ? `/predictions/${gameweek + 1}`
-            : undefined
-        }
-      />
+      {gameweek && firstGameweek && lastGameweek && (
+        <WeekNavigator
+          week={gameweek}
+          prevGameweekUrl={
+            gameweek === firstGameweek
+              ? undefined
+              : `/predictions/${gameweek - 1}`
+          }
+          nextGameweekUrl={
+            gameweek < lastGameweek - firstGameweek + 1
+              ? `/predictions/${gameweek + 1}`
+              : undefined
+          }
+        />
+      )}
       <FixtureTable
         predictions={thisWeeksPredictions}
         updateGoals={updateGoals}

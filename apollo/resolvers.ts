@@ -1,9 +1,11 @@
 import { UserInputError, ApolloError } from "apollo-server-micro";
 import prisma from "prisma/client";
+import { FixtureWithPrediction } from "@/types";
 import {
   isUserAlreadyBelongToLeague,
   isUserAppliedToLeague,
 } from "utils/userLeagueApplication";
+import dateScalar from "./scalars";
 
 const resolvers = {
   Query: {
@@ -64,6 +66,55 @@ const resolvers = {
         name: league.name,
         applicants,
         participants,
+      };
+    },
+    predictions: async (root, { input: { userId, weekId } }, ctx) => {
+      const fixtures = await prisma.fixture.findMany();
+      if (!fixtures) throw new ApolloError("Cannot find fixtures.");
+
+      fixtures.sort(
+        (a, b) => new Date(a.kickoff).getTime() - new Date(b.kickoff).getTime()
+      );
+
+      const firstGameweek = fixtures.reduce(
+        (acc, cur) => (cur.gameweek < acc ? cur.gameweek : acc),
+        fixtures[0].gameweek
+      );
+      const lastGameweek = fixtures.reduce(
+        (acc, cur) => (cur.gameweek > acc ? cur.gameweek : acc),
+        fixtures[0].gameweek
+      );
+
+      // Find all my predictions
+      const predictions = await prisma.prediction.findMany({
+        where: {
+          userId,
+        },
+      });
+
+      // Match up fixtures with predictions and merge together
+      const fixturesWithPredictions: FixtureWithPrediction[] = [];
+      fixtures.map((fixture) => {
+        const prediction = predictions.find((p) => p.fixtureId === fixture.id);
+        return fixturesWithPredictions.push({
+          fixtureId: fixture.id,
+          gameweek: fixture.gameweek,
+          kickoff: fixture.kickoff,
+          homeTeam: fixture.homeTeam,
+          awayTeam: fixture.awayTeam,
+          homeGoals: fixture.homeGoals,
+          awayGoals: fixture.awayGoals,
+          predictedHomeGoals: prediction?.homeGoals?.toString() || null,
+          predictedAwayGoals: prediction?.awayGoals?.toString() || null,
+          predictionScore: prediction?.score || null,
+        });
+      });
+
+      return {
+        fixturesWithPredictions,
+        thisGameweek: weekId,
+        firstGameweek,
+        lastGameweek,
       };
     },
   },
@@ -287,6 +338,7 @@ const resolvers = {
       };
     },
   },
+  DateTime: dateScalar,
 };
 
 export default resolvers;
