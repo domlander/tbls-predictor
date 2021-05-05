@@ -23,6 +23,49 @@ const resolvers = {
 
       return user?.leagues || [];
     },
+    leagueAdmin: async (root, { input: { userId, leagueId } }, ctx) => {
+      const league = await prisma.league.findUnique({
+        where: {
+          id: leagueId,
+        },
+        include: {
+          users: true,
+          applicants: {
+            include: {
+              user: true,
+            },
+          },
+        },
+      });
+      if (!league) throw new ApolloError("Cannot find league.");
+
+      if (league.administratorId !== userId)
+        throw new ApolloError(
+          "Cannot process request. User is not an administrator of the league."
+        );
+
+      const applicants = league.applicants
+        .filter((applicant) => applicant.status === "applied")
+        .map((applicant) => ({
+          user: {
+            id: applicant.userId,
+            username: applicant.user.username,
+          },
+          status: applicant.status,
+        }));
+
+      const participants = league.users.map((participant) => ({
+        id: participant.id,
+        username: participant.username || "",
+      }));
+
+      return {
+        id: league.id,
+        name: league.name,
+        applicants,
+        participants,
+      };
+    },
   },
   Mutation: {
     updateUsername: async (root, { userId, username }, ctx) => {

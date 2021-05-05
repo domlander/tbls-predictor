@@ -18,6 +18,26 @@ export const USER_LEAGUES = gql`
   }
 `;
 
+export const LEAGUE_ADMIN = gql`
+  query LeagueAdmin($input: LeagueAdminInput!) {
+    leagueAdmin(input: $input) {
+      id
+      name
+      applicants {
+        user {
+          id
+          username
+        }
+        status
+      }
+      participants {
+        id
+        username
+      }
+    }
+  }
+`;
+
 export const LEAGUE = gql`
   query UserLeagues($email: String!) {
     userLeagues(email: $email) {

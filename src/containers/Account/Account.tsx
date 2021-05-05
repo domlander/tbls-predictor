@@ -20,9 +20,9 @@ const AccountContainer = ({ userId }: Props) => {
 
   const { loading, error } = useQuery(USER, {
     variables: { id: userId },
-    onCompleted: (data) => {
-      setCurrentUsername(data.user.username);
-      setFormUsername(data.user.username);
+    onCompleted: ({ user }) => {
+      setCurrentUsername(user.username);
+      setFormUsername(user.username);
     },
   });
 

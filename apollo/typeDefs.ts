@@ -4,6 +4,7 @@ const typeDefs = gql`
   type Query {
     user(id: Int!): User
     userLeagues(id: Int!): [League!]
+    leagueAdmin(input: LeagueAdminInput): LeagueAdminPayload
   }
 
   type Mutation {
@@ -17,6 +18,18 @@ const typeDefs = gql`
       applicantId: Int!
       isAccepted: Boolean!
     ): Boolean!
+  }
+
+  input LeagueAdminInput {
+    userId: Int!
+    leagueId: Int!
+  }
+
+  type LeagueAdminPayload {
+    id: Int!
+    name: String!
+    applicants: [Applicant!]
+    participants: [User!]!
   }
 
   input CreateLeagueInput {
@@ -45,8 +58,8 @@ const typeDefs = gql`
     email: String
     emailVerified: String
     image: String
-    createdAt: String!
-    updatedAt: String!
+    createdAt: String
+    updatedAt: String
     predictions: [Prediction!]
     leagues: [League!]
     leagueApplications: [Applicant!]
@@ -67,9 +80,9 @@ const typeDefs = gql`
 
   type Applicant {
     user: User!
-    league: League!
-    status: LeagueApplicantStatus!
-    createdAt: String!
+    league: League
+    status: LeagueApplicantStatus
+    createdAt: String
   }
 
   type Fixture {
