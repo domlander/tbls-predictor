@@ -2,7 +2,6 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 
-// import { initializeApollo } from "apollo/client";
 import Leagues from "src/containers/Leagues";
 import redirectInternal from "../utils/redirects";
 
@@ -24,16 +23,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
   if (!session?.user.id) return redirectInternal("/");
 
-  // const apolloClient = initializeApollo();
-  // await apolloClient.query({
-  //   query: USER_LEAGUES,
-  //   variables: { email: session.user.email },
-  // });
-
   return {
     props: {
       userId: session?.user.id,
-      // initialApolloState: apolloClient.cache.extract(),
     },
   };
 };

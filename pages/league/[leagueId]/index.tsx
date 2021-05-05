@@ -29,13 +29,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-
-  if (!session?.user.email) return redirectInternal("/");
+  if (!session?.user.id) return redirectInternal("/");
 
   // Get the logged in user
   const loggedInUser = await prisma.user.findUnique({
     where: {
-      email: session?.user.email,
+      id: session.user.id as number,
     },
     include: {
       leagues: true,

@@ -28,10 +28,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
   if (!session?.user.id) return redirectInternal("/");
 
+  // Get the leagueId from the URL
+  const leagueId = convertUrlParamToNumber(context.params?.leagueId);
+  if (!leagueId || leagueId <= 0) return redirectInternal("/leagues");
+
   return {
     props: {
       userId: session.user.id,
-      leagueId: convertUrlParamToNumber(context.params?.leagueId),
+      leagueId,
     },
   };
 };

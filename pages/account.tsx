@@ -46,6 +46,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const defaultUsername = generateDefaultUsername(user.email);
 
   // Give the user a default username if he doesn't have one
+  // TODO move this out of here to somewhere more general. I'm thinking that after a user
+  // signs in/up, then this code will run. We don't want user to be in a league without a username.
+  // Maybe we run it on the /league/join and /league/create pages?
   if (user && !user.username) {
     await prisma.user.update({
       where: {

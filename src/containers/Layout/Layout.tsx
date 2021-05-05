@@ -16,7 +16,7 @@ const Layout = ({ children }: Props) => {
 
   return (
     <Container>
-      <MainContent>
+      <MainContent isSidebarOpen={isSidebarOpen}>
         {session ? (
           <HeaderBar
             initial="D"
@@ -43,7 +43,7 @@ const Container = styled.div`
   // TODO Add a 16px margin and remove margins from everywhere else
 `;
 
-const MainContent = styled.div`
+const MainContent = styled.div<{ isSidebarOpen: boolean }>`
   grid-area: stack;
   opacity: ${({ isSidebarOpen }) => (isSidebarOpen ? "25%" : "100%")};
 `;
