@@ -8,6 +8,7 @@ const typeDefs = gql`
     userLeagues(id: Int!): [League!]
     leagueAdmin(input: LeagueAdminInput): LeagueAdminPayload
     predictions(input: PredictionsInput): PredictionsPayload
+    leagueDetails(input: LeagueDetailsInput): LeagueDetailsPayload
   }
 
   type Mutation {
@@ -21,6 +22,17 @@ const typeDefs = gql`
       applicantId: Int!
       isAccepted: Boolean!
     ): Boolean!
+  }
+
+  input LeagueDetailsInput {
+    userId: Int!
+    leagueId: Int!
+  }
+
+  type LeagueDetailsPayload {
+    leagueName: String!
+    users: [UserTotalPoints]!
+    pointsByWeek: [WeeklyPoints]!
   }
 
   input PredictionsInput {
@@ -143,6 +155,17 @@ const typeDefs = gql`
     predictedHomeGoals: Int
     predictedAwayGoals: Int
     predictedScore: Int
+  }
+
+  type UserTotalPoints {
+    userId: Int!
+    username: String!
+    totalPoints: Int!
+  }
+
+  type WeeklyPoints {
+    week: Int!
+    points: [Int!]!
   }
 `;
 

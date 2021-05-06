@@ -2,37 +2,36 @@ import React from "react";
 import styled from "styled-components";
 
 import colours from "@/styles/colours";
-import { Participant, UserWeeklyScore, WeeklyScores } from "@/types";
+import { UserTotalPoints, WeeklyPoints } from "@/types";
 
 interface Props {
-  participants: Participant[];
-  weeklyScores: WeeklyScores[];
-  totalScores: UserWeeklyScore[];
+  users: UserTotalPoints[];
+  pointsByWeek: WeeklyPoints[];
 }
 
 const maxUsernameLength = 8;
 
-const LeagueTable = ({ participants, weeklyScores, totalScores }: Props) => (
+const LeagueTable = ({ users, pointsByWeek }: Props) => (
   <Container>
     <Table>
       <Header>
         <HeaderRow>
           <HeaderItemBlank />
-          {participants.map((user) => (
-            <HeaderItem key={user.id}>
-              {user.username.length > maxUsernameLength
-                ? `${user.username.substring(0, maxUsernameLength - 2)}...`
-                : user.username}
+          {users.map(({ userId, username }) => (
+            <HeaderItem key={userId}>
+              {username.length > maxUsernameLength
+                ? `${username.substring(0, maxUsernameLength - 2)}...`
+                : username}
             </HeaderItem>
           ))}
         </HeaderRow>
       </Header>
       <Body>
-        {weeklyScores.map((weeksScores) => (
-          <BodyRow key={weeksScores.week}>
-            <BodyItemFirst>Week {weeksScores.week}</BodyItemFirst>
-            {weeksScores.users.map((user) => (
-              <BodyItem key={user.id}>{user.score}</BodyItem>
+        {pointsByWeek.map(({ week, points }) => (
+          <BodyRow key={week}>
+            <BodyItemFirst>{`Week ${week}`}</BodyItemFirst>
+            {points.map((weekPoint, i) => (
+              <BodyItem key={i}>{weekPoint}</BodyItem>
             ))}
           </BodyRow>
         ))}
@@ -40,8 +39,8 @@ const LeagueTable = ({ participants, weeklyScores, totalScores }: Props) => (
       <Footer>
         <FooterRow>
           <FooterItem>Total</FooterItem>
-          {totalScores.map((x) => (
-            <FooterItem key={x.id}>{x.score}</FooterItem>
+          {users.map(({ userId, totalPoints }) => (
+            <FooterItem key={userId}>{totalPoints}</FooterItem>
           ))}
         </FooterRow>
       </Footer>
@@ -70,6 +69,7 @@ const HeaderItem = styled.th`
 
 const HeaderItemBlank = styled(HeaderItem)`
   border: none;
+  background-color: ${colours.blackblue400};
 `;
 
 const Body = styled.tbody`
@@ -96,14 +96,13 @@ const FooterRow = styled.tr`
 
 const FooterItem = styled.td`
   text-align: center;
-
   border: 1px solid ${colours.grey300};
 `;
 
 const Table = styled.table`
   width: 100%;
   margin: 0 auto;
-  background: ${colours.grey100};
+  background: ${colours.blackblue500};
   border-radius: 0.1em;
 `;
 

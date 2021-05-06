@@ -37,6 +37,7 @@ export const LEAGUE_ADMIN = gql`
     }
   }
 `;
+
 export const PREDICTIONS = gql`
   query Predictions($input: PredictionsInput!) {
     predictions(input: $input) {
@@ -54,6 +55,23 @@ export const PREDICTIONS = gql`
         predictedHomeGoals
         predictedAwayGoals
         predictedScore
+      }
+    }
+  }
+`;
+
+export const LEAGUE_DETAILS = gql`
+  query LeagueDetails($input: LeagueDetailsInput!) {
+    leagueDetails(input: $input) {
+      leagueName
+      users {
+        userId
+        username
+        totalPoints
+      }
+      pointsByWeek {
+        week
+        points
       }
     }
   }

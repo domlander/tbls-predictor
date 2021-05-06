@@ -1,6 +1,6 @@
 import { UserInputError, ApolloError } from "apollo-server-micro";
 import prisma from "prisma/client";
-import { FixtureWithPrediction } from "@/types";
+import { FixtureWithPrediction, UserTotalPoints } from "@/types";
 import {
   isUserAlreadyBelongToLeague,
   isUserAppliedToLeague,
@@ -115,6 +115,79 @@ const resolvers = {
         thisGameweek: weekId,
         firstGameweek,
         lastGameweek,
+      };
+    },
+    leagueDetails: async (root, { input: { userId, leagueId } }, ctx) => {
+      // Get the logged in user
+      const loggedInUser = await prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+        include: {
+          leagues: true,
+        },
+      });
+      if (!loggedInUser) throw new ApolloError("Cannot find user.");
+
+      // If the user is not a member of this league, redirect them to leagues
+      if (!loggedInUser.leagues.some((league) => league.id === leagueId))
+        throw new ApolloError("Sorry, you are not a member of this league.");
+
+      // Get the league details
+      const league = await prisma.league.findUnique({
+        where: {
+          id: leagueId,
+        },
+        include: {
+          users: {
+            select: {
+              id: true,
+              username: true,
+              predictions: {
+                select: {
+                  fixtureId: true,
+                  score: true,
+                  fixture: {
+                    select: {
+                      gameweek: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+      if (!league) throw new ApolloError("Cannot find league.");
+
+      const numGameweeks = league.gameweekEnd - league.gameweekStart + 1;
+      const usersWeeklyPoints = league.users.map(({ predictions }) =>
+        predictions.reduce((acc, cur) => {
+          if (!cur.score) return acc; // if score is null or 0
+          acc[cur.fixture.gameweek - 1] += cur.score;
+          return acc;
+        }, new Array(numGameweeks).fill(0))
+      );
+
+      const users: UserTotalPoints[] = league.users.map(
+        ({ id, username }, i) => ({
+          userId: id,
+          username: username || "",
+          totalPoints: usersWeeklyPoints[i].reduce((acc, cur) => acc + cur, 0),
+        })
+      );
+      users.sort((a, b) => a.totalPoints - b.totalPoints);
+
+      // The fill(0) is required because we can't iterate through an array of undefined pointers: https://stackoverflow.com/a/5501711
+      const pointsByWeek = new Array(numGameweeks).fill(0).map((_, i) => ({
+        week: league.gameweekStart + i,
+        points: usersWeeklyPoints.map((points) => points[i]),
+      }));
+
+      return {
+        leagueName: league.name,
+        users,
+        pointsByWeek,
       };
     },
   },

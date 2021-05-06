@@ -5,7 +5,12 @@ import Image from "next/image";
 const Loading = () => (
   <>
     <Container>
-      <Image height="100" width="100" src="/images/spinner.gif" />
+      <Image
+        height="100"
+        width="100"
+        src="/images/spinner.gif"
+        alt="loading content..."
+      />
     </Container>
   </>
 );
