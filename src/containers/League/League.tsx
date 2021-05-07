@@ -1,45 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
-import { League } from "@prisma/client";
-import { Participant, UserWeeklyScore, WeeklyScores } from "@/types";
 import WeeklyScoresTable from "@/components/WeeklyScoresTable";
 import LeagueTable from "@/components/LeagueTable";
 import Heading from "@/components/atoms/Heading";
+import { LEAGUE_DETAILS } from "apollo/queries";
+import Loading from "@/components/atoms/Loading";
+import { useQuery } from "@apollo/client";
+import { UserTotalPoints, WeeklyPoints } from "@/types";
 
 interface Props {
-  leagueName: League["name"];
-  weeklyScores: WeeklyScores[];
+  userId: number;
+  leagueId: number;
 }
 
-const LeagueContainer = ({ leagueName, weeklyScores }: Props) => {
-  const participants: Participant[] = weeklyScores[0].users.map((user) => ({
-    id: user.id,
-    username: user.username || "unknown",
-  }));
+const LeagueContainer = ({ userId, leagueId }: Props) => {
+  const [users, setUsers] = useState<UserTotalPoints[]>();
+  const [pointsByWeek, setpointsByWeek] = useState<WeeklyPoints[]>();
+  const { data, loading, error } = useQuery(LEAGUE_DETAILS, {
+    variables: { input: { userId, leagueId } },
+    onCompleted: ({ leagueDetails }) => {
+      setUsers(leagueDetails.users);
+      setpointsByWeek(leagueDetails.pointsByWeek);
+    },
+  });
 
-  const totalScores: UserWeeklyScore[] = participants.map((p) => ({
-    id: p.id,
-    username: p.username,
-    score: weeklyScores.reduce((acc, cur) => {
-      const user = cur.users.find((u) => u.id === p.id);
-      return acc + (user?.score || 0);
-    }, 0),
-  }));
-
-  const totalScoresOrdered: UserWeeklyScore[] = [...totalScores].sort(
-    (a, b) => (b.score || 0) - (a.score || 0)
-  );
+  if (loading || !users || !pointsByWeek) return <Loading />;
+  if (error) return <div>An error has occurred. Please try again later.</div>;
 
   return (
     <Container>
-      <Heading level="h1">{leagueName}</Heading>
-      <LeagueTable totalScores={totalScoresOrdered} />
-      <WeeklyScoresTable
-        participants={participants}
-        weeklyScores={weeklyScores}
-        totalScores={totalScores}
-      />
+      <Heading level="h1">{data.leagueDetails.leagueName}</Heading>
+      <LeagueTable users={users} />
+      <WeeklyScoresTable users={users} pointsByWeek={pointsByWeek} />
     </Container>
   );
 };

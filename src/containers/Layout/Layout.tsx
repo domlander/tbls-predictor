@@ -16,7 +16,7 @@ const Layout = ({ children }: Props) => {
 
   return (
     <Container>
-      <MainContent>
+      <MainContent isSidebarOpen={isSidebarOpen}>
         {session ? (
           <HeaderBar
             initial="D"
@@ -27,7 +27,7 @@ const Layout = ({ children }: Props) => {
       </MainContent>
       <SidebarContainer isSidebarOpen={isSidebarOpen}>
         <Sidebar
-          username="DomTest"
+          username={session?.user.name || ""}
           handleClick={() => setIsSidebarOpen((isOpen) => !isOpen)}
         />
       </SidebarContainer>
@@ -43,12 +43,12 @@ const Container = styled.div`
   // TODO Add a 16px margin and remove margins from everywhere else
 `;
 
-const MainContent = styled.div`
+const MainContent = styled.div<{ isSidebarOpen: boolean }>`
   grid-area: stack;
   opacity: ${({ isSidebarOpen }) => (isSidebarOpen ? "25%" : "100%")};
 `;
 
-const SidebarContainer = styled.div`
+const SidebarContainer = styled.div<{ isSidebarOpen: boolean }>`
   grid-area: stack;
   visibility: ${({ isSidebarOpen }) => (isSidebarOpen ? "visible" : "hidden")};
   /* transform: translateY(-110vw);

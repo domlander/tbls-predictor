@@ -40,6 +40,8 @@ const GlobalStyle = createGlobalStyle`
 
   h2 { font-size: 32px; }
   h3 { font-size: 24px; }
+  h4 { font-size: 20px; }
+  h5 { font-size: 16px; }
 `;
 
 export default GlobalStyle;

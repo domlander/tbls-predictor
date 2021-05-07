@@ -3,21 +3,21 @@ import styled from "styled-components";
 
 import colours from "@/styles/colours";
 import { positionify } from "@/utils";
-import { UserWeeklyScore } from "@/types";
+import { UserTotalPoints } from "@/types";
 
 interface Props {
-  totalScores: UserWeeklyScore[];
+  users: UserTotalPoints[];
 }
 
-const LeagueTable = ({ totalScores }: Props) => (
+const LeagueTable = ({ users }: Props) => (
   <Container>
     <Table>
       <Body>
-        {totalScores.map((user, i) => (
-          <Row key={user.id}>
+        {users.map(({ userId, username, totalPoints }, i) => (
+          <Row key={userId}>
             <Item>{positionify(i + 1)}</Item>
-            <Item>{user.username}</Item>
-            <Item>{user.score}</Item>
+            <Item>{username}</Item>
+            <Item>{totalPoints}</Item>
           </Row>
         ))}
       </Body>
@@ -33,7 +33,7 @@ const Container = styled.div`
 const Table = styled.table`
   width: 100%;
   margin: 0 auto;
-  background: ${colours.grey100};
+  background: ${colours.blackblue500};
   border-radius: 0.1em;
 `;
 

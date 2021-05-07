@@ -1,25 +1,40 @@
 import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
+import { useSession } from "next-auth/client";
 
 import FixtureTable from "@/components/FixtureTable";
-import { FixtureWithPrediction } from "@/types";
-import { Prediction } from "@prisma/client";
+import { FixtureWithPrediction, UpdatePredictionsInputType } from "@/types";
 import WeekNavigator from "@/components/molecules/WeekNavigator";
+import { UPDATE_PREDICTIONS } from "apollo/mutations";
+import { useMutation, useQuery } from "@apollo/client";
+import { PREDICTIONS } from "apollo/queries";
+import Loading from "@/components/atoms/Loading";
 
 interface Props {
-  gameweek: number;
-  fixtures: FixtureWithPrediction[];
-  firstGameweek: number;
-  lastGameweek: number;
+  userId: number;
+  weekId: number;
 }
 
-const PredictionsContainer = ({
-  gameweek,
-  firstGameweek,
-  lastGameweek,
-  fixtures,
-}: Props) => {
-  const [predictions, setPredictions] = useState(fixtures);
+const PredictionsContainer = ({ userId, weekId }: Props) => {
+  const [session] = useSession();
+
+  const [predictions, setPredictions] = useState<FixtureWithPrediction[]>([]);
+  const [gameweek, setGameweek] = useState<number>();
+  const [firstGameweek, setFirstGameweek] = useState<number>();
+  const [lastGameweek, setLastGameweek] = useState<number>();
+
+  const [processRequest] = useMutation(UPDATE_PREDICTIONS);
+
+  const { loading, error } = useQuery(PREDICTIONS, {
+    variables: { input: { userId, weekId } },
+    onCompleted: ({ predictions: predictionsData }) => {
+      setPredictions(predictionsData.fixturesWithPredictions);
+      setGameweek(predictionsData.thisGameweek);
+      setFirstGameweek(predictionsData.firstGameweek);
+      setLastGameweek(predictionsData.lastGameweek);
+    },
+  });
+
   const thisWeeksPredictions = predictions.filter(
     (prediction) => prediction.gameweek === gameweek
   );
@@ -27,22 +42,17 @@ const PredictionsContainer = ({
   const handleSubmitPredictions = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const updatedPredictions: Partial<Prediction>[] = predictions
+    const updatedPredictions: UpdatePredictionsInputType[] = predictions
       .filter((p) => p.gameweek === gameweek)
       .map((prediction) => ({
+        userId: session?.user.id as number,
         fixtureId: prediction.fixtureId,
         homeGoals: parseInt(prediction.predictedHomeGoals || "") ?? null,
         awayGoals: parseInt(prediction.predictedAwayGoals || "") ?? null,
+        big_boy_bonus: false,
       }));
 
-    fetch("/api/upsertPredictions", {
-      method: "post",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ updatedPredictions }),
-    });
+    processRequest({ variables: { input: updatedPredictions } });
   };
 
   const updateGoals = (
@@ -72,21 +82,26 @@ const PredictionsContainer = ({
     setPredictions(updatedPredictions);
   };
 
+  if (loading) return <Loading />;
+  if (error) return <div>An error has occurred. Please try again later.</div>;
+
   return (
     <Container>
-      <WeekNavigator
-        week={gameweek}
-        prevGameweekUrl={
-          gameweek === firstGameweek
-            ? undefined
-            : `/predictions/${gameweek - 1}`
-        }
-        nextGameweekUrl={
-          gameweek < lastGameweek - firstGameweek + 1
-            ? `/predictions/${gameweek + 1}`
-            : undefined
-        }
-      />
+      {gameweek && firstGameweek && lastGameweek && (
+        <WeekNavigator
+          week={gameweek}
+          prevGameweekUrl={
+            gameweek === firstGameweek
+              ? undefined
+              : `/predictions/${gameweek - 1}`
+          }
+          nextGameweekUrl={
+            gameweek < lastGameweek - firstGameweek + 1
+              ? `/predictions/${gameweek + 1}`
+              : undefined
+          }
+        />
+      )}
       <FixtureTable
         predictions={thisWeeksPredictions}
         updateGoals={updateGoals}

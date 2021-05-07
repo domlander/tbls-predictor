@@ -4,6 +4,7 @@ import styled from "styled-components";
 interface StyleProps {
   backgroundColour: string;
   colour: string;
+  disabled?: boolean;
   hoverColour: string;
 }
 
@@ -20,16 +21,18 @@ const Button = ({
   children,
   className,
   colour,
+  disabled = false,
   handleClick,
   type = "button",
 }: Props) => (
   <ButtonStyles
     backgroundColour={backgroundColour}
+    className={className}
     colour={colour}
+    disabled={disabled}
     hoverColour={hoverColour}
     onClick={handleClick}
     type={type}
-    className={className}
   >
     {children}
   </ButtonStyles>
@@ -43,11 +46,12 @@ const ButtonStyles = styled.button<StyleProps>`
   cursor: pointer;
   font-size: 2.4em;
   height: 1.8em;
+  opacity: ${({ disabled }) => (disabled ? "50%" : "100%")};
   width: 100%;
   :focus,
   :hover {
     outline: none;
-    border: 0.05em solid ${({ hoverColour }) => hoverColour};
+    border: 0.1em solid ${({ hoverColour }) => hoverColour};
   }
   :active {
     height: 1.7em;

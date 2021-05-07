@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { useMutation } from "@apollo/client";
+import { PROCESS_JOIN_LEAGUE_REQUEST } from "apollo/mutations";
+import { useSession } from "next-auth/client";
 import { User } from ".prisma/client";
 
 interface Props {
@@ -7,28 +10,23 @@ interface Props {
   leagueId: number;
 }
 
-const Button = styled.button`
-  margin: 0 1em;
-`;
-
 const LeagueApplicants = ({ applicants, leagueId }: Props) => {
+  if (!applicants?.length) return <p>No Applicants</p>;
+
+  const [session] = useSession();
+  const [userFeedback, setUserFeedback] = useState<string>("");
+  const [processRequest] = useMutation(PROCESS_JOIN_LEAGUE_REQUEST);
+
   const handleAcceptOrReject = (applicantId: number, accept: boolean) => {
-    fetch("/api/processJoinLeagueRequest", {
-      method: "post",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    processRequest({
+      variables: {
+        userId: session?.user.id,
         leagueId,
         applicantId,
-        accept,
-      }),
-    });
+        isAccepted: accept,
+      },
+    }).then(() => setUserFeedback("Success!"));
   };
-
-  // eslint-disable-next-line react/jsx-filename-extension
-  if (!applicants?.length) return <p>No Applicants</p>;
 
   return (
     <div>
@@ -44,8 +42,18 @@ const LeagueApplicants = ({ applicants, leagueId }: Props) => {
           </Button>
         </div>
       ))}
+      {userFeedback && <Feedback>{userFeedback}</Feedback>}
     </div>
   );
 };
+
+const Button = styled.button`
+  margin: 0 1em;
+`;
+
+const Feedback = styled.p`
+  font-size: 1.6em;
+  font-style: italic;
+`;
 
 export default LeagueApplicants;

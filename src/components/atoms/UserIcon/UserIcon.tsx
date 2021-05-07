@@ -10,11 +10,11 @@ export interface Props {
 const UserIcon = ({ initial, handleClick }: Props) =>
   handleClick ? (
     <ClickableCircle onClick={handleClick}>
-      <Name>{initial}</Name>
+      <Name>{initial.toUpperCase()}</Name>
     </ClickableCircle>
   ) : (
     <Circle>
-      <Name>{initial}</Name>
+      <Name>{initial.toUpperCase()}</Name>
     </Circle>
   );
 

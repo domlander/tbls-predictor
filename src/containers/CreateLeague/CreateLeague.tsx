@@ -4,37 +4,48 @@ import styled from "styled-components";
 import Heading from "@/components/atoms/Heading";
 import Button from "@/components/atoms/Button";
 import colours from "@/styles/colours";
+import { useMutation } from "@apollo/client";
+import { CREATE_LEAGUE } from "apollo/mutations";
+import { useSession } from "next-auth/client";
 import FormInput from "../../components/atoms/FormInput";
 
 const CreateLeague = () => {
+  const [session] = useSession();
   const [leagueName, setLeagueName] = useState("");
-  const [gameweekStart, setGameweekStart] = useState<number>(1);
-  const [weeksToRun, setWeeksToRun] = useState<number>(17);
+  const [userFeedback, setUserFeedback] = useState<string>("");
+  const [gameweekStart, setGameweekStart] = useState<string>("1");
+  const [weeksToRun, setWeeksToRun] = useState<string>("17");
+
+  const [createLeague, { loading }] = useMutation(CREATE_LEAGUE, {
+    onError: (error) => setUserFeedback(error.message),
+  });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log(
-      "Posting data to API",
-      leagueName,
-      gameweekStart,
-      gameweekStart
-    );
+    const startWeek = parseInt(gameweekStart);
+    const endWeek = startWeek + parseInt(weeksToRun) - 1;
 
-    if (!leagueName) return;
-
-    fetch("../api/createLeague", {
-      method: "post",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: leagueName,
-        start: gameweekStart,
-        end: gameweekStart + weeksToRun - 1,
-      }),
-    });
+    if (!leagueName) setUserFeedback("Please enter a league name");
+    else if (startWeek < 1 || startWeek > 38)
+      setUserFeedback("Please enter a valid start week");
+    else {
+      createLeague({
+        variables: {
+          input: {
+            userId: session?.user.id,
+            name: leagueName,
+            gameweekStart: startWeek,
+            gameweekEnd: endWeek,
+          },
+        },
+      }).then(({ data: { createLeague: { id, name } } }) =>
+        setUserFeedback(
+          `Success! League "${name}" was created! Ask friends to join using ID: ${id}`
+        )
+      );
+      setLeagueName("");
+    }
   };
 
   return (
@@ -47,7 +58,7 @@ const CreateLeague = () => {
             <FormInput
               value={leagueName}
               onChange={(e) => setLeagueName(e.target.value)}
-              width="12em"
+              width="12em" // TODO: Should be variable width. Standardise this
               height="2.4em"
             />
           </Label>
@@ -57,7 +68,9 @@ const CreateLeague = () => {
             <input
               type="number"
               value={gameweekStart}
-              onChange={(e) => setGameweekStart(parseInt(e.target.value))}
+              onChange={(e) =>
+                setGameweekStart(e.target.value.replace(/\D/, ""))
+              }
             />
           </Label>
           <Label>
@@ -65,18 +78,20 @@ const CreateLeague = () => {
             <input
               type="number"
               value={weeksToRun}
-              onChange={(e) => setWeeksToRun(parseInt(e.target.value))}
+              onChange={(e) => setWeeksToRun(e.target.value.replace(/\D/, ""))}
             />
           </Label>
           {/* TODO: end */}
+          {userFeedback && !loading && <Feedback>{userFeedback}</Feedback>}
           <ButtonContainer>
             <Button
               type="submit"
+              disabled={loading}
               colour={colours.blackblue500}
               backgroundColour={colours.blue100}
-              hoverColour={colours.blue200}
+              hoverColour={colours.cyan500}
             >
-              Create
+              {loading ? "Loading..." : "Create"}
             </Button>
           </ButtonContainer>
         </form>
@@ -108,4 +123,9 @@ const Label = styled.label`
 
 const LabelText = styled.p`
   font-size: 16px;
+`;
+
+const Feedback = styled.p`
+  font-size: 1.6em;
+  font-style: italic;
 `;

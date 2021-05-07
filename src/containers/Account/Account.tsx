@@ -1,51 +1,67 @@
 import React, { FormEvent, useState } from "react";
-import HeaderBar from "@/components/molecules/HeaderBar";
+import styled from "styled-components";
+import { useMutation, useQuery } from "@apollo/client";
+
+import { USER } from "apollo/queries";
+import { UPDATE_USERNAME } from "apollo/mutations";
 import Heading from "@/components/atoms/Heading";
+import Loading from "@/components/atoms/Loading";
+import ChangeUsernameForm from "@/components/ChangeUsernameForm";
 
 interface Props {
-  username: string;
+  userId: number;
 }
 
-const AccountContainer = ({ username: initialUsername }: Props) => {
+const AccountContainer = ({ userId }: Props) => {
+  const [currentUsername, setCurrentUsername] = useState();
   const [formUsername, setFormUsername] = useState("");
-  const [username, setUsername] = useState(initialUsername);
-  const [updateStatus, setUpdateStatus] = useState(false);
+  const [userFeedback, setUserFeedback] = useState("");
+  const [processRequest] = useMutation(UPDATE_USERNAME);
+
+  const { loading, error } = useQuery(USER, {
+    variables: { id: userId },
+    onCompleted: ({ user }) => {
+      setCurrentUsername(user.username);
+      setFormUsername(user.username);
+    },
+  });
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    fetch("/api/updateUsername", {
-      method: "post",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username: formUsername }),
-    }).then(() => {
-      setUpdateStatus(true);
-      setUsername(formUsername);
-    });
+    if (formUsername.length < 3)
+      setUserFeedback("Username must be at least 3 characters");
+    else
+      processRequest({
+        variables: {
+          userId,
+          username: formUsername,
+        },
+      }).then(({ data }) => {
+        setUserFeedback(`Success! Username changed to ${data.updateUsername}`);
+        setCurrentUsername(data.updateUsername);
+      });
   };
 
+  if (loading) return <Loading />;
+  if (error) return <div>An error has occurred. Please try again later.</div>;
+
   return (
-    <div>
+    <Container>
       <Heading level="h1">Account</Heading>
-      <p>Welcome {username}</p>
-      <form onSubmit={handleSubmit}>
-        <h4>Change username</h4>
-        <label>
-          Username:
-          <input
-            type="text"
-            value={formUsername}
-            onChange={(e) => setFormUsername(e.target.value)}
-            maxLength={20}
-          />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
-      {updateStatus && <div>Username updated!</div>}
-    </div>
+      <ChangeUsernameForm
+        username={formUsername}
+        setUsername={setFormUsername}
+        isFormDisabled={currentUsername === formUsername}
+        userFeedback={userFeedback}
+        handleSubmit={handleSubmit}
+      />
+    </Container>
   );
 };
+
+const Container = styled.div`
+  margin: auto 16px;
+  max-width: 400px;
+`;
 
 export default AccountContainer;

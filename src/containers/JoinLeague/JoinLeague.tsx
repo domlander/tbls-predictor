@@ -1,26 +1,39 @@
 import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
+import { useMutation } from "@apollo/client";
+
+import { REQUEST_TO_JOIN_LEAGUE } from "apollo/mutations";
 import Heading from "@/components/atoms/Heading";
 import colours from "@/styles/colours";
 import Button from "@/components/atoms/Button";
 import FormInput from "@/components/atoms/FormInput";
+import { useSession } from "next-auth/client";
 
 const JoinLeague = () => {
-  const [leagueId, setLeagueId] = useState<number>();
+  const [session] = useSession();
+  const [leagueId, setLeagueId] = useState<string>("");
+  const [userFeedback, setUserFeedback] = useState<string>("");
+  const [requestToJoinLeague, { loading }] = useMutation(
+    REQUEST_TO_JOIN_LEAGUE,
+    {
+      onError: (error) => setUserFeedback(error.message),
+    }
+  );
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log("Posting data to API", leagueId);
-
-    fetch("../api/requestToJoinLeague", {
-      method: "post",
-      headers: {
-        Accept: "application/json, text/plain, */*",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id: leagueId }),
-    });
+    if (!leagueId) {
+      setUserFeedback("Please enter a league code");
+    } else {
+      requestToJoinLeague({
+        variables: { userId: session?.user.id, leagueId: parseInt(leagueId) },
+      });
+      setLeagueId("");
+      setUserFeedback(
+        "Success! Ask the league admin to accept your application"
+      );
+    }
   };
 
   return (
@@ -30,20 +43,24 @@ const JoinLeague = () => {
         <Label>
           <LabelText>League ID:</LabelText>
           <FormInput
-            type="number"
-            onChange={(e) => setLeagueId(parseInt(e.target.value))}
-            width="10em"
+            type="string"
+            pattern="[0-9]*"
+            onChange={(e) => setLeagueId(e.target.value.replace(/\D/, ""))}
+            value={leagueId}
+            width="10em" // TODO can we change this? I want it to have variable width depending on screen size, up to a max
             height="2.4em"
           />
         </Label>
+        {userFeedback && !loading && <Feedback>{userFeedback}</Feedback>}
         <ButtonContainer>
           <Button
             type="submit"
+            disabled={loading}
             colour={colours.blackblue500}
             backgroundColour={colours.blue100}
-            hoverColour={colours.blue200}
+            hoverColour={colours.cyan500}
           >
-            Join
+            {loading ? "Loading..." : "Join"}
           </Button>
         </ButtonContainer>
       </form>
@@ -71,4 +88,9 @@ const LabelText = styled.p`
 
 const ButtonContainer = styled.div`
   margin: 32px 0;
+`;
+
+const Feedback = styled.p`
+  font-size: 1.6em;
+  font-style: italic;
 `;

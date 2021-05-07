@@ -15,7 +15,7 @@ const Template: Story<Props> = (args) => <Button {...args} />;
 export const Primary = Template.bind({});
 Primary.args = {
   backgroundColour: colours.grey200,
-  hoverColour: colours.grey300,
+  hoverColour: colours.grey400,
   children: "Submit",
   colour: colours.blackblue400,
 };
@@ -23,7 +23,7 @@ Primary.args = {
 export const Secondary = Template.bind({});
 Secondary.args = {
   backgroundColour: colours.blue100,
-  hoverColour: colours.blue200,
+  hoverColour: colours.cyan500,
   children: "Save",
   colour: colours.blackblue500,
 };

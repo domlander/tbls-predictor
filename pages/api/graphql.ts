@@ -1,11 +1,7 @@
 import { ApolloServer } from "apollo-server-micro";
-import typeDefs from "./typedefs";
-import resolvers from "./resolvers";
+import { schema } from "apollo/schema";
 
-const apolloServer = new ApolloServer({
-  typeDefs,
-  resolvers,
-});
+const apolloServer = new ApolloServer({ schema });
 
 // Tell Next.js not to parse the incoming request and let GraphQL handle it for us
 export const config = {
@@ -14,4 +10,6 @@ export const config = {
   },
 };
 
-export default apolloServer.createHandler({ path: "/api/graphql" });
+export default apolloServer.createHandler({
+  path: "/api/graphql",
+});
