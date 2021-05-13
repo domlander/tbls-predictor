@@ -27,6 +27,7 @@ const sharedCircleStyles = css`
   height: 3.2em;
   width: 3.2em;
 `;
+
 const ClickableCircle = styled.button`
   cursor: pointer;
   ${sharedCircleStyles}

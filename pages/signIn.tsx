@@ -16,7 +16,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       props: {},
       redirect: {
-        destination: "/leagues",
+        destination: "/",
         permanent: false,
       },
     };
