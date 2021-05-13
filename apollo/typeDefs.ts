@@ -4,7 +4,7 @@ const typeDefs = gql`
   scalar DateTime
 
   type Query {
-    user(id: Int!): User
+    user: User
     userLeagues(id: Int!): [League!]
     leagueAdmin(input: LeagueAdminInput): LeagueAdminPayload
     predictions(input: PredictionsInput): PredictionsPayload
@@ -13,7 +13,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    updateUsername(userId: Int!, username: String!): String
+    updateUsername(input: UpdateUsernameInput!): String
     updatePredictions(input: [UpdatePredictionsInput!]!): Boolean
     createLeague(input: CreateLeagueInput!): League
     requestToJoinLeague(userId: Int!, leagueId: Int!): Applicant
@@ -23,6 +23,11 @@ const typeDefs = gql`
       applicantId: Int!
       isAccepted: Boolean!
     ): Boolean!
+  }
+
+  input UpdateUsernameInput {
+    userId: Int!
+    username: String!
   }
 
   input LeagueWeekInput {
@@ -85,11 +90,6 @@ const typeDefs = gql`
     homeGoals: Int
     awayGoals: Int
     big_boy_bonus: Boolean
-  }
-
-  input UserInput {
-    id: Int
-    email: String
   }
 
   type User {

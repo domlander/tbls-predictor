@@ -46,7 +46,7 @@ export const UPDATE_PREDICTIONS = gql`
 `;
 
 export const UPDATE_USERNAME = gql`
-  mutation UpdateUsername($userId: Int!, $username: String!) {
-    updateUsername(userId: $userId, username: $username)
+  mutation UpdateUsername($input: UpdateUsernameInput!) {
+    updateUsername(input: $input)
   }
 `;

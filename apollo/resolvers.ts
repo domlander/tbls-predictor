@@ -13,8 +13,12 @@ import dateScalar from "./scalars";
 
 const resolvers = {
   Query: {
-    user: async (root, { id }, ctx) => {
-      const user = await prisma.user.findUnique({ where: { id } });
+    user: async (root, args, ctx) => {
+      if (!ctx.session) throw new ApolloError("User not logged in.");
+
+      const user = await prisma.user.findUnique({
+        where: { id: ctx.session.user.id },
+      });
       return user;
     },
     userLeagues: async (root, { id }, ctx) => {
@@ -309,7 +313,7 @@ const resolvers = {
     },
   },
   Mutation: {
-    updateUsername: async (root, { userId, username }, ctx) => {
+    updateUsername: async (root, { input: { userId, username } }, ctx) => {
       // TODO: Should not be able to start in a past gameweek
       if (username.length < 3 || username.length > 20)
         throw new UserInputError(

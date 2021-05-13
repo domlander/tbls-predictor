@@ -6,11 +6,7 @@ import { generateDefaultUsername } from "@/utils";
 import Account from "src/containers/Account/Account";
 import redirectInternal from "utils/redirects";
 
-interface Props {
-  userId: number;
-}
-
-const AccountPage = ({ userId }: Props) => <Account userId={userId} />;
+const AccountPage = () => <Account />;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
@@ -62,7 +58,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      userId: session?.user.id,
+      // userId: session?.user.id,
     },
   };
 };

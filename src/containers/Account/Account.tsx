@@ -8,19 +8,16 @@ import Heading from "@/components/atoms/Heading";
 import Loading from "@/components/atoms/Loading";
 import ChangeUsernameForm from "@/components/ChangeUsernameForm";
 
-interface Props {
-  userId: number;
-}
-
-const AccountContainer = ({ userId }: Props) => {
+const AccountContainer = () => {
   const [currentUsername, setCurrentUsername] = useState();
+  const [userId, setUserId] = useState();
   const [formUsername, setFormUsername] = useState("");
   const [userFeedback, setUserFeedback] = useState("");
   const [processRequest] = useMutation(UPDATE_USERNAME);
 
   const { loading, error } = useQuery(USER, {
-    variables: { id: userId },
     onCompleted: ({ user }) => {
+      setUserId(user.id);
       setCurrentUsername(user.username);
       setFormUsername(user.username);
     },
@@ -33,8 +30,7 @@ const AccountContainer = ({ userId }: Props) => {
     else
       processRequest({
         variables: {
-          userId,
-          username: formUsername,
+          input: { userId, username: formUsername },
         },
       }).then(({ data }) => {
         setUserFeedback(`Success! Username changed to ${data.updateUsername}`);
