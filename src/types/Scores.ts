@@ -1,6 +1,6 @@
 import { Prediction, User } from "@prisma/client";
 
-export type UserWeeklyScore = {
+type UserWeeklyScore = {
   id: User["id"];
   username: User["username"];
   score: Prediction["score"];

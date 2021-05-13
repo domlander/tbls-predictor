@@ -1,14 +1,11 @@
-const evaluatePrediction = (
-  prediction: [number, number],
+const calculatePredictionScore = (
+  prediction: [number | null, number | null],
   actual: [number, number]
-): number | null => {
-  const homeGoalsPredicted = prediction[0];
-  const awayGoalsPredicted = prediction[1];
+): number => {
+  const homeGoalsPredicted = prediction[0] || 0;
+  const awayGoalsPredicted = prediction[1] || 0;
   const homeGoalsActual = actual[0];
   const awayGoalsActual = actual[1];
-
-  if (!Number.isInteger(homeGoalsActual) || !Number.isInteger(awayGoalsActual))
-    return null;
 
   if (
     homeGoalsPredicted === homeGoalsActual &&
@@ -29,4 +26,4 @@ const evaluatePrediction = (
   return 0;
 };
 
-export default evaluatePrediction;
+export default calculatePredictionScore;

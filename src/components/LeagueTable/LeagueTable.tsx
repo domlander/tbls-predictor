@@ -11,42 +11,35 @@ interface Props {
 
 const LeagueTable = ({ users }: Props) => (
   <Container>
-    <Table>
-      <Body>
-        {users.map(({ userId, username, totalPoints }, i) => (
-          <Row key={userId}>
-            <Item>{positionify(i + 1)}</Item>
-            <Item>{username}</Item>
-            <Item>{totalPoints}</Item>
-          </Row>
-        ))}
-      </Body>
-    </Table>
+    {users.map(({ userId, username, totalPoints }, i) => (
+      <React.Fragment key={userId}>
+        <div>{positionify(i + 1)}</div>
+        <div>{username}</div>
+        <div>{totalPoints}</div>
+      </React.Fragment>
+    ))}
   </Container>
 );
 
 const Container = styled.div`
   margin: 0 auto;
-  max-width: 500px;
-`;
-
-const Table = styled.table`
-  width: 100%;
-  margin: 0 auto;
+  max-width: 380px;
+  width: max(75%, 280px);
+  font-size: 14px;
+  display: grid;
+  grid-template-columns: 3em 1fr 4em;
+  grid-auto-rows: 3em;
   background: ${colours.blackblue500};
-  border-radius: 0.1em;
-`;
+  border-bottom: 1px solid ${colours.grey500};
+  border-right: 1px solid ${colours.grey500};
 
-const Body = styled.tbody``;
-
-const Row = styled.tr`
-  height: 2em;
-`;
-
-const Item = styled.td`
-  text-align: center;
-  border: 1px solid ${colours.grey300};
-  padding: 0.75em;
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid ${colours.grey500};
+    border-left: 1px solid ${colours.grey500};
+  }
 `;
 
 export default LeagueTable;

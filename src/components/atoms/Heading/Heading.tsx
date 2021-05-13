@@ -9,10 +9,11 @@ interface StyleProps {
 export type Props = StyleProps & {
   id?: string;
   children: ReactNode;
+  className?: string;
 };
 
-const Heading = ({ id, level, children }: Props) => (
-  <StyledHeading level={level} as={level} id={id}>
+const Heading = ({ id, level, children, className }: Props) => (
+  <StyledHeading level={level} as={level} id={id} className={className}>
     {children}
   </StyledHeading>
 );

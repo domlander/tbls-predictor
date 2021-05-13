@@ -4,7 +4,7 @@ Predict footy scores to beat your mates and inflate your ego in a completely new
 
 ## What's the URL?
 
-This project is WIP and is not ready for general use yet. Soon! I promise :eyes:
+This project is WIP and is not ready for general use yet. Soon! I promise... :eyes:
 
 ## Tech Stack
 

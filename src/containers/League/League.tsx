@@ -10,29 +10,33 @@ import { useQuery } from "@apollo/client";
 import { UserTotalPoints, WeeklyPoints } from "@/types";
 
 interface Props {
-  userId: number;
   leagueId: number;
 }
 
-const LeagueContainer = ({ userId, leagueId }: Props) => {
+const LeagueContainer = ({ leagueId }: Props) => {
   const [users, setUsers] = useState<UserTotalPoints[]>();
-  const [pointsByWeek, setpointsByWeek] = useState<WeeklyPoints[]>();
+  const [pointsByWeek, setPointsByWeek] = useState<WeeklyPoints[]>();
   const { data, loading, error } = useQuery(LEAGUE_DETAILS, {
-    variables: { input: { userId, leagueId } },
+    variables: { input: { leagueId } },
     onCompleted: ({ leagueDetails }) => {
       setUsers(leagueDetails.users);
-      setpointsByWeek(leagueDetails.pointsByWeek);
+      setPointsByWeek(leagueDetails.pointsByWeek);
     },
   });
 
-  if (loading || !users || !pointsByWeek) return <Loading />;
-  if (error) return <div>An error has occurred. Please try again later.</div>;
+  if (loading) return <Loading />;
+  if (error || !users || !pointsByWeek)
+    return <div>An error has occurred. Please try again later.</div>;
 
   return (
     <Container>
       <Heading level="h1">{data.leagueDetails.leagueName}</Heading>
       <LeagueTable users={users} />
-      <WeeklyScoresTable users={users} pointsByWeek={pointsByWeek} />
+      <WeeklyScoresTable
+        users={users}
+        pointsByWeek={pointsByWeek}
+        leagueId={leagueId}
+      />
     </Container>
   );
 };

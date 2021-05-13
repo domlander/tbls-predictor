@@ -1,6 +1,10 @@
 import { UserInputError, ApolloError } from "apollo-server-micro";
 import prisma from "prisma/client";
-import { FixtureWithPrediction, UserTotalPoints } from "@/types";
+import {
+  FixtureWithPrediction,
+  FixtureWithUsersPredictions,
+  UserTotalPoints,
+} from "@/types";
 import {
   isUserAlreadyBelongToLeague,
   isUserAppliedToLeague,
@@ -117,20 +121,21 @@ const resolvers = {
         lastGameweek,
       };
     },
-    leagueDetails: async (root, { input: { userId, leagueId } }, ctx) => {
+    leagueDetails: async (root, { input: { leagueId } }, ctx) => {
+      if (!ctx.session) throw new ApolloError("User not logged in.");
+
       // Get the logged in user
       const loggedInUser = await prisma.user.findUnique({
         where: {
-          id: userId,
+          id: ctx.session.user.id,
         },
         include: {
           leagues: true,
         },
       });
-      if (!loggedInUser) throw new ApolloError("Cannot find user.");
 
       // If the user is not a member of this league, redirect them to leagues
-      if (!loggedInUser.leagues.some((league) => league.id === leagueId))
+      if (!loggedInUser?.leagues.some((league) => league.id === leagueId))
         throw new ApolloError("Sorry, you are not a member of this league.");
 
       // Get the league details
@@ -176,9 +181,10 @@ const resolvers = {
           totalPoints: usersWeeklyPoints[i].reduce((acc, cur) => acc + cur, 0),
         })
       );
-      users.sort((a, b) => a.totalPoints - b.totalPoints);
+      users.sort((a, b) => b.totalPoints - a.totalPoints);
 
-      // The fill(0) is required because we can't iterate through an array of undefined pointers: https://stackoverflow.com/a/5501711
+      // The fill(0) is required because we can't iterate through an array of undefined pointers:
+      // https://stackoverflow.com/a/5501711
       const pointsByWeek = new Array(numGameweeks).fill(0).map((_, i) => ({
         week: league.gameweekStart + i,
         points: usersWeeklyPoints.map((points) => points[i]),
@@ -188,6 +194,116 @@ const resolvers = {
         leagueName: league.name,
         users,
         pointsByWeek,
+      };
+    },
+    leagueWeek: async (root, { input: { leagueId, weekId } }, ctx) => {
+      if (!ctx.session) throw new ApolloError("User not logged in.");
+
+      // Get the logged in user
+      const loggedInUser = await prisma.user.findUnique({
+        where: {
+          id: ctx.session.user.id,
+        },
+        include: {
+          leagues: true,
+        },
+      });
+      if (!loggedInUser) throw new ApolloError("Cannot find user.");
+
+      // If the user is not a member of this league, redirect them to leagues
+      if (!loggedInUser.leagues.some((league) => league.id === leagueId))
+        throw new ApolloError("Sorry, you are not a member of this league.");
+
+      // Get the fixtures
+      const fixturesFromDb = await prisma.fixture.findMany({
+        select: {
+          id: true,
+          gameweek: true,
+          kickoff: true,
+          homeTeam: true,
+          awayTeam: true,
+          homeGoals: true,
+          awayGoals: true,
+        },
+      });
+
+      const fixtures: FixtureWithUsersPredictions[] = fixturesFromDb.map(
+        (fixture) => ({
+          ...fixture,
+          predictions: [],
+        })
+      );
+
+      // Get the league details
+      const league = await prisma.league.findUnique({
+        where: {
+          id: leagueId,
+        },
+        include: {
+          users: {
+            select: {
+              id: true,
+              username: true,
+              predictions: {
+                select: {
+                  fixtureId: true,
+                  score: true,
+                  homeGoals: true,
+                  awayGoals: true,
+                  fixture: {
+                    select: {
+                      gameweek: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+      if (!league) throw new ApolloError("Cannot find league.");
+
+      league.users.forEach((user) => {
+        fixtures.forEach((fixture) => {
+          const userPrediction = user.predictions.find(
+            (p) => p.fixtureId === fixture.id
+          );
+          if (userPrediction) {
+            fixture.predictions.push([
+              userPrediction.homeGoals,
+              userPrediction.awayGoals,
+            ]);
+          } else {
+            fixture.predictions.push([null, null]);
+          }
+        });
+      });
+      fixtures.sort((a, b) => a.kickoff.getTime() - b.kickoff.getTime());
+
+      const numGameweeks = league.gameweekEnd - league.gameweekStart + 1;
+      const usersWeeklyPoints = league.users.map(({ predictions }) =>
+        predictions
+          .filter((x) => x.fixture.gameweek === weekId)
+          .reduce((acc, cur) => {
+            if (!cur.score) return acc; // if score is null or 0
+            acc[cur.fixture.gameweek - 1] += cur.score;
+            return acc;
+          }, new Array(numGameweeks).fill(0))
+      );
+
+      const users = league.users.map(({ id, username }, i) => ({
+        userId: id,
+        username: username || "",
+        week: weekId,
+        totalPoints: usersWeeklyPoints[i].reduce((acc, cur) => acc + cur, 0),
+      }));
+
+      return {
+        leagueName: league.name,
+        firstGameweek: league.gameweekStart,
+        lastGameweek: league.gameweekEnd,
+        users,
+        fixtures,
       };
     },
   },
@@ -412,6 +528,16 @@ const resolvers = {
     },
   },
   DateTime: dateScalar,
+  User: {
+    predictions: async (root, args, ctx) => {
+      const predictions = await prisma.prediction.findMany({
+        where: {
+          userId: root.id,
+        },
+      });
+      return predictions;
+    },
+  },
 };
 
 export default resolvers;

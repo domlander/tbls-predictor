@@ -1,6 +1,6 @@
 // import { getSession } from "next-auth/client";
 import prisma from "prisma/client";
-import evaluatePrediction from "../../utils/evaluatePrediction";
+import calculatePredictionScore from "../../utils/calculatePredictionScore";
 
 /*
 
@@ -78,7 +78,7 @@ export default async (req, res) => {
 
     const actualResult = [fixture.homeGoals, fixture.awayGoals];
     const predictedResult = [predictedHomeGoals, predictedAwayGoals];
-    const score = evaluatePrediction(predictedResult, actualResult);
+    const score = calculatePredictionScore(predictedResult, actualResult);
 
     evaluatedPredictions.push({
       ...prediction,

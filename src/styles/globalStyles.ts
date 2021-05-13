@@ -42,6 +42,11 @@ const GlobalStyle = createGlobalStyle`
   h3 { font-size: 24px; }
   h4 { font-size: 20px; }
   h5 { font-size: 16px; }
+
+  a {
+    text-decoration: inherit;
+    color: inherit;
+  }
 `;
 
 export default GlobalStyle;

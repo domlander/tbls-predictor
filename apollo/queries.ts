@@ -77,6 +77,32 @@ export const LEAGUE_DETAILS = gql`
   }
 `;
 
+export const LEAGUE_WEEK = gql`
+  query LeagueWeek($input: LeagueWeekInput!) {
+    leagueWeek(input: $input) {
+      leagueName
+      firstGameweek
+      lastGameweek
+      users {
+        userId
+        username
+        week
+        totalPoints
+      }
+      fixtures {
+        id
+        gameweek
+        kickoff
+        homeTeam
+        awayTeam
+        homeGoals
+        awayGoals
+        predictions
+      }
+    }
+  }
+`;
+
 export const LEAGUE = gql`
   query UserLeagues($email: String!) {
     userLeagues(email: $email) {

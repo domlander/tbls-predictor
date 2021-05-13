@@ -13,10 +13,13 @@ export default {
 
   blackblue400: "#151D26",
   blackblue500: "#0D151C",
+  blackblue500opacity50: "#0D151C80",
 
   green300: "#15A71B",
+  green500: "#036305",
 
   gold300: "#B8A006",
+  gold500: "#625504",
 };
 
 export const scoreColours: { [id: number]: string } = {

@@ -1,4 +1,4 @@
-import { days, months, pad } from "@/utils";
+import { days, months, pad } from "../utils";
 
 /*
 

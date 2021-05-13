@@ -9,6 +9,7 @@ const typeDefs = gql`
     leagueAdmin(input: LeagueAdminInput): LeagueAdminPayload
     predictions(input: PredictionsInput): PredictionsPayload
     leagueDetails(input: LeagueDetailsInput): LeagueDetailsPayload
+    leagueWeek(input: LeagueWeekInput): LeagueWeekPayload
   }
 
   type Mutation {
@@ -24,8 +25,20 @@ const typeDefs = gql`
     ): Boolean!
   }
 
+  input LeagueWeekInput {
+    leagueId: Int!
+    weekId: Int!
+  }
+
+  type LeagueWeekPayload {
+    leagueName: String!
+    firstGameweek: Int!
+    lastGameweek: Int!
+    users: [UserTotalPointsWeek]!
+    fixtures: [FixtureWithUsersPredictions!]!
+  }
+
   input LeagueDetailsInput {
-    userId: Int!
     leagueId: Int!
   }
 
@@ -163,9 +176,27 @@ const typeDefs = gql`
     totalPoints: Int!
   }
 
+  type UserTotalPointsWeek {
+    userId: Int!
+    username: String!
+    week: Int!
+    totalPoints: Int!
+  }
+
   type WeeklyPoints {
     week: Int!
     points: [Int!]!
+  }
+
+  type FixtureWithUsersPredictions {
+    id: Int!
+    gameweek: Int!
+    kickoff: DateTime!
+    homeTeam: String!
+    awayTeam: String!
+    homeGoals: Int
+    awayGoals: Int
+    predictions: [[Int]]
   }
 `;
 
