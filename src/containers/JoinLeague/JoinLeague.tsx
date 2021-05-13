@@ -71,7 +71,6 @@ const JoinLeague = () => {
 export default JoinLeague;
 
 const Container = styled.div`
-  width: calc(100% - 32px);
   max-width: 400px;
   margin: 0 auto;
 `;

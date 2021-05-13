@@ -63,42 +63,36 @@ const UpdateResultsPage = ({ fixtures }: Props) => {
   return (
     <>
       <Heading level="h1">Update Results</Heading>
-      <Container>
-        <form onSubmit={handleSubmit}>
-          <Table>
-            {scores.map((score) => (
-              <GridRow
-                key={score.id}
-                fixtureId={score.id}
-                kickoff={formatFixtureKickoffTime(score.kickoff)}
-                homeTeam={score.homeTeam}
-                awayTeam={score.awayTeam}
-                homeGoals={score.homeGoals?.toString() || ""}
-                awayGoals={score.awayGoals?.toString() || ""}
-                updateGoals={updateGoals}
-                locked={false}
-              />
-            ))}
-          </Table>
-          <ButtonContainer>
-            <Button
-              type="submit"
-              colour={colours.blackblue500}
-              backgroundColour={colours.blue100}
-              hoverColour={colours.cyan500}
-            >
-              Save
-            </Button>
-          </ButtonContainer>
-        </form>
-      </Container>
+      <form onSubmit={handleSubmit}>
+        <Table>
+          {scores.map((score) => (
+            <GridRow
+              key={score.id}
+              fixtureId={score.id}
+              kickoff={formatFixtureKickoffTime(score.kickoff)}
+              homeTeam={score.homeTeam}
+              awayTeam={score.awayTeam}
+              homeGoals={score.homeGoals?.toString() || ""}
+              awayGoals={score.awayGoals?.toString() || ""}
+              updateGoals={updateGoals}
+              locked={false}
+            />
+          ))}
+        </Table>
+        <ButtonContainer>
+          <Button
+            type="submit"
+            colour={colours.blackblue500}
+            backgroundColour={colours.blue100}
+            hoverColour={colours.cyan500}
+          >
+            Save
+          </Button>
+        </ButtonContainer>
+      </form>
     </>
   );
 };
-
-const Container = styled.div`
-  margin: 0 8px;
-`;
 
 const ButtonContainer = styled.div`
   margin-top: 16px;

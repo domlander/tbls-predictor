@@ -63,7 +63,6 @@ const LeagueName = styled(Heading)`
 `;
 
 const Container = styled.div`
-  margin: 0 16px 16px;
   display: flex;
   flex-direction: column;
 `;

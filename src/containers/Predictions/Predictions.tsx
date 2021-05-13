@@ -115,8 +115,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  width: calc(100% - 16px);
-  margin-left: 8px;
+  width: 100%;
 `;
 
 export default PredictionsContainer;

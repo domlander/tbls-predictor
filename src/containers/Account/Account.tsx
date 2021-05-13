@@ -60,7 +60,6 @@ const AccountContainer = ({ userId }: Props) => {
 };
 
 const Container = styled.div`
-  margin: auto 16px;
   max-width: 400px;
 `;
 

@@ -103,7 +103,6 @@ const CreateLeague = () => {
 export default CreateLeague;
 
 const Container = styled.div`
-  width: calc(100% - 32px);
   max-width: 400px;
   margin: 0 auto;
   display: flex;

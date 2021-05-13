@@ -32,7 +32,7 @@ const FixtureTable = ({
   if (!predictions?.length) return null;
 
   return (
-    <Container>
+    <>
       <form onSubmit={handleSubmit}>
         <Table>
           {predictions.map((prediction) => {
@@ -79,13 +79,9 @@ const FixtureTable = ({
           </p>
         )}
       </form>
-    </Container>
+    </>
   );
 };
-
-const Container = styled.div`
-  margin: 0 8px;
-`;
 
 const ButtonContainer = styled.div`
   margin-top: 16px;

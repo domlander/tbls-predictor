@@ -23,7 +23,7 @@ const Layout = ({ children }: Props) => {
             handleClick={() => setIsSidebarOpen((isOpen) => !isOpen)}
           />
         ) : null}
-        {children}
+        <InnerContainer>{children}</InnerContainer>
       </MainContent>
       <SidebarContainer isSidebarOpen={isSidebarOpen}>
         <Sidebar
@@ -40,7 +40,10 @@ export default Layout;
 const Container = styled.div`
   display: grid;
   grid-template-columns: [stack] 1fr;
-  // TODO Add a 16px margin and remove margins from everywhere else
+`;
+
+const InnerContainer = styled.div`
+  margin: 0 16px;
 `;
 
 const MainContent = styled.div<{ isSidebarOpen: boolean }>`

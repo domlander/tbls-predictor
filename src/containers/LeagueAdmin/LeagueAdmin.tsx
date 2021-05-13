@@ -31,19 +31,15 @@ const LeagueAdminContainer = ({ userId, leagueId }: Props) => {
   if (error) return <div>An error has occurred. Please try again later.</div>;
 
   return (
-    <Container>
+    <>
       <Heading level="h1">{leagueName}</Heading>
       <Heading level="h2">Admin</Heading>
       <Subtitle>Requests</Subtitle>
       <LeagueApplicants applicants={applicants} leagueId={leagueId} />
       <LeagueParticipants participants={participants} />
-    </Container>
+    </>
   );
 };
-
-const Container = styled.div`
-  margin: 0 16px;
-`;
 
 const Subtitle = styled.h2`
   color: green;
