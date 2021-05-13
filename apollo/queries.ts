@@ -54,7 +54,7 @@ export const PREDICTIONS = gql`
         awayGoals
         predictedHomeGoals
         predictedAwayGoals
-        predictedScore
+        predictionScore
       }
     }
   }

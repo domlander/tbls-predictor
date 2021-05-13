@@ -1,6 +1,13 @@
 const minutesBeforeKickoff = 90;
 
-const isPastDeadline = (kickoff: Date) => {
+const isPastDeadline = (input: Date | string) => {
+  let kickoff;
+  if (typeof kickoff === "string") {
+    kickoff = new Date(kickoff);
+  } else {
+    kickoff = input;
+  }
+
   const now = new Date();
   const kickOffDate = new Date(kickoff);
   const deadline = new Date(

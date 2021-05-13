@@ -167,7 +167,7 @@ const typeDefs = gql`
     awayGoals: Int
     predictedHomeGoals: Int
     predictedAwayGoals: Int
-    predictedScore: Int
+    predictionScore: Int
   }
 
   type UserTotalPoints {

@@ -38,14 +38,14 @@ const GridRow = ({
     <GridItem locked={locked} label={kickoff} alignText="center" />
     <GridItem locked={locked} label={homeTeam} alignText="right" chip={chip} />
     <ScoreInput
-      isScoreEditable
+      isScoreEditable={!locked}
       fixtureId={fixtureId}
       goals={homeGoals}
       isHome
       updateGoals={updateGoals}
     />
     <ScoreInput
-      isScoreEditable
+      isScoreEditable={!locked}
       fixtureId={fixtureId}
       goals={awayGoals}
       isHome={false}

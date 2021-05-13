@@ -110,7 +110,7 @@ const resolvers = {
           awayGoals: fixture.awayGoals,
           predictedHomeGoals: prediction?.homeGoals?.toString() || null,
           predictedAwayGoals: prediction?.awayGoals?.toString() || null,
-          predictionScore: prediction?.score || null,
+          predictionScore: prediction?.score ?? null,
         });
       });
 
@@ -166,12 +166,13 @@ const resolvers = {
       if (!league) throw new ApolloError("Cannot find league.");
 
       const numGameweeks = league.gameweekEnd - league.gameweekStart + 1;
-      const usersWeeklyPoints = league.users.map(({ predictions }) =>
-        predictions.reduce((acc, cur) => {
-          if (!cur.score) return acc; // if score is null or 0
-          acc[cur.fixture.gameweek - 1] += cur.score;
-          return acc;
-        }, new Array(numGameweeks).fill(0))
+      const usersWeeklyPoints: number[][] = league.users.map(
+        ({ predictions }) =>
+          predictions.reduce((acc, cur) => {
+            if (!cur.score) return acc; // if score is null or 0
+            acc[cur.fixture.gameweek - 1] += cur.score;
+            return acc;
+          }, new Array(numGameweeks).fill(0))
       );
 
       const users: UserTotalPoints[] = league.users.map(

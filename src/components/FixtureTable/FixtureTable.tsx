@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import colours from "@/styles/colours";
 import { FixtureWithPrediction } from "@/types";
-import { formatFixtureKickoffTime, isGameweekComplete } from "@/utils";
+import { formatFixtureKickoffTime } from "@/utils";
 import { calculateGameweekScore } from "utils/calculateGameweekScore";
 import isPastDeadline from "utils/isPastDeadline";
 import GridRow from "../molecules/GridRow";
@@ -47,8 +47,8 @@ const FixtureTable = ({
                 kickoff={formatFixtureKickoffTime(prediction.kickoff)}
                 homeTeam={prediction.homeTeam}
                 awayTeam={prediction.awayTeam}
-                homeGoals={prediction?.predictedHomeGoals || ""}
-                awayGoals={prediction?.predictedAwayGoals || ""}
+                homeGoals={prediction?.predictedHomeGoals ?? ""}
+                awayGoals={prediction?.predictedAwayGoals ?? ""}
                 updateGoals={updateGoals}
                 chip={chip}
                 locked={!isAlwaysEditable && isPastDeadline(prediction.kickoff)}
@@ -56,7 +56,10 @@ const FixtureTable = ({
             );
           })}
         </Table>
-        {isAlwaysEditable || !isGameweekComplete(predictions) ? (
+        {isAlwaysEditable ||
+        predictions.some(
+          (prediction) => !isPastDeadline(prediction.kickoff)
+        ) ? (
           <ButtonContainer>
             <Button
               type="submit"
