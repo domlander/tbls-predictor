@@ -1,1 +1,1 @@
-export { default, perfectChip, correctChip } from "./Chip";
+export { default } from "./Chip";

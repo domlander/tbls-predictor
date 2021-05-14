@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 
-import colours from "@/styles/colours";
-import Button from "../atoms/Button";
-import FormInput from "../atoms/FormInput";
+import colours from "../../../styles/colours";
+import Button from "../../atoms/Button";
+import FormInput from "../../atoms/FormInput";
 
-interface Props {
+export interface Props {
   username: string;
   setUsername: any;
   isFormDisabled: boolean;
@@ -20,7 +20,7 @@ const FixtureTable = ({
   userFeedback,
   handleSubmit,
 }: Props) => (
-  <>
+  <Container>
     <h2>Change username</h2>
     <form onSubmit={handleSubmit}>
       <Label>
@@ -47,8 +47,12 @@ const FixtureTable = ({
       </ButtonContainer>
       {userFeedback && <Feedback>{userFeedback}</Feedback>}
     </form>
-  </>
+  </Container>
 );
+
+const Container = styled.div`
+  max-width: 450px;
+`;
 
 const Label = styled.label`
   display: flex;
@@ -58,6 +62,7 @@ const Label = styled.label`
 
 const LabelText = styled.p`
   font-size: 16px;
+  margin-right: 10px;
 `;
 
 const ButtonContainer = styled.div`

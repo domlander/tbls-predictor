@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { Story, Meta } from "@storybook/react";
 import styled from "styled-components";
+import { Story, Meta } from "@storybook/react";
 import GridRow from "./GridRow";
-import { correctChip, perfectChip } from "../../atoms/Chip";
+import colours from "../../../styles/colours";
 
 // 👇 This default export determines where your story goes in the story list
 export default {
@@ -30,7 +30,10 @@ export default {
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: 72px 1fr 30px 30px 1fr;
+  grid-template-columns: 7em 1fr auto auto 1fr;
+  background: ${colours.grey200};
+  outline: 0.1em solid ${colours.grey200};
+  grid-gap: 0.1em;
 `;
 
 const sharedArgs = {
@@ -46,21 +49,29 @@ const Template: Story = (args) => <GridRow {...args} {...sharedArgs} />;
 export const PreDeadline = Template.bind({});
 PreDeadline.args = {
   locked: false,
+  predictionScore: 0,
 };
 
 export const NoChip = Template.bind({});
 NoChip.args = {
+  homeGoals: 1,
+  awayGoals: 1,
   locked: true,
+  predictionScore: 0,
 };
 
 export const Perfect = Template.bind({});
 Perfect.args = {
-  chip: perfectChip,
+  homeGoals: 3,
+  awayGoals: 1,
   locked: true,
+  predictionScore: 3,
 };
 
 export const Correct = Template.bind({});
 Correct.args = {
-  chip: correctChip,
+  homeGoals: 2,
+  awayGoals: 1,
   locked: true,
+  predictionScore: 1,
 };

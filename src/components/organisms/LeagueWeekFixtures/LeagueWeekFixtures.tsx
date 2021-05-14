@@ -6,6 +6,7 @@ import Link from "next/link";
 import { formatFixtureKickoffTime } from "../../../utils/formatFixtureKickoffTime";
 import calculatePredictionScore from "../../../../utils/calculatePredictionScore";
 import colours from "../../../styles/colours";
+import pageSizes from "../../../styles/pageSizes";
 
 export type Props = {
   fixtures: FixtureWithUsersPredictions[];
@@ -36,25 +37,25 @@ const LeagueWeekFixtures = ({ fixtures, weekId }: Props) => (
             </ClickableFixture>
           )}
         </FixtureRow>
-        <PredictionRow>
-          {fixture.predictions.every(
-            (prediction) => prediction[0] !== null && prediction[1] !== null
-          ) &&
-          fixture.homeGoals !== null &&
-          fixture.awayGoals !== null
-            ? fixture.predictions.map((prediction, i) => {
-                const score = calculatePredictionScore(prediction, [
-                  fixture.homeGoals as number,
-                  fixture.awayGoals as number,
-                ]);
-                return (
-                  <Prediction key={i} score={score}>
-                    {prediction[0]} - {prediction[1]}
-                  </Prediction>
-                );
-              })
-            : null}
-        </PredictionRow>
+        {fixture.predictions.every(
+          (prediction) => prediction[0] !== null && prediction[1] !== null
+        ) &&
+        fixture.homeGoals !== null &&
+        fixture.awayGoals !== null ? (
+          <PredictionRow>
+            {fixture.predictions.map((prediction, i) => {
+              const score = calculatePredictionScore(prediction, [
+                fixture.homeGoals as number,
+                fixture.awayGoals as number,
+              ]);
+              return (
+                <Prediction key={i} score={score}>
+                  {prediction[0]} - {prediction[1]}
+                </Prediction>
+              );
+            })}
+          </PredictionRow>
+        ) : null}
       </Container>
     ))}
   </>
@@ -79,13 +80,18 @@ const FixtureRow = styled.div`
 const Kickoff = styled.div`
   flex-basis: 100px;
   text-align: center;
+  align-self: center;
   font-size: 13px;
 `;
 
 const Fixture = styled.div`
   flex-basis: 100%;
   text-align: center;
-  font-size: 15px;
+  font-size: 18px;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    font-size: 15px;
+  }
 `;
 
 const ClickableFixture = styled(Fixture)`

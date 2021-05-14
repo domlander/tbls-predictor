@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 
-import colours from "@/styles/colours";
 import { UserTotalPoints, WeeklyPoints } from "@/types";
+import colours from "../../../styles/colours";
 
-interface Props {
+export interface Props {
   users: UserTotalPoints[];
   pointsByWeek: WeeklyPoints[];
   leagueId: number;
@@ -14,7 +14,7 @@ interface Props {
 const maxUsernameLength = 5;
 
 const LeagueTable = ({ users, pointsByWeek, leagueId }: Props) => (
-  <Container>
+  <Container numUsers={users.length}>
     <HeaderItemBlank />
     {users.map(({ userId, username }) => (
       <HeaderItem key={userId}>
@@ -42,13 +42,13 @@ const LeagueTable = ({ users, pointsByWeek, leagueId }: Props) => (
   </Container>
 );
 
-const Container = styled.div`
-  max-width: 500px;
+const Container = styled.div<{ numUsers: number }>`
+  width: fit-content;
   background: ${colours.blackblue500};
   margin: 4em auto;
   font-size: 16px;
   display: grid;
-  grid-template-columns: 6em 4.5em 4.5em;
+  grid-template-columns: ${({ numUsers }) => `6em repeat(${numUsers}, 4.5em)`};
   grid-auto-rows: 2.5em;
   border-bottom: 1px solid ${colours.grey500};
   border-right: 1px solid ${colours.grey500};

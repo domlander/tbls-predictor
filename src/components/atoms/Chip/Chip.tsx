@@ -1,30 +1,20 @@
 import React from "react";
-import { ChipType } from "src/types/ChipType";
 import styled from "styled-components";
-import colours from "../../../styles/colours";
-
-export const perfectChip: ChipType = {
-  label: "PERFECT",
-  backgroundColour: colours.gold300,
-};
-
-export const correctChip: ChipType = {
-  label: "CORRECT",
-  backgroundColour: colours.green300,
-};
 
 export interface Props {
-  chipType: ChipType;
+  label: string;
+  colour: string;
+  backgroundColour: string;
 }
 
-const Chip = ({ chipType }: Props) => (
-  <ChipOuter chipType={chipType}>
-    <ChipInner>{chipType.label}</ChipInner>
-  </ChipOuter>
+const Chip = ({ label, colour, backgroundColour }: Props) => (
+  <Container backgroundColour={backgroundColour}>
+    <Label colour={colour}>{label}</Label>
+  </Container>
 );
 
-const ChipOuter = styled.div<Props>`
-  background-color: ${({ chipType }) => chipType.backgroundColour};
+const Container = styled.div<{ backgroundColour: Props["backgroundColour"] }>`
+  background-color: ${({ backgroundColour }) => backgroundColour};
   border-radius: 0.6em;
   display: flex;
   justify-content: center;
@@ -33,8 +23,8 @@ const ChipOuter = styled.div<Props>`
   width: 4.2em;
 `;
 
-const ChipInner = styled.div`
-  color: ${colours.grey100};
+const Label = styled.div<{ colour: Props["colour"] }>`
+  color: ${({ colour }) => colour};
   height: 1.2em;
   font-size: 0.8em;
   text-align: center;

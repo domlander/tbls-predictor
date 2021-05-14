@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
+import Image from "next/image";
 import { useQuery } from "@apollo/client";
 
 import { LEAGUE_WEEK } from "apollo/queries";
@@ -10,6 +11,8 @@ import WeekNavigator from "@/components/molecules/WeekNavigator";
 import LeagueWeekUserTotals from "@/components/molecules/LeagueWeekUserTotals";
 import LeagueWeekFixtures from "@/components/organisms/LeagueWeekFixtures";
 import { FixtureWithUsersPredictions, UserTotalPointsWeek } from "@/types";
+import colours from "@/styles/colours";
+import pageSizes from "@/styles/pageSizes";
 
 interface Props {
   leagueId: number;
@@ -39,9 +42,15 @@ const LeagueContainer = ({ leagueId, weekId }: Props) => {
   return (
     <Container>
       <Link href={`/league/${leagueId}`}>
-        <a>
+        <A>
+          <Image
+            src="/images/ArrowBack.svg"
+            alt="Go back to league page"
+            width="30"
+            height="44"
+          />
           <LeagueName level="h3">{leagueName}</LeagueName>
-        </a>
+        </A>
       </Link>
       <WeekNavigator
         week={weekId}
@@ -59,10 +68,26 @@ const LeagueContainer = ({ leagueId, weekId }: Props) => {
 };
 
 const LeagueName = styled(Heading)`
-  margin-bottom: 0;
+  margin-left: 10px;
+  font-style: italic;
+`;
+
+const A = styled.a`
+  display: flex;
+  cursor: pointer;
+
+  > * {
+    :hover,
+    :focus {
+      color: ${colours.blue100};
+      text-decoration: underline;
+    }
+  }
 `;
 
 const Container = styled.div`
+  max-width: ${pageSizes.tablet};
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
 `;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import WeeklyScoresTable from "@/components/WeeklyScoresTable";
+import WeeklyScoresTable from "@/components/organisms/WeeklyScoresTable";
 import LeagueTable from "@/components/LeagueTable";
 import Heading from "@/components/atoms/Heading";
 import { LEAGUE_DETAILS } from "apollo/queries";
@@ -42,8 +42,8 @@ const LeagueContainer = ({ leagueId }: Props) => {
 };
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
 `;
 
 export default LeagueContainer;

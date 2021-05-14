@@ -44,7 +44,6 @@ const ScoreInputStyles = styled.input<StyleProps>`
   font-size: 1em;
   text-align: center;
   border: 0;
-  height: 2.8em;
   width: 2.4em;
   background-color: ${colours.blackblue400};
   :focus {

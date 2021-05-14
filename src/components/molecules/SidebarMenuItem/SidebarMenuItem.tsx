@@ -33,6 +33,7 @@ const A = styled.a`
   :hover,
   :focus {
     text-decoration: underline;
+    color: ${colours.blue100};
   }
 `;
 

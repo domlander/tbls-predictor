@@ -1,13 +1,10 @@
 import React from "react";
 import { Fixture } from "@prisma/client";
 
-import { ChipType } from "src/types/ChipType";
 import GridItem from "../../atoms/GridItem";
 import ScoreInput from "../../atoms/ScoreInput";
 
-interface StyleProps {}
-
-export type Props = StyleProps & {
+export type Props = {
   fixtureId: Fixture["id"];
   kickoff: string;
   homeTeam: Fixture["homeTeam"];
@@ -19,7 +16,7 @@ export type Props = StyleProps & {
     isHomeTeam: boolean,
     homeGoals: string
   ) => void;
-  chip?: ChipType;
+  predictionScore?: number;
   locked: boolean;
 };
 
@@ -31,12 +28,17 @@ const GridRow = ({
   awayTeam,
   awayGoals,
   updateGoals,
-  chip,
+  predictionScore,
   locked,
 }: Props) => (
   <>
     <GridItem locked={locked} label={kickoff} alignText="center" />
-    <GridItem locked={locked} label={homeTeam} alignText="right" chip={chip} />
+    <GridItem
+      locked={locked}
+      label={homeTeam}
+      alignText="right"
+      predictionScore={predictionScore}
+    />
     <ScoreInput
       isScoreEditable={!locked}
       fixtureId={fixtureId}

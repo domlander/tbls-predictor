@@ -1,6 +1,8 @@
 import React from "react";
 import Link from "next/link";
 import styled from "styled-components";
+
+import pageSizes from "../../../styles/pageSizes";
 import UserIcon from "../../atoms/UserIcon";
 import colours from "../../../styles/colours";
 
@@ -27,11 +29,17 @@ const HeaderBar = ({ initial, handleClick }: Props) => (
 
 const Container = styled.div`
   width: 100%;
-  height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: ${colours.blackblue500};
+  height: 70px;
+  font-size: 14px;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    font-size: 12px;
+    height: 60px;
+  }
 `;
 
 const HeaderLinks = styled.div``;
@@ -44,6 +52,12 @@ const HeaderLink = styled.a`
   margin-left: 40px;
   :first-child {
     margin-left: 16px;
+  }
+
+  :hover,
+  :focus {
+    color: ${colours.blue100};
+    text-decoration: underline;
   }
 `;
 

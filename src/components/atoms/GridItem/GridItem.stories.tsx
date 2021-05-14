@@ -1,7 +1,6 @@
 import React from "react";
 import { Story, Meta } from "@storybook/react";
 import GridItem from "./GridItem";
-import { correctChip } from "../Chip";
 
 // 👇 This default export determines where your story goes in the story list
 export default {
@@ -30,5 +29,5 @@ HomeTeamWithChip.args = {
   label: "Manchester United",
   alignText: "right",
   locked: false,
-  chip: correctChip,
+  predictionScore: 3,
 };

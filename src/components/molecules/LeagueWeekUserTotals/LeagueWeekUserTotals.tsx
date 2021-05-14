@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import React from "react";
 import { UserTotalPointsWeek } from "@/types";
+import pageSizes from "../../../styles/pageSizes";
 import colours from "../../../styles/colours";
 
 export type Props = {
@@ -20,6 +21,7 @@ const LeagueWeekUserTotals = ({ users }: Props) => (
 
 const Container = styled.div<{ numUsers: number }>`
   width: 100%;
+  margin: 8px auto;
   background-color: ${colours.blackblue500opacity50};
   display: grid;
   grid-template-columns: ${({ numUsers }) => `repeat(${numUsers}, 1fr)`};
@@ -29,9 +31,13 @@ const Container = styled.div<{ numUsers: number }>`
 
 const Username = styled.div`
   margin-top: 12px;
-  font-size: 13px;
   text-decoration: underline;
   text-underline-offset: 3px;
+  font-size: 16px;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    font-size: 13px;
+  }
 `;
 
 const Total = styled.div`

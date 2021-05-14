@@ -22,7 +22,7 @@ const LeagueTable = ({ users }: Props) => (
 );
 
 const Container = styled.div`
-  margin: 0 auto;
+  margin: 16px auto 0;
   max-width: 380px;
   width: max(75%, 280px);
   font-size: 14px;

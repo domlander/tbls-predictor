@@ -30,11 +30,7 @@ const Sidebar = ({ username, handleClick }: Props) => (
       label="Create league"
       url="/league/create"
     />
-    <SidebarMenuItem
-      onClick={handleClick}
-      label="Change username"
-      url="/account"
-    />
+    <SidebarMenuItem onClick={handleClick} label="Account" url="/account" />
     <SidebarMenuItem onClick={signOut} label="Sign out" url="/signIn" />
   </Container>
 );
@@ -42,6 +38,7 @@ const Sidebar = ({ username, handleClick }: Props) => (
 const Container = styled.div`
   height: 100vh;
   width: 70%;
+  max-width: 400px;
   position: absolute;
   top: 0;
   right: 0;

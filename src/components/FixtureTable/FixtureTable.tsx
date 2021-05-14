@@ -7,7 +7,6 @@ import { formatFixtureKickoffTime } from "@/utils";
 import { calculateGameweekScore } from "utils/calculateGameweekScore";
 import isPastDeadline from "utils/isPastDeadline";
 import GridRow from "../molecules/GridRow";
-import { correctChip, perfectChip } from "../atoms/Chip/Chip";
 import Button from "../atoms/Button";
 
 interface Props {
@@ -35,26 +34,20 @@ const FixtureTable = ({
     <>
       <form onSubmit={handleSubmit}>
         <Table>
-          {predictions.map((prediction) => {
-            let chip;
-            if (prediction?.predictionScore === 3) chip = perfectChip;
-            if (prediction?.predictionScore === 1) chip = correctChip;
-
-            return (
-              <GridRow
-                key={prediction.fixtureId}
-                fixtureId={prediction.fixtureId}
-                kickoff={formatFixtureKickoffTime(prediction.kickoff)}
-                homeTeam={prediction.homeTeam}
-                awayTeam={prediction.awayTeam}
-                homeGoals={prediction?.predictedHomeGoals ?? ""}
-                awayGoals={prediction?.predictedAwayGoals ?? ""}
-                updateGoals={updateGoals}
-                chip={chip}
-                locked={!isAlwaysEditable && isPastDeadline(prediction.kickoff)}
-              />
-            );
-          })}
+          {predictions.map((prediction) => (
+            <GridRow
+              key={prediction.fixtureId}
+              fixtureId={prediction.fixtureId}
+              kickoff={formatFixtureKickoffTime(prediction.kickoff)}
+              homeTeam={prediction.homeTeam}
+              awayTeam={prediction.awayTeam}
+              homeGoals={prediction?.predictedHomeGoals ?? ""}
+              awayGoals={prediction?.predictedAwayGoals ?? ""}
+              updateGoals={updateGoals}
+              predictionScore={prediction?.predictionScore || undefined}
+              locked={!isAlwaysEditable && isPastDeadline(prediction.kickoff)}
+            />
+          ))}
         </Table>
         {isAlwaysEditable ||
         predictions.some(

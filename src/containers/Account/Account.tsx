@@ -6,7 +6,7 @@ import { USER } from "apollo/queries";
 import { UPDATE_USERNAME } from "apollo/mutations";
 import Heading from "@/components/atoms/Heading";
 import Loading from "@/components/atoms/Loading";
-import ChangeUsernameForm from "@/components/ChangeUsernameForm";
+import ChangeUsernameForm from "@/components/organisms/ChangeUsernameForm";
 
 const AccountContainer = () => {
   const [currentUsername, setCurrentUsername] = useState();
@@ -56,7 +56,8 @@ const AccountContainer = () => {
 };
 
 const Container = styled.div`
-  max-width: 400px;
+  max-width: 560px;
+  margin: 0 auto;
 `;
 
 export default AccountContainer;

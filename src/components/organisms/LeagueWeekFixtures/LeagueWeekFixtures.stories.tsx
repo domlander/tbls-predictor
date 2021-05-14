@@ -4,7 +4,7 @@ import LeagueWeekFixtures, { Props } from "./LeagueWeekFixtures";
 
 // 👇 This default export determines where your story goes in the story list
 export default {
-  title: "Molecules/LeagueWeekFixtures",
+  title: "Organisms/LeagueWeekFixtures",
   component: LeagueWeekFixtures,
 } as Meta;
 
