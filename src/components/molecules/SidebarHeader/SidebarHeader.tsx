@@ -17,13 +17,15 @@ const SidebarHeader = ({ username, handleClick }: Props) => (
         {username.length > 16 ? `${username.substring(0, 14)}...` : username}
       </Username>
     </User>
-    <Icon
-      onClick={handleClick}
-      src="/images/Cross.svg"
-      alt="exit"
-      width="18.5"
-      height="19.5"
-    />
+    <IconContainer>
+      <Icon
+        onClick={handleClick}
+        src="/images/Cross.svg"
+        alt="exit"
+        width="18.5"
+        height="19.5"
+      />
+    </IconContainer>
   </Container>
 );
 
@@ -37,9 +39,9 @@ const Container = styled.div`
 `;
 
 const User = styled.div`
-  margin-left: 16px;
   display: flex;
   align-items: center;
+  padding-left: 16px;
 `;
 
 const Username = styled.p`
@@ -49,8 +51,13 @@ const Username = styled.p`
   font-weight: 400;
 `;
 
+const IconContainer = styled.div`
+  padding-right: 16px;
+  display: flex;
+  align-items: center;
+`;
+
 const Icon = styled(Image)`
-  margin-right: 16px;
   cursor: pointer;
 `;
 

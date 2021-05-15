@@ -2,9 +2,10 @@ import React from "react";
 import { signOut } from "next-auth/client";
 import styled from "styled-components";
 
-import colours from "../../../styles/colours";
 import SidebarHeader from "../SidebarHeader";
 import SidebarMenuItem from "../SidebarMenuItem";
+import pageSizes from "../../../styles/pageSizes";
+import colours from "../../../styles/colours";
 
 export type Props = {
   username: string;
@@ -14,24 +15,30 @@ export type Props = {
 const Sidebar = ({ username, handleClick }: Props) => (
   <Container>
     <SidebarHeader username={username} handleClick={handleClick} />
-    <SidebarMenuItem
-      onClick={handleClick}
-      label="Predictions"
-      url="/predictions"
-    />
-    <SidebarMenuItem onClick={handleClick} label="My leagues" url="/leagues" />
-    <SidebarMenuItem
-      onClick={handleClick}
-      label="Join league"
-      url="/league/join"
-    />
-    <SidebarMenuItem
-      onClick={handleClick}
-      label="Create league"
-      url="/league/create"
-    />
-    <SidebarMenuItem onClick={handleClick} label="Account" url="/account" />
-    <SidebarMenuItem onClick={signOut} label="Sign out" url="/signIn" />
+    <SidebarItemsContainer>
+      <SidebarMenuItem
+        onClick={handleClick}
+        label="Predictions"
+        url="/predictions"
+      />
+      <SidebarMenuItem
+        onClick={handleClick}
+        label="My leagues"
+        url="/leagues"
+      />
+      <SidebarMenuItem
+        onClick={handleClick}
+        label="Join league"
+        url="/league/join"
+      />
+      <SidebarMenuItem
+        onClick={handleClick}
+        label="Create league"
+        url="/league/create"
+      />
+      <SidebarMenuItem onClick={handleClick} label="Account" url="/account" />
+      <SidebarMenuItem onClick={signOut} label="Sign out" url="/signIn" />
+    </SidebarItemsContainer>
   </Container>
 );
 
@@ -43,7 +50,14 @@ const Container = styled.div`
   top: 0;
   right: 0;
   background-color: ${colours.blackblue500};
-  padding-right: 16px;
+
+  @media (max-width: ${pageSizes.mobileM}) {
+    width: 100%;
+  }
+`;
+
+const SidebarItemsContainer = styled.div`
+  margin-right: 16px;
 `;
 
 export default Sidebar;

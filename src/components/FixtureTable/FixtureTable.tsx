@@ -59,7 +59,6 @@ const FixtureTable = ({
             </Button>
           </ButtonContainer>
         ) : (
-          // TODO: Show the user what they actually scored
           <p>
             {gameweekScore
               ? `Result: ${gameweekScore} points`
