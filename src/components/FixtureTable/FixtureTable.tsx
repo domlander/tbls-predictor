@@ -54,12 +54,7 @@ const FixtureTable = ({
           (prediction) => !isPastDeadline(prediction.kickoff)
         ) ? (
           <ButtonContainer>
-            <Button
-              type="submit"
-              colour={colours.blackblue500}
-              backgroundColour={colours.blue100}
-              hoverColour={colours.cyan500}
-            >
+            <Button type="submit" variant="primary">
               Save
             </Button>
           </ButtonContainer>

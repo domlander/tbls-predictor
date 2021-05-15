@@ -30,18 +30,10 @@ const FixtureTable = ({
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           maxLength={20}
-          width="12em" // TODO: Should be variable width. Standardise this
-          height="2.4em"
         />
       </Label>
       <ButtonContainer>
-        <Button
-          type="submit"
-          disabled={isFormDisabled}
-          colour={colours.blackblue500}
-          backgroundColour={colours.blue100}
-          hoverColour={colours.cyan500}
-        >
+        <Button type="submit" disabled={isFormDisabled} variant="primary">
           Change
         </Button>
       </ButtonContainer>

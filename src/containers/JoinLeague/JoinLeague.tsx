@@ -47,19 +47,11 @@ const JoinLeague = () => {
             pattern="[0-9]*"
             onChange={(e) => setLeagueId(e.target.value.replace(/\D/, ""))}
             value={leagueId}
-            width="10em" // TODO can we change this? I want it to have variable width depending on screen size, up to a max
-            height="2.4em"
           />
         </Label>
         {userFeedback && !loading && <Feedback>{userFeedback}</Feedback>}
         <ButtonContainer>
-          <Button
-            type="submit"
-            disabled={loading}
-            colour={colours.blackblue500}
-            backgroundColour={colours.blue100}
-            hoverColour={colours.cyan500}
-          >
+          <Button type="submit" disabled={loading} variant="primary">
             {loading ? "Loading..." : "Join"}
           </Button>
         </ButtonContainer>

@@ -1,11 +1,25 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
+import colours from "../../../styles/colours";
+
+const variants = {
+  primary: {
+    backgroundColour: colours.blue100,
+    hoverColour: colours.cyan500,
+    colour: colours.blackblue500,
+    disabledColour: colours.blackblue400,
+  },
+  secondary: {
+    backgroundColour: colours.grey200,
+    hoverColour: colours.grey400,
+    colour: colours.blackblue400,
+    disabledColour: colours.blackblue400,
+  },
+};
 
 interface StyleProps {
-  backgroundColour: string;
-  colour: string;
   disabled?: boolean;
-  hoverColour: string;
+  variant: "primary" | "secondary";
 }
 
 export type Props = StyleProps & {
@@ -16,21 +30,17 @@ export type Props = StyleProps & {
 };
 
 const Button = ({
-  backgroundColour,
-  hoverColour,
+  variant,
   children,
   className,
-  colour,
   disabled = false,
   handleClick,
   type = "button",
 }: Props) => (
   <ButtonStyles
-    backgroundColour={backgroundColour}
+    variant={variant}
     className={className}
-    colour={colour}
     disabled={disabled}
-    hoverColour={hoverColour}
     onClick={handleClick}
     type={type}
   >
@@ -39,26 +49,29 @@ const Button = ({
 );
 
 const ButtonStyles = styled.button<StyleProps>`
-  background-color: ${({ backgroundColour }) => backgroundColour};
+  background-color: ${({ variant }) => variants[variant].backgroundColour};
   border-radius: 0.1em;
   border: 0;
-  color: ${({ colour }) => colour};
+  color: ${({ disabled, variant }) =>
+    disabled ? variants[variant].disabledColour : variants[variant].colour};
   cursor: pointer;
   font-size: 2.4em;
   height: 1.8em;
   opacity: ${({ disabled }) => (disabled ? "50%" : "100%")};
   width: 100%;
-  :focus,
   :hover {
     outline: none;
-    border: 0.1em solid ${({ hoverColour }) => hoverColour};
+    background-color: ${({ disabled, variant }) =>
+      disabled
+        ? variants[variant].backgroundColour
+        : variants[variant].hoverColour};
   }
   :active {
     height: 1.7em;
     width: calc(100% - 0.1em);
     margin-top: 0.05em;
     margin-left: 0.05em;
-    background-color: ${({ hoverColour }) => hoverColour};
+    background-color: ${({ variant }) => variants[variant].hoverColour};
   }
 `;
 

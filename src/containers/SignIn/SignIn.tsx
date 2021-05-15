@@ -12,13 +12,7 @@ const SignInContainer = () => (
     <Heading level="h1">TBLS Predictor</Heading>
     <Image width={748} height={632} src="/images/kidsWithFootball.jpg" />
     <ButtonContainer>
-      <Button
-        handleClick={() => signIn()}
-        type="button"
-        colour={colours.blackblue400}
-        backgroundColour={colours.grey200}
-        hoverColour={colours.grey400}
-      >
+      <Button handleClick={() => signIn()} type="button" variant="secondary">
         Sign in
       </Button>
     </ButtonContainer>

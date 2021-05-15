@@ -9,7 +9,7 @@ export default {
 
   blue100: "#66FCF1",
 
-  cyan500: "#039389",
+  cyan500: "#0cb3a7",
 
   blackblue400: "#151D26",
   blackblue500: "#0D151C",

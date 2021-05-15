@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import Chip from "../Chip";
 import colours from "../../../styles/colours";
-import PerfectChip from "../Chip/PerfectChip";
-import CorrectChip from "../Chip/CorrectChip";
 
 interface StyleProps {
   alignText: "left" | "center" | "right";
@@ -20,7 +19,7 @@ const GridItem = ({ label, predictionScore, alignText, locked }: Props) => (
       <p>{label}</p>
       {(predictionScore === 3 || predictionScore === 1) && (
         <ChipContainer>
-          {predictionScore === 3 ? <PerfectChip /> : <CorrectChip />}
+          <Chip variant={predictionScore === 3 ? "perfect" : "correct"} />
         </ChipContainer>
       )}
     </Container>

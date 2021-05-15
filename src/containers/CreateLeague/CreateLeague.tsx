@@ -58,8 +58,6 @@ const CreateLeague = () => {
             <FormInput
               value={leagueName}
               onChange={(e) => setLeagueName(e.target.value)}
-              width="12em" // TODO: Should be variable width. Standardise this
-              height="2.4em"
             />
           </Label>
           {/* TODO: Find components for these when decided on a design */}
@@ -84,13 +82,7 @@ const CreateLeague = () => {
           {/* TODO: end */}
           {userFeedback && !loading && <Feedback>{userFeedback}</Feedback>}
           <ButtonContainer>
-            <Button
-              type="submit"
-              disabled={loading}
-              colour={colours.blackblue500}
-              backgroundColour={colours.blue100}
-              hoverColour={colours.cyan500}
-            >
+            <Button type="submit" disabled={loading} variant="primary">
               {loading ? "Loading..." : "Create"}
             </Button>
           </ButtonContainer>
