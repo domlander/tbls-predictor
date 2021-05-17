@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-import colours from "../../../styles/colours";
 import Button from "../../atoms/Button";
 import FormInput from "../../atoms/FormInput";
 
@@ -13,7 +12,7 @@ export interface Props {
   handleSubmit: any;
 }
 
-const FixtureTable = ({
+const ChangeUsernameForm = ({
   username,
   setUsername,
   isFormDisabled,
@@ -66,4 +65,4 @@ const Feedback = styled.p`
   font-style: italic;
 `;
 
-export default FixtureTable;
+export default ChangeUsernameForm;

@@ -13,7 +13,7 @@ export interface Props {
 
 const maxUsernameLength = 5;
 
-const LeagueTable = ({ users, pointsByWeek, leagueId }: Props) => (
+const WeeklyScoresTable = ({ users, pointsByWeek, leagueId }: Props) => (
   <Container numUsers={users.length}>
     <HeaderItemBlank />
     {users.map(({ userId, username }) => (
@@ -92,4 +92,4 @@ const FooterItem = styled.div`
   font-weight: 700;
 `;
 
-export default LeagueTable;
+export default WeeklyScoresTable;

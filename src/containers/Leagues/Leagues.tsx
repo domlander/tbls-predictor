@@ -1,20 +1,18 @@
 import React, { useState } from "react";
-import Link from "next/link";
-import styled from "styled-components";
 
 import { League } from "@prisma/client";
 import { useQuery } from "@apollo/client";
 import { USER_LEAGUES } from "apollo/queries";
 import Heading from "@/components/atoms/Heading";
 import Loading from "@/components/atoms/Loading";
-import colours from "@/styles/colours";
+import LeaguesList from "@/components/molecules/LeagueList";
 
 interface Props {
   userId: number;
 }
 
 const LeaguesContainer = ({ userId }: Props) => {
-  const [leagues, setLeagues] = useState([]);
+  const [leagues, setLeagues] = useState<League[]>([]);
 
   const { loading, error } = useQuery(USER_LEAGUES, {
     variables: { id: userId },
@@ -27,40 +25,9 @@ const LeaguesContainer = ({ userId }: Props) => {
   return (
     <>
       <Heading level="h1">Leagues</Heading>
-      {leagues?.length ? (
-        <>
-          <div>
-            {leagues.map(({ id, name }: League) => (
-              <div key={id}>
-                <LeagueContainer>
-                  <Link href={`/league/${id}`}>
-                    <A>{name}</A>
-                  </Link>
-                </LeagueContainer>
-              </div>
-            ))}
-          </div>
-        </>
-      ) : (
-        <p>No Leagues!</p>
-      )}
+      <LeaguesList leagues={leagues} />
     </>
   );
 };
-
-const LeagueContainer = styled.div`
-  background-color: ${colours.grey200};
-  width: fit-content;
-  font-size: 1.4em;
-  margin: 32px;
-  padding: 8px 16px;
-  border-radius: 32px;
-`;
-
-const A = styled.a`
-  color: ${colours.blackblue400};
-  font-size: 1.4em;
-  cursor: pointer;
-`;
 
 export default LeaguesContainer;

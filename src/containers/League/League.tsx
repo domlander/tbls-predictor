@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import WeeklyScoresTable from "@/components/organisms/WeeklyScoresTable";
-import LeagueTable from "@/components/LeagueTable";
+import LeagueTable from "@/components/organisms/LeagueTable";
 import Heading from "@/components/atoms/Heading";
 import { LEAGUE_DETAILS } from "apollo/queries";
 import Loading from "@/components/atoms/Loading";
@@ -24,9 +24,8 @@ const LeagueContainer = ({ leagueId }: Props) => {
     },
   });
 
-  if (loading) return <Loading />;
-  if (error || !users || !pointsByWeek)
-    return <div>An error has occurred. Please try again later.</div>;
+  if (loading || !users || !pointsByWeek) return <Loading />;
+  if (error) return <div>An error has occurred. Please try again later.</div>;
 
   return (
     <Container>
@@ -41,9 +40,6 @@ const LeagueContainer = ({ leagueId }: Props) => {
   );
 };
 
-const Container = styled.div`
-  /* display: flex;
-  flex-direction: column; */
-`;
+const Container = styled.div``;
 
 export default LeagueContainer;
