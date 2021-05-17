@@ -49,7 +49,7 @@ const LeagueContainer = ({ leagueId, weekId }: Props) => {
             width="30"
             height="44"
           />
-          <LeagueName level="h3">{leagueName}</LeagueName>
+          <LeagueName>{leagueName}</LeagueName>
         </A>
       </Link>
       <WeekNavigator
@@ -67,13 +67,15 @@ const LeagueContainer = ({ leagueId, weekId }: Props) => {
   );
 };
 
-const LeagueName = styled(Heading)`
+const LeagueName = styled.div`
   margin-left: 10px;
+  font-size: 18px;
   font-style: italic;
 `;
 
 const A = styled.a`
   display: flex;
+  align-items: center;
   cursor: pointer;
 
   > * {

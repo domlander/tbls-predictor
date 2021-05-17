@@ -8,6 +8,7 @@ import { useSession } from "next-auth/client";
 import HeaderBar from "@/components/molecules/HeaderBar";
 import Sidebar from "@/components/molecules/Sidebar";
 import Loading from "@/components/atoms/Loading";
+import pageSizes from "@/styles/pageSizes";
 
 interface Props {
   children: React.ReactNode;
@@ -60,7 +61,12 @@ const Container = styled.div`
 `;
 
 const InnerContainer = styled.div`
-  margin: 0 16px;
+  max-width: 992px;
+  margin: 0 auto;
+
+  @media (max-width: ${pageSizes.laptop}) {
+    margin: 0 16px;
+  }
 `;
 
 const MainContent = styled.div<{ isSidebarOpen: boolean }>`

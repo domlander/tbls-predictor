@@ -112,12 +112,9 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
 };
 
 const Container = styled.div`
-  max-width: 960px;
-  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  width: 100%;
 `;
 
 export default PredictionsContainer;

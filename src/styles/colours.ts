@@ -1,5 +1,6 @@
 export default {
   white: "#FFF",
+  whiteOpacity02: "#FFFFFF05",
   whiteOpacity04: "#FFFFFF10",
 
   grey100: "#FAFAFA",

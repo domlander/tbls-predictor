@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
+import Heading from "../../../components/atoms/Heading";
 import colours from "../../../styles/colours";
 import pageSizes from "../../../styles/pageSizes";
 import { positionify } from "../../../utils";
@@ -12,32 +13,50 @@ export interface Props {
 
 const LeagueTable = ({ users }: Props) => (
   <Container>
-    {users.map(({ userId, username, totalPoints }, i) => (
-      <React.Fragment key={userId}>
-        <Item position={i + 1}>{positionify(i + 1)}</Item>
-        <Item position={i + 1}>|</Item>
-        <Item position={i + 1}>{username}</Item>
-        <Item position={i + 1}>{totalPoints} pts</Item>
-      </React.Fragment>
-    ))}
+    <TableHeading level="h2">Table</TableHeading>
+    <TableContainer>
+      {users.map(({ userId, username, totalPoints }, i) => (
+        <React.Fragment key={userId}>
+          <Item position={i + 1}>{positionify(i + 1)}</Item>
+          <Item position={i + 1}>|</Item>
+          <Item position={i + 1}>{username}</Item>
+          <Item position={i + 1}>{totalPoints} pts</Item>
+        </React.Fragment>
+      ))}
+    </TableContainer>
   </Container>
 );
 
+const TableHeading = styled(Heading)`
+  margin: 0;
+  @media (max-width: ${pageSizes.mobileL}) {
+    font-size: 30px;
+  }
+`;
+
 const Container = styled.div`
-  max-width: 600px;
-  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  max-width: 650px;
+  margin-bottom: 4em;
+`;
+
+const TableContainer = styled.div`
+  height: fit-content;
+  font-size: 26px;
   display: grid;
   grid-template-columns: 3em 1em 1fr 5em;
   grid-auto-rows: 2.6em;
-  background-color: ${colours.whiteOpacity04};
+  background-color: ${colours.whiteOpacity02};
   border-radius: 5px;
+  padding-top: 8px;
 
   @media (max-width: ${pageSizes.tablet}) {
-    font-size: 20px;
+    font-size: 22px;
   }
 
-  @media (max-width: ${pageSizes.mobileM}) {
-    font-size: 18px;
+  @media (max-width: ${pageSizes.mobileL}) {
+    font-size: 20px;
   }
 `;
 
