@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import pageSizes from "../../../styles/pageSizes";
 import Chip from "../Chip";
 import colours from "../../../styles/colours";
 
@@ -11,12 +12,19 @@ interface StyleProps {
 export type Props = StyleProps & {
   label: string | number;
   predictionScore?: number;
+  className?: string;
 };
 
-const GridItem = ({ label, predictionScore, alignText, locked }: Props) => (
+const GridItem = ({
+  label,
+  predictionScore,
+  className,
+  alignText,
+  locked,
+}: Props) => (
   <>
-    <Container alignText={alignText} locked={locked}>
-      <p>{label}</p>
+    <Container alignText={alignText} locked={locked} className={className}>
+      <span>{label}</span>
       {(predictionScore === 3 || predictionScore === 1) && (
         <ChipContainer>
           <Chip variant={predictionScore === 3 ? "perfect" : "correct"} />
@@ -30,12 +38,27 @@ const Container = styled.div<StyleProps>`
   position: relative;
   background-color: ${colours.blackblue400};
   color: ${({ locked }) => (locked ? colours.grey400 : colours.grey100)};
-  font-size: 1em;
-  line-height: 1.2em;
-  height: 3em;
+  font-size: 2em;
   text-align: ${({ alignText }) => alignText};
-  padding-left: ${({ alignText }) => (alignText === "left" ? "1.6em" : 0)};
-  padding-right: ${({ alignText }) => (alignText === "right" ? "1.6em" : 0)};
+  padding-left: ${({ alignText }) =>
+    alignText === "left" ? "1.6em" : "0.4em"};
+  padding-right: ${({ alignText }) =>
+    alignText === "right" ? "1.6em" : "0.4em"};
+  display: flex;
+  justify-content: ${({ alignText }) => {
+    if (alignText === "left") return "flex-start";
+    if (alignText === "right") return "flex-end";
+    return "center";
+  }};
+  align-items: center;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    font-size: 1.2em;
+  }
+
+  @media (max-width: ${pageSizes.mobileM}) {
+    font-size: 1em;
+  }
 `;
 
 const ChipContainer = styled.div`

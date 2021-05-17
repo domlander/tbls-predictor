@@ -6,12 +6,12 @@ const variants = {
   perfect: {
     label: "PERFECT",
     colour: colours.grey100,
-    backgroundColour: colours.gold300,
+    backgroundColour: colours.gold500,
   },
   correct: {
     label: "CORRECT",
     colour: colours.grey100,
-    backgroundColour: colours.green300,
+    backgroundColour: colours.green500,
   },
 };
 
@@ -37,10 +37,9 @@ const Container = styled.div<Props>`
 
 const Label = styled.div<Props>`
   color: ${({ variant }) => variants[variant].colour};
-  height: 1.2em;
-  font-size: 0.8em;
+  font-size: 0.7em;
   text-align: center;
-  font-family: "Nunito";
+  font-family: "Nunito sans";
 `;
 
 export default Chip;

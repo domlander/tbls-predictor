@@ -1,6 +1,8 @@
 import React from "react";
+import styled from "styled-components";
 import { Fixture } from "@prisma/client";
 
+import pageSizes from "../../../styles/pageSizes";
 import GridItem from "../../atoms/GridItem";
 import ScoreInput from "../../atoms/ScoreInput";
 
@@ -32,7 +34,7 @@ const GridRow = ({
   locked,
 }: Props) => (
   <>
-    <GridItem locked={locked} label={kickoff} alignText="center" />
+    <KickoffGridItem locked={locked} label={kickoff} alignText="center" />
     <GridItem
       locked={locked}
       label={homeTeam}
@@ -56,5 +58,17 @@ const GridRow = ({
     <GridItem locked={locked} label={awayTeam} alignText="left" />
   </>
 );
+
+const KickoffGridItem = styled(GridItem)`
+  font-size: 1.6em;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    font-size: 1em;
+  }
+
+  @media (max-width: ${pageSizes.mobileM}) {
+    font-size: 0.9em;
+  }
+`;
 
 export default GridRow;

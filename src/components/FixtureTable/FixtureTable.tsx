@@ -6,6 +6,7 @@ import { FixtureWithPrediction } from "@/types";
 import { formatFixtureKickoffTime } from "@/utils";
 import { calculateGameweekScore } from "utils/calculateGameweekScore";
 import isPastDeadline from "utils/isPastDeadline";
+import pageSizes from "../../styles/pageSizes";
 import GridRow from "../molecules/GridRow";
 import Button from "../atoms/Button";
 
@@ -59,11 +60,11 @@ const FixtureTable = ({
             </Button>
           </ButtonContainer>
         ) : (
-          <p>
+          <GameweekScore>
             {gameweekScore
               ? `Result: ${gameweekScore} points`
               : "Calculating score..."}
-          </p>
+          </GameweekScore>
         )}
       </form>
     </>
@@ -71,15 +72,44 @@ const FixtureTable = ({
 };
 
 const ButtonContainer = styled.div`
-  margin-top: 16px;
+  max-width: 400px;
+  margin: 16px 0 0 auto;
+`;
+
+const GameweekScore = styled.div`
+  margin-top: 14px;
+  margin-left: 10px;
+  font-size: 2em;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    margin-top: 10px;
+    margin-left: 7px;
+    font-size: 1.4em;
+  }
+
+  @media (max-width: ${pageSizes.mobileM}) {
+    margin-top: 8px;
+    margin-left: 5px;
+    font-size: 1.2em;
+  }
 `;
 
 const Table = styled.div`
   display: grid;
-  grid-template-columns: 7em 1fr auto auto 1fr;
+  grid-template-columns: 11em 1fr auto auto 1fr;
+  grid-auto-rows: 4.8em;
   background: ${colours.grey200};
   outline: 0.1em solid ${colours.grey200};
   grid-gap: 0.1em;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    grid-template-columns: 7em 1fr auto auto 1fr;
+    grid-auto-rows: 3em;
+  }
+
+  @media (max-width: ${pageSizes.mobileM}) {
+    grid-template-columns: 6em 1fr auto auto 1fr;
+  }
 `;
 
 export default FixtureTable;

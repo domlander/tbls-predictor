@@ -34,14 +34,14 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h1 {
-    font-size: 40px;
+    font-size: 48px;
     margin: 1em 0;
   }
 
-  h2 { font-size: 32px; }
-  h3 { font-size: 24px; }
-  h4 { font-size: 20px; }
-  h5 { font-size: 16px; }
+  h2 { font-size: 38px; }
+  h3 { font-size: 30px; }
+  h4 { font-size: 24px; }
+  h5 { font-size: 20px; }
 
   a {
     text-decoration: inherit;
