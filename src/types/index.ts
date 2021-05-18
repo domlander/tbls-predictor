@@ -1,3 +1,4 @@
+export * from "./Applicant";
 export * from "./FixtureWithPrediction";
 export * from "./FixtureWithUsersPredictions";
 export * from "./Participant";

@@ -12,6 +12,7 @@ interface StyleProps {
 export type Props = StyleProps & {
   fixtureId: Fixture["id"];
   goals: string;
+  className?: string;
   isHome: boolean;
   updateGoals: (
     fixtureId: number,
@@ -26,6 +27,7 @@ const ScoreInput = ({
   isHome,
   isScoreEditable,
   updateGoals,
+  className,
 }: Props) => (
   <ScoreInputStyles
     autoComplete="off"
@@ -36,12 +38,11 @@ const ScoreInput = ({
     onChange={(e) => updateGoals(fixtureId, isHome, e.target.value)}
     type="text"
     value={goals}
+    className={className}
   />
 );
 
 const ScoreInputStyles = styled.input<StyleProps>`
-  color: ${({ isScoreEditable }) =>
-    isScoreEditable ? colours.grey100 : colours.grey400};
   font-size: 2em;
   text-align: center;
   border: 0;

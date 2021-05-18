@@ -2,9 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { Fixture } from "@prisma/client";
 
-import pageSizes from "../../../styles/pageSizes";
 import GridItem from "../../atoms/GridItem";
 import ScoreInput from "../../atoms/ScoreInput";
+import pageSizes from "../../../styles/pageSizes";
+import colours from "../../../styles/colours";
 
 export type Props = {
   fixtureId: Fixture["id"];
@@ -35,31 +36,32 @@ const GridRow = ({
 }: Props) => (
   <>
     <KickoffGridItem locked={locked} label={kickoff} alignText="center" />
-    <GridItem
+    <Team
       locked={locked}
       label={homeTeam}
       alignText="right"
       predictionScore={predictionScore}
     />
-    <ScoreInput
+    <Score
       isScoreEditable={!locked}
       fixtureId={fixtureId}
       goals={homeGoals}
       isHome
       updateGoals={updateGoals}
     />
-    <ScoreInput
+    <Score
       isScoreEditable={!locked}
       fixtureId={fixtureId}
       goals={awayGoals}
       isHome={false}
       updateGoals={updateGoals}
     />
-    <GridItem locked={locked} label={awayTeam} alignText="left" />
+    <Team locked={locked} label={awayTeam} alignText="left" />
   </>
 );
 
-const KickoffGridItem = styled(GridItem)`
+const KickoffGridItem = styled(GridItem)<{ locked: boolean }>`
+  color: ${({ locked }) => (locked ? colours.grey500 : colours.grey100)};
   font-size: 1.6em;
 
   @media (max-width: ${pageSizes.tablet}) {
@@ -69,6 +71,15 @@ const KickoffGridItem = styled(GridItem)`
   @media (max-width: ${pageSizes.mobileM}) {
     font-size: 0.9em;
   }
+`;
+
+const Team = styled(GridItem)<{ locked: boolean }>`
+  color: ${({ locked }) => (locked ? colours.grey500 : colours.grey100)};
+`;
+
+const Score = styled(ScoreInput)<{ isScoreEditable: boolean }>`
+  color: ${({ isScoreEditable }) =>
+    !isScoreEditable ? colours.grey500 : colours.grey100};
 `;
 
 export default GridRow;

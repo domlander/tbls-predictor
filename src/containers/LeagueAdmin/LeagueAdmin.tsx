@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import styled from "styled-components";
 
 import LeagueApplicants from "@/components/LeagueApplicants";
 import LeagueParticipants from "@/components/LeagueParticipants";
@@ -32,17 +31,11 @@ const LeagueAdminContainer = ({ userId, leagueId }: Props) => {
 
   return (
     <>
-      <Heading level="h1">{leagueName}</Heading>
-      <Heading level="h2">Admin</Heading>
-      <Subtitle>Requests</Subtitle>
+      <Heading level="h1">{leagueName} - Admin</Heading>
       <LeagueApplicants applicants={applicants} leagueId={leagueId} />
       <LeagueParticipants participants={participants} />
     </>
   );
 };
-
-const Subtitle = styled.h2`
-  color: green;
-`;
 
 export default LeagueAdminContainer;

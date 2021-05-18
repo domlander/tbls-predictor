@@ -27,7 +27,7 @@ const Chip = ({ variant }: Props) => (
 
 const Container = styled.div<Props>`
   background-color: ${({ variant }) => variants[variant].backgroundColour};
-  border-radius: 0.6em;
+  border-radius: 2em;
   display: flex;
   justify-content: center;
   align-items: center;

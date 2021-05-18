@@ -1,6 +1,7 @@
 import { League } from "@prisma/client";
 import React from "react";
 import styled from "styled-components";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 import Heading from "../../atoms/Heading";
@@ -12,7 +13,15 @@ export interface Props {
 
 const LeaguesList = ({ leagues }: Props) => {
   const router = useRouter();
-  if (!leagues?.length) return <p>No Leagues!</p>;
+  if (!leagues?.length)
+    return (
+      <NoLeagues>
+        <p>No Leagues!</p>
+        <Link href="/league/join">
+          <a>Join</a>
+        </Link>
+      </NoLeagues>
+    );
 
   return (
     <Leagues>
@@ -30,6 +39,21 @@ const LeaguesList = ({ leagues }: Props) => {
     </Leagues>
   );
 };
+
+const NoLeagues = styled.div`
+  font-size: 2em;
+  display: flex;
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    margin-left: 1em;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+`;
 
 const Leagues = styled.div`
   display: grid;

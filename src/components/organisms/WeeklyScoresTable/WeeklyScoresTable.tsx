@@ -54,7 +54,7 @@ const Container = styled.div`
 `;
 
 const ScoresHeading = styled(Heading)`
-  margin: 0;
+  margin: 0.4em 0;
   @media (max-width: ${pageSizes.mobileL}) {
     font-size: 30px;
   }

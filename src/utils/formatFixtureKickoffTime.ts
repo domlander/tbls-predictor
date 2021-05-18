@@ -27,12 +27,19 @@ export function formatFixtureKickoffTime(dateInput: Date | string) {
   yesterday.setDate(yesterday.getDate() - 6);
   const isMatchLongAgo = fixture < yesterday;
 
+  const today = new Date();
+  const isMatchToday = fixture.toDateString() === today.toDateString();
+
   if (isMatchFarAway) {
     return `${day} ${dayOfMonth} ${month}`;
   }
 
   if (isMatchLongAgo) {
     return `${dayOfMonth}/${pad(monthIndex + 1)} ${hours}:${minutes}`;
+  }
+
+  if (isMatchToday) {
+    return `${hours}:${minutes}`;
   }
 
   return `${day} ${hours}:${minutes}`;

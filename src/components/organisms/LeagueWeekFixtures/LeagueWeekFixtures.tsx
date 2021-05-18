@@ -5,6 +5,7 @@ import { FixtureWithUsersPredictions } from "@/types";
 import Link from "next/link";
 import { formatFixtureKickoffTime } from "../../../utils/formatFixtureKickoffTime";
 import calculatePredictionScore from "../../../../utils/calculatePredictionScore";
+import isPastDeadline from "../../../../utils/isPastDeadline";
 import colours from "../../../styles/colours";
 import pageSizes from "../../../styles/pageSizes";
 
@@ -19,7 +20,7 @@ const LeagueWeekFixtures = ({ fixtures, weekId }: Props) => (
       <Container key={fixture.id}>
         <FixtureRow>
           <Kickoff>{formatFixtureKickoffTime(fixture.kickoff)}</Kickoff>
-          {fixture.homeGoals !== null && fixture.homeGoals !== null ? (
+          {isPastDeadline(fixture.kickoff) ? (
             <Fixture>
               {fixture.homeTeam}
               &nbsp;&nbsp;
@@ -37,11 +38,7 @@ const LeagueWeekFixtures = ({ fixtures, weekId }: Props) => (
             </ClickableFixture>
           )}
         </FixtureRow>
-        {fixture.predictions.every(
-          (prediction) => prediction[0] !== null && prediction[1] !== null
-        ) &&
-        fixture.homeGoals !== null &&
-        fixture.awayGoals !== null ? (
+        {isPastDeadline(fixture.kickoff) ? (
           <PredictionRow>
             {fixture.predictions.map((prediction, i) => {
               const score = calculatePredictionScore(prediction, [
@@ -106,7 +103,11 @@ const PredictionRow = styled.div`
   display: flex;
   justify-content: space-around;
   margin-top: 8px;
-  font-size: 16px;
+  font-size: 18px;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    font-size: 15px;
+  }
 `;
 
 const Prediction = styled.div<{ score: number }>`

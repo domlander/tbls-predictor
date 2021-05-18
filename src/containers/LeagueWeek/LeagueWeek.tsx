@@ -5,7 +5,6 @@ import Image from "next/image";
 import { useQuery } from "@apollo/client";
 
 import { LEAGUE_WEEK } from "apollo/queries";
-import Heading from "@/components/atoms/Heading";
 import Loading from "@/components/atoms/Loading";
 import WeekNavigator from "@/components/molecules/WeekNavigator";
 import LeagueWeekUserTotals from "@/components/molecules/LeagueWeekUserTotals";
@@ -55,10 +54,14 @@ const LeagueContainer = ({ leagueId, weekId }: Props) => {
       <WeekNavigator
         week={weekId}
         prevGameweekUrl={
-          weekId === firstGameweek ? undefined : `/league/9/week/${weekId - 1}`
+          weekId === firstGameweek
+            ? undefined
+            : `/league/${leagueId}/week/${weekId - 1}`
         }
         nextGameweekUrl={
-          weekId === lastGameweek ? undefined : `/league/9/week/${weekId + 1}`
+          weekId === lastGameweek
+            ? undefined
+            : `/league/${leagueId}/week/${weekId + 1}`
         }
       />
       <LeagueWeekUserTotals users={users} />

@@ -60,6 +60,8 @@ const UpdateResultsPage = ({ fixtures }: Props) => {
     setScores(updatedScore);
   };
 
+  if (!scores?.length) return <Heading level="h1">No fixtures</Heading>;
+
   return (
     <>
       <Heading level="h1">Update Results</Heading>

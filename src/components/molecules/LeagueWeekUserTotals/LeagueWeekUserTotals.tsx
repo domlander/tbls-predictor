@@ -43,7 +43,11 @@ const Username = styled.div`
 const Total = styled.div`
   margin: 4px 0 8px;
   font-family: "Patrick Hand", cursive;
-  font-size: 32px;
+  font-size: 4em;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    font-size: 3em;
+  }
 `;
 
 export default LeagueWeekUserTotals;

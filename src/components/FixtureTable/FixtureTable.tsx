@@ -1,14 +1,15 @@
 import React, { FormEvent } from "react";
 import styled from "styled-components";
 
-import colours from "@/styles/colours";
 import { FixtureWithPrediction } from "@/types";
 import { formatFixtureKickoffTime } from "@/utils";
 import { calculateGameweekScore } from "utils/calculateGameweekScore";
 import isPastDeadline from "utils/isPastDeadline";
-import pageSizes from "../../styles/pageSizes";
-import GridRow from "../molecules/GridRow";
+import useTransientState from "src/hooks/useTransientState";
 import Button from "../atoms/Button";
+import GridRow from "../molecules/GridRow";
+import colours from "../../styles/colours";
+import pageSizes from "../../styles/pageSizes";
 
 interface Props {
   predictions: FixtureWithPrediction[];
@@ -27,6 +28,7 @@ const FixtureTable = ({
   handleSubmit,
   isAlwaysEditable = false,
 }: Props) => {
+  const [showUpdated, setShowUpdated] = useTransientState(false, 1000);
   const gameweekScore = calculateGameweekScore(predictions);
 
   if (!predictions?.length) return null;
@@ -54,11 +56,22 @@ const FixtureTable = ({
         predictions.some(
           (prediction) => !isPastDeadline(prediction.kickoff)
         ) ? (
-          <ButtonContainer>
-            <Button type="submit" variant="primary">
-              Save
-            </Button>
-          </ButtonContainer>
+          <ButtonsAndMessageContainer>
+            <ButtonContainer>
+              <Button
+                type="submit"
+                variant="primary"
+                handleClick={() => setShowUpdated(true)}
+              >
+                Save
+              </Button>
+            </ButtonContainer>
+            {showUpdated ? (
+              <UserFeedback>Predictions updated</UserFeedback>
+            ) : (
+              <div />
+            )}
+          </ButtonsAndMessageContainer>
         ) : (
           <GameweekScore>
             {gameweekScore
@@ -70,29 +83,6 @@ const FixtureTable = ({
     </>
   );
 };
-
-const ButtonContainer = styled.div`
-  max-width: 400px;
-  margin: 16px 0 0 auto;
-`;
-
-const GameweekScore = styled.div`
-  margin-top: 14px;
-  margin-left: 10px;
-  font-size: 2em;
-
-  @media (max-width: ${pageSizes.tablet}) {
-    margin-top: 10px;
-    margin-left: 7px;
-    font-size: 1.4em;
-  }
-
-  @media (max-width: ${pageSizes.mobileM}) {
-    margin-top: 8px;
-    margin-left: 5px;
-    font-size: 1.2em;
-  }
-`;
 
 const Table = styled.div`
   display: grid;
@@ -112,4 +102,48 @@ const Table = styled.div`
   }
 `;
 
+const ButtonsAndMessageContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+
+  @media (max-width: 650px) {
+    flex-direction: column;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  order: 3;
+  flex-basis: 400px;
+
+  @media (max-width: 650px) {
+    order: 1;
+    flex-basis: auto;
+  }
+`;
+
+const UserFeedback = styled.p`
+  order: 2;
+  font-size: 2em;
+  font-style: italic;
+  margin: 16px 0 0;
+`;
+
+const GameweekScore = styled.div`
+  margin-top: 14px;
+  margin-left: 10px;
+  font-size: 2em;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    margin-top: 10px;
+    margin-left: 7px;
+    font-size: 1.4em;
+  }
+
+  @media (max-width: ${pageSizes.mobileM}) {
+    margin-top: 8px;
+    margin-left: 5px;
+    font-size: 1.2em;
+  }
+`;
 export default FixtureTable;
