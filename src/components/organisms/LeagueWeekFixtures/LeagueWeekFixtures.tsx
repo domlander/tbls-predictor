@@ -47,7 +47,7 @@ const LeagueWeekFixtures = ({ fixtures, weekId }: Props) => (
               ]);
               return (
                 <Prediction key={i} score={score}>
-                  {prediction[0]} - {prediction[1]}
+                  {prediction[0] || 0} - {prediction[1] || 0}
                 </Prediction>
               );
             })}

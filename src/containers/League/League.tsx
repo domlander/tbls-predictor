@@ -46,6 +46,11 @@ const LeagueContainer = ({ leagueId }: Props) => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  margin: 0 24px;
+
+  @media (max-width: 600px) {
+    margin: 0;
+  }
 `;
 
 const LeagueName = styled(Heading)`

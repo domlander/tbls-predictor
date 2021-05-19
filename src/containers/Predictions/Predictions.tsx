@@ -60,6 +60,7 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
     isHomeTeam: boolean,
     goals: string
   ): void => {
+    // Input is invalid
     if (goals !== "" && goals !== "0" && !parseInt(goals)) return;
 
     // Make a copy of current state
@@ -73,10 +74,11 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
     );
     if (!editedPrediction) return;
 
+    const predictedGoals: string | null = goals === "" ? null : goals;
     if (isHomeTeam) {
-      editedPrediction.predictedHomeGoals = goals;
+      editedPrediction.predictedHomeGoals = predictedGoals;
     } else {
-      editedPrediction.predictedAwayGoals = goals;
+      editedPrediction.predictedAwayGoals = predictedGoals;
     }
 
     setPredictions(updatedPredictions);
