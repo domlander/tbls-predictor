@@ -26,7 +26,11 @@ const LeaguesList = ({ leagues }: Props) => {
   return (
     <Leagues>
       {leagues.map(({ id, name }) => (
-        <LeagueContainer key={id} onClick={() => router.push(`/league/${id}`)}>
+        <LeagueCard
+          tabIndex={0}
+          key={id}
+          onClick={() => router.push(`/league/${id}`)}
+        >
           <LeagueCardHeading level="h2">{name}</LeagueCardHeading>
           <LeagueCardInfo>
             Current position: <span style={{ fontWeight: 700 }}>Unknown</span>
@@ -34,7 +38,7 @@ const LeaguesList = ({ leagues }: Props) => {
           <LeagueCardInfo>
             Finish: <span style={{ fontWeight: 700 }}>Unknown</span>
           </LeagueCardInfo>
-        </LeagueContainer>
+        </LeagueCard>
       ))}
     </Leagues>
   );
@@ -61,14 +65,13 @@ const Leagues = styled.div`
   grid-gap: 16px;
 `;
 
-const LeagueContainer = styled.div`
+const LeagueCard = styled.div`
   border: 1px solid ${colours.grey300};
   padding: 32px;
   cursor: pointer;
 
   :hover,
-  :focus,
-  :active {
+  :focus {
     background-color: #ffffff10;
   }
 `;

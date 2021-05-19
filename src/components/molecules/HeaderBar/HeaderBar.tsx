@@ -14,10 +14,10 @@ export interface Props {
 const HeaderBar = ({ initial, handleClick }: Props) => (
   <Container>
     <HeaderLinks>
-      <Link href="/predictions">
+      <Link href="/predictions" passHref tabIndex={0}>
         <HeaderLink>Predictions</HeaderLink>
       </Link>
-      <Link href="/leagues">
+      <Link href="/leagues" passHref tabIndex={0}>
         <HeaderLink>Leagues</HeaderLink>
       </Link>
     </HeaderLinks>

@@ -40,7 +40,7 @@ const LeagueContainer = ({ leagueId, weekId }: Props) => {
 
   return (
     <Container>
-      <Link href={`/league/${leagueId}`}>
+      <Link href={`/league/${leagueId}`} passHref>
         <A>
           <Image
             src="/images/ArrowBack.svg"

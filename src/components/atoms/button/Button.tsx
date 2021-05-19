@@ -66,7 +66,8 @@ const ButtonStyles = styled.button<StyleProps>`
         ? variants[variant].backgroundColour
         : variants[variant].hoverColour};
   }
-  :active {
+
+  :focus {
     height: 1.7em;
     width: calc(100% - 0.1em);
     margin-top: 0.05em;

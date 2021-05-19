@@ -9,7 +9,7 @@ export interface Props {
 
 const UserIcon = ({ initial, handleClick }: Props) =>
   handleClick ? (
-    <ClickableCircle onClick={handleClick}>
+    <ClickableCircle onClick={handleClick} tabIndex={0}>
       <Name>{initial.toUpperCase()}</Name>
     </ClickableCircle>
   ) : (
@@ -31,6 +31,10 @@ const sharedCircleStyles = css`
 const ClickableCircle = styled.button`
   cursor: pointer;
   ${sharedCircleStyles}
+
+  :focus, :hover {
+    outline: 1px solid ${colours.grey100};
+  }
 `;
 
 const Circle = styled.div`

@@ -17,7 +17,7 @@ const SidebarHeader = ({ username, handleClick }: Props) => (
         {username.length > 16 ? `${username.substring(0, 14)}...` : username}
       </Username>
     </User>
-    <IconContainer>
+    <IconContainer tabIndex={0}>
       <Icon
         onClick={handleClick}
         src="/images/Cross.svg"
@@ -52,9 +52,14 @@ const Username = styled.p`
 `;
 
 const IconContainer = styled.div`
-  padding-right: 16px;
+  margin-right: 16px;
   display: flex;
   align-items: center;
+
+  :focus,
+  :hover {
+    outline: 1px solid ${colours.grey100};
+  }
 `;
 
 const Icon = styled(Image)`
