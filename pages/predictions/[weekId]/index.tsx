@@ -2,7 +2,7 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 
-import { convertUrlParamToNumber } from "@/utils";
+import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import Predictions from "src/containers/Predictions";
 import redirectInternal from "utils/redirects";
 

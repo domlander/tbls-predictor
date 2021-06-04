@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 import React from "react";
 
-import { convertUrlParamToNumber } from "@/utils";
+import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import LeagueAdmin from "src/containers/LeagueAdmin";
 import redirectInternal from "../../../utils/redirects";
 

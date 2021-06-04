@@ -1,9 +1,7 @@
-import { days, months, pad } from "../utils";
+import { days, months, pad } from "./dateHelpers";
 
 /*
-
   We may want to display kickoff format based on gameweek rather than individual fixture
-
 */
 export function formatFixtureKickoffTime(dateInput: Date | string) {
   const fixture: Date =

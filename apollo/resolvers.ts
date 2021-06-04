@@ -1,14 +1,13 @@
 import { UserInputError, ApolloError } from "apollo-server-micro";
 import prisma from "prisma/client";
+
 import {
   FixtureWithPrediction,
   FixtureWithUsersPredictions,
   UserTotalPoints,
 } from "@/types";
-import {
-  isUserAlreadyBelongToLeague,
-  isUserAppliedToLeague,
-} from "utils/userLeagueApplication";
+import { isUserAlreadyBelongToLeague } from "utils/isUserAlreadyBelongToLeague";
+import isUserAppliedToLeague from "utils/isUserAppliedToLeague";
 import dateScalar from "./scalars";
 
 const resolvers = {

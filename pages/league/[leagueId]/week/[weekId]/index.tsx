@@ -2,7 +2,7 @@ import React from "react";
 import { GetServerSideProps } from "next";
 
 import LeagueWeek from "@/containers/LeagueWeek";
-import { convertUrlParamToNumber } from "@/utils";
+import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import redirectInternal from "utils/redirects";
 
 interface Props {

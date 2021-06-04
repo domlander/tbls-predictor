@@ -2,10 +2,10 @@ import React, { FormEvent } from "react";
 import styled from "styled-components";
 
 import { FixtureWithPrediction } from "@/types";
-import { formatFixtureKickoffTime } from "@/utils";
 import { calculateGameweekScore } from "utils/calculateGameweekScore";
 import isPastDeadline from "utils/isPastDeadline";
 import useTransientState from "src/hooks/useTransientState";
+import { formatFixtureKickoffTime } from "utils/formatFixtureKickoffTime";
 import Button from "../atoms/Button";
 import GridRow from "../molecules/GridRow";
 import colours from "../../styles/colours";

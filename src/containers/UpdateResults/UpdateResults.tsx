@@ -1,12 +1,12 @@
 import React, { FormEvent, useState } from "react";
-
-import { Fixture } from "@prisma/client";
-import Heading from "@/components/atoms/Heading";
 import styled from "styled-components";
+import { Fixture } from "@prisma/client";
+
+import Heading from "@/components/atoms/Heading";
 import Button from "@/components/atoms/Button";
-import colours from "@/styles/colours";
 import GridRow from "@/components/molecules/GridRow";
-import { formatFixtureKickoffTime } from "@/utils";
+import colours from "@/styles/colours";
+import { formatFixtureKickoffTime } from "utils/formatFixtureKickoffTime";
 
 interface Props {
   fixtures: Fixture[];

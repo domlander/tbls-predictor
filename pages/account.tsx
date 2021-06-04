@@ -2,9 +2,9 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 import prisma from "prisma/client";
-import { generateDefaultUsername } from "@/utils";
 import Account from "src/containers/Account/Account";
 import redirectInternal from "utils/redirects";
+import { generateDefaultUsername } from "utils/generateDefaultUsername";
 
 const AccountPage = () => <Account />;
 

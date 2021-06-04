@@ -3,7 +3,7 @@ import React from "react";
 
 import { FixtureWithUsersPredictions } from "@/types";
 import Link from "next/link";
-import { formatFixtureKickoffTime } from "../../../utils/formatFixtureKickoffTime";
+import { formatFixtureKickoffTime } from "utils/formatFixtureKickoffTime";
 import calculatePredictionScore from "../../../../utils/calculatePredictionScore";
 import isPastDeadline from "../../../../utils/isPastDeadline";
 import colours from "../../../styles/colours";

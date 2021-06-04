@@ -1,10 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
+import { positionify } from "utils/positionify";
 import Heading from "../../../components/atoms/Heading";
 import colours from "../../../styles/colours";
 import pageSizes from "../../../styles/pageSizes";
-import { positionify } from "../../../utils";
 import { UserTotalPoints } from "../../../types";
 
 export interface Props {
