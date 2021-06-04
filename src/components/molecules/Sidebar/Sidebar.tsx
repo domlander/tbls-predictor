@@ -49,7 +49,7 @@ const Container = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-  background-color: ${colours.blackblue500};
+  background-color: ${colours.blackblue450};
 
   @media (max-width: ${pageSizes.mobileM}) {
     width: 100%;

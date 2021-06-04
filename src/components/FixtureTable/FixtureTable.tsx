@@ -88,8 +88,6 @@ const Table = styled.div`
   display: grid;
   grid-template-columns: 11em 1fr auto auto 1fr;
   grid-auto-rows: 4.8em;
-  background: ${colours.grey200};
-  outline: 0.1em solid ${colours.grey200};
   grid-gap: 0.1em;
 
   @media (max-width: ${pageSizes.tablet}) {
@@ -130,6 +128,7 @@ const UserFeedback = styled.p`
 `;
 
 const GameweekScore = styled.div`
+  color: ${colours.grey300};
   margin-top: 14px;
   margin-left: 10px;
   font-size: 2em;
@@ -146,4 +145,5 @@ const GameweekScore = styled.div`
     font-size: 1.2em;
   }
 `;
+
 export default FixtureTable;

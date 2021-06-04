@@ -36,7 +36,7 @@ const GridItem = ({
 
 const Container = styled.div<StyleProps>`
   position: relative;
-  background-color: ${colours.blackblue400};
+  background-color: inherit;
   font-size: 2em;
   text-align: ${({ alignText }) => alignText};
   padding-left: ${({ alignText }) =>

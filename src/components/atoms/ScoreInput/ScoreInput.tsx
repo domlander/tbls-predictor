@@ -3,7 +3,6 @@ import { Fixture } from "@prisma/client";
 import styled from "styled-components";
 
 import pageSizes from "../../../styles/pageSizes";
-import colours from "../../../styles/colours";
 
 interface StyleProps {
   isScoreEditable: boolean;
@@ -29,7 +28,7 @@ const ScoreInput = ({
   updateGoals,
   className,
 }: Props) => (
-  <ScoreInputStyles
+  <Input
     autoComplete="off"
     disabled={!isScoreEditable}
     isScoreEditable={isScoreEditable}
@@ -42,12 +41,12 @@ const ScoreInput = ({
   />
 );
 
-const ScoreInputStyles = styled.input<StyleProps>`
+const Input = styled.input<StyleProps>`
   font-size: 2em;
   text-align: center;
   border: 0;
   width: 2.4em;
-  background-color: ${colours.blackblue400};
+  background-color: inherit;
   :focus {
     outline: none;
   }

@@ -83,9 +83,7 @@ const HeaderItem = styled.div`
   font-weight: 700;
 `;
 
-const HeaderItemBlank = styled(HeaderItem)`
-  background-color: ${colours.blackblue400};
-`;
+const HeaderItemBlank = styled(HeaderItem)``;
 
 const BodyItem = styled.div``;
 

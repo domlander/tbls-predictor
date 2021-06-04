@@ -32,7 +32,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: ${colours.blackblue500};
+  background-color: var(--header-background);
   height: 70px;
   font-size: 14px;
 
