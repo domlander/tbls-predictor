@@ -45,7 +45,7 @@ const Input = styled.input<StyleProps>`
   font-size: 2em;
   text-align: center;
   border: 0;
-  width: 2.4em;
+  width: 2em;
   background-color: inherit;
   :focus {
     outline: none;

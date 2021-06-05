@@ -37,7 +37,7 @@ const FixtureTable = ({
     <>
       <form onSubmit={handleSubmit}>
         <Table>
-          {predictions.map((prediction) => (
+          {predictions.map((prediction, i) => (
             <GridRow
               key={prediction.fixtureId}
               fixtureId={prediction.fixtureId}
@@ -49,6 +49,7 @@ const FixtureTable = ({
               updateGoals={updateGoals}
               predictionScore={prediction?.predictionScore || undefined}
               locked={!isAlwaysEditable && isPastDeadline(prediction.kickoff)}
+              topRow={i === 0}
             />
           ))}
         </Table>
@@ -86,17 +87,16 @@ const FixtureTable = ({
 
 const Table = styled.div`
   display: grid;
-  grid-template-columns: 11em 1fr auto auto 1fr;
+  grid-template-columns: 11em 1fr auto 5px auto 1fr;
   grid-auto-rows: 4.8em;
-  grid-gap: 0.1em;
 
   @media (max-width: ${pageSizes.tablet}) {
-    grid-template-columns: 7em 1fr auto auto 1fr;
+    grid-template-columns: 7em 1fr auto 5px auto 1fr;
     grid-auto-rows: 3em;
   }
 
   @media (max-width: ${pageSizes.mobileM}) {
-    grid-template-columns: 6em 1fr auto auto 1fr;
+    grid-template-columns: 6em 1fr auto 5px auto 1fr;
   }
 `;
 

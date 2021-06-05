@@ -21,6 +21,7 @@ export type Props = {
   ) => void;
   predictionScore?: number;
   locked: boolean;
+  topRow: boolean;
 };
 
 const GridRow = ({
@@ -33,14 +34,21 @@ const GridRow = ({
   updateGoals,
   predictionScore,
   locked,
+  topRow,
 }: Props) => (
   <>
-    <KickoffGridItem locked={locked} label={kickoff} alignText="center" />
+    <KickoffGridItem
+      locked={locked}
+      label={kickoff}
+      alignText="center"
+      topRow={topRow}
+    />
     <Team
       locked={locked}
       label={homeTeam}
       alignText="right"
       predictionScore={predictionScore}
+      topRow={topRow}
     />
     <Score
       isScoreEditable={!locked}
@@ -48,20 +56,27 @@ const GridRow = ({
       goals={homeGoals}
       isHome
       updateGoals={updateGoals}
+      topRow={topRow}
     />
+    <Divider locked={locked} topRow={topRow}>
+      -
+    </Divider>
     <Score
       isScoreEditable={!locked}
       fixtureId={fixtureId}
       goals={awayGoals}
       isHome={false}
       updateGoals={updateGoals}
+      topRow={topRow}
     />
-    <Team locked={locked} label={awayTeam} alignText="left" />
+    <Team locked={locked} label={awayTeam} alignText="left" topRow={topRow} />
   </>
 );
 
-const KickoffGridItem = styled(GridItem)<{ locked: boolean }>`
+const KickoffGridItem = styled(GridItem)<{ locked: boolean; topRow: boolean }>`
   color: ${({ locked }) => (locked ? colours.grey500 : colours.grey100)};
+  border-top: ${({ topRow }) =>
+    !topRow ? `1px solid ${colours.whiteOpacity25}` : "none"};
   font-size: 1.6em;
 
   @media (max-width: ${pageSizes.tablet}) {
@@ -73,13 +88,27 @@ const KickoffGridItem = styled(GridItem)<{ locked: boolean }>`
   }
 `;
 
-const Team = styled(GridItem)<{ locked: boolean }>`
+const Team = styled(GridItem)<{ locked: boolean; topRow: boolean }>`
   color: ${({ locked }) => (locked ? colours.grey500 : colours.grey100)};
+  border-top: ${({ topRow }) =>
+    !topRow ? `1px solid ${colours.whiteOpacity25}` : "none"};
 `;
 
-const Score = styled(ScoreInput)<{ isScoreEditable: boolean }>`
+const Score = styled(ScoreInput)<{ isScoreEditable: boolean; topRow: boolean }>`
   color: ${({ isScoreEditable }) =>
     !isScoreEditable ? colours.grey500 : colours.grey100};
+  border-top: ${({ topRow }) =>
+    !topRow ? `1px solid ${colours.whiteOpacity25}` : "none"};
+`;
+
+const Divider = styled.span<{ locked: boolean; topRow: boolean }>`
+  border-top: ${({ topRow }) =>
+    !topRow ? `1px solid ${colours.whiteOpacity25}` : "none"};
+  color: ${({ locked }) => (locked ? colours.grey500 : colours.grey100)};
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 export default GridRow;

@@ -39,10 +39,9 @@ const Container = styled.div<StyleProps>`
   background-color: inherit;
   font-size: 2em;
   text-align: ${({ alignText }) => alignText};
-  padding-left: ${({ alignText }) =>
-    alignText === "left" ? "1.6em" : "0.4em"};
+  padding-left: ${({ alignText }) => (alignText === "left" ? "1em" : "0.4em")};
   padding-right: ${({ alignText }) =>
-    alignText === "right" ? "1.6em" : "0.4em"};
+    alignText === "right" ? "1em" : "0.4em"};
   display: flex;
   justify-content: ${({ alignText }) => {
     if (alignText === "left") return "flex-start";
