@@ -31,7 +31,7 @@ const SidebarHeader = ({ username, handleClick }: Props) => (
 
 const Container = styled.div`
   width: 100%;
-  height: 50px;
+  height: 5em;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -41,18 +41,18 @@ const Container = styled.div`
 const User = styled.div`
   display: flex;
   align-items: center;
-  padding-left: 16px;
+  padding-left: 1.6em;
 `;
 
 const Username = styled.p`
-  margin-left: 16px;
+  margin-left: 1.2em;
   color: ${colours.grey200};
   font-size: 1.4em; // TODO: use font with consistent letter box-sizing, so we know how many letters to allow
   font-weight: 400;
 `;
 
 const IconContainer = styled.div`
-  margin-right: 16px;
+  margin-right: 1.6em;
   display: flex;
   align-items: center;
 

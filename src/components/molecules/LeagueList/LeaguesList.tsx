@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+import pageSizes from "@/styles/pageSizes";
 import Heading from "../../atoms/Heading";
 import colours from "../../../styles/colours";
 
@@ -55,19 +56,28 @@ const NoLeagues = styled.div`
   a {
     margin-left: 1em;
     text-decoration: underline;
-    text-underline-offset: 2px;
+    text-underline-offset: 0.2em;
+
+    :hover,
+    :focus {
+      color: ${colours.blue100};
+    }
   }
 `;
 
 const Leagues = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, 400px);
-  grid-gap: 16px;
+  grid-gap: 2em;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 const LeagueCard = styled.div`
   border: 1px solid ${colours.grey300};
-  padding: 32px;
+  padding: 3.2em;
   cursor: pointer;
 
   :hover,
@@ -77,12 +87,12 @@ const LeagueCard = styled.div`
 `;
 
 const LeagueCardHeading = styled(Heading)`
-  margin: 0 0 32px;
+  margin: 0;
 `;
 
 const LeagueCardInfo = styled.div`
   font-size: 2em;
-  margin-top: 16px;
+  margin-top: 1em;
 `;
 
 export default LeaguesList;

@@ -28,17 +28,16 @@ const HeaderBar = ({ initial, handleClick }: Props) => (
 );
 
 const Container = styled.div`
-  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: var(--header-background);
-  height: 70px;
-  font-size: 14px;
+  height: 4rem;
+  font-size: 0.9rem;
 
   @media (max-width: ${pageSizes.tablet}) {
-    font-size: 12px;
-    height: 60px;
+    height: 3rem;
+    font-size: 0.7rem;
   }
 `;
 
@@ -47,11 +46,10 @@ const HeaderLinks = styled.div``;
 const HeaderLink = styled.a`
   color: ${colours.grey400};
   font-size: 1.2em;
-  width: 70px;
   cursor: pointer;
-  margin-left: 40px;
+  margin-left: 4em;
   :first-child {
-    margin-left: 16px;
+    margin-left: 2em;
   }
 
   :hover,
@@ -62,7 +60,7 @@ const HeaderLink = styled.a`
 `;
 
 const UserIconContainer = styled.div`
-  margin-right: 16px;
+  margin-right: 1rem;
 `;
 
 export default HeaderBar;

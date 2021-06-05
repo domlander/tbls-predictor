@@ -4,7 +4,6 @@ import { useMutation } from "@apollo/client";
 
 import { REQUEST_TO_JOIN_LEAGUE } from "apollo/mutations";
 import Heading from "@/components/atoms/Heading";
-import colours from "@/styles/colours";
 import Button from "@/components/atoms/Button";
 import FormInput from "@/components/atoms/FormInput";
 import { useSession } from "next-auth/client";
@@ -74,14 +73,14 @@ const Label = styled.label`
 `;
 
 const LabelText = styled.p`
-  font-size: 16px;
+  font-size: 1.2rem;
 `;
 
 const ButtonContainer = styled.div`
-  margin: 32px 0;
+  margin: 3.2em 0;
 `;
 
 const Feedback = styled.p`
-  font-size: 1.6em;
+  font-size: 1rem;
   font-style: italic;
 `;

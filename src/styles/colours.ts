@@ -1,7 +1,5 @@
 export default {
   white: "#FFF",
-  whiteOpacity02: "#FFFFFF05",
-  whiteOpacity04: "#FFFFFF10",
 
   grey100: "#FAFAFA",
   grey200: "#EEEEEE",
@@ -14,11 +12,12 @@ export default {
   blue100: "#66FCF1",
 
   cyan500: "#0cb3a7",
+  cyan300: "#2B8E87",
 
   blackblue400: "#151D26",
+  blackblue400opacity50: "#151D2680",
   blackblue450: "#101a23",
   blackblue500: "#0D151C",
-  blackblue500opacity50: "#0D151C80",
 
   green300: "#15A71B",
   green500: "#036305",

@@ -57,7 +57,7 @@ const Container = styled.div`
 `;
 
 const SidebarItemsContainer = styled.div`
-  margin-right: 16px;
+  margin-right: 1.6em;
 `;
 
 export default Sidebar;

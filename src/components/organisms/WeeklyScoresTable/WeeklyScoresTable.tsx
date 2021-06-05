@@ -55,21 +55,18 @@ const Container = styled.div`
 
 const ScoresHeading = styled(Heading)`
   margin: 0.4em 0;
-  @media (max-width: ${pageSizes.mobileL}) {
-    font-size: 30px;
-  }
 `;
 
 const Table = styled.div<{ numUsers: number }>`
   width: fit-content;
-  background-color: ${colours.whiteOpacity02};
-  font-size: 24px;
+  background-color: ${colours.blackblue400opacity50};
+  font-size: 1.5rem;
   display: grid;
   grid-template-columns: ${({ numUsers }) => `6em repeat(${numUsers}, 4.5em)`};
   grid-auto-rows: 3em;
 
   @media (max-width: ${pageSizes.tablet}) {
-    font-size: 20px;
+    font-size: 1.3rem;
   }
 
   > div {
@@ -89,7 +86,7 @@ const BodyItem = styled.div``;
 
 const BodyItemFirst = styled(BodyItem)`
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-underline-offset: 0.1em;
 
   :hover,
   :focus {

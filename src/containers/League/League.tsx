@@ -8,7 +8,6 @@ import LeagueTable from "@/components/organisms/LeagueTable";
 import Heading from "@/components/atoms/Heading";
 import Loading from "@/components/atoms/Loading";
 import { UserTotalPoints, WeeklyPoints } from "@/types";
-import pageSizes from "@/styles/pageSizes";
 
 interface Props {
   leagueId: number;
@@ -30,7 +29,7 @@ const LeagueContainer = ({ leagueId }: Props) => {
 
   return (
     <>
-      <LeagueName level="h1">{data.leagueDetails.leagueName}</LeagueName>
+      <Heading level="h1">{data.leagueDetails.leagueName}</Heading>
       <Container>
         <LeagueTable users={users} />
         <WeeklyScoresTable
@@ -46,16 +45,10 @@ const LeagueContainer = ({ leagueId }: Props) => {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 24px;
+  margin: 0 2.4em;
 
   @media (max-width: 600px) {
     margin: 0;
-  }
-`;
-
-const LeagueName = styled(Heading)`
-  @media (max-width: ${pageSizes.mobileL}) {
-    font-size: 40px;
   }
 `;
 

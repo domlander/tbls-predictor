@@ -20,6 +20,7 @@ const UserIcon = ({ initial, handleClick }: Props) =>
 
 const sharedCircleStyles = css`
   background-color: ${colours.blackblue400};
+  color: ${colours.cyan300};
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -33,7 +34,8 @@ const ClickableCircle = styled.button`
   ${sharedCircleStyles}
 
   :focus, :hover {
-    outline: 1px solid ${colours.grey100};
+    color: ${colours.blackblue500};
+    background-color: ${colours.cyan300};
   }
 `;
 
@@ -42,7 +44,6 @@ const Circle = styled.div`
 `;
 
 const Name = styled.p`
-  color: ${colours.blue100};
   font-size: 1.8em;
 `;
 

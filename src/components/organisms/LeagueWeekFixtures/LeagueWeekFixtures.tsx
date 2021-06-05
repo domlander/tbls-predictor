@@ -62,10 +62,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-items: stretch;
-  background-color: ${colours.blackblue500opacity50};
-  margin: 8px 0;
-  padding: 8px;
-  border-radius: 4px;
+  background-color: ${colours.blackblue400opacity50};
+  margin: 0.8em 0;
+  padding: 0.8em;
+  border-radius: 0.2em;
   font-family: "Nunito" sans-serif;
 `;
 
@@ -75,19 +75,19 @@ const FixtureRow = styled.div`
 `;
 
 const Kickoff = styled.div`
-  flex-basis: 100px;
+  flex-basis: 8em;
   text-align: center;
   align-self: center;
-  font-size: 13px;
+  font-size: 0.8rem;
 `;
 
 const Fixture = styled.div`
   flex-basis: 100%;
   text-align: center;
-  font-size: 18px;
+  font-size: 1.1rem;
 
   @media (max-width: ${pageSizes.tablet}) {
-    font-size: 15px;
+    font-size: 0.9rem;
   }
 `;
 
@@ -102,11 +102,11 @@ const ClickableFixture = styled(Fixture)`
 const PredictionRow = styled.div`
   display: flex;
   justify-content: space-around;
-  margin-top: 8px;
-  font-size: 18px;
+  margin-top: 0.6em;
+  font-size: 1.1rem;
 
   @media (max-width: ${pageSizes.tablet}) {
-    font-size: 15px;
+    font-size: 0.8rem;
   }
 `;
 
@@ -116,8 +116,8 @@ const Prediction = styled.div<{ score: number }>`
     if (score === 1) return colours.green500;
     return "inherit";
   }};
-  padding: 2px 8px;
-  border-radius: 12px;
+  padding: 0.1em 0.5em;
+  border-radius: 2em;
 `;
 
 export default LeagueWeekFixtures;

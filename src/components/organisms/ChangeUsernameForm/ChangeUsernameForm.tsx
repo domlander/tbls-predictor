@@ -52,12 +52,12 @@ const Label = styled.label`
 `;
 
 const LabelText = styled.p`
-  font-size: 16px;
-  margin-right: 10px;
+  font-size: 1.6em;
+  margin-right: 1em;
 `;
 
 const ButtonContainer = styled.div`
-  margin: 32px 0;
+  margin: 3.2em 0;
 `;
 
 const Feedback = styled.p`

@@ -92,14 +92,13 @@ const UpdateResultsPage = ({ fixtures }: Props) => {
 };
 
 const ButtonContainer = styled.div`
-  margin-top: 16px;
+  margin-top: 1.6em;
 `;
 
 const Table = styled.div`
   display: grid;
-  grid-template-columns: 7em 1fr auto auto 1fr;
-  background: ${colours.grey200};
-  outline: 0.1em solid ${colours.grey200};
+  grid-template-columns: 15em 1fr auto auto 1fr;
+  grid-auto-rows: 4em;
   grid-gap: 0.1em;
 `;
 

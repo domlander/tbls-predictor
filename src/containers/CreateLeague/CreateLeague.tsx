@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 import Heading from "@/components/atoms/Heading";
 import Button from "@/components/atoms/Button";
-import colours from "@/styles/colours";
 import { useMutation } from "@apollo/client";
 import { CREATE_LEAGUE } from "apollo/mutations";
 import { useSession } from "next-auth/client";
@@ -103,7 +102,7 @@ const Container = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  margin: 32px 0;
+  margin: 3em 0;
 `;
 
 const Label = styled.label`
@@ -113,10 +112,10 @@ const Label = styled.label`
 `;
 
 const LabelText = styled.p`
-  font-size: 16px;
+  font-size: 1.2rem;
 `;
 
 const Feedback = styled.p`
-  font-size: 1.6em;
+  font-size: 1rem;
   font-style: italic;
 `;

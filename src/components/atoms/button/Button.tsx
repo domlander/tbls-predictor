@@ -55,7 +55,7 @@ const ButtonStyles = styled.button<StyleProps>`
   color: ${({ disabled, variant }) =>
     disabled ? variants[variant].disabledColour : variants[variant].colour};
   cursor: pointer;
-  font-size: 2.4em;
+  font-size: 1.6rem;
   height: 1.8em;
   opacity: ${({ disabled }) => (disabled ? "50%" : "100%")};
   width: 100%;

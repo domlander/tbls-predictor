@@ -28,7 +28,7 @@ const FixtureTable = ({
   handleSubmit,
   isAlwaysEditable = false,
 }: Props) => {
-  const [showUpdated, setShowUpdated] = useTransientState(false, 1000);
+  const [showUpdated, setShowUpdated] = useTransientState(false, 1500);
   const gameweekScore = calculateGameweekScore(predictions);
 
   if (!predictions?.length) return null;
@@ -67,7 +67,7 @@ const FixtureTable = ({
               </Button>
             </ButtonContainer>
             {showUpdated ? (
-              <UserFeedback>Predictions updated</UserFeedback>
+              <UserFeedback>Predictions updated!</UserFeedback>
             ) : (
               <div />
             )}
@@ -103,7 +103,7 @@ const Table = styled.div`
 const ButtonsAndMessageContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 16px;
+  margin-top: 1.6rem;
 
   @media (max-width: 650px) {
     flex-direction: column;
@@ -112,7 +112,7 @@ const ButtonsAndMessageContainer = styled.div`
 
 const ButtonContainer = styled.div`
   order: 3;
-  flex-basis: 400px;
+  flex-basis: 200px;
 
   @media (max-width: 650px) {
     order: 1;
@@ -122,27 +122,24 @@ const ButtonContainer = styled.div`
 
 const UserFeedback = styled.p`
   order: 2;
-  font-size: 2em;
+  color: ${colours.cyan300};
+  font-size: 1.8em;
   font-style: italic;
-  margin: 16px 0 0;
 `;
 
 const GameweekScore = styled.div`
   color: ${colours.grey300};
-  margin-top: 14px;
-  margin-left: 10px;
+  margin: 1.4rem 0 0 1rem;
   font-size: 2em;
 
   @media (max-width: ${pageSizes.tablet}) {
-    margin-top: 10px;
-    margin-left: 7px;
-    font-size: 1.4em;
+    margin: 1rem 0 0 0.7rem;
+    font-size: 1rem;
   }
 
   @media (max-width: ${pageSizes.mobileM}) {
-    margin-top: 8px;
-    margin-left: 5px;
-    font-size: 1.2em;
+    margin: 0.8rem 0 0 0.5rem;
+    font-size: 0.8rem;
   }
 `;
 

@@ -21,7 +21,6 @@ const Container = styled.div`
   width: 100%;
   height: 4.4em;
   line-height: 4.4em;
-  margin-right: 16px;
   text-align: right;
 `;
 

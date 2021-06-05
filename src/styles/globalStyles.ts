@@ -39,14 +39,13 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h1 {
-    font-size: 4.8em;
+    font-size: 2.5rem;
     margin: 1em 0;
   }
 
-  h2 { font-size: 3.8em; }
-  h3 { font-size: 3.0em; }
-  h4 { font-size: 2.4em; }
-  h5 { font-size: 2.0em; }
+  h2 { font-size: 2rem; }
+  h3 { font-size: 1.7rem; }
+  h4 { font-size: 1.5em; }
 
   a {
     text-decoration: inherit;

@@ -28,7 +28,7 @@ const Container = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  margin: 16px;
+  margin: 1.6em;
 `;
 
 export default SignInContainer;

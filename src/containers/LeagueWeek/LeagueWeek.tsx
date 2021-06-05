@@ -71,8 +71,8 @@ const LeagueContainer = ({ leagueId, weekId }: Props) => {
 };
 
 const LeagueName = styled.div`
-  margin-left: 10px;
-  font-size: 18px;
+  margin-left: 0.5em;
+  font-size: 1.2rem;
   font-style: italic;
 `;
 

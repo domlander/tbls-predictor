@@ -65,7 +65,7 @@ const InnerContainer = styled.div`
   margin: 0 auto;
 
   @media (max-width: ${pageSizes.laptop}) {
-    margin: 0 16px;
+    margin: 0 1.6em;
   }
 `;
 
