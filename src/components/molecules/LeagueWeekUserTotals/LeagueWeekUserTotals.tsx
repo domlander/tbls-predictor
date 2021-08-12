@@ -1,8 +1,7 @@
 import styled from "styled-components";
 import React from "react";
 
-import { UserTotalPointsWeek } from "@/types";
-import colours from "@/styles/colours";
+import { UserTotalPointsWeek } from "../../../types";
 import pageSizes from "../../../styles/pageSizes";
 
 export type Props = {

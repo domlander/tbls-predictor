@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import pageSizes from "../../../styles/pageSizes";
 import Chip from "../Chip";
-import colours from "../../../styles/colours";
 
 interface StyleProps {
   alignText: "left" | "center" | "right";
