@@ -32,6 +32,7 @@
     "import/no-unresolved": "off",
     "import/prefer-default-export": "off",
     "import/extensions": "off",
+    "arrow-body-style": "off",
     "react/require-default-props": "off",
     "jsx-a11y/anchor-is-valid": "off", // Next/link requires <a> tag without href attribute
     "@typescript-eslint/no-use-before-define": "off" // Prefer to have styled components at bottom of file. If we move to separate files for styles, then remove this.

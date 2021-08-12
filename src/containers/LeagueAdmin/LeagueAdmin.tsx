@@ -32,7 +32,11 @@ const LeagueAdminContainer = ({ userId, leagueId }: Props) => {
   return (
     <>
       <Heading level="h1">{leagueName} - Admin</Heading>
-      <LeagueApplicants applicants={applicants} leagueId={leagueId} />
+      <LeagueApplicants
+        applicants={applicants}
+        setApplicants={setApplicants}
+        leagueId={leagueId}
+      />
       <LeagueParticipants participants={participants} />
     </>
   );

@@ -10,10 +10,11 @@ import Heading from "../atoms/Heading";
 
 interface Props {
   applicants: Applicant[];
+  setApplicants: any;
   leagueId: number;
 }
 
-const LeagueApplicants = ({ applicants, leagueId }: Props) => {
+const LeagueApplicants = ({ applicants, setApplicants, leagueId }: Props) => {
   const [session] = useSession();
   const [userFeedback, setUserFeedback] = useState<string>("");
   const [processRequest] = useMutation(PROCESS_JOIN_LEAGUE_REQUEST);
@@ -26,16 +27,25 @@ const LeagueApplicants = ({ applicants, leagueId }: Props) => {
         applicantId,
         isAccepted: accept,
       },
-    }).then(() => setUserFeedback("Success!"));
+    }).then(() => {
+      setApplicants(
+        applicants.filter((applicant) => applicant.user.id !== applicantId)
+      );
+      setUserFeedback("Success!");
+    });
   };
+
+  const validApplicants = applicants.filter(
+    (applicant) => applicant.user.username
+  );
 
   return (
     <div>
       <Heading level="h2">Requests</Heading>
-      {!applicants?.length ? (
-        <Label>No Applicants</Label>
+      {!validApplicants?.length ? (
+        <Label>No valid applicants</Label>
       ) : (
-        applicants.map(({ user }) => (
+        validApplicants.map(({ user }) => (
           <RequestsContainer key={user.id}>
             <Label>{user.username}</Label>
             <ButtonContainer>

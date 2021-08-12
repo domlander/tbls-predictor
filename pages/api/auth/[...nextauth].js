@@ -1,5 +1,5 @@
-import NextAuth from 'next-auth'
-import Providers from 'next-auth/providers'
+import NextAuth from "next-auth";
+import Providers from "next-auth/providers";
 
 const options = {
   site: process.env.NEXTAUTH_URL,
@@ -10,12 +10,18 @@ const options = {
     }),
   ],
   database: {
-    type: 'postgres',
+    type: "postgres",
     host: process.env.POSTGRESQL_HOST,
     port: 5432,
     username: process.env.POSTGRESQL_USERNAME,
     password: process.env.POSTGRESQL_PASSWORD,
     database: process.env.POSTGRESQL_DATABASE,
+    ssl: true,
+    extra: {
+      ssl: {
+        rejectUnauthorized: false,
+      },
+    },
   },
   secret: process.env.SECRET,
   callbacks: {
@@ -29,9 +35,9 @@ const options = {
       if (token?.id) {
         session.user.id = token.id;
       }
-      return session
-    }
-  }
-}
+      return session;
+    },
+  },
+};
 
-export default (req, res) => NextAuth(req, res, options)
+export default (req, res) => NextAuth(req, res, options);

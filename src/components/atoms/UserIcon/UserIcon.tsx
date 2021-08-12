@@ -22,6 +22,7 @@ const sharedCircleStyles = css`
   background-color: ${colours.blackblue400};
   color: ${colours.cyan300};
   border-radius: 50%;
+  border: 0.1em solid ${colours.cyan300};
   display: flex;
   justify-content: center;
   align-items: center;

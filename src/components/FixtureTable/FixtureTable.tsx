@@ -5,7 +5,10 @@ import { FixtureWithPrediction } from "@/types";
 import { calculateGameweekScore } from "utils/calculateGameweekScore";
 import isPastDeadline from "utils/isPastDeadline";
 import useTransientState from "src/hooks/useTransientState";
-import { formatFixtureKickoffTime } from "utils/formatFixtureKickoffTime";
+import {
+  formatFixtureKickoffTime,
+  whenIsTheFixture,
+} from "utils/kickoffDateHelpers";
 import Button from "../atoms/Button";
 import GridRow from "../molecules/GridRow";
 import colours from "../../styles/colours";
@@ -33,6 +36,8 @@ const FixtureTable = ({
 
   if (!predictions?.length) return null;
 
+  const firstFixtureKickoffTiming = whenIsTheFixture(predictions[0].kickoff);
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -41,7 +46,10 @@ const FixtureTable = ({
             <GridRow
               key={prediction.fixtureId}
               fixtureId={prediction.fixtureId}
-              kickoff={formatFixtureKickoffTime(prediction.kickoff)}
+              kickoff={formatFixtureKickoffTime(
+                prediction.kickoff,
+                firstFixtureKickoffTiming
+              )}
               homeTeam={prediction.homeTeam}
               awayTeam={prediction.awayTeam}
               homeGoals={prediction?.predictedHomeGoals ?? ""}
@@ -122,7 +130,7 @@ const ButtonContainer = styled.div`
 
 const UserFeedback = styled.p`
   order: 2;
-  color: ${colours.cyan300};
+  color: ${colours.cyan500};
   font-size: 1.8em;
   font-style: italic;
 `;

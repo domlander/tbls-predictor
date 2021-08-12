@@ -1,24 +1,25 @@
-// import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/client";
 import prisma from "prisma/client";
 import calculatePredictionScore from "../../utils/calculatePredictionScore";
 
 /*
-
   I want a service that updates the score (home_goals and away_goals) on the fixtures table
 
   When this is complete, I want the predictions table score field updated with the amount
   of points achieved by the prediction.
-
 */
 export default async (req, res) => {
-  // const session = await getSession({ req });
-
-  // TODO: VALIDATE USER
+  const session = await getSession({ req });
+  if (session.user.email !== process.env.ADMIN_EMAIL) {
+    res.status(401).send("You are not authorised to perform this action.");
+    return;
+  }
 
   const { scores } = req.body;
 
   if (!scores?.length) {
     res.status(400).send("League not created. Scores missing.");
+    return;
   }
 
   const originalScores = await prisma.fixture.findMany({
@@ -107,5 +108,5 @@ export default async (req, res) => {
   );
   Promise.all(predictionsUpdate);
 
-  return res.send(200);
+  res.send(200);
 };

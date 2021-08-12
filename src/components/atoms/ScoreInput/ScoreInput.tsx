@@ -2,6 +2,7 @@ import React from "react";
 import { Fixture } from "@prisma/client";
 import styled from "styled-components";
 
+import colours from "../../../styles/colours";
 import pageSizes from "../../../styles/pageSizes";
 
 interface StyleProps {
@@ -30,6 +31,7 @@ const ScoreInput = ({
 }: Props) => (
   <Input
     autoComplete="off"
+    placeholder={isScoreEditable ? "?" : ""}
     disabled={!isScoreEditable}
     isScoreEditable={isScoreEditable}
     maxLength={1}
@@ -42,13 +44,16 @@ const ScoreInput = ({
 );
 
 const Input = styled.input<StyleProps>`
-  font-size: 2em;
-  text-align: center;
   border: 0;
   width: 2em;
   background-color: inherit;
+  font-size: 2em;
+  text-align: center;
   :focus {
     outline: none;
+  }
+  ::placeholder {
+    color: ${colours.grey500opacity50};
   }
 
   @media (max-width: ${pageSizes.tablet}) {

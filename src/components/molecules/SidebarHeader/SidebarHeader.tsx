@@ -12,7 +12,7 @@ export interface Props {
 const SidebarHeader = ({ username, handleClick }: Props) => (
   <Container>
     <User>
-      <UserIcon initial="D" />
+      <UserIcon initial={username[0]} />
       <Username>
         {username.length > 16 ? `${username.substring(0, 14)}...` : username}
       </Username>

@@ -17,9 +17,8 @@ const LeaguesList = ({ leagues }: Props) => {
   if (!leagues?.length)
     return (
       <NoLeagues>
-        <p>No Leagues!</p>
         <Link href="/league/join">
-          <a>Join</a>
+          <a>Join a league</a>
         </Link>
       </NoLeagues>
     );
@@ -46,7 +45,7 @@ const LeaguesList = ({ leagues }: Props) => {
 };
 
 const NoLeagues = styled.div`
-  font-size: 2em;
+  font-size: 2.5em;
   display: flex;
 
   p {
@@ -77,6 +76,7 @@ const Leagues = styled.div`
 
 const LeagueCard = styled.div`
   border: 1px solid ${colours.grey300};
+  background-color: ${colours.blackblue400};
   padding: 3.2em;
   cursor: pointer;
 

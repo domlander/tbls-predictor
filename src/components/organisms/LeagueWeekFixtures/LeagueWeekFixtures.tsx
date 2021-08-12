@@ -3,7 +3,10 @@ import React from "react";
 
 import { FixtureWithUsersPredictions } from "@/types";
 import Link from "next/link";
-import { formatFixtureKickoffTime } from "utils/formatFixtureKickoffTime";
+import {
+  formatFixtureKickoffTime,
+  whenIsTheFixture,
+} from "utils/kickoffDateHelpers";
 import calculatePredictionScore from "../../../../utils/calculatePredictionScore";
 import isPastDeadline from "../../../../utils/isPastDeadline";
 import colours from "../../../styles/colours";
@@ -14,49 +17,58 @@ export type Props = {
   weekId: number;
 };
 
-const LeagueWeekFixtures = ({ fixtures, weekId }: Props) => (
-  <>
-    {fixtures.map((fixture) => (
-      <Container key={fixture.id}>
-        <FixtureRow>
-          <Kickoff>{formatFixtureKickoffTime(fixture.kickoff)}</Kickoff>
+const LeagueWeekFixtures = ({ fixtures, weekId }: Props) => {
+  const firstFixtureKickoffTiming = whenIsTheFixture(fixtures[0].kickoff);
+
+  return (
+    <>
+      {fixtures.map((fixture) => (
+        <Container key={fixture.id}>
+          <FixtureRow>
+            <Kickoff>
+              {formatFixtureKickoffTime(
+                fixture.kickoff,
+                firstFixtureKickoffTiming
+              )}
+            </Kickoff>
+            {isPastDeadline(fixture.kickoff) ? (
+              <Fixture>
+                {fixture.homeTeam}
+                &nbsp;&nbsp;
+                {fixture.homeGoals} - {fixture.awayGoals}
+                &nbsp;&nbsp;
+                {fixture.awayTeam}
+              </Fixture>
+            ) : (
+              <ClickableFixture>
+                <Link href={`/predictions/${weekId}`}>
+                  <a>
+                    {fixture.homeTeam} vs {fixture.awayTeam}
+                  </a>
+                </Link>
+              </ClickableFixture>
+            )}
+          </FixtureRow>
           {isPastDeadline(fixture.kickoff) ? (
-            <Fixture>
-              {fixture.homeTeam}
-              &nbsp;&nbsp;
-              {fixture.homeGoals} - {fixture.awayGoals}
-              &nbsp;&nbsp;
-              {fixture.awayTeam}
-            </Fixture>
-          ) : (
-            <ClickableFixture>
-              <Link href={`/predictions/${weekId}`}>
-                <a>
-                  {fixture.homeTeam} vs {fixture.awayTeam}
-                </a>
-              </Link>
-            </ClickableFixture>
-          )}
-        </FixtureRow>
-        {isPastDeadline(fixture.kickoff) ? (
-          <PredictionRow>
-            {fixture.predictions.map((prediction, i) => {
-              const score = calculatePredictionScore(prediction, [
-                fixture.homeGoals as number,
-                fixture.awayGoals as number,
-              ]);
-              return (
-                <Prediction key={i} score={score}>
-                  {prediction[0] || 0} - {prediction[1] || 0}
-                </Prediction>
-              );
-            })}
-          </PredictionRow>
-        ) : null}
-      </Container>
-    ))}
-  </>
-);
+            <PredictionRow>
+              {fixture.predictions.map((prediction, i) => {
+                const score = calculatePredictionScore(prediction, [
+                  fixture.homeGoals as number,
+                  fixture.awayGoals as number,
+                ]);
+                return (
+                  <Prediction key={i} score={score}>
+                    {prediction[0] || 0} - {prediction[1] || 0}
+                  </Prediction>
+                );
+              })}
+            </PredictionRow>
+          ) : null}
+        </Container>
+      ))}
+    </>
+  );
+};
 
 const Container = styled.div`
   display: flex;

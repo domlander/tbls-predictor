@@ -11,41 +11,53 @@ export interface Props {
   users: UserTotalPoints[];
   pointsByWeek: WeeklyPoints[];
   leagueId: number;
+  fixtureWeeksAvailable: number[];
 }
 
 const maxUsernameLength = 5;
 
-const WeeklyScoresTable = ({ users, pointsByWeek, leagueId }: Props) => (
-  <Container>
-    <ScoresHeading level="h2">Weeks</ScoresHeading>
-    <Table numUsers={users.length}>
-      <HeaderItemBlank />
-      {users.map(({ userId, username }) => (
-        <HeaderItem key={userId}>
-          {username.length > maxUsernameLength
-            ? `${username.substring(0, maxUsernameLength - 2)}...`
-            : username}
-        </HeaderItem>
-      ))}
-      {pointsByWeek.map(({ week, points }) => (
-        <React.Fragment key={week}>
-          <BodyItemFirst>
-            <Link href={`/league/${leagueId}/week/${week}`}>
-              <a>{`Week ${week}`}</a>
-            </Link>
-          </BodyItemFirst>
-          {points.map((weekPoint, i) => (
-            <BodyItem key={i}>{weekPoint}</BodyItem>
-          ))}
-        </React.Fragment>
-      ))}
-      <FooterItem>Total</FooterItem>
-      {users.map(({ userId, totalPoints }) => (
-        <FooterItem key={userId}>{totalPoints}</FooterItem>
-      ))}
-    </Table>
-  </Container>
-);
+const WeeklyScoresTable = ({
+  users,
+  pointsByWeek,
+  leagueId,
+  fixtureWeeksAvailable,
+}: Props) => {
+  return (
+    <Container>
+      <ScoresHeading level="h2">Weeks</ScoresHeading>
+      <Table numUsers={users.length}>
+        <HeaderItemBlank />
+        {users.map(({ userId, username }) => (
+          <HeaderItem key={userId}>
+            {username.length > maxUsernameLength
+              ? `${username.substring(0, maxUsernameLength - 2)}...`
+              : username}
+          </HeaderItem>
+        ))}
+        {pointsByWeek.map(({ week, points }) => (
+          <React.Fragment key={week}>
+            <div>
+              {fixtureWeeksAvailable.indexOf(week) !== -1 ? (
+                <Link href={`/league/${leagueId}/week/${week}`}>
+                  <ClickableRowHeading>{`Week ${week}`}</ClickableRowHeading>
+                </Link>
+              ) : (
+                <div>{`Week ${week}`}</div>
+              )}
+            </div>
+            {points.map((weekPoint, i) => (
+              <BodyItem key={i}>{weekPoint}</BodyItem>
+            ))}
+          </React.Fragment>
+        ))}
+        <FooterItem>Total</FooterItem>
+        {users.map(({ userId, totalPoints }) => (
+          <FooterItem key={userId}>{totalPoints}</FooterItem>
+        ))}
+      </Table>
+    </Container>
+  );
+};
 
 const Container = styled.div`
   display: flex;
@@ -84,7 +96,8 @@ const HeaderItemBlank = styled(HeaderItem)``;
 
 const BodyItem = styled.div``;
 
-const BodyItemFirst = styled(BodyItem)`
+const ClickableRowHeading = styled.a`
+  cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 0.1em;
 

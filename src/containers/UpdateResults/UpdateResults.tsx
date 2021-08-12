@@ -5,8 +5,10 @@ import { Fixture } from "@prisma/client";
 import Heading from "@/components/atoms/Heading";
 import Button from "@/components/atoms/Button";
 import GridRow from "@/components/molecules/GridRow";
-import colours from "@/styles/colours";
-import { formatFixtureKickoffTime } from "utils/formatFixtureKickoffTime";
+import {
+  formatFixtureKickoffTime,
+  whenIsTheFixture,
+} from "utils/kickoffDateHelpers";
 
 interface Props {
   fixtures: Fixture[];
@@ -62,22 +64,28 @@ const UpdateResultsPage = ({ fixtures }: Props) => {
 
   if (!scores?.length) return <Heading level="h1">No fixtures</Heading>;
 
+  const firstFixtureKickoffTiming = whenIsTheFixture(scores[0].kickoff);
+
   return (
     <>
       <Heading level="h1">Update Results</Heading>
       <form onSubmit={handleSubmit}>
         <Table>
-          {scores.map((score) => (
+          {scores.map((score, i) => (
             <GridRow
               key={score.id}
               fixtureId={score.id}
-              kickoff={formatFixtureKickoffTime(score.kickoff)}
+              kickoff={formatFixtureKickoffTime(
+                score.kickoff,
+                firstFixtureKickoffTiming
+              )}
               homeTeam={score.homeTeam}
               awayTeam={score.awayTeam}
               homeGoals={score.homeGoals?.toString() || ""}
               awayGoals={score.awayGoals?.toString() || ""}
               updateGoals={updateGoals}
               locked={false}
+              topRow={i === 0}
             />
           ))}
         </Table>
