@@ -2,7 +2,7 @@ import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
 
 import Heading from "@/components/atoms/Heading";
-import Button from "@/components/atoms/Button";
+import Button from "@/components/Button";
 import { useMutation } from "@apollo/client";
 import { CREATE_LEAGUE } from "apollo/mutations";
 import { useSession } from "next-auth/client";

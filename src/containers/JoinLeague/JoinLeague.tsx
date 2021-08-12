@@ -4,7 +4,7 @@ import { useMutation } from "@apollo/client";
 
 import { REQUEST_TO_JOIN_LEAGUE } from "apollo/mutations";
 import Heading from "@/components/atoms/Heading";
-import Button from "@/components/atoms/Button";
+import Button from "@/components/Button";
 import FormInput from "@/components/atoms/FormInput";
 import { useSession } from "next-auth/client";
 

@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import styled from "styled-components";
-import colours from "../../../styles/colours";
+import colours from "../../styles/colours";
 
 const variants = {
   primary: {

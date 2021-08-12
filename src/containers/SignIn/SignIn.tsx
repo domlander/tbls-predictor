@@ -3,7 +3,7 @@ import { signIn } from "next-auth/client";
 import styled from "styled-components";
 
 import Heading from "@/components/atoms/Heading";
-import Button from "@/components/atoms/Button";
+import Button from "@/components/Button";
 
 const SignInContainer = () => (
   <>

@@ -6,7 +6,7 @@ import { USER } from "apollo/queries";
 import { UPDATE_USERNAME } from "apollo/mutations";
 import Heading from "@/components/atoms/Heading";
 import Loading from "@/components/atoms/Loading";
-import ChangeUsernameForm from "@/components/organisms/ChangeUsernameForm";
+import ChangeUsernameForm from "@/components/ChangeUsernameForm";
 
 const AccountContainer = () => {
   const [currentUsername, setCurrentUsername] = useState();

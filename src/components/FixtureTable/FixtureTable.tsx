@@ -9,7 +9,7 @@ import {
   formatFixtureKickoffTime,
   whenIsTheFixture,
 } from "utils/kickoffDateHelpers";
-import Button from "../atoms/Button";
+import Button from "../Button";
 import GridRow from "../molecules/GridRow";
 import colours from "../../styles/colours";
 import pageSizes from "../../styles/pageSizes";

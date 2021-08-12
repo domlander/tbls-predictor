@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Fixture } from "@prisma/client";
 
 import Heading from "@/components/atoms/Heading";
-import Button from "@/components/atoms/Button";
+import Button from "@/components/Button";
 import GridRow from "@/components/molecules/GridRow";
 import {
   formatFixtureKickoffTime,

@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-import Button from "../../atoms/Button";
-import FormInput from "../../atoms/FormInput";
+import Button from "../Button";
+import FormInput from "../atoms/FormInput";
 
 export interface Props {
   username: string;

@@ -5,7 +5,7 @@ import { useMutation } from "@apollo/client";
 
 import { PROCESS_JOIN_LEAGUE_REQUEST } from "apollo/mutations";
 import { Applicant } from "@/types";
-import Button from "../atoms/Button";
+import Button from "../Button";
 import Heading from "../atoms/Heading";
 
 interface Props {
