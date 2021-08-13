@@ -29,6 +29,7 @@ const Container = styled.div<{ numUsers: number }>`
 
 const Username = styled.div`
   margin-top: 0.75em;
+  text-align: center;
   text-decoration: underline;
   text-underline-offset: 0.2em;
   font-size: 1.2rem;
