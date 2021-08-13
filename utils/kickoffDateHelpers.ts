@@ -37,7 +37,10 @@ export function formatFixtureKickoffTime(
   }
 
   if (format === "soon") {
-    return `${day} ${hours}:${minutes}`;
+    const today = new Date();
+    return fixture.toDateString() === today.toDateString()
+      ? `${hours}:${minutes}`
+      : `${day} ${hours}:${minutes}`;
   }
 
   return `${day} ${dayOfMonth} ${month}`;
@@ -62,11 +65,6 @@ export function whenIsTheFixture(dateInput: Date | string) {
   yesterday.setDate(yesterday.getDate() - 6);
   if (fixture < yesterday) {
     return "past";
-  }
-
-  const today = new Date();
-  if (fixture.toDateString() === today.toDateString()) {
-    return "today";
   }
 
   return "soon";
