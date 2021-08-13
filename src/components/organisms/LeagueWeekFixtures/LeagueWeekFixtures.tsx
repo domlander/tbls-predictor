@@ -52,10 +52,14 @@ const LeagueWeekFixtures = ({ fixtures, weekId }: Props) => {
           {isPastDeadline(fixture.kickoff) ? (
             <PredictionRow>
               {fixture.predictions.map((prediction, i) => {
-                const score = calculatePredictionScore(prediction, [
-                  fixture.homeGoals as number,
-                  fixture.awayGoals as number,
-                ]);
+                const score =
+                  fixture.homeGoals === null || fixture.awayGoals === null
+                    ? 0
+                    : calculatePredictionScore(prediction, [
+                        fixture.homeGoals,
+                        fixture.awayGoals,
+                      ]);
+
                 return (
                   <Prediction key={i} score={score}>
                     {prediction[0] || 0} - {prediction[1] || 0}
