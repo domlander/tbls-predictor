@@ -33,7 +33,6 @@ const Container = styled.div`
   grid-template-columns: 7em 1fr auto auto 1fr;
   background: ${colours.grey200};
   outline: 0.1em solid ${colours.grey200};
-  grid-gap: 0.1em;
 `;
 
 const sharedArgs = {

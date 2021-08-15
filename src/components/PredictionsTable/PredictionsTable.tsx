@@ -25,7 +25,7 @@ interface Props {
   isAlwaysEditable?: boolean;
 }
 
-const FixtureTable = ({
+const PredictionsTable = ({
   predictions,
   updateGoals,
   handleSubmit,
@@ -151,4 +151,4 @@ const GameweekScore = styled.div`
   }
 `;
 
-export default FixtureTable;
+export default PredictionsTable;

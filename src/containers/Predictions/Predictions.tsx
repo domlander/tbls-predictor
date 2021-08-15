@@ -2,7 +2,7 @@ import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
 import { useSession } from "next-auth/client";
 
-import FixtureTable from "@/components/FixtureTable";
+import PredictionsTable from "@/components/PredictionsTable";
 import { FixtureWithPrediction, UpdatePredictionsInputType } from "@/types";
 import WeekNavigator from "@/components/molecules/WeekNavigator";
 import { UPDATE_PREDICTIONS } from "apollo/mutations";
@@ -104,7 +104,7 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
           }
         />
       )}
-      <FixtureTable
+      <PredictionsTable
         predictions={thisWeeksPredictions}
         updateGoals={updateGoals}
         handleSubmit={handleSubmitPredictions}
