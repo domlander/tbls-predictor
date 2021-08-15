@@ -42,7 +42,7 @@ const TableContainer = styled.div`
   align-items: center;
   background-color: ${colours.blackblue400opacity50};
   border-radius: 0.2em;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
 `;
 
 const Item = styled.div<{ position: number }>`

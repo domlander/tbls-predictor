@@ -14,8 +14,6 @@ export interface Props {
   fixtureWeeksAvailable: number[];
 }
 
-const maxUsernameLength = 10;
-
 const WeeklyScoresTable = ({
   users,
   pointsByWeek,
@@ -29,14 +27,10 @@ const WeeklyScoresTable = ({
         <HeaderItemBlank />
         {users.map(({ userId, username }) => (
           <HeaderItem key={userId}>
-            <p>
-              {username.length > maxUsernameLength
-                ? `${username.substring(0, maxUsernameLength - 2)}...`
-                : username}
-            </p>
+            <p>{username}</p>
           </HeaderItem>
         ))}
-        <TotalScoresRow>Total</TotalScoresRow>
+        <TotalScoresRow />
         {users.map(({ userId, totalPoints }) => (
           <TotalScoresRow key={userId}>{totalPoints}</TotalScoresRow>
         ))}
@@ -48,7 +42,7 @@ const WeeklyScoresTable = ({
                   <ClickableRowHeading>{`Week ${week}`}</ClickableRowHeading>
                 </Link>
               ) : (
-                <div>{`Week ${week}`}</div>
+                <RowHeading>{`Week ${week}`}</RowHeading>
               )}
             </div>
             {points.map((weekPoint, i) => (
@@ -76,13 +70,13 @@ const Table = styled.div<{ numUsers: number }>`
   background-color: ${colours.blackblue400opacity50};
   font-size: 1.5rem;
   display: grid;
-  grid-template-columns: ${({ numUsers }) => `6em repeat(${numUsers}, 6em)`};
+  grid-template-columns: ${({ numUsers }) => `5em repeat(${numUsers}, 5.5em)`};
   grid-auto-rows: 3em;
 
   @media (max-width: ${pageSizes.tablet}) {
     font-size: 1.3rem;
     grid-template-columns: ${({ numUsers }) =>
-      `5em repeat(${numUsers}, 4.5em)`};
+      `4.5em repeat(${numUsers}, 4.5em)`};
   }
 
   > div {
@@ -93,6 +87,7 @@ const Table = styled.div<{ numUsers: number }>`
 `;
 
 const HeaderItem = styled.div`
+  font-size: 0.8em;
   font-weight: 700;
   max-width: 100%;
 
@@ -100,13 +95,19 @@ const HeaderItem = styled.div`
     max-width: 80%;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin: 0;
+    margin: auto 0 0;
+    text-align: center;
   }
 `;
 
 const HeaderItemBlank = styled(HeaderItem)``;
 
+const RowHeading = styled.div`
+  margin: 0 0 0 auto;
+`;
+
 const ClickableRowHeading = styled.a`
+  margin: 0 0 0 auto;
   cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 0.1em;
@@ -121,7 +122,6 @@ const ClickableRowHeading = styled.a`
 const TotalScoresRow = styled.div`
   font-size: 1.5rem;
   font-weight: 700;
-  border-top: 1px solid grey;
   border-bottom: 1px solid ${colours.grey500};
 `;
 
