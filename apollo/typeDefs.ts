@@ -167,6 +167,7 @@ const typeDefs = gql`
     awayGoals: Int
     predictedHomeGoals: String
     predictedAwayGoals: String
+    big_boy_bonus: Boolean
     predictionScore: Int
   }
 

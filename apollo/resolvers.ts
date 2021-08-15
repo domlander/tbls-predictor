@@ -111,6 +111,7 @@ const resolvers = {
           awayTeam: fixture.awayTeam,
           homeGoals: fixture.homeGoals,
           awayGoals: fixture.awayGoals,
+          big_boy_bonus: false,
           predictedHomeGoals: prediction?.homeGoals?.toString() || null,
           predictedAwayGoals: prediction?.awayGoals?.toString() || null,
           predictionScore: prediction?.score ?? null,
@@ -254,6 +255,7 @@ const resolvers = {
                   score: true,
                   homeGoals: true,
                   awayGoals: true,
+                  big_boy_bonus: true,
                   fixture: {
                     select: {
                       gameweek: true,
@@ -276,9 +278,10 @@ const resolvers = {
             fixture.predictions.push([
               userPrediction.homeGoals,
               userPrediction.awayGoals,
+              userPrediction.big_boy_bonus || false,
             ]);
           } else {
-            fixture.predictions.push([null, null]);
+            fixture.predictions.push([null, null, false]);
           }
         });
       });

@@ -16,7 +16,6 @@ export default async (req, res) => {
   }
 
   const { scores } = req.body;
-
   if (!scores?.length) {
     res.status(400).send("League not created. Scores missing.");
     return;
@@ -78,7 +77,11 @@ export default async (req, res) => {
     const predictedAwayGoals = prediction.awayGoals || 0;
 
     const actualResult = [fixture.homeGoals, fixture.awayGoals];
-    const predictedResult = [predictedHomeGoals, predictedAwayGoals];
+    const predictedResult = [
+      predictedHomeGoals,
+      predictedAwayGoals,
+      prediction.big_boy_bonus,
+    ];
     const score = calculatePredictionScore(predictedResult, actualResult);
 
     evaluatedPredictions.push({

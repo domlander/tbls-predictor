@@ -61,9 +61,16 @@ const LeagueWeekFixtures = ({ fixtures, weekId }: Props) => {
                       ]);
 
                 return (
-                  <Prediction key={i} score={score}>
-                    {prediction[0] || 0} - {prediction[1] || 0}
-                  </Prediction>
+                  <PredictionContainer key={i}>
+                    <Prediction score={score}>
+                      {prediction[0] || 0} - {prediction[1] || 0}
+                    </Prediction>
+                    {!!prediction[2] && ( // prediction is either 1 or 0, rather than true or false
+                      <Prediction score={score} double>
+                        {prediction[0] || 0} - {prediction[1] || 0}
+                      </Prediction>
+                    )}
+                  </PredictionContainer>
                 );
               })}
             </PredictionRow>
@@ -126,14 +133,20 @@ const PredictionRow = styled.div`
   }
 `;
 
-const Prediction = styled.div<{ score: number }>`
+const PredictionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Prediction = styled.div<{ score: number; double?: boolean }>`
   background-color: ${({ score }) => {
-    if (score === 3) return colours.gold500;
-    if (score === 1) return colours.green500;
+    if (score >= 3) return colours.gold500;
+    if (score >= 1) return colours.green500;
     return "inherit";
   }};
   padding: 0.1em 0.5em;
   border-radius: 2em;
+  margin-top: ${({ double }) => (double ? "2px" : "0")};
 `;
 
 export default LeagueWeekFixtures;

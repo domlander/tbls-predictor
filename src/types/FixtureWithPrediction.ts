@@ -10,5 +10,6 @@ export type FixtureWithPrediction = {
   awayGoals: Fixture["awayGoals"];
   predictedHomeGoals: string | null;
   predictedAwayGoals: string | null;
+  big_boy_bonus: Prediction["big_boy_bonus"];
   predictionScore: Prediction["score"];
 };

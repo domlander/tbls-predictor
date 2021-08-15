@@ -52,6 +52,7 @@ export const PREDICTIONS = gql`
         awayTeam
         homeGoals
         awayGoals
+        big_boy_bonus
         predictedHomeGoals
         predictedAwayGoals
         predictionScore
