@@ -35,6 +35,10 @@ const LeagueContainer = ({
   if (loading || !users || !pointsByWeek) return <Loading />;
   if (error) return <div>An error has occurred. Please try again later.</div>;
 
+  const usersByTotalScore = users
+    .slice()
+    .sort((a, b) => b.totalPoints - a.totalPoints);
+
   return (
     <>
       <Heading level="h1">{data.leagueDetails.leagueName}</Heading>
@@ -44,7 +48,7 @@ const LeagueContainer = ({
             <AdminLink>Admin</AdminLink>
           </Link>
         )}
-        <LeagueTable users={users} />
+        <LeagueTable users={usersByTotalScore} />
         <WeeklyScoresTable
           users={users}
           pointsByWeek={pointsByWeek}

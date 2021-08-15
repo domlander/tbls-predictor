@@ -186,10 +186,8 @@ const resolvers = {
           totalPoints: usersWeeklyPoints[i].reduce((acc, cur) => acc + cur, 0),
         })
       );
-      users.sort((a, b) => b.totalPoints - a.totalPoints);
 
-      // The fill(0) is required because we can't iterate through an array of undefined pointers:
-      // https://stackoverflow.com/a/5501711
+      // The fill(0) is required because we can't iterate through an array of undefined pointers: https://stackoverflow.com/a/5501711
       const pointsByWeek = new Array(numGameweeks).fill(0).map((_, i) => ({
         week: league.gameweekStart + i,
         points: usersWeeklyPoints.map((points) => points[i]),

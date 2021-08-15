@@ -14,7 +14,7 @@ export interface Props {
   fixtureWeeksAvailable: number[];
 }
 
-const maxUsernameLength = 5;
+const maxUsernameLength = 10;
 
 const WeeklyScoresTable = ({
   users,
@@ -34,6 +34,10 @@ const WeeklyScoresTable = ({
               : username}
           </HeaderItem>
         ))}
+        <TotalScoresHeader>Total</TotalScoresHeader>
+        {users.map(({ userId, totalPoints }) => (
+          <TotalScoresItem key={userId}>{totalPoints}</TotalScoresItem>
+        ))}
         {pointsByWeek.map(({ week, points }) => (
           <React.Fragment key={week}>
             <div>
@@ -46,13 +50,9 @@ const WeeklyScoresTable = ({
               )}
             </div>
             {points.map((weekPoint, i) => (
-              <BodyItem key={i}>{weekPoint}</BodyItem>
+              <div key={i}>{weekPoint}</div>
             ))}
           </React.Fragment>
-        ))}
-        <FooterItem>Total</FooterItem>
-        {users.map(({ userId, totalPoints }) => (
-          <FooterItem key={userId}>{totalPoints}</FooterItem>
         ))}
       </Table>
     </Container>
@@ -74,7 +74,7 @@ const Table = styled.div<{ numUsers: number }>`
   background-color: ${colours.blackblue400opacity50};
   font-size: 1.5rem;
   display: grid;
-  grid-template-columns: ${({ numUsers }) => `6em repeat(${numUsers}, 4.5em)`};
+  grid-template-columns: ${({ numUsers }) => `6em repeat(${numUsers}, 6em)`};
   grid-auto-rows: 3em;
 
   @media (max-width: ${pageSizes.tablet}) {
@@ -94,8 +94,6 @@ const HeaderItem = styled.div`
 
 const HeaderItemBlank = styled(HeaderItem)``;
 
-const BodyItem = styled.div``;
-
 const ClickableRowHeading = styled.a`
   cursor: pointer;
   text-decoration: underline;
@@ -108,8 +106,19 @@ const ClickableRowHeading = styled.a`
   }
 `;
 
-const FooterItem = styled.div`
-  font-weight: 700;
+const TotalScoresRow = styled.div`
+  font-family: "Patrick Hand", cursive;
+  font-size: 1.5rem;
+  border-top: 1px solid grey;
+  border-bottom: 1px solid ${colours.grey500};
+`;
+
+const TotalScoresHeader = styled(TotalScoresRow)`
+  font-family: "Nunito Sans", sans-serif;
+`;
+
+const TotalScoresItem = styled(TotalScoresRow)`
+  font-family: "Patrick Hand", cursive;
 `;
 
 export default WeeklyScoresTable;
