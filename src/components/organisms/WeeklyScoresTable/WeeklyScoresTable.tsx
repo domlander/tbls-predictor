@@ -29,14 +29,16 @@ const WeeklyScoresTable = ({
         <HeaderItemBlank />
         {users.map(({ userId, username }) => (
           <HeaderItem key={userId}>
-            {username.length > maxUsernameLength
-              ? `${username.substring(0, maxUsernameLength - 2)}...`
-              : username}
+            <p>
+              {username.length > maxUsernameLength
+                ? `${username.substring(0, maxUsernameLength - 2)}...`
+                : username}
+            </p>
           </HeaderItem>
         ))}
-        <TotalScoresHeader>Total</TotalScoresHeader>
+        <TotalScoresRow>Total</TotalScoresRow>
         {users.map(({ userId, totalPoints }) => (
-          <TotalScoresItem key={userId}>{totalPoints}</TotalScoresItem>
+          <TotalScoresRow key={userId}>{totalPoints}</TotalScoresRow>
         ))}
         {pointsByWeek.map(({ week, points }) => (
           <React.Fragment key={week}>
@@ -79,6 +81,8 @@ const Table = styled.div<{ numUsers: number }>`
 
   @media (max-width: ${pageSizes.tablet}) {
     font-size: 1.3rem;
+    grid-template-columns: ${({ numUsers }) =>
+      `5em repeat(${numUsers}, 4.5em)`};
   }
 
   > div {
@@ -90,6 +94,14 @@ const Table = styled.div<{ numUsers: number }>`
 
 const HeaderItem = styled.div`
   font-weight: 700;
+  max-width: 100%;
+
+  > p {
+    max-width: 80%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+  }
 `;
 
 const HeaderItemBlank = styled(HeaderItem)``;
@@ -107,18 +119,10 @@ const ClickableRowHeading = styled.a`
 `;
 
 const TotalScoresRow = styled.div`
-  font-family: "Patrick Hand", cursive;
   font-size: 1.5rem;
+  font-weight: 700;
   border-top: 1px solid grey;
   border-bottom: 1px solid ${colours.grey500};
-`;
-
-const TotalScoresHeader = styled(TotalScoresRow)`
-  font-family: "Nunito Sans", sans-serif;
-`;
-
-const TotalScoresItem = styled(TotalScoresRow)`
-  font-family: "Patrick Hand", cursive;
 `;
 
 export default WeeklyScoresTable;
