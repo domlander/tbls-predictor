@@ -285,7 +285,13 @@ const resolvers = {
           }
         });
       });
-      fixtures.sort((a, b) => a.kickoff.getTime() - b.kickoff.getTime());
+      // Sort by kick off time ascending and then home team name ascending.
+      // If the kick off time is the same, the first comparison evaluates to 0, so it then evaluates the second comparison.
+      fixtures.sort(
+        (a, b) =>
+          a.kickoff.getTime() - b.kickoff.getTime() ||
+          a.homeTeam.localeCompare(b.homeTeam)
+      );
 
       const numGameweeks = league.gameweekEnd - league.gameweekStart + 1;
       const usersWeeklyPoints = league.users.map(({ predictions }) =>
