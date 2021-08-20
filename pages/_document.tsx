@@ -44,6 +44,21 @@ export default class MyDocument extends Document {
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Nunito&family=Nunito+Sans&family=Patrick+Hand&display=swap"
           />
+          <title>Premier League score predictor game | DesmondTwoTwo</title>
+          <meta
+            name="description"
+            content="Predict Premier League football scores. Challenge you friends to a score prediction battle with live updates and league tables."
+          />
+          <meta
+            property="og:title"
+            content="Premier League score predictor game"
+          />
+          <meta
+            property="og:description"
+            content="Predict Premier League results, create leagues with friends and keep track of your score."
+          />
+          <meta property="og:type" content="game" />
+          <meta property="og:url" content="https://www.desmondtwotwo.com/" />
         </Head>
         <body>
           <Main />
