@@ -12,9 +12,7 @@ const isPastDeadline = (input: Date | string) => {
   const kickOffDate = new Date(kickoff);
   const deadline = new Date(
     kickOffDate.setTime(
-      kickOffDate.getTime() -
-        minutesBeforeKickoff * 60 * 1000 +
-        kickOffDate.getTimezoneOffset() * 60 * 1000
+      kickOffDate.getTime() - minutesBeforeKickoff * 60 * 1000
     )
   );
 
