@@ -86,7 +86,7 @@ const Container = styled.div`
   flex-direction: column;
   justify-items: stretch;
   background-color: ${colours.blackblue400opacity50};
-  margin: 0.8em 0;
+  margin: 0.4em 0;
   padding: 0.8em;
   border-radius: 0.2em;
   font-family: "Nunito" sans-serif;
@@ -102,6 +102,7 @@ const Kickoff = styled.div`
   text-align: center;
   align-self: center;
   font-size: 0.8rem;
+  color: ${colours.grey400};
 `;
 
 const Fixture = styled.div`

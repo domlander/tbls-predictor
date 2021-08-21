@@ -51,7 +51,7 @@ export default class MyDocument extends Document {
           />
           <meta
             property="og:title"
-            content="Premier League score predictor game"
+            content="DesmondTwoTwo score predictor game"
           />
           <meta
             property="og:description"
