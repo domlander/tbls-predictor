@@ -24,9 +24,9 @@ const GridItem = ({
   <>
     <Container alignText={alignText} locked={locked} className={className}>
       <span>{label}</span>
-      {(predictionScore === 3 || predictionScore === 1) && (
+      {predictionScore && predictionScore >= 1 && (
         <ChipContainer>
-          <Chip variant={predictionScore === 3 ? "perfect" : "correct"} />
+          <Chip variant={predictionScore >= 3 ? "perfect" : "correct"} />
         </ChipContainer>
       )}
     </Container>
@@ -61,7 +61,7 @@ const Container = styled.div<StyleProps>`
 const ChipContainer = styled.div`
   position: absolute;
   left: -0.1em;
-  bottom: -0.1em;
+  bottom: 0;
 `;
 
 export default GridItem;
