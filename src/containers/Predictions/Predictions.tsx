@@ -60,8 +60,10 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
     isHomeTeam: boolean,
     goals: string
   ): void => {
+    const matchSingleDigitOrEmptyStringRegex = /^$|^[0-9]$/;
+
     // Input is invalid
-    if (goals !== "" && goals !== "0" && !parseInt(goals)) return;
+    if (!matchSingleDigitOrEmptyStringRegex.test(goals)) return;
 
     // Make a copy of current state
     const updatedPredictions: FixtureWithPrediction[] = JSON.parse(

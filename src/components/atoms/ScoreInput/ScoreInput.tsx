@@ -37,9 +37,11 @@ const ScoreInput = ({
     maxLength={1}
     name={`${isHome ? "home" : "away"}-score-${fixtureId}`}
     onChange={(e) => updateGoals(fixtureId, isHome, e.target.value)}
-    type="text"
+    type="number"
     value={goals}
     className={className}
+    pattern="[0-9]"
+    inputMode="numeric"
   />
 );
 
@@ -63,6 +65,17 @@ const Input = styled.input<StyleProps>`
   @media (max-width: ${pageSizes.mobileM}) {
     font-size: 1em;
   }
+
+  // Hide arrows
+  /* Chrome, Safari, Edge, Opera */
+  ::-webkit-outer-spin-button,
+  ::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  -moz-appearance: textfield;
 `;
 
 export default ScoreInput;
