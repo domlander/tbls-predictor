@@ -341,32 +341,36 @@ const resolvers = {
       return user.username;
     },
     updatePredictions: async (root, { input: predictions }, ctx) => {
-      const predictionsUpsert = predictions.map(
-        ({ userId, fixtureId, homeGoals, awayGoals, big_boy_bonus }) => {
-          const data = {
-            userId,
-            fixtureId,
-            homeGoals,
-            awayGoals,
-            big_boy_bonus,
-          };
+      try {
+        const predictionsUpsert = await predictions.map(
+          ({ userId, fixtureId, homeGoals, awayGoals, big_boy_bonus }) => {
+            const data = {
+              userId,
+              fixtureId,
+              homeGoals,
+              awayGoals,
+              big_boy_bonus,
+            };
 
-          // TODO: We can't trust the client. We need to run a find on the fixture table to get the bonafide kick off time.
-          // We need to get all the fixures by the id's in the predictions object. Consider the n+1 problem when doing this
-          // if (isPastDeadline(prediction.kickoff)) return;
+            // TODO: We can't trust the client. We need to run a find on the fixture table to get the bonafide kick off time.
+            // We need to get all the fixures by the id's in the predictions object. Consider the n+1 problem when doing this
+            // if (isPastDeadline(prediction.kickoff)) return;
 
-          // eslint-disable-next-line consistent-return
-          return prisma.prediction.upsert({
-            where: {
-              fixtureId_userId: { fixtureId, userId },
-            },
-            create: data,
-            update: data,
-          });
-        }
-      );
-
-      await Promise.all(predictionsUpsert);
+            // eslint-disable-next-line consistent-return
+            return prisma.prediction.upsert({
+              where: {
+                fixtureId_userId: { fixtureId, userId },
+              },
+              create: data,
+              update: data,
+            });
+          }
+        );
+        await Promise.all(predictionsUpsert);
+      } catch (e) {
+        console.log("Error:", e);
+        return false;
+      }
 
       return true;
     },

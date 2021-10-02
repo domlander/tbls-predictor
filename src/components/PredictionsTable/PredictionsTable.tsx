@@ -23,6 +23,7 @@ interface Props {
   ) => void;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   isAlwaysEditable?: boolean;
+  isErrorOnUpdate?: boolean;
 }
 
 const PredictionsTable = ({
@@ -30,6 +31,7 @@ const PredictionsTable = ({
   updateGoals,
   handleSubmit,
   isAlwaysEditable = false,
+  isErrorOnUpdate = false,
 }: Props) => {
   const [showUpdated, setShowUpdated] = useTransientState(false, 1500);
   const gameweekScore = calculateGameweekScore(predictions);
@@ -76,7 +78,11 @@ const PredictionsTable = ({
               </Button>
             </ButtonContainer>
             {showUpdated ? (
-              <UserFeedback>Predictions updated!</UserFeedback>
+              <UserFeedback>
+                {isErrorOnUpdate
+                  ? "There was an error updating your predictions. Please try again."
+                  : "Predictions updated!"}
+              </UserFeedback>
             ) : (
               <div />
             )}

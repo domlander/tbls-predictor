@@ -23,6 +23,8 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
   const [firstGameweek, setFirstGameweek] = useState<number>();
   const [lastGameweek, setLastGameweek] = useState<number>();
 
+  const [isError, setIsError] = useState<boolean>(false);
+
   const [processRequest] = useMutation(UPDATE_PREDICTIONS);
 
   const { loading, error } = useQuery(PREDICTIONS, {
@@ -39,7 +41,7 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
     (prediction) => prediction.gameweek === gameweek
   );
 
-  const handleSubmitPredictions = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmitPredictions = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const updatedPredictions: UpdatePredictionsInputType[] = predictions
@@ -52,7 +54,12 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
         big_boy_bonus: false,
       }));
 
-    processRequest({ variables: { input: updatedPredictions } });
+    const isSuccess = await processRequest({
+      variables: { input: updatedPredictions },
+    });
+
+    if (isSuccess) setIsError(false);
+    else setIsError(true);
   };
 
   const updateGoals = (
@@ -110,6 +117,7 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
         predictions={thisWeeksPredictions}
         updateGoals={updateGoals}
         handleSubmit={handleSubmitPredictions}
+        isErrorOnUpdate={isError}
       />
     </Container>
   );
