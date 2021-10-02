@@ -366,7 +366,7 @@ const resolvers = {
         }
       );
 
-      Promise.all(predictionsUpsert);
+      await Promise.all(predictionsUpsert);
 
       return true;
     },

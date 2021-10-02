@@ -8,7 +8,9 @@ import redirectInternal from "../utils/redirects";
 interface Props {
   userId: number;
 }
-const LeaguesPage = ({ userId }: Props) => <Leagues userId={userId} />;
+const LeaguesPage = ({ userId }: Props) => {
+  return <Leagues userId={userId} />;
+};
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
