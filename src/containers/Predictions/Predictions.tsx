@@ -23,7 +23,7 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
   const [firstGameweek, setFirstGameweek] = useState<number>();
   const [lastGameweek, setLastGameweek] = useState<number>();
 
-  const [isError, setIsError] = useState<boolean>(false);
+  const [isError, setIsError] = useState(false);
 
   const [processRequest] = useMutation(UPDATE_PREDICTIONS);
 

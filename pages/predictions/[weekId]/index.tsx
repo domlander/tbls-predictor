@@ -1,5 +1,6 @@
 import React from "react";
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 import { getSession } from "next-auth/client";
 
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
@@ -12,7 +13,19 @@ interface Props {
 }
 
 const PredictionsPage = ({ userId, weekId }: Props) => (
-  <Predictions userId={userId} weekId={weekId} />
+  <>
+    <Head>
+      <meta
+        name="description"
+        content="Leicester host Arsenal, whilst Man Utd and Everton travel to Spurs and Wolves respectively, hoping to bounce back from large home defeats."
+      />
+      <meta
+        property="og:description"
+        content="Leicester host Arsenal, whilst Man Utd and Everton travel to Spurs and Wolves respectively, hoping to bounce back from large home defeats."
+      />
+    </Head>
+    <Predictions userId={userId} weekId={weekId} />
+  </>
 );
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
