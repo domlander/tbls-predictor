@@ -65,6 +65,7 @@ export const LEAGUE_DETAILS = gql`
   query LeagueDetails($input: LeagueDetailsInput!) {
     leagueDetails(input: $input) {
       leagueName
+      administratorId
       users {
         userId
         username

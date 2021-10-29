@@ -1,53 +1,46 @@
 import React from "react";
-import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/client";
+import { GetStaticProps, GetStaticPaths } from "next";
+import { LEAGUE_DETAILS } from "apollo/queries";
 import prisma from "prisma/client";
-
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import redirectInternal from "utils/redirects";
+import { UserTotalPoints, WeeklyPoints } from "@/types";
 import LeagueHome from "../../../src/containers/League";
+import { initializeApollo } from "../../../apollo/client";
 
 interface Props {
-  leagueId: number;
-  isLeagueAdmin: boolean;
+  id: number;
+  name: string;
+  administratorId: number;
+  users: UserTotalPoints[];
+  pointsByWeek: WeeklyPoints[];
   fixtureWeeksAvailable: number[];
 }
 
 const LeaguePage = ({
-  leagueId,
-  isLeagueAdmin,
+  id,
+  name,
+  administratorId,
+  users,
+  pointsByWeek,
   fixtureWeeksAvailable,
 }: Props) => (
   <LeagueHome
-    leagueId={leagueId}
-    isLeagueAdmin={isLeagueAdmin}
+    id={id}
+    name={name}
+    administratorId={administratorId}
+    users={users}
+    pointsByWeek={pointsByWeek}
     fixtureWeeksAvailable={fixtureWeeksAvailable}
   />
 );
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getStaticProps: GetStaticProps = async ({ params }) => {
   // Get the leagueId from the URL
-  const leagueId = convertUrlParamToNumber(context.params?.leagueId);
+  const leagueId = convertUrlParamToNumber(params?.leagueId);
   if (!leagueId || leagueId <= 0) return redirectInternal("/leagues");
 
-  const session = await getSession(context);
-  if (!session?.user.id) {
-    return {
-      props: {},
-      redirect: {
-        destination: "/signIn",
-        permanent: false,
-      },
-    };
-  }
-
-  const league = await prisma.league.findUnique({
-    where: {
-      id: leagueId,
-    },
-  });
-
-  const fixtures = await prisma.fixture.findMany({});
+  const fixtures = await prisma.fixture.findMany();
   const fixtureWeeksAvailable = fixtures.reduce((acc: number[], fixture) => {
     if (acc.indexOf(fixture.gameweek) === -1) {
       acc.push(fixture.gameweek);
@@ -55,12 +48,38 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return acc;
   }, []);
 
+  const apolloClient = initializeApollo();
+  const {
+    data: {
+      leagueDetails: { leagueName, administratorId, users, pointsByWeek },
+    },
+  } = await apolloClient.query({
+    query: LEAGUE_DETAILS,
+    variables: { input: { leagueId } },
+  });
+
   return {
     props: {
-      leagueId,
-      isLeagueAdmin: league?.administratorId === session.user.id,
+      id: leagueId,
+      name: leagueName,
+      administratorId,
+      users,
+      pointsByWeek,
       fixtureWeeksAvailable,
     },
+    revalidate: 60,
+  };
+};
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const leagues = await prisma.league.findMany();
+  const paths = leagues.map((x) => ({
+    params: { leagueId: x.id.toString() },
+  }));
+
+  return {
+    paths,
+    fallback: false,
   };
 };
 

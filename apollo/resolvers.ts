@@ -125,23 +125,7 @@ const resolvers = {
         lastGameweek,
       };
     },
-    leagueDetails: async (root, { input: { leagueId } }, ctx) => {
-      if (!ctx.session) throw new ApolloError("User not logged in.");
-
-      // Get the logged in user
-      const loggedInUser = await prisma.user.findUnique({
-        where: {
-          id: ctx.session.user.id,
-        },
-        include: {
-          leagues: true,
-        },
-      });
-
-      // If the user is not a member of this league, redirect them to leagues
-      if (!loggedInUser?.leagues.some((league) => league.id === leagueId))
-        throw new ApolloError("Sorry, you are not a member of this league.");
-
+    leagueDetails: async (root, { input: { leagueId } }) => {
       // Get the league details
       const league = await prisma.league.findUnique({
         where: {
@@ -167,6 +151,8 @@ const resolvers = {
           },
         },
       });
+
+      console.log("league", JSON.stringify(league, null, 2));
       if (!league) throw new ApolloError("Cannot find league.");
 
       const numGameweeks = league.gameweekEnd - league.gameweekStart + 1;
@@ -195,6 +181,7 @@ const resolvers = {
 
       return {
         leagueName: league.name,
+        administratorId: league.administratorId,
         users,
         pointsByWeek,
       };

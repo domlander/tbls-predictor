@@ -1,39 +1,32 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { useQuery } from "@apollo/client";
 import Link from "next/link";
 
-import { LEAGUE_DETAILS } from "apollo/queries";
 import WeeklyScoresTable from "@/components/organisms/WeeklyScoresTable";
 import LeagueTable from "@/components/organisms/LeagueTable";
 import Heading from "@/components/atoms/Heading";
-import Loading from "@/components/atoms/Loading";
 import { UserTotalPoints, WeeklyPoints } from "@/types";
+import { useSession } from "next-auth/client";
 import colours from "../../styles/colours";
 
 interface Props {
-  leagueId: number;
-  isLeagueAdmin: boolean;
+  id: number;
+  name: string;
+  administratorId: number;
+  users: UserTotalPoints[];
+  pointsByWeek: WeeklyPoints[];
   fixtureWeeksAvailable: number[];
 }
 
 const LeagueContainer = ({
-  leagueId,
-  isLeagueAdmin,
+  id,
+  name,
+  administratorId,
+  users,
+  pointsByWeek,
   fixtureWeeksAvailable,
 }: Props) => {
-  const [users, setUsers] = useState<UserTotalPoints[]>();
-  const [pointsByWeek, setPointsByWeek] = useState<WeeklyPoints[]>();
-  const { data, loading, error } = useQuery(LEAGUE_DETAILS, {
-    variables: { input: { leagueId } },
-    onCompleted: ({ leagueDetails }) => {
-      setUsers(leagueDetails.users);
-      setPointsByWeek(leagueDetails.pointsByWeek);
-    },
-  });
-
-  if (loading || !users || !pointsByWeek) return <Loading />;
-  if (error) return <div>An error has occurred. Please try again later.</div>;
+  const [session] = useSession();
 
   const usersByTotalScore = users
     .slice()
@@ -41,10 +34,10 @@ const LeagueContainer = ({
 
   return (
     <>
-      <Heading level="h1">{data.leagueDetails.leagueName}</Heading>
+      <Heading level="h1">{name}</Heading>
       <Container>
-        {isLeagueAdmin && (
-          <Link href={`/league/${leagueId}/admin`}>
+        {session?.user?.id && session.user.id === administratorId && (
+          <Link href={`/league/${id}/admin`}>
             <AdminLink>Admin</AdminLink>
           </Link>
         )}
@@ -52,7 +45,7 @@ const LeagueContainer = ({
         <WeeklyScoresTable
           users={users}
           pointsByWeek={pointsByWeek}
-          leagueId={leagueId}
+          leagueId={id}
           fixtureWeeksAvailable={fixtureWeeksAvailable}
         />
       </Container>

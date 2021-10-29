@@ -50,8 +50,7 @@ const Item = styled.div<{ position: number }>`
   font-size: ${({ position }) => {
     if (position === 1) return "100%";
     if (position === 2) return "90%";
-    if (position === 3) return "80%";
-    return "70%";
+    return "80%";
   }};
 `;
 

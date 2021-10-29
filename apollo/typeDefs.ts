@@ -49,6 +49,7 @@ const typeDefs = gql`
 
   type LeagueDetailsPayload {
     leagueName: String!
+    administratorId: Int!
     users: [UserTotalPoints]!
     pointsByWeek: [WeeklyPoints]!
   }
