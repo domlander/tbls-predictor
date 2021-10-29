@@ -152,17 +152,22 @@ const resolvers = {
         },
       });
 
-      console.log("league", JSON.stringify(league, null, 2));
       if (!league) throw new ApolloError("Cannot find league.");
 
       const numGameweeks = league.gameweekEnd - league.gameweekStart + 1;
       const usersWeeklyPoints: number[][] = league.users.map(
         ({ predictions }) =>
-          predictions.reduce((acc, cur) => {
-            if (!cur.score) return acc; // if score is null or 0
-            acc[cur.fixture.gameweek - 1] += cur.score;
-            return acc;
-          }, new Array(numGameweeks).fill(0))
+          predictions
+            .filter(
+              (prediction) =>
+                prediction.fixture.gameweek <= league.gameweekEnd &&
+                prediction.fixture.gameweek >= league.gameweekStart
+            )
+            .reduce((acc, cur) => {
+              if (!cur.score) return acc; // if score is null or 0
+              acc[cur.fixture.gameweek - 1] += cur.score;
+              return acc;
+            }, new Array(numGameweeks).fill(0))
       );
 
       const users: UserTotalPoints[] = league.users.map(
