@@ -1,7 +1,7 @@
 import React from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
-import { LEAGUE_DETAILS } from "apollo/queries";
 import prisma from "prisma/client";
+import { LEAGUE_DETAILS } from "apollo/queries";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import redirectInternal from "utils/redirects";
 import { UserTotalPoints, WeeklyPoints } from "@/types";
@@ -41,12 +41,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (!leagueId || leagueId <= 0) return redirectInternal("/leagues");
 
   const fixtures = await prisma.fixture.findMany();
-  const fixtureWeeksAvailable = fixtures.reduce((acc: number[], fixture) => {
-    if (acc.indexOf(fixture.gameweek) === -1) {
-      acc.push(fixture.gameweek);
-    }
-    return acc;
-  }, []);
+  const fixtureWeeksAvailable = fixtures
+    .reduce((acc: number[], fixture) => {
+      if (acc.indexOf(fixture.gameweek) === -1) {
+        acc.push(fixture.gameweek);
+      }
+      return acc;
+    }, [])
+    .sort((a, b) => a - b);
 
   const apolloClient = initializeApollo();
   const {

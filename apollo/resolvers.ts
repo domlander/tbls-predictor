@@ -192,25 +192,8 @@ const resolvers = {
       };
     },
     leagueWeek: async (root, { input: { leagueId, weekId } }, ctx) => {
-      if (!ctx.session) throw new ApolloError("User not logged in.");
-
-      // Get the logged in user
-      const loggedInUser = await prisma.user.findUnique({
-        where: {
-          id: ctx.session.user.id,
-        },
-        include: {
-          leagues: true,
-        },
-      });
-      if (!loggedInUser) throw new ApolloError("Cannot find user.");
-
-      // If the user is not a member of this league, redirect them to leagues
-      if (!loggedInUser.leagues.some((league) => league.id === leagueId))
-        throw new ApolloError("Sorry, you are not a member of this league.");
-
       // Get the fixtures
-      const fixturesFromDb = await prisma.fixture.findMany({
+      const fixtures = await prisma.fixture.findMany({
         select: {
           id: true,
           gameweek: true,
@@ -221,13 +204,6 @@ const resolvers = {
           awayGoals: true,
         },
       });
-
-      const fixtures: FixtureWithUsersPredictions[] = fixturesFromDb.map(
-        (fixture) => ({
-          ...fixture,
-          predictions: [],
-        })
-      );
 
       // Get the league details
       const league = await prisma.league.findUnique({
@@ -259,8 +235,19 @@ const resolvers = {
       });
       if (!league) throw new ApolloError("Cannot find league.");
 
+      const fixturesWithPredictions: FixtureWithUsersPredictions[] = fixtures
+        .filter(
+          (fixture) =>
+            fixture.gameweek <= league.gameweekEnd &&
+            fixture.gameweek >= league.gameweekStart
+        )
+        .map((fixture) => ({
+          ...fixture,
+          predictions: [],
+        }));
+
       league.users.forEach((user) => {
-        fixtures.forEach((fixture) => {
+        fixturesWithPredictions.forEach((fixture) => {
           const userPrediction = user.predictions.find(
             (p) => p.fixtureId === fixture.id
           );
@@ -275,13 +262,16 @@ const resolvers = {
           }
         });
       });
+
       // Sort by kick off time ascending and then home team name ascending.
       // If the kick off time is the same, the first comparison evaluates to 0, so it then evaluates the second comparison.
-      fixtures.sort(
-        (a, b) =>
-          a.kickoff.getTime() - b.kickoff.getTime() ||
-          a.homeTeam.localeCompare(b.homeTeam)
-      );
+      const thisWeeksFixtures = fixturesWithPredictions
+        .filter((fixture) => fixture.gameweek === weekId)
+        .sort(
+          (a, b) =>
+            a.kickoff.getTime() - b.kickoff.getTime() ||
+            a.homeTeam.localeCompare(b.homeTeam)
+        );
 
       const numGameweeks = league.gameweekEnd - league.gameweekStart + 1;
       const usersWeeklyPoints = league.users.map(({ predictions }) =>
@@ -306,7 +296,7 @@ const resolvers = {
         firstGameweek: league.gameweekStart,
         lastGameweek: league.gameweekEnd,
         users,
-        fixtures,
+        fixtures: thisWeeksFixtures,
       };
     },
   },

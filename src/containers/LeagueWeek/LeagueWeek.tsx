@@ -1,11 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
-import { useQuery } from "@apollo/client";
 
-import { LEAGUE_WEEK } from "apollo/queries";
-import Loading from "@/components/atoms/Loading";
 import WeekNavigator from "@/components/molecules/WeekNavigator";
 import LeagueWeekUserTotals from "@/components/molecules/LeagueWeekUserTotals";
 import LeagueWeekFixtures from "@/components/organisms/LeagueWeekFixtures";
@@ -15,29 +12,23 @@ import pageSizes from "@/styles/pageSizes";
 
 interface Props {
   leagueId: number;
+  leagueName: string;
   weekId: number;
+  users: UserTotalPointsWeek[];
+  fixtures: FixtureWithUsersPredictions[];
+  firstGameweek: number;
+  lastGameweek: number;
 }
 
-const LeagueContainer = ({ leagueId, weekId }: Props) => {
-  const [users, setUsers] = useState<UserTotalPointsWeek[]>();
-  const [fixtures, setFixtures] = useState<FixtureWithUsersPredictions[]>();
-  const { data, loading, error } = useQuery(LEAGUE_WEEK, {
-    variables: { input: { leagueId, weekId } },
-    onCompleted: ({ leagueWeek }) => {
-      setUsers(leagueWeek.users);
-      setFixtures(leagueWeek.fixtures);
-    },
-  });
-
-  if (loading || !users || !fixtures) return <Loading />;
-  if (error) return <div>An error has occurred. Please try again later.</div>;
-
-  const thisWeeksFixtures = fixtures.filter(
-    (fixture) => fixture.gameweek === weekId
-  );
-
-  const { leagueName, firstGameweek, lastGameweek } = data.leagueWeek;
-
+const LeagueContainer = ({
+  leagueId,
+  leagueName,
+  weekId,
+  users,
+  fixtures,
+  firstGameweek,
+  lastGameweek,
+}: Props) => {
   return (
     <Container>
       <Link href={`/league/${leagueId}`} passHref>
@@ -65,7 +56,7 @@ const LeagueContainer = ({ leagueId, weekId }: Props) => {
         }
       />
       <LeagueWeekUserTotals users={users} />
-      <LeagueWeekFixtures weekId={weekId} fixtures={thisWeeksFixtures} />
+      <LeagueWeekFixtures weekId={weekId} fixtures={fixtures} />
     </Container>
   );
 };
