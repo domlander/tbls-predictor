@@ -14,6 +14,7 @@ export type Props = {
   awayTeam: Fixture["awayTeam"];
   homeGoals: string;
   awayGoals: string;
+  isBigBoyBonus: boolean;
   updateGoals: (
     fixtureId: number,
     isHomeTeam: boolean,
@@ -31,6 +32,7 @@ const GridRow = ({
   homeGoals,
   awayTeam,
   awayGoals,
+  isBigBoyBonus,
   updateGoals,
   predictionScore,
   locked,
@@ -69,7 +71,13 @@ const GridRow = ({
       updateGoals={updateGoals}
       topRow={topRow}
     />
-    <Team locked={locked} label={awayTeam} alignText="left" topRow={topRow} />
+    <Team
+      locked={locked}
+      label={awayTeam}
+      alignText="left"
+      topRow={topRow}
+      isBigBoyBonus={isBigBoyBonus}
+    />
   </>
 );
 

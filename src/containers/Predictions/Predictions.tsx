@@ -23,7 +23,7 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
   const [firstGameweek, setFirstGameweek] = useState<number>();
   const [lastGameweek, setLastGameweek] = useState<number>();
 
-  const [isError, setIsError] = useState(false);
+  const [isSaveError, setIsSaveError] = useState(false);
 
   const [processRequest] = useMutation(UPDATE_PREDICTIONS);
 
@@ -51,15 +51,15 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
         fixtureId: prediction.fixtureId,
         homeGoals: parseInt(prediction.predictedHomeGoals || "") ?? null,
         awayGoals: parseInt(prediction.predictedAwayGoals || "") ?? null,
-        big_boy_bonus: false,
+        big_boy_bonus: prediction.big_boy_bonus,
       }));
 
     const isSuccess = await processRequest({
       variables: { input: updatedPredictions },
     });
 
-    if (isSuccess) setIsError(false);
-    else setIsError(true);
+    if (isSuccess) setIsSaveError(false);
+    else setIsSaveError(true);
   };
 
   const updateGoals = (
@@ -117,7 +117,7 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
         predictions={thisWeeksPredictions}
         updateGoals={updateGoals}
         handleSubmit={handleSubmitPredictions}
-        isErrorOnUpdate={isError}
+        isErrorOnUpdate={isSaveError}
       />
     </Container>
   );

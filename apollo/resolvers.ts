@@ -111,7 +111,7 @@ const resolvers = {
           awayTeam: fixture.awayTeam,
           homeGoals: fixture.homeGoals,
           awayGoals: fixture.awayGoals,
-          big_boy_bonus: false,
+          big_boy_bonus: prediction?.big_boy_bonus || false,
           predictedHomeGoals: prediction?.homeGoals?.toString() || null,
           predictedAwayGoals: prediction?.awayGoals?.toString() || null,
           predictionScore: prediction?.score ?? null,

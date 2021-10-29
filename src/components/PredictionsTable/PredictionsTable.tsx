@@ -44,24 +44,39 @@ const PredictionsTable = ({
     <>
       <form onSubmit={handleSubmit}>
         <Table>
-          {predictions.map((prediction, i) => (
-            <GridRow
-              key={prediction.fixtureId}
-              fixtureId={prediction.fixtureId}
-              kickoff={formatFixtureKickoffTime(
-                prediction.kickoff,
-                firstFixtureKickoffTiming
-              )}
-              homeTeam={prediction.homeTeam}
-              awayTeam={prediction.awayTeam}
-              homeGoals={prediction?.predictedHomeGoals ?? ""}
-              awayGoals={prediction?.predictedAwayGoals ?? ""}
-              updateGoals={updateGoals}
-              predictionScore={prediction?.predictionScore || undefined}
-              locked={!isAlwaysEditable && isPastDeadline(prediction.kickoff)}
-              topRow={i === 0}
-            />
-          ))}
+          {predictions.map(
+            (
+              {
+                fixtureId,
+                kickoff,
+                homeTeam,
+                awayTeam,
+                predictedHomeGoals,
+                predictedAwayGoals,
+                big_boy_bonus: bigBoyBonus,
+                predictionScore,
+              },
+              i
+            ) => (
+              <GridRow
+                key={fixtureId}
+                fixtureId={fixtureId}
+                kickoff={formatFixtureKickoffTime(
+                  kickoff,
+                  firstFixtureKickoffTiming
+                )}
+                homeTeam={homeTeam}
+                awayTeam={awayTeam}
+                homeGoals={predictedHomeGoals ?? ""}
+                awayGoals={predictedAwayGoals ?? ""}
+                updateGoals={updateGoals}
+                isBigBoyBonus={bigBoyBonus}
+                predictionScore={predictionScore || undefined}
+                locked={!isAlwaysEditable && isPastDeadline(kickoff)}
+                topRow={i === 0}
+              />
+            )
+          )}
         </Table>
         {isAlwaysEditable ||
         predictions.some(

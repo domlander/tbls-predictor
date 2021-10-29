@@ -13,10 +13,15 @@ const variants = {
     colour: colours.grey100,
     backgroundColour: colours.green500,
   },
+  bigBoyBonus: {
+    label: "2X",
+    colour: colours.grey100,
+    backgroundColour: colours.red500,
+  },
 };
 
 export interface Props {
-  variant: "perfect" | "correct";
+  variant: "perfect" | "correct" | "bigBoyBonus";
 }
 
 const Chip = ({ variant }: Props) => (
@@ -32,7 +37,7 @@ const Container = styled.div<Props>`
   justify-content: center;
   align-items: center;
   height: 1.2em;
-  width: 4.2em;
+  width: ${({ variant }) => (variant === "bigBoyBonus" ? "2em" : "4.2em")};
 `;
 
 const Label = styled.div<Props>`

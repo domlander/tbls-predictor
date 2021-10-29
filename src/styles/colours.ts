@@ -26,6 +26,8 @@ export default {
 
   gold300: "#B8A006",
   gold500: "#625504",
+
+  red500: "#760505",
 };
 
 export const scoreColours: { [id: number]: string } = {

@@ -10,8 +10,9 @@ interface StyleProps {
 
 export type Props = StyleProps & {
   label: string | number;
-  predictionScore?: number;
   className?: string;
+  predictionScore?: number;
+  isBigBoyBonus?: boolean;
 };
 
 const GridItem = ({
@@ -20,6 +21,7 @@ const GridItem = ({
   className,
   alignText,
   locked,
+  isBigBoyBonus,
 }: Props) => (
   <>
     <Container alignText={alignText} locked={locked} className={className}>
@@ -27,6 +29,11 @@ const GridItem = ({
       {predictionScore && predictionScore >= 1 && (
         <ChipContainer>
           <Chip variant={predictionScore >= 3 ? "perfect" : "correct"} />
+        </ChipContainer>
+      )}
+      {isBigBoyBonus && (
+        <ChipContainer isBigBoyBonusChip>
+          <Chip variant="bigBoyBonus" />
         </ChipContainer>
       )}
     </Container>
@@ -58,10 +65,11 @@ const Container = styled.div<StyleProps>`
   }
 `;
 
-const ChipContainer = styled.div`
+const ChipContainer = styled.div<{ isBigBoyBonusChip?: boolean }>`
   position: absolute;
-  left: -0.1em;
-  bottom: 0;
+  left: ${({ isBigBoyBonusChip }) => (isBigBoyBonusChip ? null : "-0.1em")};
+  right: ${({ isBigBoyBonusChip }) => (isBigBoyBonusChip ? "0.1em" : null)};
+  bottom: ${({ isBigBoyBonusChip }) => !isBigBoyBonusChip && "0"};
 `;
 
 export default GridItem;
