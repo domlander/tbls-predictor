@@ -26,14 +26,12 @@ const GridItem = ({
   <>
     <Container alignText={alignText} locked={locked} className={className}>
       <span>{label}</span>
-      {predictionScore && predictionScore >= 1 && (
+      {(isBigBoyBonus || predictionScore) && (
         <ChipContainer>
-          <Chip variant={predictionScore >= 3 ? "perfect" : "correct"} />
-        </ChipContainer>
-      )}
-      {isBigBoyBonus && (
-        <ChipContainer isBigBoyBonusChip>
-          <Chip variant="bigBoyBonus" />
+          {isBigBoyBonus && <Chip variant="bigBoyBonus" />}
+          {predictionScore && predictionScore >= 1 && (
+            <Chip variant={predictionScore >= 3 ? "perfect" : "correct"} />
+          )}
         </ChipContainer>
       )}
     </Container>
@@ -65,11 +63,11 @@ const Container = styled.div<StyleProps>`
   }
 `;
 
-const ChipContainer = styled.div<{ isBigBoyBonusChip?: boolean }>`
+const ChipContainer = styled.div`
   position: absolute;
-  left: ${({ isBigBoyBonusChip }) => (isBigBoyBonusChip ? null : "-0.1em")};
-  right: ${({ isBigBoyBonusChip }) => (isBigBoyBonusChip ? "0.1em" : null)};
-  bottom: ${({ isBigBoyBonusChip }) => !isBigBoyBonusChip && "0"};
+  left: 0;
+  bottom: 0;
+  display: flex;
 `;
 
 export default GridItem;

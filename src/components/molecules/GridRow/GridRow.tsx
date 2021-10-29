@@ -50,6 +50,7 @@ const GridRow = ({
       label={homeTeam}
       alignText="right"
       predictionScore={predictionScore}
+      isBigBoyBonus={isBigBoyBonus}
       topRow={topRow}
     />
     <Score
@@ -71,13 +72,7 @@ const GridRow = ({
       updateGoals={updateGoals}
       topRow={topRow}
     />
-    <Team
-      locked={locked}
-      label={awayTeam}
-      alignText="left"
-      topRow={topRow}
-      isBigBoyBonus={isBigBoyBonus}
-    />
+    <Team locked={locked} label={awayTeam} alignText="left" topRow={topRow} />
   </>
 );
 
