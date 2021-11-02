@@ -14,7 +14,7 @@ export type Props = {
   awayTeam: Fixture["awayTeam"];
   homeGoals: string;
   awayGoals: string;
-  isBigBoyBonus: boolean;
+  isBigBoyBonus?: boolean;
   updateGoals: (
     fixtureId: number,
     isHomeTeam: boolean,

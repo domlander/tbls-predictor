@@ -18,6 +18,7 @@ interface Props {
 // TODO: There is a lot of similar logic with Predictions page. May want to extract out common logic
 const UpdateResultsPage = ({ fixtures }: Props) => {
   const [scores, setScores] = useState(fixtures);
+  const [isCurrentGameweekTab, setIsCurrentGameweekTab] = useState(true);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -67,12 +68,25 @@ const UpdateResultsPage = ({ fixtures }: Props) => {
 
   const firstFixtureKickoffTiming = whenIsTheFixture(scores[0].kickoff);
 
+  const lastWeek = new Date();
+  lastWeek.setDate(lastWeek.getDate() - 6);
+
+  const scoresToDisplay = isCurrentGameweekTab
+    ? scores.filter((score) => new Date(score.kickoff) > lastWeek)
+    : scores.filter((score) => new Date(score.kickoff) <= lastWeek);
+
   return (
     <>
       <Heading level="h1">Update Results</Heading>
+      <Tab
+        variant="secondary"
+        handleClick={() => setIsCurrentGameweekTab((x) => !x)}
+      >
+        {isCurrentGameweekTab ? "Old" : "Now"}
+      </Tab>
       <form onSubmit={handleSubmit}>
         <Table>
-          {scores.map((score, i) => (
+          {scoresToDisplay.map((score, i) => (
             <GridRow
               key={score.id}
               fixtureId={score.id}
@@ -102,6 +116,11 @@ const UpdateResultsPage = ({ fixtures }: Props) => {
 
 const ButtonContainer = styled.div`
   margin-top: 1.6em;
+`;
+
+const Tab = styled(Button)`
+  margin-bottom: 1em;
+  font-size: 1.5rem;
 `;
 
 const Table = styled.div`
