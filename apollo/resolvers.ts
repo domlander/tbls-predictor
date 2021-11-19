@@ -1,5 +1,6 @@
 import { UserInputError, ApolloError } from "apollo-server-micro";
 import prisma from "prisma/client";
+import dayjs from "dayjs";
 
 import {
   FixtureWithPrediction,
@@ -106,7 +107,7 @@ const resolvers = {
         return fixturesWithPredictions.push({
           fixtureId: fixture.id,
           gameweek: fixture.gameweek,
-          kickoff: fixture.kickoff,
+          kickoff: dayjs(fixture.kickoff).toDate(), // Does this convert to BST in the summer months?
           homeTeam: fixture.homeTeam,
           awayTeam: fixture.awayTeam,
           homeGoals: fixture.homeGoals,

@@ -41,76 +41,72 @@ const PredictionsTable = ({
   const firstFixtureKickoffTiming = whenIsTheFixture(predictions[0].kickoff);
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <Table>
-          {predictions.map(
-            (
-              {
-                fixtureId,
+    <form onSubmit={handleSubmit}>
+      <Table>
+        {predictions.map(
+          (
+            {
+              fixtureId,
+              kickoff,
+              homeTeam,
+              awayTeam,
+              predictedHomeGoals,
+              predictedAwayGoals,
+              big_boy_bonus: bigBoyBonus,
+              predictionScore,
+            },
+            i
+          ) => (
+            <GridRow
+              key={fixtureId}
+              fixtureId={fixtureId}
+              kickoff={formatFixtureKickoffTime(
                 kickoff,
-                homeTeam,
-                awayTeam,
-                predictedHomeGoals,
-                predictedAwayGoals,
-                big_boy_bonus: bigBoyBonus,
-                predictionScore,
-              },
-              i
-            ) => (
-              <GridRow
-                key={fixtureId}
-                fixtureId={fixtureId}
-                kickoff={formatFixtureKickoffTime(
-                  kickoff,
-                  firstFixtureKickoffTiming
-                )}
-                homeTeam={homeTeam}
-                awayTeam={awayTeam}
-                homeGoals={predictedHomeGoals ?? ""}
-                awayGoals={predictedAwayGoals ?? ""}
-                updateGoals={updateGoals}
-                isBigBoyBonus={bigBoyBonus}
-                predictionScore={predictionScore || undefined}
-                locked={!isAlwaysEditable && isPastDeadline(kickoff)}
-                topRow={i === 0}
-              />
-            )
-          )}
-        </Table>
-        {isAlwaysEditable ||
-        predictions.some(
-          (prediction) => !isPastDeadline(prediction.kickoff)
-        ) ? (
-          <ButtonsAndMessageContainer>
-            <ButtonContainer>
-              <Button
-                type="submit"
-                variant="primary"
-                handleClick={() => setShowUpdated(true)}
-              >
-                Save
-              </Button>
-            </ButtonContainer>
-            {showUpdated ? (
-              <UserFeedback>
-                {isErrorOnUpdate
-                  ? "There was an error updating your predictions. Please try again."
-                  : "Predictions updated!"}
-              </UserFeedback>
-            ) : (
-              <div />
-            )}
-          </ButtonsAndMessageContainer>
-        ) : (
-          <GameweekScore>
-            {gameweekScore
-              ? `Result: ${gameweekScore} points`
-              : "Calculating score..."}
-          </GameweekScore>
+                firstFixtureKickoffTiming
+              )}
+              homeTeam={homeTeam}
+              awayTeam={awayTeam}
+              homeGoals={predictedHomeGoals ?? ""}
+              awayGoals={predictedAwayGoals ?? ""}
+              updateGoals={updateGoals}
+              isBigBoyBonus={bigBoyBonus}
+              predictionScore={predictionScore || undefined}
+              locked={!isAlwaysEditable && isPastDeadline(kickoff)}
+              topRow={i === 0}
+            />
+          )
         )}
-      </form>
-    </>
+      </Table>
+      {isAlwaysEditable ||
+      predictions.some((prediction) => !isPastDeadline(prediction.kickoff)) ? (
+        <ButtonsAndMessageContainer>
+          <ButtonContainer>
+            <Button
+              type="submit"
+              variant="primary"
+              handleClick={() => setShowUpdated(true)}
+            >
+              Save
+            </Button>
+          </ButtonContainer>
+          {showUpdated ? (
+            <UserFeedback>
+              {isErrorOnUpdate
+                ? "There was an error updating your predictions. Please try again."
+                : "Predictions updated!"}
+            </UserFeedback>
+          ) : (
+            <div />
+          )}
+        </ButtonsAndMessageContainer>
+      ) : (
+        <GameweekScore>
+          {gameweekScore
+            ? `Result: ${gameweekScore} points`
+            : "Calculating score..."}
+        </GameweekScore>
+      )}
+    </form>
   );
 };
 
