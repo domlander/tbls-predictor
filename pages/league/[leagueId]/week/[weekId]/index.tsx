@@ -94,7 +94,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
     paths.push(
       ...fixtureWeeksAvailable.map((week) => ({
-        params: { leagueId: league.id.toString(), weekId: week.toString() },
+        params: {
+          leagueId: league.id.toString(),
+          weekId: week.toString(),
+        },
       }))
     );
   });
