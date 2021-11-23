@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import React from "react";
+import Link from "next/link";
 
 import { FixtureWithUsersPredictions } from "@/types";
-import Link from "next/link";
+import LeagueWeekPrediction from "@/components/molecules/LeagueWeekPrediction";
 import {
   formatFixtureKickoffTime,
   whenIsTheFixture,
@@ -22,61 +23,65 @@ const LeagueWeekFixtures = ({ fixtures, weekId }: Props) => {
 
   return (
     <>
-      {fixtures.map((fixture) => (
-        <Container key={fixture.id}>
-          <FixtureRow>
-            <Kickoff>
-              {formatFixtureKickoffTime(
-                fixture.kickoff,
-                firstFixtureKickoffTiming
+      {fixtures.map(
+        ({
+          id,
+          kickoff,
+          homeTeam,
+          awayTeam,
+          homeGoals,
+          awayGoals,
+          predictions,
+        }) => (
+          <Container key={id}>
+            <FixtureRow>
+              <Kickoff>
+                {formatFixtureKickoffTime(kickoff, firstFixtureKickoffTiming)}
+              </Kickoff>
+              {isPastDeadline(kickoff) ? (
+                <Fixture>
+                  {homeTeam}
+                  &nbsp;&nbsp;
+                  {homeGoals} - {awayGoals}
+                  &nbsp;&nbsp;
+                  {awayTeam}
+                </Fixture>
+              ) : (
+                <ClickableFixture>
+                  <Link href={`/predictions/${weekId}`}>
+                    <a>
+                      {homeTeam} vs {awayTeam}
+                    </a>
+                  </Link>
+                </ClickableFixture>
               )}
-            </Kickoff>
-            {isPastDeadline(fixture.kickoff) ? (
-              <Fixture>
-                {fixture.homeTeam}
-                &nbsp;&nbsp;
-                {fixture.homeGoals} - {fixture.awayGoals}
-                &nbsp;&nbsp;
-                {fixture.awayTeam}
-              </Fixture>
-            ) : (
-              <ClickableFixture>
-                <Link href={`/predictions/${weekId}`}>
-                  <a>
-                    {fixture.homeTeam} vs {fixture.awayTeam}
-                  </a>
-                </Link>
-              </ClickableFixture>
-            )}
-          </FixtureRow>
-          {isPastDeadline(fixture.kickoff) ? (
-            <PredictionRow>
-              {fixture.predictions.map((prediction, i) => {
-                const score =
-                  fixture.homeGoals === null || fixture.awayGoals === null
-                    ? 0
-                    : calculatePredictionScore(prediction, [
-                        fixture.homeGoals,
-                        fixture.awayGoals,
-                      ]);
+            </FixtureRow>
+            {isPastDeadline(kickoff) ? (
+              <PredictionRow>
+                {predictions.map((prediction, i) => {
+                  let score = 0;
+                  if (homeGoals !== null && awayGoals !== null) {
+                    score = calculatePredictionScore(prediction, [
+                      homeGoals,
+                      awayGoals,
+                    ]);
+                  }
 
-                return (
-                  <PredictionContainer key={i}>
-                    <Prediction score={score}>
-                      {prediction[0] || 0} - {prediction[1] || 0}
-                    </Prediction>
-                    {!!prediction[2] && ( // prediction is either 1 or 0, rather than true or false
-                      <Prediction score={score} double>
-                        {prediction[0] || 0} - {prediction[1] || 0}
-                      </Prediction>
-                    )}
-                  </PredictionContainer>
-                );
-              })}
-            </PredictionRow>
-          ) : null}
-        </Container>
-      ))}
+                  return (
+                    <LeagueWeekPrediction
+                      homeGoals={prediction[0] || 0}
+                      awayGoals={prediction[1] || 0}
+                      score={score}
+                      isBigBoyBonus={!!prediction[2]}
+                      key={i}
+                    />
+                  );
+                })}
+              </PredictionRow>
+            ) : null}
+          </Container>
+        )
+      )}
     </>
   );
 };
@@ -87,13 +92,14 @@ const Container = styled.div`
   justify-items: stretch;
   background-color: ${colours.blackblue400opacity50};
   margin: 0.4em 0;
-  padding: 0.8em;
+  padding: 1.2em 0.8em 1.6em;
   border-radius: 0.2em;
   font-family: "Nunito" sans-serif;
 `;
 
 const FixtureRow = styled.div`
   width: 100%;
+  margin-bottom: 0.4em;
   display: flex;
 `;
 
@@ -132,22 +138,6 @@ const PredictionRow = styled.div`
   @media (max-width: ${pageSizes.tablet}) {
     font-size: 0.8rem;
   }
-`;
-
-const PredictionContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const Prediction = styled.div<{ score: number; double?: boolean }>`
-  background-color: ${({ score }) => {
-    if (score >= 3) return colours.gold500;
-    if (score >= 1) return colours.green500;
-    return "inherit";
-  }};
-  padding: 0.1em 0.5em;
-  border-radius: 2em;
-  margin-top: ${({ double }) => (double ? "2px" : "0")};
 `;
 
 export default LeagueWeekFixtures;
