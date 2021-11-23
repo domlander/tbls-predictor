@@ -3,14 +3,13 @@ import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 import prisma from "prisma/client";
 import Account from "src/containers/Account/Account";
-import redirectInternal from "utils/redirects";
 import { generateDefaultUsername } from "utils/generateDefaultUsername";
 
 const AccountPage = () => <Account />;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
-  if (!session) {
+  if (!session?.user.id) {
     return {
       props: {},
       redirect: {
@@ -19,7 +18,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-  if (!session?.user.id) return redirectInternal("/");
 
   const user = await prisma.user.findUnique({
     where: {

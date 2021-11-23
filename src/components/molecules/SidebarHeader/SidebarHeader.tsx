@@ -6,13 +6,14 @@ import colours from "../../../styles/colours";
 
 export interface Props {
   username: string;
+  initial: string;
   handleClick: () => void;
 }
 
-const SidebarHeader = ({ username, handleClick }: Props) => (
+const SidebarHeader = ({ username, initial, handleClick }: Props) => (
   <Container>
     <User>
-      <UserIcon initial={username[0]} />
+      <UserIcon initial={username ? username[0].toUpperCase() : ""} />
       <Username>
         {username.length > 16 ? `${username.substring(0, 14)}...` : username}
       </Username>

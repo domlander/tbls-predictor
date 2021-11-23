@@ -9,12 +9,17 @@ import colours from "../../../styles/colours";
 
 export type Props = {
   username: string;
+  initial: string;
   handleClick: () => void; // TODO this closes the sidebar. Can we use global state for this?
 };
 
-const Sidebar = ({ username, handleClick }: Props) => (
+const Sidebar = ({ username, initial, handleClick }: Props) => (
   <Container>
-    <SidebarHeader username={username} handleClick={handleClick} />
+    <SidebarHeader
+      username={username}
+      initial={initial}
+      handleClick={handleClick}
+    />
     <SidebarItemsContainer>
       <SidebarMenuItem
         onClick={handleClick}

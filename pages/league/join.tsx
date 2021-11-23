@@ -9,7 +9,7 @@ export default JoinLeaguePage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
-  if (!session) {
+  if (!session?.user.id) {
     return {
       props: {},
       redirect: {
