@@ -1,6 +1,7 @@
-import styled from "styled-components";
 import React from "react";
+import styled from "styled-components";
 
+import LeagueWeekUserScore from "../LeagueWeekUserScore";
 import { UserTotalPointsWeek } from "../../../types";
 import pageSizes from "../../../styles/pageSizes";
 
@@ -14,7 +15,7 @@ const LeagueWeekUserTotals = ({ users }: Props) => (
       <Username key={userId}>{username}</Username>
     ))}
     {users.map(({ userId, totalPoints }) => (
-      <Total key={userId}>{totalPoints}</Total>
+      <LeagueWeekUserScore key={userId} score={totalPoints} />
     ))}
   </Container>
 );
@@ -36,17 +37,6 @@ const Username = styled.div`
 
   @media (max-width: ${pageSizes.tablet}) {
     font-size: 0.8rem;
-  }
-`;
-
-const Total = styled.div`
-  font-family: "Patrick Hand", cursive;
-  font-size: 4em;
-  line-height: 1.4em;
-  letter-spacing: 0.05em;
-
-  @media (max-width: ${pageSizes.tablet}) {
-    font-size: 3em;
   }
 `;
 
