@@ -26,17 +26,22 @@ const LeagueContainer = ({
   leagueId,
   leagueName,
   weekId,
-  users,
+  users: usersFromProps,
   fixtures: fixturesFromProps,
   firstGameweek,
   lastGameweek,
 }: Props) => {
   const [fixtures, setFixtures] = useState(fixturesFromProps);
+  const [users, setUsers] = useState(usersFromProps);
+
   const { loading } = useQuery(LEAGUE_WEEK, {
     variables: { input: { leagueId, weekId } },
     onCompleted: (data) => {
       if (data?.leagueWeek?.fixtures.length) {
         setFixtures(data.leagueWeek.fixtures);
+      }
+      if (data?.leagueWeek?.users.length) {
+        setUsers(data.leagueWeek.users);
       }
     },
   });
