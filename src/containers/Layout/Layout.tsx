@@ -36,6 +36,7 @@ const Layout = ({ children }: Props) => {
         <Sidebar
           username={username}
           initial={initial}
+          isLoggedIn={!!session?.user.id}
           handleClick={() => setIsSidebarOpen((isOpen) => !isOpen)}
         />
       </SidebarContainer>

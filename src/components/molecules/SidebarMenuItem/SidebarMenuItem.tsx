@@ -29,9 +29,7 @@ const A = styled.a`
   font-size: 1.6em;
   cursor: pointer;
   :hover,
-  :hover,
   :focus {
-    text-decoration: underline;
     color: ${colours.blue100};
   }
 `;

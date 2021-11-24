@@ -9,6 +9,7 @@ import {
 } from "@/types";
 import { isUserAlreadyBelongToLeague } from "utils/isUserAlreadyBelongToLeague";
 import isUserAppliedToLeague from "utils/isUserAppliedToLeague";
+import { League } from "@prisma/client";
 import dateScalar from "./scalars";
 
 const resolvers = {
@@ -29,19 +30,25 @@ const resolvers = {
         },
         take: 10, // TODO: introduce pagination
       });
-      const user = await prisma.user.findUnique({
-        include: {
-          leagues: true,
-        },
-        where: {
-          id: userId,
-        },
-      });
 
-      const userLeagues = user?.leagues.map((league) => ({
-        id: league.id,
-        name: league.name,
-      }));
+      let userLeagues: Partial<League>[] = [];
+      if (userId) {
+        const user = await prisma.user.findUnique({
+          include: {
+            leagues: true,
+          },
+          where: {
+            id: userId,
+          },
+        });
+
+        if (user?.leagues.length) {
+          userLeagues = user?.leagues.map((league) => ({
+            id: league.id,
+            name: league.name,
+          }));
+        }
+      }
 
       return {
         userLeagues,

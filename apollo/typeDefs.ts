@@ -26,7 +26,7 @@ const typeDefs = gql`
   }
 
   input LeaguesInput {
-    userId: Int!
+    userId: Int
   }
 
   type LeaguesPayload {

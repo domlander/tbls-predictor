@@ -9,7 +9,7 @@ import LeaguesList from "@/components/molecules/LeagueList";
 import PublicLeaguesList from "@/components/molecules/PublicLeaguesList";
 
 interface Props {
-  userId: number;
+  userId: number | null;
 }
 
 const LeaguesContainer = ({ userId }: Props) => {

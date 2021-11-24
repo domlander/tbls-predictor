@@ -17,6 +17,7 @@ const LeaguesList = ({ leagues }: Props) => {
   if (!leagues?.length)
     return (
       <NoLeagues>
+        <h2>My Leagues</h2>
         <Link href="/league/join">
           <a>Join a league</a>
         </Link>
@@ -48,15 +49,17 @@ const LeaguesList = ({ leagues }: Props) => {
 };
 
 const NoLeagues = styled.div`
-  font-size: 2.5em;
   display: flex;
+  flex-direction: column;
+  font-size: 2.5em;
+  margin-bottom: 2em;
 
   p {
     margin: 0;
   }
 
   a {
-    margin-left: 1em;
+    margin-left: 0.1em;
     text-decoration: underline;
     text-underline-offset: 0.2em;
 

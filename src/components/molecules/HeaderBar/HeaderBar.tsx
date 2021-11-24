@@ -55,7 +55,6 @@ const HeaderLink = styled.a`
   :hover,
   :focus {
     color: ${colours.blue100};
-    text-decoration: underline;
   }
 `;
 
