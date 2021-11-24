@@ -21,17 +21,32 @@ const resolvers = {
       });
       return user;
     },
-    userLeagues: async (root, { id }, ctx) => {
+    leagues: async (root, { input: { userId } }, ctx) => {
+      const publicLeagues = await prisma.league.findMany({
+        select: {
+          id: true,
+          name: true,
+        },
+        take: 10, // TODO: introduce pagination
+      });
       const user = await prisma.user.findUnique({
         include: {
           leagues: true,
         },
         where: {
-          id,
+          id: userId,
         },
       });
 
-      return user?.leagues || [];
+      const userLeagues = user?.leagues.map((league) => ({
+        id: league.id,
+        name: league.name,
+      }));
+
+      return {
+        userLeagues,
+        publicLeagues,
+      };
     },
     leagueAdmin: async (root, { input: { userId, leagueId } }, ctx) => {
       const league = await prisma.league.findUnique({

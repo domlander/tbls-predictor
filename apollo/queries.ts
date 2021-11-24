@@ -9,11 +9,17 @@ export const USER = gql`
   }
 `;
 
-export const USER_LEAGUES = gql`
-  query UserLeagues($id: Int!) {
-    userLeagues(id: $id) {
-      id
-      name
+export const LEAGUES = gql`
+  query Leagues($input: LeaguesInput!) {
+    leagues(input: $input) {
+      userLeagues {
+        id
+        name
+      }
+      publicLeagues {
+        id
+        name
+      }
     }
   }
 `;
@@ -101,15 +107,6 @@ export const LEAGUE_WEEK = gql`
         awayGoals
         predictions
       }
-    }
-  }
-`;
-
-export const LEAGUE = gql`
-  query UserLeagues($email: String!) {
-    userLeagues(email: $email) {
-      id
-      name
     }
   }
 `;

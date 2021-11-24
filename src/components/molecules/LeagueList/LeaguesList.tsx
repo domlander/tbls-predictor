@@ -24,23 +24,26 @@ const LeaguesList = ({ leagues }: Props) => {
     );
 
   return (
-    <Leagues>
-      {leagues.map(({ id, name }) => (
-        <LeagueCard
-          tabIndex={0}
-          key={id}
-          onClick={() => router.push(`/league/${id}`)}
-        >
-          <LeagueCardHeading level="h2">{name}</LeagueCardHeading>
-          <LeagueCardInfo>
-            Current position: <span style={{ fontWeight: 700 }}>Unknown</span>
-          </LeagueCardInfo>
-          <LeagueCardInfo>
-            Finish: <span style={{ fontWeight: 700 }}>Unknown</span>
-          </LeagueCardInfo>
-        </LeagueCard>
-      ))}
-    </Leagues>
+    <MyLeagues>
+      <h2>My Leagues</h2>
+      <LeagueCards>
+        {leagues.map(({ id, name }) => (
+          <LeagueCard
+            tabIndex={0}
+            key={id}
+            onClick={() => router.push(`/league/${id}`)}
+          >
+            <LeagueCardHeading level="h2">{name}</LeagueCardHeading>
+            <LeagueCardInfo>
+              Current position: <span style={{ fontWeight: 700 }}>Unknown</span>
+            </LeagueCardInfo>
+            <LeagueCardInfo>
+              Finish: <span style={{ fontWeight: 700 }}>Unknown</span>
+            </LeagueCardInfo>
+          </LeagueCard>
+        ))}
+      </LeagueCards>
+    </MyLeagues>
   );
 };
 
@@ -64,7 +67,11 @@ const NoLeagues = styled.div`
   }
 `;
 
-const Leagues = styled.div`
+const MyLeagues = styled.div`
+  margin-bottom: 6em;
+`;
+
+const LeagueCards = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, 400px);
   grid-gap: 2em;

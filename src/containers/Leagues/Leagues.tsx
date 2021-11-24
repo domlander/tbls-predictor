@@ -2,21 +2,26 @@ import React, { useState } from "react";
 
 import { League } from "@prisma/client";
 import { useQuery } from "@apollo/client";
-import { USER_LEAGUES } from "apollo/queries";
+import { LEAGUES } from "apollo/queries";
 import Heading from "@/components/atoms/Heading";
 import Loading from "@/components/atoms/Loading";
 import LeaguesList from "@/components/molecules/LeagueList";
+import PublicLeaguesList from "@/components/molecules/PublicLeaguesList";
 
 interface Props {
   userId: number;
 }
 
 const LeaguesContainer = ({ userId }: Props) => {
-  const [leagues, setLeagues] = useState<League[]>([]);
+  const [userleagues, setUserLeagues] = useState<Partial<League>[]>([]);
+  const [publicLeagues, setPublicLeagues] = useState<Partial<League>[]>([]);
 
-  const { loading, error } = useQuery(USER_LEAGUES, {
-    variables: { id: userId },
-    onCompleted: (data) => setLeagues(data?.userLeagues || []),
+  const { loading, error } = useQuery(LEAGUES, {
+    variables: { input: { userId } },
+    onCompleted: (data) => {
+      setUserLeagues(data?.leagues?.userLeagues || []);
+      setPublicLeagues(data?.leagues?.publicLeagues || []);
+    },
   });
 
   if (loading) return <Loading />;
@@ -25,7 +30,8 @@ const LeaguesContainer = ({ userId }: Props) => {
   return (
     <>
       <Heading level="h1">Leagues</Heading>
-      <LeaguesList leagues={leagues} />
+      <LeaguesList leagues={userleagues} />
+      <PublicLeaguesList leagues={publicLeagues} />
     </>
   );
 };

@@ -110,7 +110,7 @@ const ClickableRowHeading = styled.a`
   margin: 0 0 0 auto;
   cursor: pointer;
   text-decoration: underline;
-  text-underline-offset: 0.1em;
+  text-underline-offset: 0.2em;
 
   :hover,
   :focus {

@@ -5,7 +5,7 @@ const typeDefs = gql`
 
   type Query {
     user: User
-    userLeagues(id: Int!): [League!]
+    leagues(input: LeaguesInput): LeaguesPayload
     leagueAdmin(input: LeagueAdminInput): LeagueAdminPayload
     predictions(input: PredictionsInput): PredictionsPayload
     leagueDetails(input: LeagueDetailsInput): LeagueDetailsPayload
@@ -25,9 +25,48 @@ const typeDefs = gql`
     ): Boolean!
   }
 
-  input UpdateUsernameInput {
+  input LeaguesInput {
     userId: Int!
-    username: String!
+  }
+
+  type LeaguesPayload {
+    userLeagues: [League!]
+    publicLeagues: [League!]
+  }
+
+  input LeagueAdminInput {
+    userId: Int!
+    leagueId: Int!
+  }
+
+  type LeagueAdminPayload {
+    id: Int!
+    name: String!
+    applicants: [Applicant!]
+    participants: [User!]!
+  }
+
+  input PredictionsInput {
+    userId: Int!
+    weekId: Int!
+  }
+
+  type PredictionsPayload {
+    fixturesWithPredictions: [FixtureWithPrediction]
+    thisGameweek: Int!
+    firstGameweek: Int!
+    lastGameweek: Int!
+  }
+
+  input LeagueDetailsInput {
+    leagueId: Int!
+  }
+
+  type LeagueDetailsPayload {
+    leagueName: String!
+    administratorId: Int!
+    users: [UserTotalPoints]!
+    pointsByWeek: [WeeklyPoints]!
   }
 
   input LeagueWeekInput {
@@ -43,46 +82,9 @@ const typeDefs = gql`
     fixtures: [FixtureWithUsersPredictions!]!
   }
 
-  input LeagueDetailsInput {
-    leagueId: Int!
-  }
-
-  type LeagueDetailsPayload {
-    leagueName: String!
-    administratorId: Int!
-    users: [UserTotalPoints]!
-    pointsByWeek: [WeeklyPoints]!
-  }
-
-  input PredictionsInput {
+  input UpdateUsernameInput {
     userId: Int!
-    weekId: Int!
-  }
-
-  type PredictionsPayload {
-    fixturesWithPredictions: [FixtureWithPrediction]
-    thisGameweek: Int!
-    firstGameweek: Int!
-    lastGameweek: Int!
-  }
-
-  input LeagueAdminInput {
-    userId: Int!
-    leagueId: Int!
-  }
-
-  type LeagueAdminPayload {
-    id: Int!
-    name: String!
-    applicants: [Applicant!]
-    participants: [User!]!
-  }
-
-  input CreateLeagueInput {
-    userId: Int!
-    name: String!
-    gameweekStart: Int!
-    gameweekEnd: Int!
+    username: String!
   }
 
   input UpdatePredictionsInput {
@@ -91,6 +93,13 @@ const typeDefs = gql`
     homeGoals: Int
     awayGoals: Int
     big_boy_bonus: Boolean
+  }
+
+  input CreateLeagueInput {
+    userId: Int!
+    name: String!
+    gameweekStart: Int!
+    gameweekEnd: Int!
   }
 
   type User {
