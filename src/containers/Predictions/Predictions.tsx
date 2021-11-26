@@ -5,7 +5,7 @@ import { useSession } from "next-auth/client";
 import PredictionsTable from "@/components/PredictionsTable";
 import { FixtureWithPrediction, UpdatePredictionsInputType } from "@/types";
 import WeekNavigator from "@/components/molecules/WeekNavigator";
-import { UPDATE_PREDICTIONS } from "apollo/mutations";
+import { UPDATE_PREDICTIONS_MUTATION } from "apollo/mutations";
 import { useMutation, useQuery } from "@apollo/client";
 import { PREDICTIONS_QUERY } from "apollo/queries";
 import Loading from "@/components/atoms/Loading";
@@ -25,7 +25,7 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
 
   const [isSaveError, setIsSaveError] = useState(false);
 
-  const [processRequest] = useMutation(UPDATE_PREDICTIONS);
+  const [processRequest] = useMutation(UPDATE_PREDICTIONS_MUTATION);
 
   const { loading, error } = useQuery(PREDICTIONS_QUERY, {
     variables: { input: { userId, weekId } },

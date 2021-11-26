@@ -2,7 +2,7 @@ import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
 import { useMutation } from "@apollo/client";
 
-import { REQUEST_TO_JOIN_LEAGUE } from "apollo/mutations";
+import { REQUEST_TO_JOIN_LEAGUE_MUTATION } from "apollo/mutations";
 import Heading from "@/components/atoms/Heading";
 import Button from "@/components/Button";
 import FormInput from "@/components/atoms/FormInput";
@@ -13,7 +13,7 @@ const JoinLeague = () => {
   const [leagueId, setLeagueId] = useState<string>("");
   const [userFeedback, setUserFeedback] = useState<string>("");
   const [requestToJoinLeague, { loading }] = useMutation(
-    REQUEST_TO_JOIN_LEAGUE,
+    REQUEST_TO_JOIN_LEAGUE_MUTATION,
     {
       onError: (error) => setUserFeedback(error.message),
     }

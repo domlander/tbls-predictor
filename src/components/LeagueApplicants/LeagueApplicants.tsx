@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useSession } from "next-auth/client";
 import { useMutation } from "@apollo/client";
 
-import { PROCESS_JOIN_LEAGUE_REQUEST } from "apollo/mutations";
+import { PROCESS_JOIN_LEAGUE_REQUEST_MUTATION } from "apollo/mutations";
 import { Applicant } from "@/types";
 import Button from "../Button";
 import Heading from "../atoms/Heading";
@@ -17,7 +17,7 @@ interface Props {
 const LeagueApplicants = ({ applicants, setApplicants, leagueId }: Props) => {
   const [session] = useSession();
   const [userFeedback, setUserFeedback] = useState<string>("");
-  const [processRequest] = useMutation(PROCESS_JOIN_LEAGUE_REQUEST);
+  const [processRequest] = useMutation(PROCESS_JOIN_LEAGUE_REQUEST_MUTATION);
 
   const handleAcceptOrReject = (applicantId: number, accept: boolean) => {
     processRequest({

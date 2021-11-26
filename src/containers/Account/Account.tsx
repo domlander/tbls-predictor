@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useMutation, useQuery } from "@apollo/client";
 
 import { USER_QUERY } from "apollo/queries";
-import { UPDATE_USERNAME } from "apollo/mutations";
+import { UPDATE_USERNAME_MUTATION } from "apollo/mutations";
 import Heading from "@/components/atoms/Heading";
 import Loading from "@/components/atoms/Loading";
 import ChangeUsernameForm from "@/components/ChangeUsernameForm";
@@ -13,7 +13,7 @@ const AccountContainer = () => {
   const [userId, setUserId] = useState();
   const [formUsername, setFormUsername] = useState("");
   const [userFeedback, setUserFeedback] = useState("");
-  const [processRequest] = useMutation(UPDATE_USERNAME);
+  const [processRequest] = useMutation(UPDATE_USERNAME_MUTATION);
 
   const { loading, error } = useQuery(USER_QUERY, {
     onCompleted: ({ user }) => {

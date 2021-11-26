@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Heading from "@/components/atoms/Heading";
 import Button from "@/components/Button";
 import { useMutation } from "@apollo/client";
-import { CREATE_LEAGUE } from "apollo/mutations";
+import { CREATE_LEAGUE_MUTATION } from "apollo/mutations";
 import { useSession } from "next-auth/client";
 import FormInput from "../../components/atoms/FormInput";
 
@@ -15,7 +15,7 @@ const CreateLeague = () => {
   const [gameweekStart, setGameweekStart] = useState<string>("1");
   const [weeksToRun, setWeeksToRun] = useState<string>("17");
 
-  const [createLeague, { loading }] = useMutation(CREATE_LEAGUE, {
+  const [createLeague, { loading }] = useMutation(CREATE_LEAGUE_MUTATION, {
     onError: (error) => setUserFeedback(error.message),
   });
 
