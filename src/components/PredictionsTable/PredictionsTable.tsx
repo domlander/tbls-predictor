@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useEffect } from "react";
 import styled from "styled-components";
 
 import { FixtureWithPrediction } from "@/types";
@@ -26,6 +26,7 @@ interface Props {
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   isAlwaysEditable?: boolean;
   isSaving?: boolean;
+  isSaved?: boolean;
   isSaveError?: boolean;
 }
 
@@ -35,18 +36,15 @@ const PredictionsTable = ({
   handleSubmit,
   isAlwaysEditable = false,
   isSaving = false,
+  isSaved = false,
   isSaveError = false,
 }: Props) => {
   const [showFeedback, setShowFeedback] = useTransientState(false, 1500);
-  const [isSaveClicked, setIsSaveClicked] = useState(false);
   const gameweekScore = calculateGameweekScore(predictions);
 
   useEffect(() => {
-    if (isSaveClicked && !isSaving) {
-      setShowFeedback(true);
-      setIsSaveClicked(false);
-    }
-  }, [isSaving, isSaveClicked]);
+    if (!isSaving && (isSaved || isSaveError)) setShowFeedback(true);
+  }, [isSaving, isSaved]);
 
   if (!predictions?.length) return null;
 
@@ -98,11 +96,7 @@ const PredictionsTable = ({
       predictions.some((prediction) => !isPastDeadline(prediction.kickoff)) ? (
         <ButtonsAndMessageContainer>
           <ButtonContainer>
-            <Button
-              type="submit"
-              variant="primary"
-              handleClick={() => setIsSaveClicked(true)}
-            >
+            <Button type="submit" variant="primary">
               Save
             </Button>
           </ButtonContainer>
@@ -121,7 +115,7 @@ const PredictionsTable = ({
         <GameweekScore>
           {gameweekScore
             ? `Result: ${gameweekScore} points`
-            : "Calculating score..."}
+            : "Score not yet available"}
         </GameweekScore>
       )}
     </form>

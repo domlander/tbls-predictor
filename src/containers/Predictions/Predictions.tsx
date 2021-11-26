@@ -25,7 +25,7 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
 
   const [
     processRequest,
-    { loading: mutationLoading, error: mutationError },
+    { data: mutationData, loading: mutationLoading, error: mutationError },
   ] = useMutation(UPDATE_PREDICTIONS_MUTATION);
 
   const { loading: queryLoading, error: queryError } = useQuery(
@@ -119,6 +119,7 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
         predictions={thisWeeksPredictions}
         updateGoals={updateGoals}
         handleSubmit={handleSubmitPredictions}
+        isSaved={!!mutationData?.updatePredictions}
         isSaving={mutationLoading}
         isSaveError={!!mutationError}
       />
