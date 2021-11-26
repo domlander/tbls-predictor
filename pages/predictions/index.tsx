@@ -1,5 +1,8 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
+import { initializeApollo } from "apollo/client";
+import { FIXTURES_QUERY } from "apollo/queries";
+import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import redirectInternal from "../../utils/redirects";
 
 const RedirectURL = () => null;
@@ -17,10 +20,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
   if (!session?.user.id) return redirectInternal("/");
 
-  // TODO: Currently sending them to GW 1, but we should redirect them to the current gameweek
-  // That means showing them their predictions if we're in a gameweek, or
-  // showing them next weeks predictions if we are post-gameweek
-  return redirectInternal("/predictions/1");
+  const apolloClient = initializeApollo();
+  const {
+    data: { fixtures },
+  } = await apolloClient.query({
+    query: FIXTURES_QUERY,
+  });
+
+  const currentGameweek = calculateCurrentGameweek(fixtures);
+
+  return redirectInternal(`/predictions/${currentGameweek}`);
 };
 
 export default RedirectURL;

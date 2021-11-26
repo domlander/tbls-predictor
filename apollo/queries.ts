@@ -9,6 +9,16 @@ export const USER = gql`
   }
 `;
 
+export const FIXTURES_QUERY = gql`
+  query Fixtures {
+    fixtures {
+      id
+      gameweek
+      kickoff
+    }
+  }
+`;
+
 export const LEAGUES = gql`
   query Leagues($input: LeaguesInput!) {
     leagues(input: $input) {

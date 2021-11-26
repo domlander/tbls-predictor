@@ -22,6 +22,16 @@ const resolvers = {
       });
       return user;
     },
+    fixtures: async (root, args, ctx) => {
+      const fixtures = await prisma.fixture.findMany({
+        select: {
+          id: true,
+          gameweek: true,
+          kickoff: true,
+        },
+      });
+      return fixtures;
+    },
     leagues: async (root, { input: { userId } }, ctx) => {
       const publicLeagues = await prisma.league.findMany({
         select: {

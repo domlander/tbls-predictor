@@ -5,6 +5,7 @@ const typeDefs = gql`
 
   type Query {
     user: User
+    fixtures: [Fixture!]
     leagues(input: LeaguesInput): LeaguesPayload
     leagueAdmin(input: LeagueAdminInput): LeagueAdminPayload
     predictions(input: PredictionsInput): PredictionsPayload
