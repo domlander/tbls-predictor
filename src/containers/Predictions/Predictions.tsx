@@ -23,19 +23,23 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
   const [firstGameweek, setFirstGameweek] = useState<number>();
   const [lastGameweek, setLastGameweek] = useState<number>();
 
-  const [isSaveError, setIsSaveError] = useState(false);
+  const [
+    processRequest,
+    { loading: mutationLoading, error: mutationError },
+  ] = useMutation(UPDATE_PREDICTIONS_MUTATION);
 
-  const [processRequest] = useMutation(UPDATE_PREDICTIONS_MUTATION);
-
-  const { loading, error } = useQuery(PREDICTIONS_QUERY, {
-    variables: { input: { userId, weekId } },
-    onCompleted: ({ predictions: predictionsData }) => {
-      setPredictions(predictionsData.fixturesWithPredictions);
-      setGameweek(predictionsData.thisGameweek);
-      setFirstGameweek(predictionsData.firstGameweek);
-      setLastGameweek(predictionsData.lastGameweek);
-    },
-  });
+  const { loading: queryLoading, error: queryError } = useQuery(
+    PREDICTIONS_QUERY,
+    {
+      variables: { input: { userId, weekId } },
+      onCompleted: ({ predictions: predictionsData }) => {
+        setPredictions(predictionsData.fixturesWithPredictions);
+        setGameweek(predictionsData.thisGameweek);
+        setFirstGameweek(predictionsData.firstGameweek);
+        setLastGameweek(predictionsData.lastGameweek);
+      },
+    }
+  );
 
   const thisWeeksPredictions = predictions.filter(
     (prediction) => prediction.gameweek === gameweek
@@ -54,12 +58,9 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
         big_boy_bonus: prediction.big_boy_bonus,
       }));
 
-    const isSuccess = await processRequest({
+    await processRequest({
       variables: { input: updatedPredictions },
     });
-
-    if (isSuccess) setIsSaveError(false);
-    else setIsSaveError(true);
   };
 
   const updateGoals = (
@@ -93,8 +94,9 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
     setPredictions(updatedPredictions);
   };
 
-  if (loading) return <Loading />;
-  if (error) return <div>An error has occurred. Please try again later.</div>;
+  if (queryLoading) return <Loading />;
+  if (queryError)
+    return <div>An error has occurred. Please try again later.</div>;
 
   return (
     <Container>
@@ -117,7 +119,8 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
         predictions={thisWeeksPredictions}
         updateGoals={updateGoals}
         handleSubmit={handleSubmitPredictions}
-        isErrorOnUpdate={isSaveError}
+        isSaving={mutationLoading}
+        isSaveError={!!mutationError}
       />
     </Container>
   );

@@ -1,18 +1,20 @@
-import React, { FormEvent } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { FixtureWithPrediction } from "@/types";
 import { calculateGameweekScore } from "utils/calculateGameweekScore";
 import isPastDeadline from "utils/isPastDeadline";
-import useTransientState from "src/hooks/useTransientState";
 import {
   formatFixtureKickoffTime,
   whenIsTheFixture,
 } from "utils/kickoffDateHelpers";
+import useTransientState from "src/hooks/useTransientState";
 import Button from "../Button";
 import GridRow from "../molecules/GridRow";
 import colours from "../../styles/colours";
 import pageSizes from "../../styles/pageSizes";
+
+type SAVING_STATE = "IDLE" | "SAVING" | "SUCCESS" | "FAILED";
 
 interface Props {
   predictions: FixtureWithPrediction[];
@@ -23,7 +25,8 @@ interface Props {
   ) => void;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   isAlwaysEditable?: boolean;
-  isErrorOnUpdate?: boolean;
+  isSaving?: boolean;
+  isSaveError?: boolean;
 }
 
 const PredictionsTable = ({
@@ -31,14 +34,28 @@ const PredictionsTable = ({
   updateGoals,
   handleSubmit,
   isAlwaysEditable = false,
-  isErrorOnUpdate = false,
+  isSaving = false,
+  isSaveError = false,
 }: Props) => {
-  const [showUpdated, setShowUpdated] = useTransientState(false, 1500);
+  const [showFeedback, setShowFeedback] = useTransientState(false, 1500);
+  const [isSaveClicked, setIsSaveClicked] = useState(false);
   const gameweekScore = calculateGameweekScore(predictions);
+
+  useEffect(() => {
+    if (isSaveClicked && !isSaving) {
+      setShowFeedback(true);
+      setIsSaveClicked(false);
+    }
+  }, [isSaving, isSaveClicked]);
 
   if (!predictions?.length) return null;
 
   const firstFixtureKickoffTiming = whenIsTheFixture(predictions[0].kickoff);
+
+  let savingState: SAVING_STATE;
+  if (isSaving) savingState = "SAVING";
+  else if (showFeedback) savingState = isSaveError ? "FAILED" : "SUCCESS";
+  else savingState = "IDLE";
 
   return (
     <form onSubmit={handleSubmit}>
@@ -84,19 +101,20 @@ const PredictionsTable = ({
             <Button
               type="submit"
               variant="primary"
-              handleClick={() => setShowUpdated(true)}
+              handleClick={() => setIsSaveClicked(true)}
             >
               Save
             </Button>
           </ButtonContainer>
-          {showUpdated ? (
+          {savingState === "IDLE" && <div />}
+          {savingState === "SAVING" && <UserFeedback>Saving...</UserFeedback>}
+          {savingState === "SUCCESS" && (
+            <UserFeedback>Predictions updated!</UserFeedback>
+          )}
+          {savingState === "FAILED" && (
             <UserFeedback>
-              {isErrorOnUpdate
-                ? "There was an error updating your predictions. Please try again."
-                : "Predictions updated!"}
+              There was an error updating your predictions. Please try again.
             </UserFeedback>
-          ) : (
-            <div />
           )}
         </ButtonsAndMessageContainer>
       ) : (
