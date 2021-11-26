@@ -94,6 +94,31 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
     setPredictions(updatedPredictions);
   };
 
+  const updateBigBoyBonus = (fixtureId: number) => {
+    // Make a copy of current state
+    const updatedPredictions: FixtureWithPrediction[] = JSON.parse(
+      JSON.stringify(predictions)
+    );
+
+    // Find the predicted we've changed
+    const editedPrediction = updatedPredictions.find(
+      (prediction: FixtureWithPrediction) => prediction.fixtureId === fixtureId
+    );
+    if (!editedPrediction) return;
+
+    // Find the old fixture with big boy bonus and reset
+    const oldBbb = updatedPredictions
+      .filter((x) => x.gameweek === editedPrediction.gameweek)
+      .find((x) => x.big_boy_bonus);
+
+    if (oldBbb) oldBbb.big_boy_bonus = false;
+
+    // Set the new choice to the big boy bonus
+    editedPrediction.big_boy_bonus = true;
+
+    setPredictions(updatedPredictions);
+  };
+
   if (queryLoading) return <Loading />;
   if (queryError)
     return <div>An error has occurred. Please try again later.</div>;
@@ -119,6 +144,7 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
         predictions={thisWeeksPredictions}
         updateGoals={updateGoals}
         handleSubmit={handleSubmitPredictions}
+        handleBbbUpdate={updateBigBoyBonus}
         isSaved={!!mutationData?.updatePredictions}
         isSaving={mutationLoading}
         isSaveError={!!mutationError}

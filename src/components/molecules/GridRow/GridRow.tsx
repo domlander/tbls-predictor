@@ -2,9 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import { Fixture } from "@prisma/client";
 
-import GridItem from "../../atoms/GridItem";
+import GridItemHomeTeam from "../../atoms/GridItemHomeTeam";
+import GridItemAwayTeam from "../../atoms/GridItemAwayTeam";
+import GridItemKickoff from "../../atoms/GridItemKickoff";
 import ScoreInput from "../../atoms/ScoreInput";
-import pageSizes from "../../../styles/pageSizes";
 import colours from "../../../styles/colours";
 
 export type Props = {
@@ -15,6 +16,7 @@ export type Props = {
   homeGoals: string;
   awayGoals: string;
   isBigBoyBonus?: boolean;
+  isBbbLocked?: boolean;
   updateGoals: (
     fixtureId: number,
     isHomeTeam: boolean,
@@ -23,6 +25,7 @@ export type Props = {
   predictionScore?: number;
   locked: boolean;
   topRow: boolean;
+  handleBbbUpdate?: (fixtureId: number) => void;
 };
 
 const GridRow = ({
@@ -33,65 +36,68 @@ const GridRow = ({
   awayTeam,
   awayGoals,
   isBigBoyBonus,
+  isBbbLocked,
   updateGoals,
   predictionScore,
   locked,
   topRow,
-}: Props) => (
-  <>
-    <KickoffGridItem
-      locked={locked}
-      label={kickoff}
-      alignText="center"
-      topRow={topRow}
-    />
-    <Team
-      locked={locked}
-      label={homeTeam}
-      alignText="right"
-      predictionScore={predictionScore}
-      isBigBoyBonus={isBigBoyBonus}
-      topRow={topRow}
-    />
-    <Score
-      isScoreEditable={!locked}
-      fixtureId={fixtureId}
-      goals={homeGoals}
-      isHome
-      updateGoals={updateGoals}
-      topRow={topRow}
-    />
-    <Divider locked={locked} topRow={topRow}>
-      -
-    </Divider>
-    <Score
-      isScoreEditable={!locked}
-      fixtureId={fixtureId}
-      goals={awayGoals}
-      isHome={false}
-      updateGoals={updateGoals}
-      topRow={topRow}
-    />
-    <Team locked={locked} label={awayTeam} alignText="left" topRow={topRow} />
-  </>
-);
+  handleBbbUpdate,
+}: Props) => {
+  return (
+    <>
+      <Kickoff locked={locked} label={kickoff} topRow={topRow} />
+      <HomeTeam
+        isBbb={isBbbLocked && isBigBoyBonus}
+        label={homeTeam}
+        locked={locked}
+        predictionScore={predictionScore}
+        topRow={topRow}
+      />
+      <Score
+        fixtureId={fixtureId}
+        goals={homeGoals}
+        isHome
+        isScoreEditable={!locked}
+        topRow={topRow}
+        updateGoals={updateGoals}
+      />
+      <Divider locked={locked} topRow={topRow}>
+        -
+      </Divider>
+      <Score
+        fixtureId={fixtureId}
+        goals={awayGoals}
+        isHome={false}
+        isScoreEditable={!locked}
+        topRow={topRow}
+        updateGoals={updateGoals}
+      />
+      <AwayTeam
+        fixtureId={fixtureId}
+        handleBbbUpdate={handleBbbUpdate}
+        isBbbLocked={isBbbLocked}
+        isBbbSelected={isBigBoyBonus}
+        label={awayTeam}
+        locked={locked}
+        topRow={topRow}
+      />
+    </>
+  );
+};
 
-const KickoffGridItem = styled(GridItem)<{ locked: boolean; topRow: boolean }>`
+const Kickoff = styled(GridItemKickoff)<{ locked: boolean; topRow: boolean }>`
   color: ${({ locked }) => (locked ? colours.grey500 : colours.grey100)};
   border-top: ${({ topRow }) =>
     !topRow ? `1px solid ${colours.whiteOpacity25}` : "none"};
-  font-size: 1.6em;
-
-  @media (max-width: ${pageSizes.tablet}) {
-    font-size: 1em;
-  }
-
-  @media (max-width: ${pageSizes.mobileM}) {
-    font-size: 0.9em;
-  }
 `;
 
-const Team = styled(GridItem)<{ locked: boolean; topRow: boolean }>`
+const HomeTeam = styled(GridItemHomeTeam)<{ locked: boolean; topRow: boolean }>`
+  color: ${({ locked }) => (locked ? colours.grey500 : colours.grey100)};
+  border-top: ${({ topRow }) =>
+    !topRow ? `1px solid ${colours.whiteOpacity25}` : "none"};
+`;
+
+const AwayTeam = styled(GridItemAwayTeam)<{ locked: boolean; topRow: boolean }>`
   color: ${({ locked }) => (locked ? colours.grey500 : colours.grey100)};
   border-top: ${({ topRow }) =>
     !topRow ? `1px solid ${colours.whiteOpacity25}` : "none"};

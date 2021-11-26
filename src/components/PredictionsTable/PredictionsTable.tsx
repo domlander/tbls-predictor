@@ -24,6 +24,7 @@ interface Props {
     homeGoals: string
   ) => void;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
+  handleBbbUpdate: (fixtureId: number) => void;
   isAlwaysEditable?: boolean;
   isSaving?: boolean;
   isSaved?: boolean;
@@ -34,6 +35,7 @@ const PredictionsTable = ({
   predictions,
   updateGoals,
   handleSubmit,
+  handleBbbUpdate,
   isAlwaysEditable = false,
   isSaving = false,
   isSaved = false,
@@ -54,6 +56,10 @@ const PredictionsTable = ({
   if (isSaving) savingState = "SAVING";
   else if (showFeedback) savingState = isSaveError ? "FAILED" : "SUCCESS";
   else savingState = "IDLE";
+
+  const isBbbLockedForGameweek = predictions.some(
+    (predo) => predo.big_boy_bonus && isPastDeadline(predo.kickoff)
+  );
 
   return (
     <form onSubmit={handleSubmit}>
@@ -85,9 +91,11 @@ const PredictionsTable = ({
               awayGoals={predictedAwayGoals ?? ""}
               updateGoals={updateGoals}
               isBigBoyBonus={bigBoyBonus}
+              isBbbLocked={isBbbLockedForGameweek}
               predictionScore={predictionScore || undefined}
               locked={!isAlwaysEditable && isPastDeadline(kickoff)}
               topRow={i === 0}
+              handleBbbUpdate={handleBbbUpdate}
             />
           )
         )}
