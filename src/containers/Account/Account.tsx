@@ -2,7 +2,7 @@ import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
 import { useMutation, useQuery } from "@apollo/client";
 
-import { USER } from "apollo/queries";
+import { USER_QUERY } from "apollo/queries";
 import { UPDATE_USERNAME } from "apollo/mutations";
 import Heading from "@/components/atoms/Heading";
 import Loading from "@/components/atoms/Loading";
@@ -15,7 +15,7 @@ const AccountContainer = () => {
   const [userFeedback, setUserFeedback] = useState("");
   const [processRequest] = useMutation(UPDATE_USERNAME);
 
-  const { loading, error } = useQuery(USER, {
+  const { loading, error } = useQuery(USER_QUERY, {
     onCompleted: ({ user }) => {
       setUserId(user.id);
       setCurrentUsername(user.username);

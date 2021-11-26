@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const USER = gql`
+export const USER_QUERY = gql`
   query User {
     user {
       id
@@ -19,7 +19,7 @@ export const FIXTURES_QUERY = gql`
   }
 `;
 
-export const LEAGUES = gql`
+export const LEAGUES_QUERY = gql`
   query Leagues($input: LeaguesInput!) {
     leagues(input: $input) {
       userLeagues {
@@ -34,7 +34,7 @@ export const LEAGUES = gql`
   }
 `;
 
-export const LEAGUE_ADMIN = gql`
+export const LEAGUE_ADMIN_QUERY = gql`
   query LeagueAdmin($input: LeagueAdminInput!) {
     leagueAdmin(input: $input) {
       id
@@ -54,7 +54,7 @@ export const LEAGUE_ADMIN = gql`
   }
 `;
 
-export const PREDICTIONS = gql`
+export const PREDICTIONS_QUERY = gql`
   query Predictions($input: PredictionsInput!) {
     predictions(input: $input) {
       thisGameweek
@@ -77,7 +77,7 @@ export const PREDICTIONS = gql`
   }
 `;
 
-export const LEAGUE_DETAILS = gql`
+export const LEAGUE_DETAILS_QUERY = gql`
   query LeagueDetails($input: LeagueDetailsInput!) {
     leagueDetails(input: $input) {
       leagueName
@@ -95,7 +95,7 @@ export const LEAGUE_DETAILS = gql`
   }
 `;
 
-export const LEAGUE_WEEK = gql`
+export const LEAGUE_WEEK_QUERY = gql`
   query LeagueWeek($input: LeagueWeekInput!) {
     leagueWeek(input: $input) {
       leagueName

@@ -10,7 +10,7 @@ import LeagueWeekFixtures from "@/components/organisms/LeagueWeekFixtures";
 import { FixtureWithUsersPredictions, UserTotalPointsWeek } from "@/types";
 import colours from "@/styles/colours";
 import pageSizes from "@/styles/pageSizes";
-import { LEAGUE_WEEK } from "apollo/queries";
+import { LEAGUE_WEEK_QUERY } from "apollo/queries";
 
 interface Props {
   leagueId: number;
@@ -34,7 +34,7 @@ const LeagueContainer = ({
   const [fixtures, setFixtures] = useState(fixturesFromProps);
   const [users, setUsers] = useState(usersFromProps);
 
-  const { loading } = useQuery(LEAGUE_WEEK, {
+  const { loading } = useQuery(LEAGUE_WEEK_QUERY, {
     variables: { input: { leagueId, weekId } },
     onCompleted: (data) => {
       if (data?.leagueWeek?.fixtures.length) {

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import LeagueApplicants from "@/components/LeagueApplicants";
 import LeagueParticipants from "@/components/LeagueParticipants";
 import Heading from "@/components/atoms/Heading";
-import { LEAGUE_ADMIN } from "apollo/queries";
+import { LEAGUE_ADMIN_QUERY } from "apollo/queries";
 import { useQuery } from "@apollo/client";
 import Loading from "@/components/atoms/Loading";
 
@@ -17,7 +17,7 @@ const LeagueAdminContainer = ({ userId, leagueId }: Props) => {
   const [applicants, setApplicants] = useState([]);
   const [participants, setParticipants] = useState([]);
 
-  const { loading, error } = useQuery(LEAGUE_ADMIN, {
+  const { loading, error } = useQuery(LEAGUE_ADMIN_QUERY, {
     variables: { input: { userId, leagueId } },
     onCompleted: ({ leagueAdmin }) => {
       setLeagueName(leagueAdmin.name);

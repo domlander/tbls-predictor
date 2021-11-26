@@ -1,7 +1,7 @@
 import React from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import prisma from "prisma/client";
-import { LEAGUE_DETAILS } from "apollo/queries";
+import { LEAGUE_DETAILS_QUERY } from "apollo/queries";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import redirectInternal from "utils/redirects";
 import { UserTotalPoints, WeeklyPoints } from "@/types";
@@ -56,7 +56,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       leagueDetails: { leagueName, administratorId, users, pointsByWeek },
     },
   } = await apolloClient.query({
-    query: LEAGUE_DETAILS,
+    query: LEAGUE_DETAILS_QUERY,
     variables: { input: { leagueId } },
   });
 

@@ -7,7 +7,7 @@ import { FixtureWithPrediction, UpdatePredictionsInputType } from "@/types";
 import WeekNavigator from "@/components/molecules/WeekNavigator";
 import { UPDATE_PREDICTIONS } from "apollo/mutations";
 import { useMutation, useQuery } from "@apollo/client";
-import { PREDICTIONS } from "apollo/queries";
+import { PREDICTIONS_QUERY } from "apollo/queries";
 import Loading from "@/components/atoms/Loading";
 
 interface Props {
@@ -27,7 +27,7 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
 
   const [processRequest] = useMutation(UPDATE_PREDICTIONS);
 
-  const { loading, error } = useQuery(PREDICTIONS, {
+  const { loading, error } = useQuery(PREDICTIONS_QUERY, {
     variables: { input: { userId, weekId } },
     onCompleted: ({ predictions: predictionsData }) => {
       setPredictions(predictionsData.fixturesWithPredictions);

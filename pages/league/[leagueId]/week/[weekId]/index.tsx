@@ -4,7 +4,7 @@ import { Fixture, League } from "@prisma/client";
 
 import prisma from "prisma/client";
 import { initializeApollo } from "apollo/client";
-import { LEAGUE_WEEK } from "apollo/queries";
+import { LEAGUE_WEEK_QUERY } from "apollo/queries";
 import LeagueWeek from "@/containers/LeagueWeek";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import redirectInternal from "utils/redirects";
@@ -55,7 +55,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       leagueWeek: { leagueName, users, fixtures, firstGameweek, lastGameweek },
     },
   } = await apolloClient.query({
-    query: LEAGUE_WEEK,
+    query: LEAGUE_WEEK_QUERY,
     variables: { input: { leagueId, weekId } },
   });
 
