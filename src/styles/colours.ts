@@ -10,6 +10,7 @@ export default {
   grey500opacity50: "#96969680",
 
   black500: "#333333",
+  black700: "#111111",
 
   blue100: "#66FCF1",
 

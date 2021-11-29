@@ -68,6 +68,15 @@ const BbbButton = styled.button<{
   @media (max-width: ${pageSizes.mobileL}) {
     padding: 0 0.3em;
   }
+
+  :hover,
+  :focus {
+    background-color: ${({ isBbbSelected }) =>
+      isBbbSelected && colours.cyan500};
+    color: ${({ isBbbSelected }) =>
+      isBbbSelected ? colours.black700 : colours.cyan500};
+    border: 1px solid ${colours.cyan500};
+  }
 `;
 
 export default GridItem;

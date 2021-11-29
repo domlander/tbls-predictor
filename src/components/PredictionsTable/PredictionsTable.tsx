@@ -41,7 +41,7 @@ const PredictionsTable = ({
   isSaved = false,
   isSaveError = false,
 }: Props) => {
-  const [showFeedback, setShowFeedback] = useTransientState(false, 1500);
+  const [showFeedback, setShowFeedback] = useTransientState(false, 3000);
   const gameweekScore = calculateGameweekScore(predictions);
 
   useEffect(() => {
