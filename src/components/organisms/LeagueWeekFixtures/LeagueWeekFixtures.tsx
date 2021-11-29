@@ -1,6 +1,6 @@
-import styled from "styled-components";
 import React from "react";
 import Link from "next/link";
+import styled from "styled-components";
 
 import { FixtureWithUsersPredictions } from "@/types";
 import LeagueWeekPrediction from "@/components/molecules/LeagueWeekPrediction";
@@ -20,58 +20,54 @@ export type Props = {
 const LeagueWeekFixtures = ({ fixtures, weekId }: Props) => {
   const firstFixtureKickoffTiming = whenIsTheFixture(fixtures[0].kickoff);
 
-  return (
-    <>
-      {fixtures.map(
-        ({
-          id,
-          kickoff,
-          homeTeam,
-          awayTeam,
-          homeGoals,
-          awayGoals,
-          predictions,
-        }) => (
-          <Container key={id}>
-            <FixtureRow>
-              <Kickoff>
-                {formatFixtureKickoffTime(kickoff, firstFixtureKickoffTiming)}
-              </Kickoff>
-              {isPastDeadline(kickoff) ? (
-                <Fixture>
-                  {homeTeam}
-                  &nbsp;&nbsp;
-                  {homeGoals} - {awayGoals}
-                  &nbsp;&nbsp;
-                  {awayTeam}
-                </Fixture>
-              ) : (
-                <ClickableFixture>
-                  <Link href={`/predictions/${weekId}`}>
-                    <a>
-                      {homeTeam} vs {awayTeam}
-                    </a>
-                  </Link>
-                </ClickableFixture>
-              )}
-            </FixtureRow>
-            {isPastDeadline(kickoff) ? (
-              <PredictionRow>
-                {predictions.map((prediction, i) => (
-                  <LeagueWeekPrediction
-                    homeGoals={prediction[0] || 0}
-                    awayGoals={prediction[1] || 0}
-                    score={prediction[3] || 0}
-                    isBigBoyBonus={!!prediction[2]}
-                    key={i}
-                  />
-                ))}
-              </PredictionRow>
-            ) : null}
-          </Container>
-        )
-      )}
-    </>
+  return fixtures.map(
+    ({
+      id,
+      kickoff,
+      homeTeam,
+      awayTeam,
+      homeGoals,
+      awayGoals,
+      predictions,
+    }) => (
+      <Container key={id}>
+        <FixtureRow>
+          <Kickoff>
+            {formatFixtureKickoffTime(kickoff, firstFixtureKickoffTiming)}
+          </Kickoff>
+          {isPastDeadline(kickoff) ? (
+            <Fixture>
+              {homeTeam}
+              &nbsp;&nbsp;
+              {homeGoals} - {awayGoals}
+              &nbsp;&nbsp;
+              {awayTeam}
+            </Fixture>
+          ) : (
+            <ClickableFixture>
+              <Link href={`/predictions/${weekId}`}>
+                <a>
+                  {homeTeam} vs {awayTeam}
+                </a>
+              </Link>
+            </ClickableFixture>
+          )}
+        </FixtureRow>
+        {isPastDeadline(kickoff) ? (
+          <PredictionRow>
+            {predictions.map((prediction, i) => (
+              <LeagueWeekPrediction
+                homeGoals={prediction.homeGoals || 0}
+                awayGoals={prediction.awayGoals || 0}
+                score={prediction.score || 0}
+                isBigBoyBonus={prediction.big_boy_bonus}
+                key={i}
+              />
+            ))}
+          </PredictionRow>
+        ) : null}
+      </Container>
+    )
   );
 };
 

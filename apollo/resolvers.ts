@@ -285,14 +285,19 @@ const resolvers = {
             (p) => p.fixtureId === fixture.id
           );
           if (userPrediction) {
-            fixture.predictions.push([
-              userPrediction.homeGoals,
-              userPrediction.awayGoals,
-              userPrediction.big_boy_bonus || false,
-              userPrediction.score,
-            ]);
+            fixture.predictions.push({
+              homeGoals: userPrediction.homeGoals,
+              awayGoals: userPrediction.awayGoals,
+              big_boy_bonus: userPrediction.big_boy_bonus,
+              score: userPrediction.score,
+            });
           } else {
-            fixture.predictions.push([null, null, false, null]);
+            fixture.predictions.push({
+              homeGoals: null,
+              awayGoals: null,
+              big_boy_bonus: false,
+              score: null,
+            });
           }
         });
       });

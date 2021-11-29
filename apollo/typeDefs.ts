@@ -208,7 +208,7 @@ const typeDefs = gql`
     awayTeam: String!
     homeGoals: Int
     awayGoals: Int
-    predictions: [[Int]]
+    predictions: [Prediction!]
   }
 `;
 

@@ -115,7 +115,12 @@ export const LEAGUE_WEEK_QUERY = gql`
         awayTeam
         homeGoals
         awayGoals
-        predictions
+        predictions {
+          homeGoals
+          awayGoals
+          big_boy_bonus
+          score
+        }
       }
     }
   }

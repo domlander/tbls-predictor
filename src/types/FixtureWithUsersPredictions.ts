@@ -1,4 +1,4 @@
-import { Fixture } from "@prisma/client";
+import { Fixture, Prediction } from "@prisma/client";
 
 export type FixtureWithUsersPredictions = {
   id: Fixture["id"];
@@ -8,5 +8,8 @@ export type FixtureWithUsersPredictions = {
   awayTeam: Fixture["awayTeam"];
   homeGoals: Fixture["homeGoals"];
   awayGoals: Fixture["awayGoals"];
-  predictions: [number | null, number | null, boolean, number | null][];
+  predictions: Pick<
+    Prediction,
+    "homeGoals" | "awayGoals" | "big_boy_bonus" | "score"
+  >[];
 };
