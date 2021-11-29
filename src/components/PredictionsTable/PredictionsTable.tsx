@@ -143,6 +143,20 @@ const Table = styled.div`
   @media (max-width: ${pageSizes.mobileM}) {
     grid-template-columns: 6em 1fr auto 5px auto 1fr;
   }
+
+  > div,
+  input {
+    font-size: 2em;
+    @media (max-width: ${pageSizes.tablet}) {
+      font-size: 1.2em;
+    }
+    @media (max-width: ${pageSizes.mobileL}) {
+      font-size: 1.1em;
+    }
+    @media (max-width: ${pageSizes.mobileM}) {
+      font-size: 1em;
+    }
+  }
 `;
 
 const ButtonsAndMessageContainer = styled.div`

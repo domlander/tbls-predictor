@@ -3,7 +3,6 @@ import { Fixture } from "@prisma/client";
 import styled from "styled-components";
 
 import colours from "../../../styles/colours";
-import pageSizes from "../../../styles/pageSizes";
 
 interface StyleProps {
   isScoreEditable: boolean;
@@ -55,17 +54,6 @@ const Input = styled.input<StyleProps>`
   }
   ::placeholder {
     color: ${colours.grey500opacity50};
-  }
-
-  font-size: 2em;
-  @media (max-width: ${pageSizes.tablet}) {
-    font-size: 1.2em;
-  }
-  @media (max-width: ${pageSizes.mobileL}) {
-    font-size: 1.1em;
-  }
-  @media (max-width: ${pageSizes.mobileM}) {
-    font-size: 1em;
   }
 
   // Hide arrows
