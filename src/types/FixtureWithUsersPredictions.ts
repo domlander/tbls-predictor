@@ -8,5 +8,5 @@ export type FixtureWithUsersPredictions = {
   awayTeam: Fixture["awayTeam"];
   homeGoals: Fixture["homeGoals"];
   awayGoals: Fixture["awayGoals"];
-  predictions: [number | null, number | null, boolean][];
+  predictions: [number | null, number | null, boolean, number | null][];
 };

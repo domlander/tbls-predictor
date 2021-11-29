@@ -8,7 +8,6 @@ import {
   formatFixtureKickoffTime,
   whenIsTheFixture,
 } from "utils/kickoffDateHelpers";
-import calculatePredictionScore from "../../../../utils/calculatePredictionScore";
 import isPastDeadline from "../../../../utils/isPastDeadline";
 import colours from "../../../styles/colours";
 import pageSizes from "../../../styles/pageSizes";
@@ -58,25 +57,15 @@ const LeagueWeekFixtures = ({ fixtures, weekId }: Props) => {
             </FixtureRow>
             {isPastDeadline(kickoff) ? (
               <PredictionRow>
-                {predictions.map((prediction, i) => {
-                  let score = 0;
-                  if (homeGoals !== null && awayGoals !== null) {
-                    score = calculatePredictionScore(prediction, [
-                      homeGoals,
-                      awayGoals,
-                    ]);
-                  }
-
-                  return (
-                    <LeagueWeekPrediction
-                      homeGoals={prediction[0] || 0}
-                      awayGoals={prediction[1] || 0}
-                      score={score}
-                      isBigBoyBonus={!!prediction[2]}
-                      key={i}
-                    />
-                  );
-                })}
+                {predictions.map((prediction, i) => (
+                  <LeagueWeekPrediction
+                    homeGoals={prediction[0] || 0}
+                    awayGoals={prediction[1] || 0}
+                    score={prediction[3] || 0}
+                    isBigBoyBonus={!!prediction[2]}
+                    key={i}
+                  />
+                ))}
               </PredictionRow>
             ) : null}
           </Container>

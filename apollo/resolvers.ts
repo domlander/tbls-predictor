@@ -289,9 +289,10 @@ const resolvers = {
               userPrediction.homeGoals,
               userPrediction.awayGoals,
               userPrediction.big_boy_bonus || false,
+              userPrediction.score,
             ]);
           } else {
-            fixture.predictions.push([null, null, false]);
+            fixture.predictions.push([null, null, false, null]);
           }
         });
       });
