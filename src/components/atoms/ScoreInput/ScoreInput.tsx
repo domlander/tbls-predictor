@@ -49,7 +49,6 @@ const Input = styled.input<StyleProps>`
   border: 0;
   width: 2em;
   background-color: inherit;
-  font-size: 2em;
   text-align: center;
   :focus {
     outline: none;
@@ -58,10 +57,13 @@ const Input = styled.input<StyleProps>`
     color: ${colours.grey500opacity50};
   }
 
+  font-size: 2em;
   @media (max-width: ${pageSizes.tablet}) {
     font-size: 1.2em;
   }
-
+  @media (max-width: ${pageSizes.mobileL}) {
+    font-size: 1.1em;
+  }
   @media (max-width: ${pageSizes.mobileM}) {
     font-size: 1em;
   }

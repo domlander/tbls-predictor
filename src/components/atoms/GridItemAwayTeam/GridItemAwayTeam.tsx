@@ -52,8 +52,15 @@ const Container = styled.div<{
   @media (max-width: ${pageSizes.tablet}) {
     font-size: 1.2em;
   }
+  @media (max-width: ${pageSizes.mobileL}) {
+    font-size: 1.1em;
+  }
   @media (max-width: ${pageSizes.mobileM}) {
     font-size: 1em;
+  }
+
+  span {
+    text-align: left;
   }
 `;
 
@@ -67,7 +74,11 @@ const BbbButton = styled.button<{
   border: ${({ isBbbSelected }) =>
     `1px solid ${isBbbSelected ? colours.cyan300 : colours.cyan100}`};
   border-radius: 0.2em;
+
   padding: 0 0.5em;
+  @media (max-width: ${pageSizes.mobileL}) {
+    padding: 0 0.3em;
+  }
 `;
 
 export default GridItem;

@@ -42,8 +42,15 @@ const Container = styled.div`
   @media (max-width: ${pageSizes.tablet}) {
     font-size: 1.2em;
   }
+  @media (max-width: ${pageSizes.mobileL}) {
+    font-size: 1.1em;
+  }
   @media (max-width: ${pageSizes.mobileM}) {
     font-size: 1em;
+  }
+
+  span {
+    text-align: right;
   }
 `;
 
