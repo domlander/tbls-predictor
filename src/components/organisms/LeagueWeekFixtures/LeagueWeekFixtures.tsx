@@ -124,7 +124,7 @@ const Fixture = styled.div`
 const ClickableFixture = styled(Fixture)`
   :hover,
   :focus {
-    color: ${colours.blue100};
+    color: ${colours.cyan100};
     text-decoration: underline;
   }
 `;

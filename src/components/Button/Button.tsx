@@ -4,16 +4,18 @@ import colours from "../../styles/colours";
 
 const variants = {
   primary: {
-    backgroundColour: colours.blue100,
-    hoverColour: colours.cyan500,
     colour: colours.blackblue500,
+    hoverColour: colours.black700,
     disabledColour: colours.blackblue400,
+    backgroundColour: colours.cyan200,
+    hoverBackgroundColour: colours.cyan50,
   },
   secondary: {
-    backgroundColour: colours.grey200,
-    hoverColour: colours.grey400,
     colour: colours.blackblue400,
+    hoverColour: colours.blackblue400,
     disabledColour: colours.blackblue400,
+    backgroundColour: colours.grey200,
+    hoverBackgroundColour: colours.grey400,
   },
 };
 
@@ -64,7 +66,7 @@ const ButtonStyles = styled.button<StyleProps>`
     background-color: ${({ disabled, variant }) =>
       disabled
         ? variants[variant].backgroundColour
-        : variants[variant].hoverColour};
+        : variants[variant].hoverBackgroundColour};
   }
 
   :focus {
@@ -72,7 +74,8 @@ const ButtonStyles = styled.button<StyleProps>`
     width: calc(100% - 0.1em);
     margin-top: 0.05em;
     margin-left: 0.05em;
-    background-color: ${({ variant }) => variants[variant].hoverColour};
+    background-color: ${({ variant }) =>
+      variants[variant].hoverBackgroundColour};
   }
 `;
 

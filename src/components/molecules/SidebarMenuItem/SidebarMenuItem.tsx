@@ -30,7 +30,7 @@ const A = styled.a`
   cursor: pointer;
   :hover,
   :focus {
-    color: ${colours.blue100};
+    color: ${colours.cyan100};
   }
 `;
 

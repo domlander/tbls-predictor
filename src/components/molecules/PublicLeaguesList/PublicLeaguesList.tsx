@@ -41,7 +41,7 @@ const ListElement = styled.li`
   text-decoration: underline;
   text-underline-offset: 0.2em;
   :hover {
-    color: ${colours.blue100};
+    color: ${colours.cyan100};
     text-decoration: none;
   }
 `;

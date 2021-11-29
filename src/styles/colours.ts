@@ -9,14 +9,15 @@ export default {
   grey500: "#969696",
   grey500opacity50: "#96969680",
 
-  black500: "#333333",
+  black100: "#333333",
   black700: "#111111",
 
-  blue100: "#66FCF1",
-
-  cyan500: "#0cb3a7",
-  cyan300: "#2B8E87",
-  cyan100: "#13403d",
+  cyan50: "#8cfdf5",
+  cyan100: "#66FCF1",
+  cyan200: "#1bfbea",
+  cyan300: "#0cb3a7",
+  cyan500: "#2B8E87",
+  cyan700: "#13403d",
 
   blackblue400: "#151D26",
   blackblue400opacity50: "#151D2680",

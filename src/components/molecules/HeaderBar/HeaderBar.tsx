@@ -54,7 +54,7 @@ const HeaderLink = styled.a`
 
   :hover,
   :focus {
-    color: ${colours.blue100};
+    color: ${colours.cyan100};
   }
 `;
 

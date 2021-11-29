@@ -33,7 +33,7 @@ const Input = styled.input`
   height: 2.4em;
   width: 12em;
   background-color: ${colours.grey200};
-  color: ${colours.black500};
+  color: ${colours.black100};
   border-radius: 0.2em;
   font-size: 1.6em;
   border: 0;

@@ -181,7 +181,7 @@ const ButtonContainer = styled.div`
 
 const UserFeedback = styled.p`
   order: 2;
-  color: ${colours.cyan500};
+  color: ${colours.cyan300};
   font-size: 1.8em;
   font-style: italic;
 `;

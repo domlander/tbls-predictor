@@ -65,7 +65,7 @@ const NoLeagues = styled.div`
 
     :hover,
     :focus {
-      color: ${colours.blue100};
+      color: ${colours.cyan100};
     }
   }
 `;
