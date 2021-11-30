@@ -104,7 +104,7 @@ const PredictionsTable = ({
       predictions.some((prediction) => !isPastDeadline(prediction.kickoff)) ? (
         <ButtonsAndMessageContainer>
           <ButtonContainer>
-            <Button type="submit" variant="primary">
+            <Button id="save" type="submit" variant="primary">
               Save
             </Button>
           </ButtonContainer>

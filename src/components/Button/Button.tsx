@@ -25,26 +25,29 @@ interface StyleProps {
 }
 
 export type Props = StyleProps & {
-  handleClick?: (e: React.MouseEvent<HTMLElement>) => void;
   children: ReactNode;
-  type?: "button" | "submit";
   className?: string;
+  handleClick?: (e: React.MouseEvent<HTMLElement>) => void;
+  id?: string;
+  type?: "button" | "submit";
 };
 
 const Button = ({
-  variant,
   children,
   className,
   disabled = false,
   handleClick,
+  id,
   type = "button",
+  variant,
 }: Props) => (
   <ButtonStyles
-    variant={variant}
     className={className}
     disabled={disabled}
+    id={id}
     onClick={handleClick}
     type={type}
+    variant={variant}
   >
     {children}
   </ButtonStyles>

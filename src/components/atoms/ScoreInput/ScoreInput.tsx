@@ -1,7 +1,6 @@
 import React from "react";
-import { Fixture } from "@prisma/client";
 import styled from "styled-components";
-
+import { Fixture } from "@prisma/client";
 import colours from "../../../styles/colours";
 
 interface StyleProps {
@@ -20,6 +19,23 @@ export type Props = StyleProps & {
   ) => void;
 };
 
+const focusNextInput = (name: string, value: string) => {
+  const inputs = document.querySelectorAll("input");
+  const thisInput = Array.from(inputs)
+    .map((input) => input.name)
+    .indexOf(name);
+
+  if (thisInput !== inputs.length - 1 && /[0-9]/.test(value)) {
+    inputs[thisInput + 1].focus();
+    inputs[thisInput + 1].select();
+  } else {
+    const saveButton = document.querySelector(
+      "#save"
+    ) as HTMLButtonElement | null;
+    if (saveButton) saveButton.focus();
+  }
+};
+
 const ScoreInput = ({
   fixtureId,
   goals,
@@ -27,22 +43,29 @@ const ScoreInput = ({
   isScoreEditable,
   updateGoals,
   className,
-}: Props) => (
-  <Input
-    autoComplete="off"
-    placeholder={isScoreEditable ? "?" : ""}
-    disabled={!isScoreEditable}
-    isScoreEditable={isScoreEditable}
-    maxLength={1}
-    name={`${isHome ? "home" : "away"}-score-${fixtureId}`}
-    onChange={(e) => updateGoals(fixtureId, isHome, e.target.value)}
-    type="number"
-    value={goals}
-    className={className}
-    pattern="[0-9]"
-    inputMode="numeric"
-  />
-);
+}: Props) => {
+  const name = `${isHome ? "home" : "away"}-score-${fixtureId}`;
+
+  return (
+    <Input
+      autoComplete="off"
+      placeholder={isScoreEditable ? "?" : ""}
+      disabled={!isScoreEditable}
+      isScoreEditable={isScoreEditable}
+      maxLength={1}
+      name={name}
+      onChange={(e) => {
+        updateGoals(fixtureId, isHome, e.target.value);
+        focusNextInput(name, e.target.value);
+      }}
+      type="number"
+      value={goals}
+      className={className}
+      pattern="[0-9]"
+      inputMode="numeric"
+    />
+  );
+};
 
 const Input = styled.input<StyleProps>`
   border: 0;
