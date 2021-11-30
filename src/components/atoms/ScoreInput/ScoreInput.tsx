@@ -24,15 +24,18 @@ const focusNextInput = (name: string, value: string) => {
   const thisInput = Array.from(inputs)
     .map((input) => input.name)
     .indexOf(name);
+  const lastInput = thisInput === inputs.length - 1;
 
-  if (thisInput !== inputs.length - 1 && /[0-9]/.test(value)) {
-    inputs[thisInput + 1].focus();
-    inputs[thisInput + 1].select();
-  } else {
-    const saveButton = document.querySelector(
-      "#save"
-    ) as HTMLButtonElement | null;
-    if (saveButton) saveButton.focus();
+  if (/[0-9]/.test(value)) {
+    if (!lastInput) {
+      inputs[thisInput + 1].focus();
+      inputs[thisInput + 1].select();
+    } else {
+      const saveButton = document.querySelector(
+        "#save"
+      ) as HTMLButtonElement | null;
+      if (saveButton) saveButton.focus();
+    }
   }
 };
 
