@@ -7,8 +7,8 @@
     "start": "next start",
     "sb": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "prisma:generate": "prisma generate PRISMA_CLIENT_ENGINE_TYPE='dataproxy'",
-    "prisma:migrate": "prisma migrate deploy POSTGRESQL_URL=\"$MIGRATE_POSTGRESQL_URL\""
+    "vercel-build": "yarn prisma:generate && next build",
+    "prisma:generate": "PRISMA_CLIENT_ENGINE_TYPE='dataproxy' prisma generate"
   },
   "dependencies": {
     "@apollo/client": "^3.3.15",
