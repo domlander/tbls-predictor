@@ -3,16 +3,20 @@ import { Fixture } from "@prisma/client";
 
 type PartialFixture = Pick<Fixture, "id" | "gameweek" | "kickoff">;
 
+const DEFAULT_GAMEWEEK = 1;
+
 // Returns the current gameweek given a list of fixtures
 // Current gameweek: The fixture with the earliest kickoff that is today or in the future
 export function calculateCurrentGameweek(fixtures: PartialFixture[]) {
   const today = dayjs();
 
-  const fixturesTodayOrLater = fixtures.filter(({ kickoff }) =>
+  const allFixturesTodayOrLater = fixtures.filter(({ kickoff }) =>
     dayjs(kickoff).isAfter(today)
   );
 
-  const firstFixtureTodayOrLater = fixturesTodayOrLater.reduce(
+  if (!allFixturesTodayOrLater.length) return DEFAULT_GAMEWEEK;
+
+  const firstFixtureTodayOrLater = allFixturesTodayOrLater.reduce(
     (acc: PartialFixture, cur: PartialFixture) => {
       if (!acc?.kickoff || !cur?.kickoff) return acc;
       if (acc.kickoff < cur.kickoff) return acc;
@@ -21,7 +25,5 @@ export function calculateCurrentGameweek(fixtures: PartialFixture[]) {
     }
   );
 
-  const currentGameweek = firstFixtureTodayOrLater?.gameweek;
-
-  return currentGameweek || 1;
+  return firstFixtureTodayOrLater.gameweek;
 }
