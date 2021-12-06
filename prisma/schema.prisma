@@ -1,6 +1,7 @@
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["dataProxy"]
+  engineType = "dataproxy"
+  previewFeatures = "dataproxy"
 }
 
 datasource db {
