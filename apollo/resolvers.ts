@@ -11,6 +11,7 @@ import { isUserAlreadyBelongToLeague } from "utils/isUserAlreadyBelongToLeague";
 import isUserAppliedToLeague from "utils/isUserAppliedToLeague";
 import { League } from "@prisma/client";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
+import isPastDeadline from "utils/isPastDeadline";
 import dateScalar from "./scalars";
 
 const resolvers = {
@@ -362,9 +363,27 @@ const resolvers = {
       return user.username;
     },
     updatePredictions: async (root, { input: predictions }, ctx) => {
+      const fixtures = await prisma.fixture.findMany({
+        select: {
+          id: true,
+          kickoff: true,
+        },
+        where: {
+          id: {
+            in: predictions.map(({ fixtureId }) => fixtureId),
+          },
+        },
+      });
+      const updateableFixtures = fixtures
+        .filter(({ kickoff }) => !isPastDeadline(kickoff))
+        .map(({ id }) => id);
+
       try {
         const predictionsUpsert = await predictions.map(
           ({ userId, fixtureId, homeGoals, awayGoals, big_boy_bonus }) => {
+            // Don't let the user submit predictions after the match has finished! We cannot trust the client, so we use
+            if (!updateableFixtures.includes(fixtureId)) return;
+
             const data = {
               userId,
               fixtureId,
@@ -372,10 +391,6 @@ const resolvers = {
               awayGoals,
               big_boy_bonus,
             };
-
-            // TODO: We can't trust the client. We need to run a find on the fixture table to get the bonafide kick off time.
-            // We need to get all the fixures by the id's in the predictions object. Consider the n+1 problem when doing this
-            // if (isPastDeadline(prediction.kickoff)) return;
 
             // eslint-disable-next-line consistent-return
             return prisma.prediction.upsert({
@@ -387,6 +402,7 @@ const resolvers = {
             });
           }
         );
+
         await Promise.all(predictionsUpsert);
       } catch (e) {
         console.log("Error:", e);
