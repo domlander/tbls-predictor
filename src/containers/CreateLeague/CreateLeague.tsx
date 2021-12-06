@@ -38,11 +38,13 @@ const CreateLeague = () => {
             gameweekEnd: endWeek,
           },
         },
-      }).then(({ data: { createLeague: { id, name } } }) =>
-        setUserFeedback(
-          `Success! League "${name}" was created! Ask friends to join using ID: ${id}`
-        )
-      );
+      }).then(({ data, errors }) => {
+        if (errors?.length) setUserFeedback(errors[0].message);
+        else if (data?.createLeague)
+          setUserFeedback(
+            `Success! League "${data.createLeague.name}" was created! Ask friends to join using ID: ${data.createLeague.id}`
+          );
+      });
       setLeagueName("");
     }
   };

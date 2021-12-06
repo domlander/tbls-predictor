@@ -10,6 +10,7 @@ import {
 import { isUserAlreadyBelongToLeague } from "utils/isUserAlreadyBelongToLeague";
 import isUserAppliedToLeague from "utils/isUserAppliedToLeague";
 import { League } from "@prisma/client";
+import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import dateScalar from "./scalars";
 
 const resolvers = {
@@ -341,7 +342,6 @@ const resolvers = {
   },
   Mutation: {
     updateUsername: async (root, { input: { userId, username } }, ctx) => {
-      // TODO: Should not be able to start in a past gameweek
       if (username.length < 3 || username.length > 20)
         throw new UserInputError(
           "Select a username between 3 and 20 characters",
@@ -400,7 +400,6 @@ const resolvers = {
       { input: { userId, name, gameweekStart, gameweekEnd } },
       ctx
     ) => {
-      // TODO: Should not be able to start in a past gameweek
       if (gameweekStart < 1 || gameweekStart > 38)
         throw new UserInputError("Gameweek start week is not valid", {
           argumentName: "gameweekStart",
@@ -414,6 +413,23 @@ const resolvers = {
       if (gameweekStart > gameweekEnd)
         throw new UserInputError(
           "The final gameweek must be the same or after the first."
+        );
+
+      // Cannot start in a past gameweek
+      const fixtures = await prisma.fixture.findMany({
+        select: {
+          id: true,
+          gameweek: true,
+          kickoff: true,
+        },
+      });
+      const currentGameweek = calculateCurrentGameweek(fixtures);
+      if (gameweekStart < currentGameweek)
+        throw new UserInputError(
+          "Enter a future gameweek in which to begin the league",
+          {
+            argumentName: "gameweekStart",
+          }
         );
 
       const league = await prisma.league.create({
