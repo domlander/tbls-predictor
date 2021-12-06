@@ -7,8 +7,8 @@
     "start": "next start",
     "sb": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "prisma:generate": "PRISMA_CLIENT_ENGINE_TYPE='dataproxy' prisma generate",
-    "prisma:migrate": "DATABASE_URL=\"$MIGRATE_DATABASE_URL\" prisma migrate deploy"
+    "prisma:generate": "prisma generate PRISMA_CLIENT_ENGINE_TYPE='dataproxy'",
+    "prisma:migrate": "prisma migrate deploy DATABASE_URL=\"$MIGRATE_DATABASE_URL\""
   },
   "dependencies": {
     "@apollo/client": "^3.3.15",
