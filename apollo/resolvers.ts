@@ -381,7 +381,7 @@ const resolvers = {
       try {
         const predictionsUpsert = await predictions.map(
           ({ userId, fixtureId, homeGoals, awayGoals, big_boy_bonus }) => {
-            // Don't let the user submit predictions after the match has finished! We cannot trust the client, so we use
+            // Don't let the user submit predictions after the match has finished! We cannot trust the client
             if (!updateableFixtures.includes(fixtureId)) return;
 
             const data = {
