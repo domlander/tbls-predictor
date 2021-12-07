@@ -1,21 +1,97 @@
 import React from "react";
-import Head from "next/head";
+import styled from "styled-components";
+import Link from "next/link";
+import colours from "@/styles/colours";
+import pageSizes from "@/styles/pageSizes";
 import Heading from "@/components/atoms/Heading";
+import LeaguesList from "@/components/molecules/LeagueList";
+import Image from "next/image";
+import Predictions from "../Predictions";
+import useLeagues from "../../hooks/useLeagues";
 
-export default function Home() {
+interface Props {
+  userId: number;
+  weekId: number;
+}
+
+export default function Home({ userId, weekId }: Props) {
+  const [leagues, _, leaguesLoading, leaguesError] = useLeagues(userId);
+
   return (
-    <>
-      <Head>
-        <meta
-          name="description"
-          content="Predict Premier League football scores. Challenge you friends to a score prediction battle with live updates and league tables."
+    <Container>
+      <PredictionsContainer>
+        <PredictionsHeader>
+          <Heading level="h2">This week</Heading>
+          <Link href={`/predictions/${weekId}`}>
+            <a>See all predictions</a>
+          </Link>
+        </PredictionsHeader>
+        <Predictions
+          userId={userId}
+          weekId={weekId}
+          showWeekNavigation={false}
         />
-        <meta
-          property="og:description"
-          content="Predict Premier League results, create leagues with friends and keep track of your score."
-        />
-      </Head>
-      <Heading level="h1">Home</Heading>
-    </>
+      </PredictionsContainer>
+      {leaguesLoading && (
+        <SpinnerContainer>
+          <Image src="/images/spinner.gif" height="50" width="50" alt="" />
+        </SpinnerContainer>
+      )}
+      {leaguesError && (
+        <LeagueError>Could not load leagues at this time.</LeagueError>
+      )}
+      <LeaguesList leagues={leagues || []} />
+    </Container>
   );
 }
+
+const Container = styled.div`
+  padding: 6em 2em;
+  display: flex;
+  flex-direction: column;
+  gap: 5em;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    padding: 4em 0;
+  }
+`;
+
+const PredictionsContainer = styled.div``;
+
+const PredictionsHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 2em 0;
+
+  h2 {
+    color: ${colours.grey100};
+    margin: 0;
+  }
+
+  a {
+    font-size: 1.2rem;
+    color: ${colours.grey300};
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 0.1em;
+
+    :hover,
+    :focus {
+      color: ${colours.cyan100};
+    }
+
+    @media (max-width: ${pageSizes.tablet}) {
+      font-size: 0.8rem;
+    }
+  }
+`;
+
+const LeagueError = styled.p`
+  font-size: 1rem;
+`;
+
+const SpinnerContainer = styled.div`
+  height: 50px;
+  width: 50px;
+`;

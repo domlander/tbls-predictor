@@ -13,9 +13,14 @@ import Loading from "@/components/atoms/Loading";
 interface Props {
   userId: number;
   weekId: number;
+  showWeekNavigation: boolean;
 }
 
-const PredictionsContainer = ({ userId, weekId }: Props) => {
+const PredictionsContainer = ({
+  userId,
+  weekId,
+  showWeekNavigation,
+}: Props) => {
   const [session] = useSession();
 
   const [predictions, setPredictions] = useState<FixtureWithPrediction[]>([]);
@@ -51,7 +56,7 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
     const updatedPredictions: UpdatePredictionsInputType[] = predictions
       .filter((p) => p.gameweek === gameweek)
       .map((prediction) => ({
-        userId: session?.user.id as number,
+        userId: session?.user?.id as number,
         fixtureId: prediction.fixtureId,
         homeGoals: parseInt(prediction.predictedHomeGoals || "") ?? null,
         awayGoals: parseInt(prediction.predictedAwayGoals || "") ?? null,
@@ -125,7 +130,7 @@ const PredictionsContainer = ({ userId, weekId }: Props) => {
 
   return (
     <Container>
-      {gameweek && firstGameweek && lastGameweek && (
+      {showWeekNavigation && gameweek && firstGameweek && lastGameweek && (
         <WeekNavigator
           week={gameweek}
           prevGameweekUrl={

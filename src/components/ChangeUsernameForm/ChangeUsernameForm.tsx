@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import Button from "../Button";
 import FormInput from "../atoms/FormInput";
+import Heading from "../atoms/Heading";
 
 export interface Props {
   username: string;
@@ -20,7 +21,7 @@ const ChangeUsernameForm = ({
   handleSubmit,
 }: Props) => (
   <Container>
-    <h2>Change username</h2>
+    <Heading level="h2">Change username</Heading>
     <form onSubmit={handleSubmit}>
       <Label>
         <LabelText>Username:</LabelText>

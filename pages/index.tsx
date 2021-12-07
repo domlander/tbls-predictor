@@ -1,12 +1,34 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
+import Head from "next/head";
 import prisma from "prisma/client";
-import Home from "@/containers/Home";
 
-export default function HomePage() {
-  return <Home />;
+import Home from "@/containers/Home";
+import { initializeApollo } from "apollo/client";
+import { FIXTURES_QUERY } from "apollo/queries";
+import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
+
+interface Props {
+  userId: number;
+  weekId: number;
 }
+
+const HomePage = ({ userId, weekId }: Props) => (
+  <>
+    <Head>
+      <meta
+        name="description"
+        content="Predict Premier League football scores. Challenge friends to a score prediction battle with live updates and league tables."
+      />
+      <meta
+        property="og:description"
+        content="Predict Premier League results, create leagues with friends and keep track of your score."
+      />
+    </Head>
+    <Home userId={userId} weekId={weekId} />
+  </>
+);
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
@@ -20,11 +42,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  // TODO - What do we do if the data is weird?
-  if (!session.user.email) {
+  if (!session?.user?.email) {
+    // TODO: Log this strange behaviour: Session is found but no email address
     return { props: {} };
   }
 
+  // TODO: Can we move this to account creation?
+  // Give user a username if they do not have one.
   const user = await prisma.user.findUnique({
     where: { email: session.user.email },
   });
@@ -43,5 +67,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     });
   }
 
-  return { props: {} };
+  const apolloClient = initializeApollo();
+  const {
+    data: { fixtures },
+  } = await apolloClient.query({
+    query: FIXTURES_QUERY,
+  });
+  const weekId = calculateCurrentGameweek(fixtures);
+
+  return {
+    props: {
+      userId: session.user.id,
+      weekId,
+    },
+  };
 };
+
+export default HomePage;

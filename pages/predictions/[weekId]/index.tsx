@@ -23,13 +23,13 @@ const PredictionsPage = ({ userId, weekId }: Props) => (
         content="Leicester host Arsenal, whilst Man Utd and Everton travel to Spurs and Wolves respectively, hoping to bounce back from large home defeats."
       />
     </Head> */}
-    <Predictions userId={userId} weekId={weekId} />
+    <Predictions userId={userId} weekId={weekId} showWeekNavigation />
   </>
 );
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
-  if (!session?.user.id) {
+  if (!session?.user?.id) {
     return {
       props: {},
       redirect: {

@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import pageSizes from "@/styles/pageSizes";
 import Button from "@/components/Button";
+import Heading from "@/components/atoms/Heading";
 
 export interface Props {
   type: "404" | "500";
@@ -12,9 +13,9 @@ export interface Props {
 const ErrorPage = ({ type }: Props) => (
   <Container>
     <Title>{type}</Title>
-    <Subtitle>
+    <Heading level="h2">
       {type === "404" ? "Ooooooooooooooops!" : "Something went wrong"}
-    </Subtitle>
+    </Heading>
     <ButtonContainer>
       <Link href="/">
         <a>
@@ -38,10 +39,6 @@ const Title = styled.h1`
   @media (max-width: ${pageSizes.mobileL}) {
     font-size: 5rem;
   }
-`;
-
-const Subtitle = styled.h2`
-  font-size: 2rem;
 `;
 
 const ButtonContainer = styled.div`

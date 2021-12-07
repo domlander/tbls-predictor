@@ -105,10 +105,10 @@ const PredictionsTable = ({
         <ButtonsAndMessageContainer>
           <ButtonContainer>
             <Button id="save" type="submit" variant="primary">
-              Save
+              Save predictions
             </Button>
           </ButtonContainer>
-          {savingState === "IDLE" && <div />}
+          {savingState === "IDLE" && <span />}
           {savingState === "SAVING" && <UserFeedback>Saving...</UserFeedback>}
           {savingState === "SUCCESS" && (
             <UserFeedback>Predictions updated!</UserFeedback>
@@ -162,16 +162,17 @@ const Table = styled.div`
 const ButtonsAndMessageContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: flex-end;
   margin-top: 1.6rem;
 
   @media (max-width: 650px) {
     flex-direction: column;
+    align-items: stretch;
   }
 `;
 
 const ButtonContainer = styled.div`
   order: 3;
-  flex-basis: 200px;
 
   @media (max-width: 650px) {
     order: 1;
@@ -184,10 +185,15 @@ const UserFeedback = styled.p`
   color: ${colours.cyan300};
   font-size: 1.8em;
   font-style: italic;
+  margin: 0;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    margin-top: 1em;
+  }
 `;
 
 const GameweekScore = styled.div`
-  color: ${colours.grey300};
+  color: ${colours.grey400};
   margin: 1.4rem 0 0 1rem;
   font-size: 2em;
 

@@ -17,7 +17,7 @@ const LeaguesList = ({ leagues }: Props) => {
   if (!leagues?.length)
     return (
       <NoLeagues>
-        <h2>My Leagues</h2>
+        <Heading level="h2">My Leagues</Heading>
         <Link href="/league/join">
           <a>Join a league</a>
         </Link>
@@ -26,7 +26,7 @@ const LeaguesList = ({ leagues }: Props) => {
 
   return (
     <MyLeagues>
-      <h2>My Leagues</h2>
+      <Heading level="h2">My Leagues</Heading>
       <LeagueCards>
         {leagues.map(({ id, name }) => (
           <LeagueCard

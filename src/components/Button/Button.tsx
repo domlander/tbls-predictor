@@ -4,15 +4,13 @@ import colours from "../../styles/colours";
 
 const variants = {
   primary: {
-    colour: colours.blackblue500,
-    hoverColour: colours.black700,
+    colour: colours.black700,
     disabledColour: colours.blackblue400,
-    backgroundColour: colours.cyan200,
-    hoverBackgroundColour: colours.cyan50,
+    backgroundColour: colours.cyan300,
+    hoverBackgroundColour: colours.cyan100,
   },
   secondary: {
     colour: colours.blackblue400,
-    hoverColour: colours.blackblue400,
     disabledColour: colours.blackblue400,
     backgroundColour: colours.grey200,
     hoverBackgroundColour: colours.grey400,
@@ -63,6 +61,7 @@ const ButtonStyles = styled.button<StyleProps>`
   font-size: 1.6rem;
   height: 1.8em;
   opacity: ${({ disabled }) => (disabled ? "50%" : "100%")};
+  padding: 0 1em;
   width: 100%;
   :hover {
     outline: none;
@@ -73,10 +72,6 @@ const ButtonStyles = styled.button<StyleProps>`
   }
 
   :focus {
-    height: 1.7em;
-    width: calc(100% - 0.1em);
-    margin-top: 0.05em;
-    margin-left: 0.05em;
     background-color: ${({ variant }) =>
       variants[variant].hoverBackgroundColour};
   }

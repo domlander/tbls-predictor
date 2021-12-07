@@ -1,5 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import colours from "./colours";
+import pageSizes from "./pageSizes";
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -43,7 +44,12 @@ const GlobalStyle = createGlobalStyle`
     margin: 1em 0;
   }
 
-  h2 { font-size: 2rem; }
+  h2 {
+    font-size: 2rem;
+    @media (max-width: ${pageSizes.mobileL}) {
+      font-size: 1.6rem;
+    }
+  }
   h3 { font-size: 1.7rem; }
   h4 { font-size: 1.5em; }
 

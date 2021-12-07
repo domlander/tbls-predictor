@@ -3,6 +3,7 @@ import React from "react";
 import Link from "next/link";
 import styled from "styled-components";
 import colours from "@/styles/colours";
+import Heading from "@/components/atoms/Heading";
 
 export interface Props {
   leagues: Partial<League>[];
@@ -11,7 +12,7 @@ export interface Props {
 const PublicLeaguesList = ({ leagues }: Props) => {
   return (
     <Container>
-      <h2>Public leagues</h2>
+      <Heading level="h2">Public leagues</Heading>
       <List>
         {leagues.map((league) => (
           <ListElement key={league.id}>

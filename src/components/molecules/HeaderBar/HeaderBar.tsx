@@ -14,6 +14,9 @@ export interface Props {
 const HeaderBar = ({ initial, handleClick }: Props) => (
   <Container>
     <HeaderLinks>
+      <Link href="/" passHref>
+        <HeaderLink tabIndex={0}>Home</HeaderLink>
+      </Link>
       <Link href="/predictions" passHref>
         <HeaderLink tabIndex={0}>Predictions</HeaderLink>
       </Link>
@@ -55,6 +58,10 @@ const HeaderLink = styled.a`
   :hover,
   :focus {
     color: ${colours.cyan100};
+  }
+
+  @media (max-width: ${pageSizes.mobileL}) {
+    margin-left: 3em;
   }
 `;
 

@@ -61,7 +61,7 @@ const CreateLeague = () => {
               onChange={(e) => setLeagueName(e.target.value)}
             />
           </Label>
-          {/* TODO: Find components for these when decided on a design */}
+          {/* TODO start: Find components for these when decided on a design */}
           <Label>
             <LabelText>Gameweek start:</LabelText>
             <input
@@ -80,7 +80,7 @@ const CreateLeague = () => {
               onChange={(e) => setWeeksToRun(e.target.value.replace(/\D/, ""))}
             />
           </Label>
-          {/* TODO: end */}
+          {/* TODO end */}
           {userFeedback && !loading && <Feedback>{userFeedback}</Feedback>}
           <ButtonContainer>
             <Button type="submit" disabled={loading} variant="primary">

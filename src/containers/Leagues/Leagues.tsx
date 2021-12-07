@@ -1,39 +1,26 @@
-import React, { useState } from "react";
-
+import React from "react";
 import { League } from "@prisma/client";
-import { useQuery } from "@apollo/client";
-import { LEAGUES_QUERY } from "apollo/queries";
-import Heading from "@/components/atoms/Heading";
 import Loading from "@/components/atoms/Loading";
 import LeaguesList from "@/components/molecules/LeagueList";
 import PublicLeaguesList from "@/components/molecules/PublicLeaguesList";
+import useLeagues from "src/hooks/useLeagues";
 
 interface Props {
   userId: number | null;
 }
 
-const LeaguesContainer = ({ userId }: Props) => {
-  const [userleagues, setUserLeagues] = useState<Partial<League>[]>([]);
-  const [publicLeagues, setPublicLeagues] = useState<Partial<League>[]>([]);
-
-  const { loading, error } = useQuery(LEAGUES_QUERY, {
-    variables: { input: { userId } },
-    onCompleted: (data) => {
-      setUserLeagues(data?.leagues?.userLeagues || []);
-      setPublicLeagues(data?.leagues?.publicLeagues || []);
-    },
-  });
+const Leagues = ({ userId }: Props) => {
+  const [userLeagues, publicLeagues, loading, error] = useLeagues(userId);
 
   if (loading) return <Loading />;
   if (error) return <div>An error has occurred. Please try again later.</div>;
 
   return (
     <>
-      <Heading level="h1">Leagues</Heading>
-      <LeaguesList leagues={userleagues} />
-      <PublicLeaguesList leagues={publicLeagues} />
+      <LeaguesList leagues={userLeagues as Partial<League>[]} />
+      <PublicLeaguesList leagues={publicLeagues as Partial<League>[]} />
     </>
   );
 };
 
-export default LeaguesContainer;
+export default Leagues;
