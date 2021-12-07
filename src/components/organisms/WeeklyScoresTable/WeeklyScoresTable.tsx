@@ -103,10 +103,12 @@ const HeaderItem = styled.div`
 const HeaderItemBlank = styled(HeaderItem)``;
 
 const RowHeading = styled.div`
+  font-size: 1.2rem;
   margin: 0 0 0 auto;
 `;
 
 const ClickableRowHeading = styled.a`
+  font-size: 1.2rem;
   margin: 0 0 0 auto;
   cursor: pointer;
   text-decoration: underline;
@@ -120,7 +122,7 @@ const ClickableRowHeading = styled.a`
 `;
 
 const TotalScoresRow = styled.div`
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: 700;
   border-bottom: 1px solid ${colours.grey500};
 `;
