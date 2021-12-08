@@ -10,10 +10,9 @@ const apolloServer = new ApolloServer({
   },
 });
 
-// Tell Next.js not to parse the incoming request and let GraphQL handle it for us
 export const config = {
   api: {
-    bodyParser: false,
+    bodyParser: false, // Tell Next.js not to parse the incoming request and let GraphQL handle it for us
   },
 };
 

@@ -1,6 +1,5 @@
 import React, { FormEvent, useEffect } from "react";
 import styled from "styled-components";
-
 import { calculateGameweekScore } from "utils/calculateGameweekScore";
 import isPastDeadline from "utils/isPastDeadline";
 import {
@@ -104,14 +103,7 @@ const PredictionsTable = ({
       predictions.some((prediction) => !isPastDeadline(prediction.kickoff)) ? (
         <ButtonsAndMessageContainer>
           <ButtonContainer>
-            <Button
-              id="save"
-              type="submit"
-              variant="primary"
-              handleClick={() => {
-                throw new Error("Sentry Frontend Error");
-              }}
-            >
+            <Button id="save" type="submit" variant="primary">
               Save predictions
             </Button>
           </ButtonContainer>

@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
+import Image from "next/image";
 import colours from "@/styles/colours";
 import pageSizes from "@/styles/pageSizes";
 import Heading from "@/components/atoms/Heading";
 import LeaguesList from "@/components/molecules/LeagueList";
-import Image from "next/image";
 import Predictions from "../Predictions";
 import useLeagues from "../../hooks/useLeagues";
 

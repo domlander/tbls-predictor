@@ -2,9 +2,8 @@ import React from "react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 import prisma from "prisma/client";
-
-import UpdateResults from "@/containers/UpdateResults";
 import { Fixture } from "@prisma/client";
+import UpdateResults from "@/containers/UpdateResults";
 
 interface Props {
   fixtures: Fixture[];
