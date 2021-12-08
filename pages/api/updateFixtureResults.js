@@ -1,5 +1,6 @@
 import { getSession } from "next-auth/client";
 import prisma from "prisma/client";
+import { withSentry } from "@sentry/nextjs";
 import calculatePredictionScore from "../../utils/calculatePredictionScore";
 
 /*
@@ -8,7 +9,7 @@ import calculatePredictionScore from "../../utils/calculatePredictionScore";
   When this is complete, I want the predictions table score field updated with the amount
   of points achieved by the prediction.
 */
-export default async (req, res) => {
+const handler = async (req, res) => {
   const session = await getSession({ req });
   if (session.user.email !== process.env.ADMIN_EMAIL) {
     res.status(401).send("You are not authorised to perform this action.");
@@ -113,3 +114,5 @@ export default async (req, res) => {
 
   res.send(200);
 };
+
+export default withSentry(handler);

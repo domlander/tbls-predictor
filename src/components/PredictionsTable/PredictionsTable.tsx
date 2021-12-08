@@ -1,7 +1,6 @@
 import React, { FormEvent, useEffect } from "react";
 import styled from "styled-components";
 
-import { FixtureWithPrediction } from "@/types";
 import { calculateGameweekScore } from "utils/calculateGameweekScore";
 import isPastDeadline from "utils/isPastDeadline";
 import {
@@ -9,6 +8,7 @@ import {
   whenIsTheFixture,
 } from "utils/kickoffDateHelpers";
 import useTransientState from "src/hooks/useTransientState";
+import { FixtureWithPrediction } from "@/types";
 import Button from "../Button";
 import GridRow from "../molecules/GridRow";
 import colours from "../../styles/colours";
@@ -104,7 +104,14 @@ const PredictionsTable = ({
       predictions.some((prediction) => !isPastDeadline(prediction.kickoff)) ? (
         <ButtonsAndMessageContainer>
           <ButtonContainer>
-            <Button id="save" type="submit" variant="primary">
+            <Button
+              id="save"
+              type="submit"
+              variant="primary"
+              handleClick={() => {
+                throw new Error("Sentry Frontend Error");
+              }}
+            >
               Save predictions
             </Button>
           </ButtonContainer>
