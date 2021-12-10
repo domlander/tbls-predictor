@@ -1,9 +1,9 @@
 import React from "react";
 import { League } from "@prisma/client";
+import useLeagues from "src/hooks/useLeagues";
 import Loading from "@/components/atoms/Loading";
 import LeaguesList from "@/components/molecules/LeagueList";
 import PublicLeaguesList from "@/components/molecules/PublicLeaguesList";
-import useLeagues from "src/hooks/useLeagues";
 
 interface Props {
   userId: number | null;

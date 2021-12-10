@@ -32,15 +32,15 @@ export default function Home({ userId, weekId }: Props) {
           showWeekNavigation={false}
         />
       </PredictionsContainer>
-      {leaguesLoading && (
+      {leaguesLoading ? (
         <SpinnerContainer>
           <Image src="/images/spinner.gif" height="50" width="50" alt="" />
         </SpinnerContainer>
-      )}
-      {leaguesError && (
+      ) : leaguesError ? (
         <LeagueError>Could not load leagues at this time.</LeagueError>
+      ) : (
+        <LeaguesList leagues={leagues} />
       )}
-      <LeaguesList leagues={leagues || []} />
     </Container>
   );
 }

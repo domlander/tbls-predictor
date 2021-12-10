@@ -4,10 +4,10 @@ import { getSession } from "next-auth/client";
 import Head from "next/head";
 import prisma from "prisma/client";
 
-import Home from "@/containers/Home";
 import { initializeApollo } from "apollo/client";
 import { FIXTURES_QUERY } from "apollo/queries";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
+import Home from "@/containers/Home";
 
 interface Props {
   userId: number;

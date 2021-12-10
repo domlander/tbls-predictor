@@ -23,6 +23,7 @@
     "no-use-before-define": "off",
     "radix": "off",
     "no-unused-vars": "off",
+    "no-nested-ternary": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       {
