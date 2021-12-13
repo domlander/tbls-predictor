@@ -39,7 +39,7 @@ export default function Home({ userId, weekId }: Props) {
       ) : leaguesError ? (
         <LeagueError>Could not load leagues at this time.</LeagueError>
       ) : (
-        <LeaguesList leagues={data?.leagues} />
+        <LeaguesList leagues={data?.userLeagues} />
       )}
     </Container>
   );
