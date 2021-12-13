@@ -4,10 +4,10 @@ import React from "react";
 import Head from "next/head";
 import { Provider } from "next-auth/client";
 import { AppProps } from "next/dist/next-server/lib/router/router";
+import { ApolloProvider } from "@apollo/client";
 import GlobalStyle from "@/styles/globalStyles";
 import Layout from "@/containers/Layout";
 
-import { ApolloProvider } from "@apollo/client";
 import { useApollo } from "../apollo/client";
 
 export default function App({ Component, pageProps }: AppProps) {

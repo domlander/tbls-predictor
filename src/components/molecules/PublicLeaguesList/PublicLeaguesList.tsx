@@ -10,6 +10,8 @@ export interface Props {
 }
 
 const PublicLeaguesList = ({ leagues }: Props) => {
+  if (!leagues?.length) return null;
+
   return (
     <Container>
       <Heading level="h2">Public leagues</Heading>
