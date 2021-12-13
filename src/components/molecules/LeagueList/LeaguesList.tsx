@@ -3,19 +3,13 @@ import styled from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+import { UserLeagueInfo } from "src/types/UserLeagueInfo";
 import pageSizes from "@/styles/pageSizes";
 import Heading from "../../atoms/Heading";
 import colours from "../../../styles/colours";
 
-type LeaguesListItem = {
-  id: number;
-  name: string;
-  position?: number;
-  weeksToGo?: number;
-};
-
 export interface Props {
-  leagues: LeaguesListItem[];
+  leagues: UserLeagueInfo[];
 }
 
 const LeaguesList = ({ leagues }: Props) => {

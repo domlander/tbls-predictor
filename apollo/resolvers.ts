@@ -4,9 +4,9 @@ import dayjs from "dayjs";
 
 import { isUserAlreadyBelongToLeague } from "utils/isUserAlreadyBelongToLeague";
 import isUserAppliedToLeague from "utils/isUserAppliedToLeague";
-import { League } from "@prisma/client";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import isPastDeadline from "utils/isPastDeadline";
+import { UserLeagueInfo } from "src/types/UserLeagueInfo";
 import {
   FixtureWithPrediction,
   FixtureWithUsersPredictions,
@@ -45,7 +45,7 @@ const resolvers = {
       });
 
       // Get user's leagues
-      let userLeagues: Partial<League>[] = [];
+      let userLeagues: UserLeagueInfo[] = [];
       if (userId) {
         const user = await prisma.user.findUnique({
           include: {

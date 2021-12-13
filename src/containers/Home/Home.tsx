@@ -37,7 +37,10 @@ export default function Home({ userId, weekId }: Props) {
           <Image src="/images/spinner.gif" height="50" width="50" alt="" />
         </SpinnerContainer>
       ) : leaguesError ? (
-        <LeagueError>Could not load leagues at this time.</LeagueError>
+        <LeagueError>
+          Sorry, we could not load leagues at this time. Refresh the page or try
+          again later.
+        </LeagueError>
       ) : (
         <LeaguesList leagues={data?.userLeagues} />
       )}
