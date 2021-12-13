@@ -31,7 +31,7 @@ const typeDefs = gql`
   }
 
   type LeaguesPayload {
-    userLeagues: [League!]
+    userLeagues: [UserLeagueInfo!]
     publicLeagues: [League!]
   }
 
@@ -180,6 +180,13 @@ const typeDefs = gql`
     predictedAwayGoals: String
     big_boy_bonus: Boolean
     predictionScore: Int
+  }
+
+  type UserLeagueInfo {
+    id: Int!
+    name: String!
+    position: Int
+    weeksToGo: Int
   }
 
   type UserTotalPoints {

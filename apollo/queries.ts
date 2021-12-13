@@ -25,6 +25,8 @@ export const LEAGUES_QUERY = gql`
       userLeagues {
         id
         name
+        position
+        weeksToGo
       }
       publicLeagues {
         id

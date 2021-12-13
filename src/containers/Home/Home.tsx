@@ -15,7 +15,7 @@ interface Props {
 }
 
 export default function Home({ userId, weekId }: Props) {
-  const [leagues, _, leaguesLoading, leaguesError] = useLeagues(userId);
+  const [data, leaguesLoading, leaguesError] = useLeagues(userId);
 
   return (
     <Container>
@@ -39,7 +39,7 @@ export default function Home({ userId, weekId }: Props) {
       ) : leaguesError ? (
         <LeagueError>Could not load leagues at this time.</LeagueError>
       ) : (
-        <LeaguesList leagues={leagues} />
+        <LeaguesList leagues={data?.leagues} />
       )}
     </Container>
   );

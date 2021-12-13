@@ -1,4 +1,3 @@
-import { League } from "@prisma/client";
 import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
@@ -8,8 +7,15 @@ import pageSizes from "@/styles/pageSizes";
 import Heading from "../../atoms/Heading";
 import colours from "../../../styles/colours";
 
+type LeaguesListItem = {
+  id: number;
+  name: string;
+  position?: number;
+  weeksToGo?: number;
+};
+
 export interface Props {
-  leagues: Partial<League>[];
+  leagues: LeaguesListItem[];
 }
 
 const LeaguesList = ({ leagues }: Props) => {
@@ -28,19 +34,25 @@ const LeaguesList = ({ leagues }: Props) => {
     <MyLeagues>
       <Heading level="h2">My Leagues</Heading>
       <LeagueCards>
-        {leagues.map(({ id, name }) => (
+        {leagues.map(({ id, name, position }) => (
           <LeagueCard
             tabIndex={0}
             key={id}
             onClick={() => router.push(`/league/${id}`)}
           >
             <LeagueCardHeading level="h2">{name}</LeagueCardHeading>
-            <LeagueCardInfo>
-              Current position: <span style={{ fontWeight: 700 }}>Unknown</span>
-            </LeagueCardInfo>
-            <LeagueCardInfo>
-              Finish: <span style={{ fontWeight: 700 }}>Unknown</span>
-            </LeagueCardInfo>
+            <p>
+              Current position:{" "}
+              <span style={{ fontSize: "1.2rem", fontWeight: 700 }}>
+                {position || "Unknown"}
+              </span>
+            </p>
+            {/* <p>
+              Weeks to go:{" "}
+              <span style={{ fontSize: "1.2rem", fontWeight: 700 }}>
+                {weeksToGo || "Unknown"}
+              </span>
+            </p> */}
           </LeagueCard>
         ))}
       </LeagueCards>
@@ -77,7 +89,7 @@ const MyLeagues = styled.div`
 const LeagueCards = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, 400px);
-  grid-gap: 2em;
+  grid-gap: 3em;
 
   @media (max-width: ${pageSizes.tablet}) {
     grid-template-columns: 1fr;
@@ -87,22 +99,30 @@ const LeagueCards = styled.div`
 const LeagueCard = styled.div`
   border: 1px solid ${colours.grey300};
   background-color: ${colours.blackblue400};
-  padding: 3.2em;
+  padding: 3em 3em 2em;
   cursor: pointer;
 
   :hover,
   :focus {
     background-color: #ffffff10;
   }
+
+  p {
+    font-size: 1rem;
+    margin-top: 1em;
+
+    &:first-child {
+      font-size: 1.2rem;
+    }
+
+    &:first-of-type {
+      margin-top: 2em;
+    }
+  }
 `;
 
 const LeagueCardHeading = styled(Heading)`
   margin: 0;
-`;
-
-const LeagueCardInfo = styled.div`
-  font-size: 2em;
-  margin-top: 1em;
 `;
 
 export default LeaguesList;

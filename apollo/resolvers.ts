@@ -2,16 +2,16 @@ import { UserInputError, ApolloError } from "apollo-server-micro";
 import prisma from "prisma/client";
 import dayjs from "dayjs";
 
-import {
-  FixtureWithPrediction,
-  FixtureWithUsersPredictions,
-  UserTotalPoints,
-} from "@/types";
 import { isUserAlreadyBelongToLeague } from "utils/isUserAlreadyBelongToLeague";
 import isUserAppliedToLeague from "utils/isUserAppliedToLeague";
 import { League } from "@prisma/client";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import isPastDeadline from "utils/isPastDeadline";
+import {
+  FixtureWithPrediction,
+  FixtureWithUsersPredictions,
+  UserTotalPoints,
+} from "@/types";
 import dateScalar from "./scalars";
 
 const resolvers = {
@@ -35,6 +35,7 @@ const resolvers = {
       return fixtures;
     },
     leagues: async (root, { input: { userId } }, ctx) => {
+      // Get all public leagues
       const publicLeagues = await prisma.league.findMany({
         select: {
           id: true,
@@ -43,6 +44,7 @@ const resolvers = {
         take: 10, // TODO: introduce pagination
       });
 
+      // Get user's leagues
       let userLeagues: Partial<League>[] = [];
       if (userId) {
         const user = await prisma.user.findUnique({
@@ -58,6 +60,8 @@ const resolvers = {
           userLeagues = user?.leagues.map((league) => ({
             id: league.id,
             name: league.name,
+            position: null, // TODO
+            weeksToGo: null, // TODO
           }));
         }
       }
@@ -379,7 +383,7 @@ const resolvers = {
         .map(({ id }) => id);
 
       try {
-        const predictionsUpsert = await predictions.map(
+        const predictionsUpsert = predictions.map(
           ({ userId, fixtureId, homeGoals, awayGoals, big_boy_bonus }) => {
             // Don't let the user submit predictions after the match has finished! We cannot trust the client
             if (!updateableFixtures.includes(fixtureId)) return;
