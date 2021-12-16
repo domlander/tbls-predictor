@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 import { initializeApollo } from "apollo/client";
-import { FIXTURES_QUERY } from "apollo/queries";
+import { ALL_FIXTURES_QUERY } from "apollo/queries";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import redirectInternal from "../../utils/redirects";
 
@@ -24,7 +24,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const {
     data: { fixtures },
   } = await apolloClient.query({
-    query: FIXTURES_QUERY,
+    query: ALL_FIXTURES_QUERY,
   });
 
   const currentGameweek = calculateCurrentGameweek(fixtures);

@@ -9,12 +9,24 @@ export const USER_QUERY = gql`
   }
 `;
 
-export const FIXTURES_QUERY = gql`
-  query Fixtures {
+export const ALL_FIXTURES_QUERY = gql`
+  query AllFixtures {
     fixtures {
       id
       gameweek
       kickoff
+    }
+  }
+`;
+
+export const FIXTURES_QUERY = gql`
+  query Fixtures($input: FixturesInput) {
+    fixtures(input: $input) {
+      id
+      gameweek
+      kickoff
+      homeTeam
+      awayTeam
     }
   }
 `;

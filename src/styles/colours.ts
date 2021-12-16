@@ -22,6 +22,7 @@ export default {
   blackblue400opacity50: "#151D2680",
   blackblue450: "#101a23",
   blackblue500: "#0D151C",
+  blackblue600: "#070d12",
 
   green300: "#15A71B",
   green500: "#036305",
