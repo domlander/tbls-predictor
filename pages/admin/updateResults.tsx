@@ -25,6 +25,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
+  // TODO Replace with roles https://github.com/nextauthjs/next-auth/discussions/805
   if (session.user.email !== process.env.ADMIN_EMAIL) {
     return {
       props: {},

@@ -2,12 +2,12 @@ import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
 import { useSession } from "next-auth/client";
 
-import PredictionsTable from "@/components/PredictionsTable";
-import { FixtureWithPrediction, UpdatePredictionsInputType } from "@/types";
-import WeekNavigator from "@/components/molecules/WeekNavigator";
 import { UPDATE_PREDICTIONS_MUTATION } from "apollo/mutations";
 import { useMutation, useQuery } from "@apollo/client";
 import { PREDICTIONS_QUERY } from "apollo/queries";
+import PredictionsTable from "@/components/PredictionsTable";
+import { FixtureWithPrediction, UpdatePredictionsInputType } from "@/types";
+import WeekNavigator from "@/components/molecules/WeekNavigator";
 import Loading from "@/components/atoms/Loading";
 
 interface Props {

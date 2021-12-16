@@ -12,8 +12,8 @@ const variants = {
   secondary: {
     colour: colours.blackblue400,
     disabledColour: colours.blackblue400,
-    backgroundColour: colours.grey200,
-    hoverBackgroundColour: colours.grey400,
+    backgroundColour: colours.grey300,
+    hoverBackgroundColour: colours.grey100,
   },
 };
 

@@ -3,7 +3,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "prisma/client";
 import * as Sentry from "@sentry/nextjs";
 
-import { calculateCurrentGameweek } from "../../../utils/calculateCurrentGameweek";
+import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
+import { getSession } from "next-auth/client";
 import { fetchFixtureFromFplApi, mapFplApiFixtureToFixture } from "./utils";
 import { FixtureForPopulatingDb, FplApiFixture } from "./types";
 
@@ -14,17 +15,29 @@ const API_ENDPOINT = "https://fantasy.premierleague.com/api/fixtures";
 
   To Do:
     - If the Premier League API stops returning 200, I want to know about it. Log to Sentry.
+
+  query params
+   - gameweek: The gameweek in which to find fixtures. Defaults to the current gameweek.
+   - persist: Whether to save the fixtures to the DB. Defaults to false.
 */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const session = await getSession({ req });
+  if (session.user.email !== process.env.ADMIN_EMAIL)
+    return res.status(401).send("Unauthorised");
+
+  const queryGameweek = parseInt(req.query.gameweek as string);
+  const shouldSaveToDatabase = (req.query.persist as string) === "true";
+
   // Get fixtures from Database
   const allDbFixtures = await prisma.fixture.findMany();
-  const currentGameweek = calculateCurrentGameweek(allDbFixtures);
+  const gameweekToFetch =
+    queryGameweek || calculateCurrentGameweek(allDbFixtures);
   const fixturesFromDb = allDbFixtures.filter(
-    (fixture) => fixture.gameweek === currentGameweek
+    (fixture) => fixture.gameweek === gameweekToFetch
   );
 
   // Get fixtures from API
-  const url = `${API_ENDPOINT}/?event=${currentGameweek}`;
+  const url = `${API_ENDPOINT}/?event=${gameweekToFetch}`;
   let apiData;
   try {
     apiData = await fetchFixtureFromFplApi(url);
@@ -35,14 +48,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
   const fixturesFromApi: FixtureForPopulatingDb[] = apiData.map(
     (fixture: FplApiFixture) =>
-      mapFplApiFixtureToFixture(fixture, currentGameweek)
+      mapFplApiFixtureToFixture(fixture, gameweekToFetch)
   );
+
+  // Don't save fixtures to database if requested
+  if (!shouldSaveToDatabase)
+    return res.status(200).json({ fixtures: fixturesFromApi });
 
   const fixturesToAdd: FixtureForPopulatingDb[] = [];
   const fixturesToUpdate: FixtureForPopulatingDb[] = [];
   const fixturesToDelete: FixtureForPopulatingDb[] = [];
 
-  // Add fixtures we don't have yet and amend the time where that has changed
+  // Add fixtures that we don't have yet and amend kickoff where the date/time has changed
   fixturesFromApi.forEach((apiFixture) => {
     const matchingDbFixture = fixturesFromDb.find(
       (dbFixture) =>
@@ -53,7 +70,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (!matchingDbFixture) {
       fixturesToAdd.push(apiFixture);
     } else if (
-      // Update fixtures whose kickoff time has changed. Goddamnit Sky Sports!
+      // Update fixtures whose kickoff time has changed.
       apiFixture.kickoff.getTime() !== matchingDbFixture.kickoff.getTime()
     ) {
       fixturesToUpdate.push({
@@ -139,7 +156,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       await Promise.all(promises);
     } else {
       Sentry.captureMessage(
-        `The populateFixtures serverless function has been run and found no differences between the FPL API and the DB for gameweek ${currentGameweek}`
+        `The populateFixtures serverless function has been run and found no differences between the FPL API and the DB for gameweek ${gameweekToFetch}`
       );
     }
   } catch (e) {
@@ -148,7 +165,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
   }
 
-  return res.status(200).end("Done");
+  return res.status(200).json({ fixtures: fixturesFromApi });
 };
 
 export default Sentry.withSentry(handler);

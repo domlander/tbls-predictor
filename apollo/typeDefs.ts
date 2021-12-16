@@ -5,7 +5,8 @@ const typeDefs = gql`
 
   type Query {
     user: User
-    fixtures: [Fixture!]
+    allFixtures: [Fixture!]
+    fixtures(input: FixturesInput): [Fixture!]
     leagues(input: LeaguesInput): LeaguesPayload
     leagueAdmin(input: LeagueAdminInput): LeagueAdminPayload
     predictions(input: PredictionsInput): PredictionsPayload
@@ -15,6 +16,7 @@ const typeDefs = gql`
 
   type Mutation {
     updateUsername(input: UpdateUsernameInput!): String
+    updateFixtures(input: [UpdateFixturesInput!]!): Boolean
     updatePredictions(input: [UpdatePredictionsInput!]!): Boolean
     createLeague(input: CreateLeagueInput!): League
     requestToJoinLeague(userId: Int!, leagueId: Int!): Applicant
@@ -24,6 +26,10 @@ const typeDefs = gql`
       applicantId: Int!
       isAccepted: Boolean!
     ): Boolean!
+  }
+
+  input FixturesInput {
+    gameweek: Int
   }
 
   input LeaguesInput {
@@ -86,6 +92,12 @@ const typeDefs = gql`
   input UpdateUsernameInput {
     userId: Int!
     username: String!
+  }
+
+  input UpdateFixturesInput {
+    id: Int!
+    homeTeam: String!
+    awayTeam: String!
   }
 
   input UpdatePredictionsInput {

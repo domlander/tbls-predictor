@@ -5,7 +5,7 @@ import Head from "next/head";
 import prisma from "prisma/client";
 
 import { initializeApollo } from "apollo/client";
-import { FIXTURES_QUERY } from "apollo/queries";
+import { ALL_FIXTURES_QUERY } from "apollo/queries";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import Home from "@/containers/Home";
 
@@ -71,8 +71,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const {
     data: { fixtures },
   } = await apolloClient.query({
-    query: FIXTURES_QUERY,
+    query: ALL_FIXTURES_QUERY,
   });
+
   const weekId = calculateCurrentGameweek(fixtures);
 
   return {

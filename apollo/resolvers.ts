@@ -24,14 +24,17 @@ const resolvers = {
       });
       return user;
     },
-    fixtures: async (root, args, ctx) => {
+    allFixtures: async (root, args, ctx) => {
+      const fixtures = await prisma.fixture.findMany();
+      return fixtures;
+    },
+    fixtures: async (root, { input: { gameweek } }, ctx) => {
       const fixtures = await prisma.fixture.findMany({
-        select: {
-          id: true,
-          gameweek: true,
-          kickoff: true,
+        where: {
+          gameweek,
         },
       });
+
       return fixtures;
     },
     leagues: async (root, { input: { userId } }, ctx) => {
@@ -365,6 +368,29 @@ const resolvers = {
       });
 
       return user.username;
+    },
+    updateFixtures: async (root, { input: fixtures }, ctx) => {
+      try {
+        const fixtureUpdates = fixtures.map(({ id, homeTeam, awayTeam }) => {
+          // eslint-disable-next-line consistent-return
+          return prisma.fixture.update({
+            where: {
+              id,
+            },
+            data: {
+              homeTeam,
+              awayTeam,
+            },
+          });
+        });
+
+        await Promise.all(fixtureUpdates);
+      } catch (e) {
+        console.log("Error:", e);
+        return false;
+      }
+
+      return true;
     },
     updatePredictions: async (root, { input: predictions }, ctx) => {
       const fixtures = await prisma.fixture.findMany({
