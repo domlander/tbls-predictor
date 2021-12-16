@@ -16,13 +16,13 @@ const API_ENDPOINT = "https://fantasy.premierleague.com/api/fixtures";
   To Do:
     - If the Premier League API stops returning 200, I want to know about it. Log to Sentry.
 
-  query params
+  Query params:
    - gameweek: The gameweek in which to find fixtures. Defaults to the current gameweek.
    - persist: Whether to save the fixtures to the DB. Defaults to false.
 */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req });
-  if (session.user.email !== process.env.ADMIN_EMAIL)
+  if (session?.user?.email !== process.env.ADMIN_EMAIL)
     return res.status(401).send("Unauthorised");
 
   const queryGameweek = parseInt(req.query.gameweek as string);

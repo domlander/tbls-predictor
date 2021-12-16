@@ -17,18 +17,9 @@ const ManageFixturesPage = ({ gameweek, fixtures }: Props) => (
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
-  if (!session) {
-    return {
-      props: {},
-      redirect: {
-        destination: "/signIn",
-        permanent: false,
-      },
-    };
-  }
 
   // TODO Replace with roles https://github.com/nextauthjs/next-auth/discussions/805
-  if (session.user?.email !== process.env.ADMIN_EMAIL) {
+  if (session?.user?.email !== process.env.ADMIN_EMAIL) {
     return {
       props: {},
       redirect: {
@@ -42,7 +33,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const allFixtures = await prisma.fixture.findMany();
   const gameweek = calculateCurrentGameweek(allFixtures);
 
-  //
   const fixtures = allFixtures
     .filter((x) => x.gameweek === gameweek)
     .map((y) => ({
