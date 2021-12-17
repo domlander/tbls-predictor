@@ -8,6 +8,8 @@ const DEFAULT_GAMEWEEK = 1;
 // Returns the current gameweek given a list of fixtures
 // Current gameweek: The fixture with the earliest kickoff that is today or in the future
 export function calculateCurrentGameweek(fixtures: PartialFixture[]) {
+  if (!fixtures?.length) return DEFAULT_GAMEWEEK;
+
   const today = dayjs();
 
   const allFixturesTodayOrLater = fixtures.filter(({ kickoff }) =>

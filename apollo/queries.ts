@@ -11,7 +11,7 @@ export const USER_QUERY = gql`
 
 export const ALL_FIXTURES_QUERY = gql`
   query AllFixtures {
-    fixtures {
+    allFixtures {
       id
       gameweek
       kickoff

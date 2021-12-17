@@ -18,11 +18,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-  if (!session?.user.id) return redirectInternal("/");
+  if (!session?.user?.id) return redirectInternal("/");
 
   const apolloClient = initializeApollo();
   const {
-    data: { fixtures },
+    data: { allFixtures: fixtures },
   } = await apolloClient.query({
     query: ALL_FIXTURES_QUERY,
   });
