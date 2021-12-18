@@ -14,7 +14,7 @@ const ErrorPage = ({ type }: Props) => (
   <Container>
     <Title>{type}</Title>
     <Heading level="h2">
-      {type === "404" ? "Ooooooooooooooops!" : "Something went wrong"}
+      {type === "404" ? "Ooooooooooooooops!" : "Something went wrong..."}
     </Heading>
     <ButtonContainer>
       <Link href="/">

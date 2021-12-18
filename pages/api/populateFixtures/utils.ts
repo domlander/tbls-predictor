@@ -52,7 +52,7 @@ export const fetchFixtureFromFplApi = async (url: string) => {
     return await axios
       .get(url, {
         headers: {
-          "user-agent": "not axios", // https://stackoverflow.com/a/68603202
+          "user-agent": "not axios", // FPL API blocks axios https://stackoverflow.com/a/68603202
         },
       })
       .then((resp) => resp.data);

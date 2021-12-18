@@ -17,7 +17,6 @@ const LeaguesList = ({ leagues }: Props) => {
   if (!leagues?.length)
     return (
       <NoLeagues>
-        <Heading level="h2">My Leagues</Heading>
         <Link href="/league/join">
           <a>Join a league</a>
         </Link>

@@ -23,7 +23,7 @@ export default function Home({ userId, weekId }: Props) {
         <PredictionsHeader>
           <Heading level="h2">This week</Heading>
           <Link href={`/predictions/${weekId}`}>
-            <a>See all predictions</a>
+            <a>All predictions</a>
           </Link>
         </PredictionsHeader>
         <Predictions
