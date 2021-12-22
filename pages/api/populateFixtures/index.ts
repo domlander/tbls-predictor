@@ -21,12 +21,22 @@ const API_ENDPOINT = "https://fantasy.premierleague.com/api/fixtures";
    - persist: Whether to save the fixtures to the DB. Defaults to false.
 */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = await getSession({ req });
-  if (session?.user?.email !== process.env.ADMIN_EMAIL)
-    return res.status(401).send("Unauthorised");
-
+  const secret = req.query.secret as string;
   const queryGameweek = parseInt(req.query.gameweek as string);
   const shouldSaveToDatabase = (req.query.persist as string) === "true";
+
+  const session = await getSession({ req });
+
+  if (secret === process.env.ACTIONS_SECRET)
+    Sentry.captureMessage(
+      "populateFixtures endpoint called and ACTIONS_SECRET matched"
+    );
+
+  if (
+    session?.user?.email !== process.env.ADMIN_EMAIL &&
+    secret !== process.env.ACTIONS_SECRET
+  )
+    return res.status(401).send("Unauthorised");
 
   // Get fixtures from Database
   const allDbFixtures = await prisma.fixture.findMany();

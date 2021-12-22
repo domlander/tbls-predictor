@@ -1,0 +1,9 @@
+name: update-fixtures
+on: push
+jobs:
+  updates-fixtures:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hit endpoint
+        run: |
+          curl GET https://www.desmondtwotwo.com/api/populateFixtures?secret=${{ secrets.ACTIONS_SECRET }}

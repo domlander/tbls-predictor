@@ -10,9 +10,10 @@ Predict footy scores to beat your mates and inflate your ego in a completely new
 
 - [Next.js](https://nextjs.org/)
 - [NextAuth.js](https://github.com/nextauthjs/next-auth)
-- [Apollo](https://www.apollographql.com/)
+- [Apollo GraphQL](https://www.apollographql.com/)
 - [PostgreSQL](https://www.postgresql.org/)
-- [Prisma 2](https://www.prisma.io/)
+- [Prisma](https://www.prisma.io/)
+- [Prisma data proxy](https://www.prisma.io/docs/concepts/components/prisma-data-platform)
 - [Styled components](https://styled-components.com/)
 
 This project was initialised using one of the Next.js example projects:
