@@ -1,7 +1,7 @@
 name: update-fixtures
 on:
   schedule:
-    - cron: "0/5 * * * *"
+    - cron: "5 7 * * *"
 jobs:
   updates-fixtures:
     runs-on: ubuntu-latest
