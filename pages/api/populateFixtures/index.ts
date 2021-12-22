@@ -26,17 +26,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const shouldSaveToDatabase = (req.query.persist as string) === "true";
 
   const session = await getSession({ req });
-
-  if (secret === process.env.ACTIONS_SECRET)
-    Sentry.captureMessage(
-      "populateFixtures endpoint called and ACTIONS_SECRET matched"
-    );
-
   if (
     session?.user?.email !== process.env.ADMIN_EMAIL &&
     secret !== process.env.ACTIONS_SECRET
-  )
+  ) {
     return res.status(401).send("Unauthorised");
+  }
 
   // Get fixtures from Database
   const allDbFixtures = await prisma.fixture.findMany();
