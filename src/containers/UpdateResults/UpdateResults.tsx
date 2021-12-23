@@ -2,13 +2,13 @@ import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
 import { Fixture } from "@prisma/client";
 
-import Heading from "@/components/atoms/Heading";
-import Button from "@/components/Button";
-import GridRow from "@/components/molecules/GridRow";
 import {
   formatFixtureKickoffTime,
   whenIsTheFixture,
 } from "utils/kickoffDateHelpers";
+import Heading from "@/components/atoms/Heading";
+import Button from "@/components/Button";
+import GridRow from "@/components/molecules/GridRow";
 import pageSizes from "../../styles/pageSizes";
 
 interface Props {
@@ -17,17 +17,34 @@ interface Props {
 
 // TODO: There is a lot of similar logic with Predictions page. May want to extract out common logic
 const UpdateResultsPage = ({ fixtures }: Props) => {
+  const [savedScores, setSavedScores] = useState(fixtures);
   const [scores, setScores] = useState(fixtures);
   const [isCurrentGameweekTab, setIsCurrentGameweekTab] = useState(true);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const updatedScores: Partial<Fixture>[] = scores.map((score) => ({
-      fixtureId: score.id,
-      homeGoals: score.homeGoals,
-      awayGoals: score.awayGoals,
-    }));
+    const updatedScores: Partial<Fixture>[] = scores
+      .filter(({ id, homeGoals, awayGoals }) => {
+        const savedScore = savedScores.find((x) => x.id === id);
+        if (
+          !savedScore ||
+          (savedScore.homeGoals === homeGoals &&
+            savedScore.awayGoals === awayGoals)
+        )
+          return false;
+
+        return true;
+      })
+      .map(({ id, homeGoals, awayGoals }) => ({
+        fixtureId: id,
+        homeGoals,
+        awayGoals,
+      }));
+
+    console.log({ updatedScores });
+
+    if (!updatedScores?.length) return;
 
     fetch("/api/updateFixtureResults", {
       method: "post",
@@ -36,7 +53,7 @@ const UpdateResultsPage = ({ fixtures }: Props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ scores: updatedScores }),
-    });
+    }).then(() => setSavedScores(scores));
   };
 
   const updateGoals = (
