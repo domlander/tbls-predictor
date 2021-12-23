@@ -81,12 +81,12 @@ const ManageFixtures = ({
   // TODO: Save existing fixtures in state, rather than refetching data.
   const saveApiFixturesToDatabase = async () => {
     setSavingApiDataToDB(true);
-    const response = await fetch(
+    const data = await fetch(
       `/api/populateFixtures?gameweek=${gameweek}&persist=true`
     ).then((res) => res.json());
     setSavingApiDataToDB(false);
 
-    setFixtures(response.fixtures);
+    setFixtures(data.fixtures);
   };
 
   // Saves fixtures to database via mutation

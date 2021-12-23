@@ -3,7 +3,8 @@ import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import { Fixture } from "@prisma/client";
 import axios from "axios";
-import { FplApiFixture } from "./types";
+import { FixtureForPopulatingDb, FplApiFixture } from "./types";
+import { FPL_API_FIXTURES_ENDPOINT } from "./index";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -47,9 +48,15 @@ export const teamsDictionary: TeamsDictionary = {
   20: "Wolves",
 };
 
-export const fetchFixtureFromFplApi = async (url: string) => {
+/*
+ *  Fetches fixtures from the FPL API and maps to a usable type
+ */
+export const getFixturesFromApi = async (gameweek: number) => {
+  const url = `${FPL_API_FIXTURES_ENDPOINT}/?event=${gameweek}`;
+
+  let apiData;
   try {
-    return await axios
+    apiData = await axios
       .get(url, {
         headers: {
           "user-agent": "not axios", // FPL API blocks axios https://stackoverflow.com/a/68603202
@@ -58,7 +65,13 @@ export const fetchFixtureFromFplApi = async (url: string) => {
       .then((resp) => resp.data);
   } catch (e) {
     throw new Error(
-      `Could not fetch FPL API fixture data. URL: ${url}. Error: ${e}`
+      `There was an error fetching fixture data from the FPL API:\n${e}`
     );
   }
+
+  const fixturesFromApi: FixtureForPopulatingDb[] = apiData.map(
+    (fixture: FplApiFixture) => mapFplApiFixtureToFixture(fixture, gameweek)
+  );
+
+  return fixturesFromApi;
 };
