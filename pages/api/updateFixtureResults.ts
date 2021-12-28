@@ -1,4 +1,5 @@
 /* eslint-disable camelcase */
+import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/client";
 import { withSentry } from "@sentry/nextjs";
 import prisma from "prisma/client";
@@ -11,7 +12,7 @@ import calculatePredictionScore from "../../utils/calculatePredictionScore";
   Params:
   - scores: An array of objects containing the following fields: fixtureId, homeScore, awayScore
 */
-const handler = async (req, res) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req });
   if (session?.user?.email !== process.env.ADMIN_EMAIL) {
     res.status(401).send("You are not authorised to perform this action.");
