@@ -207,7 +207,7 @@ const resolvers = {
             )
             .reduce((acc, cur) => {
               if (!cur.score) return acc; // if score is null or 0
-              acc[cur.fixture.gameweek - 1] += cur.score;
+              acc[cur.fixture.gameweek - league.gameweekStart] += cur.score;
               return acc;
             }, new Array(numGameweeks).fill(0))
       );
@@ -336,7 +336,8 @@ const resolvers = {
         userId: id,
         username: username || "",
         week: weekId,
-        totalPoints: usersWeeklyPoints[i].reduce((acc, cur) => acc + cur, 0),
+        totalPoints:
+          usersWeeklyPoints[i].reduce((acc, cur) => acc + cur, 0) || 0,
       }));
 
       return {

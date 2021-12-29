@@ -5,9 +5,9 @@ import { Fixture, League } from "@prisma/client";
 import prisma from "prisma/client";
 import { initializeApollo } from "apollo/client";
 import { LEAGUE_WEEK_QUERY } from "apollo/queries";
-import LeagueWeek from "@/containers/LeagueWeek";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import redirectInternal from "utils/redirects";
+import LeagueWeek from "@/containers/LeagueWeek";
 import { FixtureWithUsersPredictions, UserTotalPointsWeek } from "@/types";
 
 interface Props {

@@ -4,13 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { useQuery } from "@apollo/client";
 
+import { LEAGUE_WEEK_QUERY } from "apollo/queries";
 import WeekNavigator from "@/components/molecules/WeekNavigator";
 import LeagueWeekUserTotals from "@/components/molecules/LeagueWeekUserTotals";
 import LeagueWeekFixtures from "@/components/organisms/LeagueWeekFixtures";
 import { FixtureWithUsersPredictions, UserTotalPointsWeek } from "@/types";
 import colours from "@/styles/colours";
 import pageSizes from "@/styles/pageSizes";
-import { LEAGUE_WEEK_QUERY } from "apollo/queries";
 
 interface Props {
   leagueId: number;
