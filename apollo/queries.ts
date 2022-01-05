@@ -71,22 +71,11 @@ export const LEAGUE_ADMIN_QUERY = gql`
 export const PREDICTIONS_QUERY = gql`
   query Predictions($input: PredictionsInput!) {
     predictions(input: $input) {
-      thisGameweek
-      firstGameweek
-      lastGameweek
-      fixturesWithPredictions {
-        fixtureId
-        gameweek
-        kickoff
-        homeTeam
-        awayTeam
-        homeGoals
-        awayGoals
-        big_boy_bonus
-        predictedHomeGoals
-        predictedAwayGoals
-        predictionScore
-      }
+      fixtureId
+      homeGoals
+      awayGoals
+      big_boy_bonus
+      score
     }
   }
 `;

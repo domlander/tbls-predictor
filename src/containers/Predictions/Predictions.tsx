@@ -5,63 +5,57 @@ import { useSession } from "next-auth/client";
 import { UPDATE_PREDICTIONS_MUTATION } from "apollo/mutations";
 import { useMutation, useQuery } from "@apollo/client";
 import { PREDICTIONS_QUERY } from "apollo/queries";
+import { Prediction } from "@prisma/client";
+import combineFixturesAndPredictions from "utils/combineFixturesAndPredictions";
 import PredictionsTable from "@/components/PredictionsTable";
 import { FixtureWithPrediction, UpdatePredictionsInputType } from "@/types";
 import WeekNavigator from "@/components/molecules/WeekNavigator";
 import Loading from "@/components/atoms/Loading";
+import { Fixture } from ".prisma/client";
 
 interface Props {
-  userId: number;
+  fixtures: Fixture[];
   weekId: number;
-  showWeekNavigation: boolean;
+  firstGameweek?: number;
+  lastGameweek?: number;
 }
 
-const PredictionsContainer = ({
-  userId,
-  weekId,
-  showWeekNavigation,
+const Predictions = ({
+  fixtures,
+  weekId: gameweek,
+  firstGameweek,
+  lastGameweek,
 }: Props) => {
   const [session] = useSession();
-
-  const [predictions, setPredictions] = useState<FixtureWithPrediction[]>([]);
-  const [gameweek, setGameweek] = useState<number>();
-  const [firstGameweek, setFirstGameweek] = useState<number>();
-  const [lastGameweek, setLastGameweek] = useState<number>();
+  const userId = session?.user?.id;
+  const [predictions, setPredictions] = useState<Prediction[]>([]);
 
   const [
     processRequest,
     { data: mutationData, loading: mutationLoading, error: mutationError },
   ] = useMutation(UPDATE_PREDICTIONS_MUTATION);
 
-  const { loading: queryLoading, error: queryError } = useQuery(
-    PREDICTIONS_QUERY,
-    {
-      variables: { input: { userId, weekId } },
-      onCompleted: ({ predictions: predictionsData }) => {
-        setPredictions(predictionsData.fixturesWithPredictions);
-        setGameweek(predictionsData.thisGameweek);
-        setFirstGameweek(predictionsData.firstGameweek);
-        setLastGameweek(predictionsData.lastGameweek);
-      },
-    }
-  );
-
-  const thisWeeksPredictions = predictions.filter(
-    (prediction) => prediction.gameweek === gameweek
-  );
+  const { loading: isLoading, error: isError } = useQuery(PREDICTIONS_QUERY, {
+    variables: { input: { userId, weekId: gameweek } },
+    onCompleted: ({ predictions: predictionsData }) => {
+      setPredictions(predictionsData);
+    },
+    skip: !userId,
+  });
 
   const handleSubmitPredictions = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!userId) return;
 
-    const updatedPredictions: UpdatePredictionsInputType[] = predictions
-      .filter((p) => p.gameweek === gameweek)
-      .map((prediction) => ({
-        userId: session?.user?.id as number,
+    const updatedPredictions: UpdatePredictionsInputType[] = predictions.map(
+      (prediction) => ({
+        userId,
         fixtureId: prediction.fixtureId,
-        homeGoals: parseInt(prediction.predictedHomeGoals || "") ?? null,
-        awayGoals: parseInt(prediction.predictedAwayGoals || "") ?? null,
+        homeGoals: parseInt(prediction.homeGoals?.toString() || "") ?? null,
+        awayGoals: parseInt(prediction.awayGoals?.toString() || "") ?? null,
         big_boy_bonus: prediction.big_boy_bonus,
-      }));
+      })
+    );
 
     await processRequest({
       variables: { input: updatedPredictions },
@@ -79,21 +73,33 @@ const PredictionsContainer = ({
     if (!matchSingleDigitOrEmptyStringRegex.test(goals)) return;
 
     // Make a copy of current state
-    const updatedPredictions: FixtureWithPrediction[] = JSON.parse(
+    const updatedPredictions: Prediction[] = JSON.parse(
       JSON.stringify(predictions)
     );
 
+    const predictedGoals = goals === "" ? null : parseInt(goals);
+
     // Find the predicted we've changed
     const editedPrediction = updatedPredictions.find(
-      (prediction: FixtureWithPrediction) => prediction.fixtureId === fixtureId
+      (prediction) => prediction.fixtureId === fixtureId
     );
-    if (!editedPrediction) return;
 
-    const predictedGoals: string | null = goals === "" ? null : goals;
-    if (isHomeTeam) {
-      editedPrediction.predictedHomeGoals = predictedGoals;
+    if (!editedPrediction) {
+      updatedPredictions.push({
+        fixtureId,
+        userId: session!.user!.id,
+        homeGoals: isHomeTeam ? predictedGoals : null,
+        awayGoals: !isHomeTeam ? predictedGoals : null,
+        big_boy_bonus: false,
+        score: null,
+      });
     } else {
-      editedPrediction.predictedAwayGoals = predictedGoals;
+      // prediction exists
+      if (isHomeTeam) {
+        editedPrediction.homeGoals = predictedGoals;
+      } else {
+        editedPrediction.awayGoals = predictedGoals;
+      }
     }
 
     setPredictions(updatedPredictions);
@@ -101,21 +107,20 @@ const PredictionsContainer = ({
 
   const updateBigBoyBonus = (fixtureId: number) => {
     // Make a copy of current state
-    const updatedPredictions: FixtureWithPrediction[] = JSON.parse(
+    const updatedPredictions: Prediction[] = JSON.parse(
       JSON.stringify(predictions)
     );
 
     // Find the predicted we've changed
     const editedPrediction = updatedPredictions.find(
-      (prediction: FixtureWithPrediction) => prediction.fixtureId === fixtureId
+      (prediction) => prediction.fixtureId === fixtureId
     );
     if (!editedPrediction) return;
 
     // Find the old fixture with big boy bonus and reset
-    const oldBbb = updatedPredictions
-      .filter((x) => x.gameweek === editedPrediction.gameweek)
-      .find((x) => x.big_boy_bonus);
-
+    const oldBbb = updatedPredictions.find(
+      ({ big_boy_bonus }) => big_boy_bonus
+    );
     if (oldBbb) oldBbb.big_boy_bonus = false;
 
     // Set the new choice to the big boy bonus
@@ -124,13 +129,16 @@ const PredictionsContainer = ({
     setPredictions(updatedPredictions);
   };
 
-  if (queryLoading) return <Loading />;
-  if (queryError)
-    return <div>An error has occurred. Please try again later.</div>;
+  if (isError) return <div>An error has occurred. Please try again later.</div>;
+  if (!fixtures.length)
+    return <div>No fixtures found for gameweek {gameweek}</div>;
+
+  const fixturesWithPredictions: FixtureWithPrediction[] =
+    combineFixturesAndPredictions(fixtures, predictions);
 
   return (
     <Container>
-      {showWeekNavigation && gameweek && firstGameweek && lastGameweek && (
+      {gameweek && firstGameweek && lastGameweek && (
         <WeekNavigator
           week={gameweek}
           prevGameweekUrl={
@@ -146,10 +154,11 @@ const PredictionsContainer = ({
         />
       )}
       <PredictionsTable
-        predictions={thisWeeksPredictions}
+        predictions={fixturesWithPredictions}
         updateGoals={updateGoals}
         handleSubmit={handleSubmitPredictions}
         handleBbbUpdate={updateBigBoyBonus}
+        isLoading={isLoading}
         isSaved={!!mutationData?.updatePredictions}
         isSaving={mutationLoading}
         isSaveError={!!mutationError}
@@ -164,4 +173,4 @@ const Container = styled.div`
   align-items: stretch;
 `;
 
-export default PredictionsContainer;
+export default Predictions;

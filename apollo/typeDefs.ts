@@ -9,7 +9,7 @@ const typeDefs = gql`
     fixtures(input: FixturesInput): [Fixture!]
     leagues(input: LeaguesInput): LeaguesPayload
     leagueAdmin(input: LeagueAdminInput): LeagueAdminPayload
-    predictions(input: PredictionsInput): PredictionsPayload
+    predictions(input: PredictionsInput): [PredictionsFlat]
     leagueDetails(input: LeagueDetailsInput): LeagueDetailsPayload
     leagueWeek(input: LeagueWeekInput): LeagueWeekPayload
   }
@@ -59,10 +59,11 @@ const typeDefs = gql`
   }
 
   type PredictionsPayload {
-    fixturesWithPredictions: [FixtureWithPrediction]
-    thisGameweek: Int!
-    firstGameweek: Int!
-    lastGameweek: Int!
+    fixtureId: Int!
+    homeGoals: Int
+    awayGoals: Int
+    score: Int
+    big_boy_bonus: Boolean
   }
 
   input LeagueDetailsInput {
@@ -180,20 +181,6 @@ const typeDefs = gql`
     completed
   }
 
-  type FixtureWithPrediction {
-    fixtureId: Int!
-    gameweek: Int!
-    kickoff: DateTime!
-    homeTeam: String!
-    awayTeam: String!
-    homeGoals: Int
-    awayGoals: Int
-    predictedHomeGoals: String
-    predictedAwayGoals: String
-    big_boy_bonus: Boolean
-    predictionScore: Int
-  }
-
   type UserLeagueInfo {
     id: Int!
     name: String!
@@ -217,6 +204,28 @@ const typeDefs = gql`
   type WeeklyPoints {
     week: Int!
     points: [Int!]!
+  }
+
+  type PredictionsFlat {
+    fixtureId: Int!
+    homeGoals: Int
+    awayGoals: Int
+    score: Int
+    big_boy_bonus: Boolean
+  }
+
+  type FixtureWithPrediction {
+    fixtureId: Int!
+    gameweek: Int!
+    kickoff: DateTime!
+    homeTeam: String!
+    awayTeam: String!
+    homeGoals: Int
+    awayGoals: Int
+    predictedHomeGoals: String
+    predictedAwayGoals: String
+    big_boy_bonus: Boolean
+    predictionScore: Int
   }
 
   type FixtureWithUsersPredictions {

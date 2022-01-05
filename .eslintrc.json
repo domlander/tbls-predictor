@@ -24,6 +24,7 @@
     "radix": "off",
     "no-nested-ternary": "off",
     "no-plusplus": "off",
+    "no-lonely-if": "off",
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
