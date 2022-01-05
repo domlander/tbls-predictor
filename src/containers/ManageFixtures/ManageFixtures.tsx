@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 
 import { FIXTURES_QUERY } from "apollo/queries";
 import { UPDATE_FIXTURES_MUTATION } from "apollo/mutations";
+import sortFixtures from "utils/sortFixtures";
 import Heading from "@/components/atoms/Heading";
 import Button from "@/components/Button";
 import colours from "@/styles/colours";
@@ -16,15 +17,6 @@ interface Props {
   fixtures: Pick<Fixture, "id" | "kickoff" | "homeTeam" | "awayTeam">[];
   gameweek: number;
 }
-
-const sortFixtures = (fixtures: Props["fixtures"]) =>
-  fixtures
-    .slice()
-    .sort(
-      (a, b) =>
-        new Date(a.kickoff).getTime() - new Date(b.kickoff).getTime() ||
-        a.homeTeam.localeCompare(b.homeTeam)
-    );
 
 const ManageFixtures = ({
   gameweek: initialGameweek,
@@ -187,7 +179,7 @@ const ManageFixtures = ({
                     name="homeTeam"
                     value={homeTeam}
                     onChange={(e) => {
-                      updateFixtures(id, true, e.target.value);
+                      updateFixtures(id!, true, e.target.value);
                     }}
                   />
                   <input
@@ -196,7 +188,7 @@ const ManageFixtures = ({
                     name="awayTeam"
                     value={awayTeam}
                     onChange={(e) => {
-                      updateFixtures(id, false, e.target.value);
+                      updateFixtures(id!, false, e.target.value);
                     }}
                   />
                 </React.Fragment>

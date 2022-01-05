@@ -6,6 +6,7 @@ import isUserAppliedToLeague from "utils/isUserAppliedToLeague";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import isPastDeadline from "utils/isPastDeadline";
 import { UserLeagueInfo } from "src/types/UserLeagueInfo";
+import sortFixtures from "utils/sortFixtures";
 import { FixtureWithUsersPredictions, UserTotalPoints } from "@/types";
 import dateScalar from "./scalars";
 
@@ -21,7 +22,7 @@ const resolvers = {
       });
       return user;
     },
-    allFixtures: async (root, args, ctx) => {
+    allFixtures: async () => {
       const fixtures = await prisma.fixture.findMany();
       return fixtures;
     },
@@ -32,13 +33,11 @@ const resolvers = {
         },
       });
 
-      fixtures.sort(
-        (a, b) => new Date(a.kickoff).getTime() - new Date(b.kickoff).getTime()
-      );
+      const sortedFixtures = sortFixtures(fixtures);
 
-      return fixtures;
+      return sortedFixtures;
     },
-    leagues: async (root, { input: { userId } }, ctx) => {
+    leagues: async (root, { input: { userId } }) => {
       // Get all public leagues
       const publicLeagues = await prisma.league.findMany({
         select: {
@@ -75,7 +74,7 @@ const resolvers = {
         publicLeagues,
       };
     },
-    leagueAdmin: async (root, { input: { userId, leagueId } }, ctx) => {
+    leagueAdmin: async (root, { input: { userId, leagueId } }) => {
       const league = await prisma.league.findUnique({
         where: {
           id: leagueId,
@@ -118,7 +117,7 @@ const resolvers = {
         participants,
       };
     },
-    predictions: async (root, { input: { userId, weekId } }, ctx) => {
+    predictions: async (root, { input: { userId, weekId } }) => {
       // Find all my predictions
       const predictions = await prisma.prediction.findMany({
         where: {
@@ -133,7 +132,9 @@ const resolvers = {
         },
       });
 
-      return predictions;
+      return {
+        predictions,
+      };
     },
     leagueDetails: async (root, { input: { leagueId } }) => {
       // Get the league details
@@ -201,7 +202,7 @@ const resolvers = {
         pointsByWeek,
       };
     },
-    leagueWeek: async (root, { input: { leagueId, weekId } }, ctx) => {
+    leagueWeek: async (root, { input: { leagueId, weekId } }) => {
       // Get the fixtures
       const fixtures = await prisma.fixture.findMany({
         select: {
@@ -279,15 +280,9 @@ const resolvers = {
         });
       });
 
-      // Sort by kick off time ascending and then home team name ascending.
-      // If the kick off time is the same, the first comparison evaluates to 0, so it then evaluates the second comparison.
-      const thisWeeksFixtures = fixturesWithPredictions
-        .filter((fixture) => fixture.gameweek === weekId)
-        .sort(
-          (a, b) =>
-            a.kickoff.getTime() - b.kickoff.getTime() ||
-            a.homeTeam.localeCompare(b.homeTeam)
-        );
+      const thisWeeksFixtures = sortFixtures(
+        fixturesWithPredictions.filter((fixture) => fixture.gameweek === weekId)
+      );
 
       const numGameweeks = league.gameweekEnd - league.gameweekStart + 1;
       const usersWeeklyPoints = league.users.map(({ predictions }) =>
@@ -320,7 +315,7 @@ const resolvers = {
     },
   },
   Mutation: {
-    updateUsername: async (root, { input: { userId, username } }, ctx) => {
+    updateUsername: async (root, { input: { userId, username } }) => {
       if (username.length < 3 || username.length > 20)
         throw new UserInputError(
           "Select a username between 3 and 20 characters",
@@ -340,7 +335,7 @@ const resolvers = {
 
       return user.username;
     },
-    updateFixtures: async (root, { input: fixtures }, ctx) => {
+    updateFixtures: async (root, { input: fixtures }) => {
       try {
         const fixtureUpdates = fixtures.map(({ id, homeTeam, awayTeam }) => {
           // eslint-disable-next-line consistent-return
@@ -363,7 +358,7 @@ const resolvers = {
 
       return true;
     },
-    updatePredictions: async (root, { input: predictions }, ctx) => {
+    updatePredictions: async (root, { input: predictions }) => {
       const fixtures = await prisma.fixture.findMany({
         select: {
           id: true,
@@ -414,8 +409,7 @@ const resolvers = {
     },
     createLeague: async (
       root,
-      { input: { userId, name, gameweekStart, gameweekEnd } },
-      ctx
+      { input: { userId, name, gameweekStart, gameweekEnd } }
     ) => {
       if (gameweekStart < 1 || gameweekStart > 38)
         throw new UserInputError("Gameweek start week is not valid", {
@@ -472,8 +466,7 @@ const resolvers = {
     },
     processJoinLeagueRequest: async (
       root,
-      { userId, leagueId, applicantId, isAccepted },
-      ctx
+      { userId, leagueId, applicantId, isAccepted }
     ) => {
       const league = await prisma.league.findUnique({
         where: {
@@ -542,7 +535,7 @@ const resolvers = {
 
       return true;
     },
-    requestToJoinLeague: async (root, { leagueId, userId }, ctx) => {
+    requestToJoinLeague: async (root, { leagueId, userId }) => {
       if (leagueId < 1)
         throw new UserInputError("League ID not valid", {
           argumentName: "id",
@@ -600,7 +593,7 @@ const resolvers = {
   User: {
     // TODO: https://www.apollographql.com/docs/apollo-server/data/resolvers/
     // If the graphql query is `user { predictions }`, it will resolve here.
-    predictions: async ({ id: userId }, { weekId }, ctx) => {
+    predictions: async ({ id: userId }, { weekId }) => {
       const predictions = await prisma.prediction.findMany({
         where: {
           AND: [

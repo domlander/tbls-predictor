@@ -38,7 +38,7 @@ const Predictions = ({
   const { loading: isLoading, error: isError } = useQuery(PREDICTIONS_QUERY, {
     variables: { input: { userId, weekId: gameweek } },
     onCompleted: ({ predictions: predictionsData }) => {
-      setPredictions(predictionsData);
+      setPredictions(predictionsData.predictions);
     },
     skip: !userId,
   });

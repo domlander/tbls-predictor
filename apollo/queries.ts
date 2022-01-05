@@ -71,11 +71,13 @@ export const LEAGUE_ADMIN_QUERY = gql`
 export const PREDICTIONS_QUERY = gql`
   query Predictions($input: PredictionsInput!) {
     predictions(input: $input) {
-      fixtureId
-      homeGoals
-      awayGoals
-      big_boy_bonus
-      score
+      predictions {
+        fixtureId
+        homeGoals
+        awayGoals
+        big_boy_bonus
+        score
+      }
     }
   }
 `;

@@ -3,6 +3,7 @@ import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/client";
 import prisma from "prisma/client";
 import { Fixture } from "@prisma/client";
+import sortFixtures from "utils/sortFixtures";
 import UpdateResults from "@/containers/UpdateResults";
 
 interface Props {
@@ -45,13 +46,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     },
   });
 
-  fixtures.sort(
-    (a, b) => new Date(a.kickoff).getTime() - new Date(b.kickoff).getTime()
-  );
+  const sortedFixtures = sortFixtures(fixtures);
 
   return {
     props: {
-      fixtures: JSON.parse(JSON.stringify(fixtures)),
+      fixtures: JSON.parse(JSON.stringify(sortedFixtures)),
     },
   };
 };

@@ -79,7 +79,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const thisGameweek = calculateCurrentGameweek(allFixtures);
 
-  // Get extra fixture data for this gamweek (i.e. team names, kickoff)
+  // Get extra fixture data for this gameweek (i.e. team names, kickoff)
   const {
     data: { fixtures },
   } = await apolloClient.query({

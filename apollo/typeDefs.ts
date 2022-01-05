@@ -9,7 +9,7 @@ const typeDefs = gql`
     fixtures(input: FixturesInput): [Fixture!]
     leagues(input: LeaguesInput): LeaguesPayload
     leagueAdmin(input: LeagueAdminInput): LeagueAdminPayload
-    predictions(input: PredictionsInput): [PredictionsFlat]
+    predictions(input: PredictionsInput): PredictionsPayload
     leagueDetails(input: LeagueDetailsInput): LeagueDetailsPayload
     leagueWeek(input: LeagueWeekInput): LeagueWeekPayload
   }
@@ -59,11 +59,7 @@ const typeDefs = gql`
   }
 
   type PredictionsPayload {
-    fixtureId: Int!
-    homeGoals: Int
-    awayGoals: Int
-    score: Int
-    big_boy_bonus: Boolean
+    predictions: [PredictionsFlat!]
   }
 
   input LeagueDetailsInput {
