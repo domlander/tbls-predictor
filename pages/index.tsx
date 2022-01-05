@@ -5,16 +5,18 @@ import Head from "next/head";
 import prisma from "prisma/client";
 
 import { initializeApollo } from "apollo/client";
-import { ALL_FIXTURES_QUERY } from "apollo/queries";
+import { ALL_FIXTURES_QUERY, FIXTURES_QUERY } from "apollo/queries";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
+import { Fixture } from "@prisma/client";
 import Home from "@/containers/Home";
 
 interface Props {
   userId: number;
   weekId: number;
+  fixtures: Fixture[];
 }
 
-const HomePage = ({ userId, weekId }: Props) => (
+const HomePage = ({ userId, weekId, fixtures }: Props) => (
   <>
     <Head>
       <meta
@@ -26,7 +28,7 @@ const HomePage = ({ userId, weekId }: Props) => (
         content="Predict Premier League results, create leagues with friends and keep track of your score."
       />
     </Head>
-    <Home userId={userId} weekId={weekId} />
+    <Home userId={userId} weekId={weekId} fixtures={fixtures} />
   </>
 );
 
@@ -68,18 +70,28 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   }
 
   const apolloClient = initializeApollo();
+
   const {
-    data: { allFixtures: fixtures },
+    data: { allFixtures },
   } = await apolloClient.query({
     query: ALL_FIXTURES_QUERY,
   });
 
-  const weekId = calculateCurrentGameweek(fixtures);
+  const thisGameweek = calculateCurrentGameweek(allFixtures);
+
+  // Get extra fixture data for this gamweek (i.e. team names, kickoff)
+  const {
+    data: { fixtures },
+  } = await apolloClient.query({
+    query: FIXTURES_QUERY,
+    variables: { input: { gameweek: thisGameweek } },
+  });
 
   return {
     props: {
       userId: session.user.id,
-      weekId,
+      weekId: thisGameweek,
+      fixtures,
     },
   };
 };

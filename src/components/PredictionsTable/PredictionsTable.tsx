@@ -13,7 +13,7 @@ import GridRow from "../molecules/GridRow";
 import colours from "../../styles/colours";
 import pageSizes from "../../styles/pageSizes";
 
-type SAVING_STATE = "IDLE" | "SAVING" | "SUCCESS" | "FAILED";
+type STATE = "LOADING" | "IDLE" | "SAVING" | "SAVE_SUCCESS" | "SAVE_FAILED";
 
 interface Props {
   predictions: FixtureWithPrediction[];
@@ -25,6 +25,7 @@ interface Props {
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   handleBbbUpdate: (fixtureId: number) => void;
   isAlwaysEditable?: boolean;
+  isLoading?: boolean;
   isSaving?: boolean;
   isSaved?: boolean;
   isSaveError?: boolean;
@@ -36,6 +37,7 @@ const PredictionsTable = ({
   handleSubmit,
   handleBbbUpdate,
   isAlwaysEditable = false,
+  isLoading = false,
   isSaving = false,
   isSaved = false,
   isSaveError = false,
@@ -51,10 +53,11 @@ const PredictionsTable = ({
 
   const firstFixtureKickoffTiming = whenIsTheFixture(predictions[0].kickoff);
 
-  let savingState: SAVING_STATE;
-  if (isSaving) savingState = "SAVING";
-  else if (showFeedback) savingState = isSaveError ? "FAILED" : "SUCCESS";
-  else savingState = "IDLE";
+  let state: STATE;
+  if (isLoading) state = "LOADING";
+  else if (isSaving) state = "SAVING";
+  else if (showFeedback) state = isSaveError ? "SAVE_FAILED" : "SAVE_SUCCESS";
+  else state = "IDLE";
 
   const isBbbLockedForGameweek = predictions.some(
     (predo) => predo.big_boy_bonus && isPastDeadline(predo.kickoff)
@@ -92,7 +95,9 @@ const PredictionsTable = ({
               isBigBoyBonus={bigBoyBonus}
               isBbbLocked={isBbbLockedForGameweek}
               predictionScore={predictionScore || undefined}
-              locked={!isAlwaysEditable && isPastDeadline(kickoff)}
+              locked={
+                isLoading || (!isAlwaysEditable && isPastDeadline(kickoff))
+              }
               topRow={i === 0}
               handleBbbUpdate={handleBbbUpdate}
             />
@@ -103,16 +108,24 @@ const PredictionsTable = ({
       predictions.some((prediction) => !isPastDeadline(prediction.kickoff)) ? (
         <ButtonsAndMessageContainer>
           <ButtonContainer>
-            <Button id="save" type="submit" variant="primary">
+            <Button
+              id="save"
+              type="submit"
+              variant="primary"
+              disabled={isLoading}
+            >
               Save predictions
             </Button>
           </ButtonContainer>
-          {savingState === "IDLE" && <span />}
-          {savingState === "SAVING" && <UserFeedback>Saving...</UserFeedback>}
-          {savingState === "SUCCESS" && (
+          {state === "LOADING" && (
+            <UserFeedback>Loading predictions...</UserFeedback>
+          )}
+          {state === "IDLE" && <span />}
+          {state === "SAVING" && <UserFeedback>Saving...</UserFeedback>}
+          {state === "SAVE_SUCCESS" && (
             <UserFeedback>Predictions updated!</UserFeedback>
           )}
-          {savingState === "FAILED" && (
+          {state === "SAVE_FAILED" && (
             <UserFeedback>
               There was an error updating your predictions. Please try again.
             </UserFeedback>

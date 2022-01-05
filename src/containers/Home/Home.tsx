@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
+import { Fixture } from "@prisma/client";
 import colours from "@/styles/colours";
 import pageSizes from "@/styles/pageSizes";
 import Heading from "@/components/atoms/Heading";
@@ -12,9 +13,10 @@ import useLeagues from "../../hooks/useLeagues";
 interface Props {
   userId: number;
   weekId: number;
+  fixtures: Fixture[];
 }
 
-export default function Home({ userId, weekId }: Props) {
+export default function Home({ userId, weekId, fixtures }: Props) {
   const [data, leaguesLoading, leaguesError] = useLeagues(userId);
 
   return (
@@ -26,11 +28,7 @@ export default function Home({ userId, weekId }: Props) {
             <a>All predictions</a>
           </Link>
         </PredictionsHeader>
-        <Predictions
-          userId={userId}
-          weekId={weekId}
-          showWeekNavigation={false}
-        />
+        <Predictions fixtures={fixtures} weekId={weekId} />
       </PredictionsContainer>
       {leaguesLoading ? (
         <SpinnerContainer>

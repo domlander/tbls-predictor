@@ -1,22 +1,19 @@
 import { UserInputError, ApolloError } from "apollo-server-micro";
 import prisma from "prisma/client";
-import dayjs from "dayjs";
 
 import { isUserAlreadyBelongToLeague } from "utils/isUserAlreadyBelongToLeague";
 import isUserAppliedToLeague from "utils/isUserAppliedToLeague";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import isPastDeadline from "utils/isPastDeadline";
 import { UserLeagueInfo } from "src/types/UserLeagueInfo";
-import {
-  FixtureWithPrediction,
-  FixtureWithUsersPredictions,
-  UserTotalPoints,
-} from "@/types";
+import { FixtureWithUsersPredictions, UserTotalPoints } from "@/types";
 import dateScalar from "./scalars";
 
 const resolvers = {
   Query: {
     user: async (root, args, ctx) => {
+      // TODO: think about whether we want to return null here instead and handle the case that the user
+      // is not logged in later on. Feels like an error shouldn't be thrown here as not being logged in is normal behaviour.
       if (!ctx.session) throw new ApolloError("User not logged in.");
 
       const user = await prisma.user.findUnique({
@@ -34,6 +31,10 @@ const resolvers = {
           gameweek,
         },
       });
+
+      fixtures.sort(
+        (a, b) => new Date(a.kickoff).getTime() - new Date(b.kickoff).getTime()
+      );
 
       return fixtures;
     },
@@ -118,54 +119,21 @@ const resolvers = {
       };
     },
     predictions: async (root, { input: { userId, weekId } }, ctx) => {
-      const fixtures = await prisma.fixture.findMany();
-      if (!fixtures) throw new ApolloError("Cannot find fixtures.");
-
-      fixtures.sort(
-        (a, b) => new Date(a.kickoff).getTime() - new Date(b.kickoff).getTime()
-      );
-
-      const firstGameweek = fixtures.reduce(
-        (acc, cur) => (cur.gameweek < acc ? cur.gameweek : acc),
-        fixtures[0].gameweek
-      );
-      const lastGameweek = fixtures.reduce(
-        (acc, cur) => (cur.gameweek > acc ? cur.gameweek : acc),
-        fixtures[0].gameweek
-      );
-
       // Find all my predictions
       const predictions = await prisma.prediction.findMany({
         where: {
-          userId,
+          AND: [
+            { userId },
+            {
+              fixture: {
+                gameweek: weekId,
+              },
+            },
+          ],
         },
       });
 
-      // Match up fixtures with predictions and merge together
-      const fixturesWithPredictions: FixtureWithPrediction[] = [];
-      fixtures.map((fixture) => {
-        const prediction = predictions.find((p) => p.fixtureId === fixture.id);
-        return fixturesWithPredictions.push({
-          fixtureId: fixture.id,
-          gameweek: fixture.gameweek,
-          kickoff: dayjs(fixture.kickoff).toDate(), // Does this convert to BST in the summer months?
-          homeTeam: fixture.homeTeam,
-          awayTeam: fixture.awayTeam,
-          homeGoals: fixture.homeGoals,
-          awayGoals: fixture.awayGoals,
-          big_boy_bonus: prediction?.big_boy_bonus || false,
-          predictedHomeGoals: prediction?.homeGoals?.toString() || null,
-          predictedAwayGoals: prediction?.awayGoals?.toString() || null,
-          predictionScore: prediction?.score ?? null,
-        });
-      });
-
-      return {
-        fixturesWithPredictions,
-        thisGameweek: weekId,
-        firstGameweek,
-        lastGameweek,
-      };
+      return predictions;
     },
     leagueDetails: async (root, { input: { leagueId } }) => {
       // Get the league details
@@ -336,8 +304,10 @@ const resolvers = {
         userId: id,
         username: username || "",
         week: weekId,
-        totalPoints:
-          usersWeeklyPoints[i].reduce((acc, cur) => acc + cur, 0) || 0,
+        totalPoints: usersWeeklyPoints[i].reduce(
+          (acc, cur) => acc + (cur || 0),
+          0
+        ),
       }));
 
       return {
@@ -628,12 +598,22 @@ const resolvers = {
   },
   DateTime: dateScalar,
   User: {
-    predictions: async (root, args, ctx) => {
+    // TODO: https://www.apollographql.com/docs/apollo-server/data/resolvers/
+    // If the graphql query is `user { predictions }`, it will resolve here.
+    predictions: async ({ id: userId }, { weekId }, ctx) => {
       const predictions = await prisma.prediction.findMany({
         where: {
-          userId: root.id,
+          AND: [
+            { userId },
+            {
+              fixture: {
+                gameweek: weekId,
+              },
+            },
+          ],
         },
       });
+
       return predictions;
     },
   },
