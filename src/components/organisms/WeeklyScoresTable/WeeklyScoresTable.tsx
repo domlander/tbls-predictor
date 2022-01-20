@@ -43,23 +43,28 @@ const WeeklyScoresTable = ({
               <HeaderItem key={week}>
                 {fixtureWeeksAvailable.indexOf(week) !== -1 ? (
                   <Link href={`/league/${leagueId}/week/${week}`}>
-                    <ClickableRowHeading>{week}</ClickableRowHeading>
+                    <ClickableRowHeading>
+                      <WeekText>Week</WeekText>
+                      <WeekNumber>{week}</WeekNumber>
+                    </ClickableRowHeading>
                   </Link>
                 ) : (
                   <RowHeading>{`Week ${week}`}</RowHeading>
                 )}
               </HeaderItem>
             ))}
+            <BlankTableHeaderItem />
             {users.map(({ id, weeklyPoints }) => (
               <React.Fragment key={id}>
+                <BlankTableItem />
                 {weeklyPoints?.map(({ week, points }, i) => (
                   <React.Fragment key={`${id}${week}`}>
-                    {i === 0 && <BlankTableItem />}
                     <WeeklyPoints rowIndex={i} key={week}>
                       {points}
                     </WeeklyPoints>
                   </React.Fragment>
                 ))}
+                <BlankTableItem />
               </React.Fragment>
             ))}
           </AllPoints>
@@ -119,12 +124,12 @@ const AllPointsWrapper = styled.div`
   transform: rotateX(180deg);
   -webkit-transform: rotateX(180deg); /* Safari and Chrome */
   overflow-x: scroll;
-  border-left: 1px solid ${colours.grey500opacity50};
-  border-bottom: 1px solid ${colours.grey500opacity50}; /* equiv to border-top without the transform */
+  border: 1px solid ${colours.grey500opacity50};
+  border-top: none; /* equiv to border-bottom without the transform */
   padding-bottom: 8px; /* equiv to padding-top without the transform */
 
   @media (max-width: ${pageSizes.tablet}) {
-    padding-bottom: 6px; /* equiv to padding-top without the transform */
+    padding-bottom: 4px; /* equiv to padding-top without the transform */
   }
 
   ::-webkit-scrollbar {
@@ -151,7 +156,8 @@ const AllPointsWrapper = styled.div`
 
 const AllPoints = styled.div<{ numWeeks: number; numParticipants: number }>`
   display: grid;
-  grid-template-columns: ${({ numWeeks }) => `20px repeat(${numWeeks}, 70px)`};
+  grid-template-columns: ${({ numWeeks }) =>
+    `20px repeat(${numWeeks}, 70px) 20px`};
   grid-template-rows: ${({ numParticipants }) =>
     `61px repeat(${numParticipants}, 72px)`};
   color: ${colours.grey300};
@@ -160,9 +166,9 @@ const AllPoints = styled.div<{ numWeeks: number; numParticipants: number }>`
 
   @media (max-width: ${pageSizes.tablet}) {
     grid-template-columns: ${({ numWeeks }) =>
-      `12px repeat(${numWeeks}, 32px)`};
+      `12px repeat(${numWeeks}, 32px) 12px`};
     grid-template-rows: ${({ numParticipants }) =>
-      `37px repeat(${numParticipants}, 50px)`};
+      `39px repeat(${numParticipants}, 50px)`};
   }
 
   > div {
@@ -194,14 +200,37 @@ const RowHeading = styled.div``;
 
 const ClickableRowHeading = styled.a`
   cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 0.2em;
-  text-decoration-thickness: 0.05em;
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: ${colours.grey400};
+
+  p {
+    margin: 0;
+    text-align: center;
+  }
 
   :hover,
   :focus {
     color: ${colours.cyan100};
     text-decoration: underline;
+  }
+`;
+
+const WeekText = styled.p`
+  font-size: 0.8rem;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    font-size: 0.5rem;
+  }
+`;
+
+const WeekNumber = styled.p`
+  font-size: 1.4rem;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    font-size: 0.9rem;
   }
 `;
 
