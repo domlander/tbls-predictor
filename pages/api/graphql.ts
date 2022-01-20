@@ -6,7 +6,8 @@ const apolloServer = new ApolloServer({
   schema,
   context: async ({ req }) => {
     const session = await getSession({ req });
-    return { session };
+    const user = session?.user || null;
+    return { user };
   },
 });
 

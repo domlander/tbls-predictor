@@ -133,7 +133,7 @@ const PredictionsTable = ({
         </ButtonsAndMessageContainer>
       ) : (
         <GameweekScore>
-          {gameweekScore
+          {gameweekScore !== null
             ? `Result: ${gameweekScore} points`
             : "Score not yet available"}
         </GameweekScore>

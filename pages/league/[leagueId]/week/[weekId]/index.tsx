@@ -1,21 +1,20 @@
 import React from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
-import { Fixture, League } from "@prisma/client";
-
 import prisma from "prisma/client";
 import { initializeApollo } from "apollo/client";
+
 import { LEAGUE_WEEK_QUERY } from "apollo/queries";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import redirectInternal from "utils/redirects";
+import { User, Fixture, League } from "src/types/NewTypes";
 import LeagueWeek from "@/containers/LeagueWeek";
-import { FixtureWithUsersPredictions, UserTotalPointsWeek } from "@/types";
 
 interface Props {
   leagueId: number;
   leagueName: string;
   weekId: number;
-  users: UserTotalPointsWeek[];
-  fixtures: FixtureWithUsersPredictions[];
+  users: User[];
+  fixtures: Fixture[];
   firstGameweek: number;
   lastGameweek: number;
 }
@@ -50,24 +49,23 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (!weekId || weekId <= 0) return redirectInternal(`/league/${leagueId}`);
 
   const apolloClient = initializeApollo();
-  const {
-    data: {
-      leagueWeek: { leagueName, users, fixtures, firstGameweek, lastGameweek },
-    },
-  } = await apolloClient.query({
+  const { data } = await apolloClient.query({
     query: LEAGUE_WEEK_QUERY,
-    variables: { input: { leagueId, weekId } },
+    variables: { leagueId, weekId },
   });
+
+  const fixtures = data?.fixturesWithPredictions?.fixtures || [];
+  const league = data?.league;
 
   return {
     props: {
       leagueId,
-      leagueName,
+      leagueName: league.name,
       weekId,
-      users,
-      fixtures,
-      firstGameweek,
-      lastGameweek,
+      users: league.users,
+      fixtures: JSON.parse(JSON.stringify(fixtures)),
+      firstGameweek: league.gameweekStart,
+      lastGameweek: league.gameweekEnd,
     },
     revalidate: 60,
   };
@@ -82,6 +80,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
     const fixtureWeeksAvailable = fixtures
       .filter(
         (fixture) =>
+          league.gameweekStart &&
+          league.gameweekEnd &&
           fixture.gameweek <= league.gameweekEnd &&
           fixture.gameweek >= league.gameweekStart
       )

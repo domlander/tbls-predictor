@@ -5,13 +5,19 @@ import { useSession } from "next-auth/client";
 import { UPDATE_PREDICTIONS_MUTATION } from "apollo/mutations";
 import { useMutation, useQuery } from "@apollo/client";
 import { PREDICTIONS_QUERY } from "apollo/queries";
-import { Prediction } from "@prisma/client";
 import combineFixturesAndPredictions from "utils/combineFixturesAndPredictions";
+import { Fixture, Prediction, User } from "src/types/NewTypes";
 import PredictionsTable from "@/components/PredictionsTable";
-import { FixtureWithPrediction, UpdatePredictionsInputType } from "@/types";
+import { FixtureWithPrediction } from "@/types";
 import WeekNavigator from "@/components/molecules/WeekNavigator";
-import Loading from "@/components/atoms/Loading";
-import { Fixture } from ".prisma/client";
+
+type UpdatePredictionsInputType = {
+  userId: User["id"];
+  fixtureId: Fixture["id"];
+  homeGoals: Prediction["homeGoals"];
+  awayGoals: Prediction["awayGoals"];
+  big_boy_bonus: Prediction["big_boy_bonus"];
+};
 
 interface Props {
   fixtures: Fixture[];
@@ -35,13 +41,16 @@ const Predictions = ({
     { data: mutationData, loading: mutationLoading, error: mutationError },
   ] = useMutation(UPDATE_PREDICTIONS_MUTATION);
 
-  const { loading: isLoading, error: isError } = useQuery(PREDICTIONS_QUERY, {
-    variables: { input: { userId, weekId: gameweek } },
-    onCompleted: ({ predictions: predictionsData }) => {
-      setPredictions(predictionsData.predictions);
-    },
-    skip: !userId,
-  });
+  const { loading: isQueryLoading, error: isQueryError } = useQuery(
+    PREDICTIONS_QUERY,
+    {
+      variables: { weekId: gameweek },
+      onCompleted: ({ predictions: data }) => {
+        setPredictions(data);
+      },
+      skip: !userId,
+    }
+  );
 
   const handleSubmitPredictions = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -129,7 +138,8 @@ const Predictions = ({
     setPredictions(updatedPredictions);
   };
 
-  if (isError) return <div>An error has occurred. Please try again later.</div>;
+  if (isQueryError)
+    return <div>An error has occurred. Please try again later.</div>;
   if (!fixtures.length)
     return <div>No fixtures found for gameweek {gameweek}</div>;
 
@@ -158,7 +168,7 @@ const Predictions = ({
         updateGoals={updateGoals}
         handleSubmit={handleSubmitPredictions}
         handleBbbUpdate={updateBigBoyBonus}
-        isLoading={isLoading}
+        isLoading={isQueryLoading}
         isSaved={!!mutationData?.updatePredictions}
         isSaving={mutationLoading}
         isSaveError={!!mutationError}

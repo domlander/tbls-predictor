@@ -1,12 +1,13 @@
 import React from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
+import prisma from "prisma/client";
 
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import redirectInternal from "utils/redirects";
-import { Fixture } from "@prisma/client";
-import prisma from "prisma/client";
-import { ALL_FIXTURES_QUERY, FIXTURES_QUERY } from "apollo/queries";
+import { ALL_FIXTURES_QUERY } from "apollo/queries";
 import { initializeApollo } from "apollo/client";
+import sortFixtures from "utils/sortFixtures";
+import { Fixture } from "src/types/NewTypes";
 import Predictions from "@/containers/Predictions";
 
 interface Props {
@@ -47,7 +48,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (!weekId || weekId <= 0) return redirectInternal("/");
 
   const apolloClient = initializeApollo();
-
   const {
     data: { allFixtures },
   } = await apolloClient.query({
@@ -63,16 +63,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     allFixtures[0].gameweek
   );
 
-  const {
-    data: { fixtures },
-  } = await apolloClient.query({
-    query: FIXTURES_QUERY,
-    variables: { input: { gameweek: weekId } },
-  });
+  const fixtures = sortFixtures(
+    allFixtures.filter((f) => f.gameweek === weekId)
+  );
 
   return {
     props: {
-      fixtures: JSON.parse(JSON.stringify(fixtures)),
+      fixtures,
       weekId,
       firstGameweek,
       lastGameweek,

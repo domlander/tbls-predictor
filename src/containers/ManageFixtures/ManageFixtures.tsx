@@ -1,13 +1,13 @@
 import React, { FormEvent, useState } from "react";
 import Image from "next/image";
 import styled from "styled-components";
-import { Fixture } from "@prisma/client";
 import { useMutation, useQuery } from "@apollo/client";
 import dayjs from "dayjs";
 
 import { FIXTURES_QUERY } from "apollo/queries";
 import { UPDATE_FIXTURES_MUTATION } from "apollo/mutations";
 import sortFixtures from "utils/sortFixtures";
+import { Fixture } from "src/types/NewTypes";
 import Heading from "@/components/atoms/Heading";
 import Button from "@/components/Button";
 import colours from "@/styles/colours";
@@ -30,7 +30,7 @@ const ManageFixtures = ({
 
   // Query for getting fixtures from the database
   const { loading, error } = useQuery(FIXTURES_QUERY, {
-    variables: { input: { gameweek } },
+    variables: { weekId: gameweek },
     onCompleted: (data) => {
       setFixtures(data?.fixtures || []);
     },

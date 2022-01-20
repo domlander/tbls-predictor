@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { useSession } from "next-auth/client";
 import { useMutation } from "@apollo/client";
 
 import { PROCESS_JOIN_LEAGUE_REQUEST_MUTATION } from "apollo/mutations";
-import { Applicant } from "@/types";
+import { Applicant } from "src/types/NewTypes";
 import Button from "../Button";
 import Heading from "../atoms/Heading";
 
@@ -15,23 +14,27 @@ interface Props {
 }
 
 const LeagueApplicants = ({ applicants, setApplicants, leagueId }: Props) => {
-  const [session] = useSession();
   const [userFeedback, setUserFeedback] = useState<string>("");
   const [processRequest] = useMutation(PROCESS_JOIN_LEAGUE_REQUEST_MUTATION);
 
   const handleAcceptOrReject = (applicantId: number, accept: boolean) => {
     processRequest({
       variables: {
-        userId: session?.user.id,
-        leagueId,
-        applicantId,
-        isAccepted: accept,
+        input: {
+          leagueId,
+          applicantId,
+          isAccepted: accept,
+        },
       },
-    }).then(() => {
+    }).then((data) => {
       setApplicants(
         applicants.filter((applicant) => applicant.user.id !== applicantId)
       );
-      setUserFeedback("Success!");
+      const message = data?.data?.processJoinLeagueRequest
+        ? "Successfully added user to the league!"
+        : "Rejected user's application";
+
+      setUserFeedback(message);
     });
   };
 
@@ -45,27 +48,29 @@ const LeagueApplicants = ({ applicants, setApplicants, leagueId }: Props) => {
       {!validApplicants?.length ? (
         <Label>No valid applicants</Label>
       ) : (
-        validApplicants.map(({ user }) => (
-          <RequestsContainer key={user.id}>
-            <Label>{user.username}</Label>
-            <ButtonContainer>
-              <Button
-                variant="primary"
-                handleClick={() => handleAcceptOrReject(user.id, true)}
-              >
-                Accept
-              </Button>
-            </ButtonContainer>
-            <ButtonContainer>
-              <Button
-                variant="primary"
-                handleClick={() => handleAcceptOrReject(user.id, false)}
-              >
-                Reject
-              </Button>
-            </ButtonContainer>
-          </RequestsContainer>
-        ))
+        validApplicants.map(({ user }) => {
+          return (
+            <RequestsContainer key={user.id}>
+              <Label>{user.username}</Label>
+              <ButtonContainer>
+                <Button
+                  variant="primary"
+                  handleClick={() => handleAcceptOrReject(user.id, true)}
+                >
+                  Accept
+                </Button>
+              </ButtonContainer>
+              <ButtonContainer>
+                <Button
+                  variant="primary"
+                  handleClick={() => handleAcceptOrReject(user.id, false)}
+                >
+                  Reject
+                </Button>
+              </ButtonContainer>
+            </RequestsContainer>
+          );
+        })
       )}
       {userFeedback && <Feedback>{userFeedback}</Feedback>}
     </div>

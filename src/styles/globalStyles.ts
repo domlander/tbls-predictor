@@ -4,7 +4,7 @@ import pageSizes from "./pageSizes";
 
 const GlobalStyle = createGlobalStyle`
   * {
-    font-family: Nunito Sans, sans-serif;
+    font-family: Nunito, sans-serif;
   }
 
   html {

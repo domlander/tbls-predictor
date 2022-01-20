@@ -24,13 +24,7 @@ function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
     link: createIsomorphLink(),
-    cache: new InMemoryCache({
-      typePolicies: {
-        UserTotalPointsWeek: {
-          keyFields: ["userId", "week"],
-        },
-      },
-    }),
+    cache: new InMemoryCache(),
   });
 }
 

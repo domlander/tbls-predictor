@@ -1,28 +1,29 @@
 import React, { useState } from "react";
+import { useQuery } from "@apollo/client";
 
+import { LEAGUE_ADMIN_QUERY } from "apollo/queries";
+import styled from "styled-components";
+import { Applicant, User } from "src/types/NewTypes";
 import LeagueApplicants from "@/components/LeagueApplicants";
 import LeagueParticipants from "@/components/LeagueParticipants";
 import Heading from "@/components/atoms/Heading";
-import { LEAGUE_ADMIN_QUERY } from "apollo/queries";
-import { useQuery } from "@apollo/client";
 import Loading from "@/components/atoms/Loading";
 
 interface Props {
-  userId: number;
   leagueId: number;
 }
 
-const LeagueAdminContainer = ({ userId, leagueId }: Props) => {
-  const [leagueName, setLeagueName] = useState("");
-  const [applicants, setApplicants] = useState([]);
-  const [participants, setParticipants] = useState([]);
+const LeagueAdminContainer = ({ leagueId }: Props) => {
+  const [leagueName, setLeagueName] = useState("League");
+  const [applicants, setApplicants] = useState<Applicant[]>([]);
+  const [participants, setParticipants] = useState<User[]>([]);
 
   const { loading, error } = useQuery(LEAGUE_ADMIN_QUERY, {
-    variables: { input: { userId, leagueId } },
-    onCompleted: ({ leagueAdmin }) => {
-      setLeagueName(leagueAdmin.name);
-      setApplicants(leagueAdmin.applicants);
-      setParticipants(leagueAdmin.participants);
+    variables: { leagueId },
+    onCompleted: ({ leagueAdmin: { league } }) => {
+      setLeagueName(league.name);
+      setApplicants(league.applicants);
+      setParticipants(league.users);
     },
   });
 
@@ -30,7 +31,7 @@ const LeagueAdminContainer = ({ userId, leagueId }: Props) => {
   if (error) return <div>An error has occurred. Please try again later.</div>;
 
   return (
-    <>
+    <Container>
       <Heading level="h1">{leagueName} - Admin</Heading>
       <LeagueApplicants
         applicants={applicants}
@@ -38,8 +39,14 @@ const LeagueAdminContainer = ({ userId, leagueId }: Props) => {
         leagueId={leagueId}
       />
       <LeagueParticipants participants={participants} />
-    </>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+`;
 
 export default LeagueAdminContainer;

@@ -44,7 +44,6 @@ const Label = styled.div<Props>`
   color: ${({ variant }) => variants[variant].colour};
   font-size: 0.7em;
   text-align: center;
-  font-family: "Nunito sans";
 `;
 
 export default Chip;

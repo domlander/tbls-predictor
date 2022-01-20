@@ -1,28 +1,36 @@
 import React from "react";
-import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/client";
+import { GetStaticProps } from "next";
+import { initializeApollo } from "apollo/client";
+import { ALL_LEAGUES_QUERY } from "apollo/queries";
 
 import Leagues from "src/containers/Leagues";
+import { League } from "src/types/NewTypes";
 import Heading from "@/components/atoms/Heading";
 
 interface Props {
-  userId: number | null;
+  publicLeagues: League[];
 }
 
-const LeaguesPage = ({ userId }: Props) => {
+const LeaguesPage = ({ publicLeagues }: Props) => {
   return (
     <>
       <Heading level="h1">Leagues</Heading>
-      <Leagues userId={userId} />
+      <Leagues publicLeagues={publicLeagues} />
     </>
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
+export const getStaticProps: GetStaticProps = async () => {
+  const apolloClient = initializeApollo();
+  const {
+    data: { allLeagues },
+  } = await apolloClient.query({
+    query: ALL_LEAGUES_QUERY,
+  });
+
   return {
     props: {
-      userId: session?.user?.id || null,
+      publicLeagues: allLeagues?.leagues || [],
     },
   };
 };

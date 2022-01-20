@@ -2,22 +2,22 @@ import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
-import { Fixture } from "@prisma/client";
+
+import { Fixture } from "src/types/NewTypes";
+import useUserLeagues from "src/hooks/useUserLeagues";
 import colours from "@/styles/colours";
 import pageSizes from "@/styles/pageSizes";
 import Heading from "@/components/atoms/Heading";
 import LeaguesList from "@/components/molecules/LeagueList";
 import Predictions from "../Predictions";
-import useLeagues from "../../hooks/useLeagues";
 
 interface Props {
-  userId: number;
   weekId: number;
   fixtures: Fixture[];
 }
 
-export default function Home({ userId, weekId, fixtures }: Props) {
-  const [data, leaguesLoading, leaguesError] = useLeagues(userId);
+export default function Home({ weekId, fixtures }: Props) {
+  const [userLeagues, leaguesLoading, leaguesError] = useUserLeagues();
 
   return (
     <Container>
@@ -40,7 +40,7 @@ export default function Home({ userId, weekId, fixtures }: Props) {
           again later.
         </LeagueError>
       ) : (
-        <LeaguesList leagues={data?.userLeagues} />
+        <LeaguesList leagues={userLeagues} />
       )}
     </Container>
   );

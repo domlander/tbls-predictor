@@ -3,13 +3,13 @@ import styled from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import { UserLeagueInfo } from "src/types/UserLeagueInfo";
+import { UserLeague } from "src/types/NewTypes";
 import pageSizes from "@/styles/pageSizes";
 import Heading from "../../atoms/Heading";
 import colours from "../../../styles/colours";
 
 export interface Props {
-  leagues: UserLeagueInfo[];
+  leagues: UserLeague[];
 }
 
 const LeaguesList = ({ leagues }: Props) => {
@@ -27,7 +27,7 @@ const LeaguesList = ({ leagues }: Props) => {
     <MyLeagues>
       <Heading level="h2">My Leagues</Heading>
       <LeagueCards>
-        {leagues.map(({ id, name, position }) => (
+        {leagues.map(({ leagueId: id, leagueName: name, position }) => (
           <LeagueCard
             tabIndex={0}
             key={id}

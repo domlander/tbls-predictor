@@ -1,4 +1,4 @@
-import { Fixture, Prediction } from "@prisma/client";
+import { Fixture, Prediction } from "./NewTypes";
 
 export type FixtureWithPrediction = {
   fixtureId: Fixture["id"];

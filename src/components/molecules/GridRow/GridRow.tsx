@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { Fixture } from "@prisma/client";
 
+import { Fixture } from "src/types/NewTypes";
 import GridItemHomeTeam from "../../atoms/GridItemHomeTeam";
 import GridItemAwayTeam from "../../atoms/GridItemAwayTeam";
 import GridItemKickoff from "../../atoms/GridItemKickoff";

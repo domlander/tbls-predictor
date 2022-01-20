@@ -22,12 +22,12 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const apolloClient = initializeApollo();
   const {
-    data: { allFixtures: fixtures },
+    data: { allFixtures },
   } = await apolloClient.query({
     query: ALL_FIXTURES_QUERY,
   });
 
-  const currentGameweek = calculateCurrentGameweek(fixtures);
+  const currentGameweek = calculateCurrentGameweek(allFixtures);
 
   return redirectInternal(`/predictions/${currentGameweek}`);
 };

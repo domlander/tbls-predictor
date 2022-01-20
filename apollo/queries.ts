@@ -9,19 +9,9 @@ export const USER_QUERY = gql`
   }
 `;
 
-export const ALL_FIXTURES_QUERY = gql`
-  query AllFixtures {
-    allFixtures {
-      id
-      gameweek
-      kickoff
-    }
-  }
-`;
-
 export const FIXTURES_QUERY = gql`
-  query Fixtures($input: FixturesInput) {
-    fixtures(input: $input) {
+  query Fixtures($weekId: Int!) {
+    fixtures(weekId: $weekId) {
       id
       gameweek
       kickoff
@@ -31,16 +21,35 @@ export const FIXTURES_QUERY = gql`
   }
 `;
 
-export const LEAGUES_QUERY = gql`
-  query Leagues($input: LeaguesInput!) {
-    leagues(input: $input) {
-      userLeagues {
-        id
-        name
+export const ALL_FIXTURES_QUERY = gql`
+  query AllFixtures {
+    allFixtures {
+      id
+      gameweek
+      kickoff
+      homeTeam
+      awayTeam
+    }
+  }
+`;
+
+export const USER_LEAGUES_QUERY = gql`
+  query UserLeagues {
+    user {
+      leagues {
+        leagueId
+        leagueName
         position
         weeksToGo
       }
-      publicLeagues {
+    }
+  }
+`;
+
+export const ALL_LEAGUES_QUERY = gql`
+  query AllLeagues {
+    allLeagues {
+      leagues {
         id
         name
       }
@@ -49,69 +58,79 @@ export const LEAGUES_QUERY = gql`
 `;
 
 export const LEAGUE_ADMIN_QUERY = gql`
-  query LeagueAdmin($input: LeagueAdminInput!) {
-    leagueAdmin(input: $input) {
-      id
-      name
-      applicants {
-        user {
+  query LeagueAdmin($leagueId: Int!) {
+    leagueAdmin(leagueId: $leagueId) {
+      league {
+        id
+        name
+        applicants {
+          user {
+            id
+            username
+          }
+          status
+        }
+        users {
           id
           username
         }
-        status
-      }
-      participants {
-        id
-        username
       }
     }
   }
 `;
 
 export const PREDICTIONS_QUERY = gql`
-  query Predictions($input: PredictionsInput!) {
-    predictions(input: $input) {
-      predictions {
-        fixtureId
-        homeGoals
-        awayGoals
-        big_boy_bonus
-        score
+  query Predictions($weekId: Int!) {
+    predictions(weekId: $weekId) {
+      fixtureId
+      homeGoals
+      awayGoals
+      big_boy_bonus
+      score
+      user {
+        id
       }
     }
   }
 `;
 
-export const LEAGUE_DETAILS_QUERY = gql`
-  query LeagueDetails($input: LeagueDetailsInput!) {
-    leagueDetails(input: $input) {
-      leagueName
+export const LEAGUE_QUERY = gql`
+  query League($leagueId: Int!) {
+    league(leagueId: $leagueId) {
+      name
+      gameweekStart
+      gameweekEnd
       administratorId
       users {
-        userId
+        id
         username
+        weeklyPoints {
+          week
+          points
+        }
         totalPoints
-      }
-      pointsByWeek {
-        week
-        points
       }
     }
   }
 `;
 
 export const LEAGUE_WEEK_QUERY = gql`
-  query LeagueWeek($input: LeagueWeekInput!) {
-    leagueWeek(input: $input) {
-      leagueName
-      firstGameweek
-      lastGameweek
+  query LeagueWeek($leagueId: Int!, $weekId: Int!) {
+    league(leagueId: $leagueId) {
+      id
+      name
+      gameweekStart
+      gameweekEnd
       users {
-        userId
+        id
         username
-        week
-        totalPoints
+        weeklyPoints {
+          week
+          points
+        }
       }
+    }
+    fixturesWithPredictions(leagueId: $leagueId, weekId: $weekId) {
       fixtures {
         id
         gameweek
@@ -121,6 +140,11 @@ export const LEAGUE_WEEK_QUERY = gql`
         homeGoals
         awayGoals
         predictions {
+          fixtureId
+          user {
+            id
+            username
+          }
           homeGoals
           awayGoals
           big_boy_bonus

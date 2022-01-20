@@ -1,19 +1,20 @@
 import React from "react";
 import { GetStaticProps, GetStaticPaths } from "next";
 import prisma from "prisma/client";
-import { LEAGUE_DETAILS_QUERY } from "apollo/queries";
+
+import { initializeApollo } from "apollo/client";
+import { ALL_FIXTURES_QUERY, LEAGUE_QUERY } from "apollo/queries";
+import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import redirectInternal from "utils/redirects";
-import { UserTotalPoints, WeeklyPoints } from "@/types";
-import LeagueHome from "../../../src/containers/League";
-import { initializeApollo } from "../../../apollo/client";
+import { User, WeeklyPoints } from "src/types/NewTypes";
+import LeagueHome from "src/containers/League";
 
 interface Props {
   id: number;
   name: string;
   administratorId: number;
-  users: UserTotalPoints[];
-  pointsByWeek: WeeklyPoints[];
+  users: User[];
   fixtureWeeksAvailable: number[];
 }
 
@@ -22,7 +23,6 @@ const LeaguePage = ({
   name,
   administratorId,
   users,
-  pointsByWeek,
   fixtureWeeksAvailable,
 }: Props) => (
   <LeagueHome
@@ -30,7 +30,6 @@ const LeaguePage = ({
     name={name}
     administratorId={administratorId}
     users={users}
-    pointsByWeek={pointsByWeek}
     fixtureWeeksAvailable={fixtureWeeksAvailable}
   />
 );
@@ -40,33 +39,50 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const leagueId = convertUrlParamToNumber(params?.leagueId);
   if (!leagueId || leagueId <= 0) return redirectInternal("/leagues");
 
-  const fixtures = await prisma.fixture.findMany();
-  const fixtureWeeksAvailable = fixtures
-    .reduce((acc: number[], fixture) => {
-      if (acc.indexOf(fixture.gameweek) === -1) {
-        acc.push(fixture.gameweek);
-      }
-      return acc;
-    }, [])
-    .sort((a, b) => a - b);
-
   const apolloClient = initializeApollo();
   const {
     data: {
-      leagueDetails: { leagueName, administratorId, users, pointsByWeek },
+      league: { name, gameweekStart, gameweekEnd, administratorId, users },
     },
   } = await apolloClient.query({
-    query: LEAGUE_DETAILS_QUERY,
-    variables: { input: { leagueId } },
+    query: LEAGUE_QUERY,
+    variables: { leagueId },
   });
+
+  const {
+    data: { allFixtures },
+  } = await apolloClient.query({
+    query: ALL_FIXTURES_QUERY,
+  });
+  const currentGameweek = calculateCurrentGameweek(allFixtures);
+
+  const fixtureWeeksAvailable = [
+    ...Array(Math.min(currentGameweek, gameweekEnd) - gameweekStart + 1).keys(),
+  ]
+    .map((x) => x + gameweekStart)
+    .reverse();
+
+  const sortedUsers = [...users]
+    .sort(
+      (a, b) => b.totalPoints - a.totalPoints || parseInt(a.id) - parseInt(b.id)
+    )
+    .map((user) => ({
+      ...user,
+      weeklyPoints: [
+        ...user.weeklyPoints.filter(
+          (weeklyPoints: WeeklyPoints) =>
+            weeklyPoints.week >= gameweekStart &&
+            weeklyPoints.week <= Math.min(currentGameweek, gameweekEnd)
+        ),
+      ].reverse(),
+    }));
 
   return {
     props: {
       id: leagueId,
-      name: leagueName,
+      name,
+      users: sortedUsers,
       administratorId,
-      users,
-      pointsByWeek,
       fixtureWeeksAvailable,
     },
     revalidate: 60,

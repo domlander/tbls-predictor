@@ -5,90 +5,51 @@ const typeDefs = gql`
 
   type Query {
     user: User
+    fixtures(weekId: Int!): [Fixture!]
     allFixtures: [Fixture!]
-    fixtures(input: FixturesInput): [Fixture!]
-    leagues(input: LeaguesInput): LeaguesPayload
-    leagueAdmin(input: LeagueAdminInput): LeagueAdminPayload
-    predictions(input: PredictionsInput): PredictionsPayload
-    leagueDetails(input: LeagueDetailsInput): LeagueDetailsPayload
-    leagueWeek(input: LeagueWeekInput): LeagueWeekPayload
+    predictions(weekId: Int!): [Prediction!]
+    allLeagues: AllLeaguesPayload!
+    leagueAdmin(leagueId: Int!): LeagueAdminPayload!
+    league(leagueId: Int!): League!
+    fixturesWithPredictions(
+      leagueId: Int!
+      weekId: Int!
+    ): FixturesWithPredictionPayload
   }
 
   type Mutation {
-    updateUsername(input: UpdateUsernameInput!): String
-    updateFixtures(input: [UpdateFixturesInput!]!): Boolean
-    updatePredictions(input: [UpdatePredictionsInput!]!): Boolean
+    updateUsername(username: String!): User
+    requestToJoinLeague(leagueId: Int!): Applicant
+    processJoinLeagueRequest(input: ProcessJoinLeagueRequestInput!): Boolean!
     createLeague(input: CreateLeagueInput!): League
-    requestToJoinLeague(userId: Int!, leagueId: Int!): Applicant
-    processJoinLeagueRequest(
-      userId: Int!
-      leagueId: Int!
-      applicantId: Int!
-      isAccepted: Boolean!
-    ): Boolean!
-  }
-
-  input FixturesInput {
-    gameweek: Int
-  }
-
-  input LeaguesInput {
-    userId: Int
-  }
-
-  type LeaguesPayload {
-    userLeagues: [UserLeagueInfo!]
-    publicLeagues: [League!]
-  }
-
-  input LeagueAdminInput {
-    userId: Int!
-    leagueId: Int!
+    updateFixtures(input: [UpdateFixturesInput!]!): Boolean
+    updatePredictions(
+      input: [UpdatePredictionsInput!]!
+    ): UpdatePredictionsPayload!
   }
 
   type LeagueAdminPayload {
-    id: Int!
+    league: League!
+  }
+
+  type AllLeaguesPayload {
+    leagues: [League!]
+  }
+
+  type FixturesWithPredictionPayload {
+    fixtures: [Fixture!]
+  }
+
+  input ProcessJoinLeagueRequestInput {
+    leagueId: Int!
+    applicantId: Int!
+    isAccepted: Boolean!
+  }
+
+  input CreateLeagueInput {
     name: String!
-    applicants: [Applicant!]
-    participants: [User!]!
-  }
-
-  input PredictionsInput {
-    userId: Int!
-    weekId: Int!
-  }
-
-  type PredictionsPayload {
-    predictions: [PredictionsFlat!]
-  }
-
-  input LeagueDetailsInput {
-    leagueId: Int!
-  }
-
-  type LeagueDetailsPayload {
-    leagueName: String!
-    administratorId: Int!
-    users: [UserTotalPoints]!
-    pointsByWeek: [WeeklyPoints]!
-  }
-
-  input LeagueWeekInput {
-    leagueId: Int!
-    weekId: Int!
-  }
-
-  type LeagueWeekPayload {
-    leagueName: String!
-    firstGameweek: Int!
-    lastGameweek: Int!
-    users: [UserTotalPointsWeek]!
-    fixtures: [FixtureWithUsersPredictions!]!
-  }
-
-  input UpdateUsernameInput {
-    userId: Int!
-    username: String!
+    gameweekStart: Int!
+    gameweekEnd: Int!
   }
 
   input UpdateFixturesInput {
@@ -105,44 +66,46 @@ const typeDefs = gql`
     big_boy_bonus: Boolean
   }
 
-  input CreateLeagueInput {
-    userId: Int!
-    name: String!
-    gameweekStart: Int!
-    gameweekEnd: Int!
+  type UpdatePredictionsPayload {
+    predictions: [Prediction!]
   }
 
   type User {
     id: Int!
     username: String
     email: String
-    emailVerified: String
-    image: String
-    createdAt: DateTime
-    updatedAt: DateTime
     predictions: [Prediction!]
-    leagues: [League!]
+    leagues: [UserLeague!]
     leagueApplications: [Applicant!]
+    weeklyPoints: [WeeklyPoints!]
+    totalPoints: Int
+  }
+
+  type Prediction {
+    user: User
+    fixtureId: Int!
+    homeGoals: Int
+    awayGoals: Int
+    big_boy_bonus: Boolean
+    score: Int
   }
 
   type League {
     id: Int!
     name: String!
-    status: LeagueStatus!
-    administratorId: Int!
-    season: String!
-    gameweekStart: Int!
-    gameweekEnd: Int!
-    createdAt: DateTime!
-    users: [User!]!
+    status: LeagueStatus
+    administratorId: Int
+    gameweekStart: Int
+    gameweekEnd: Int
     applicants: [Applicant!]
+    users: [User!]
   }
 
-  type Applicant {
-    user: User!
-    league: League
-    status: LeagueApplicantStatus
-    createdAt: DateTime
+  type UserLeague {
+    leagueId: Int!
+    leagueName: String!
+    position: Int
+    weeksToGo: Int
   }
 
   type Fixture {
@@ -156,13 +119,16 @@ const typeDefs = gql`
     predictions: [Prediction!]
   }
 
-  type Prediction {
-    homeGoals: Int
-    awayGoals: Int
-    score: Int
-    big_boy_bonus: Boolean
-    fixture: Fixture
-    user: User
+  type Applicant {
+    user: User!
+    league: League!
+    status: LeagueApplicantStatus
+    createdAt: DateTime
+  }
+
+  type WeeklyPoints {
+    week: Int!
+    points: Int!
   }
 
   enum LeagueApplicantStatus {
@@ -175,64 +141,6 @@ const typeDefs = gql`
     open
     started
     completed
-  }
-
-  type UserLeagueInfo {
-    id: Int!
-    name: String!
-    position: Int
-    weeksToGo: Int
-  }
-
-  type UserTotalPoints {
-    userId: Int!
-    username: String!
-    totalPoints: Int!
-  }
-
-  type UserTotalPointsWeek {
-    userId: Int!
-    username: String!
-    week: Int!
-    totalPoints: Int!
-  }
-
-  type WeeklyPoints {
-    week: Int!
-    points: [Int!]!
-  }
-
-  type PredictionsFlat {
-    fixtureId: Int!
-    homeGoals: Int
-    awayGoals: Int
-    score: Int
-    big_boy_bonus: Boolean
-  }
-
-  type FixtureWithPrediction {
-    fixtureId: Int!
-    gameweek: Int!
-    kickoff: DateTime!
-    homeTeam: String!
-    awayTeam: String!
-    homeGoals: Int
-    awayGoals: Int
-    predictedHomeGoals: String
-    predictedAwayGoals: String
-    big_boy_bonus: Boolean
-    predictionScore: Int
-  }
-
-  type FixtureWithUsersPredictions {
-    id: Int!
-    gameweek: Int!
-    kickoff: DateTime!
-    homeTeam: String!
-    awayTeam: String!
-    homeGoals: Int
-    awayGoals: Int
-    predictions: [Prediction!]
   }
 `;
 

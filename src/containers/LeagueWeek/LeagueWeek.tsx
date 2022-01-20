@@ -5,10 +5,11 @@ import Image from "next/image";
 import { useQuery } from "@apollo/client";
 
 import { LEAGUE_WEEK_QUERY } from "apollo/queries";
+import { Fixture, User, UserPoints } from "src/types/NewTypes";
+import sortFixtures from "utils/sortFixtures";
 import WeekNavigator from "@/components/molecules/WeekNavigator";
 import LeagueWeekUserTotals from "@/components/molecules/LeagueWeekUserTotals";
 import LeagueWeekFixtures from "@/components/organisms/LeagueWeekFixtures";
-import { FixtureWithUsersPredictions, UserTotalPointsWeek } from "@/types";
 import colours from "@/styles/colours";
 import pageSizes from "@/styles/pageSizes";
 
@@ -16,8 +17,8 @@ interface Props {
   leagueId: number;
   leagueName: string;
   weekId: number;
-  users: UserTotalPointsWeek[];
-  fixtures: FixtureWithUsersPredictions[];
+  users: User[];
+  fixtures: Fixture[];
   firstGameweek: number;
   lastGameweek: number;
 }
@@ -35,16 +36,26 @@ const LeagueContainer = ({
   const [users, setUsers] = useState(usersFromProps);
 
   const { loading } = useQuery(LEAGUE_WEEK_QUERY, {
-    variables: { input: { leagueId, weekId } },
+    variables: { leagueId, weekId },
     onCompleted: (data) => {
-      if (data?.leagueWeek?.fixtures.length) {
-        setFixtures(data.leagueWeek.fixtures);
+      if (data?.fixturesWithPredictions?.fixtures) {
+        setFixtures(data.fixturesWithPredictions.fixtures);
       }
-      if (data?.leagueWeek?.users.length) {
-        setUsers(data.leagueWeek.users);
+      if (data?.league?.users) {
+        setUsers(data?.league?.users);
       }
     },
   });
+
+  const usersGameweekPoints: UserPoints[] = users
+    .map(({ id: userId, username, weeklyPoints }: User) => ({
+      userId,
+      username,
+      points: weeklyPoints?.find(({ week }) => week === weekId)?.points || 0,
+    }))
+    .sort((a, b) => b.points - a.points || a.userId - b.userId);
+
+  const sortedFixtures = sortFixtures(fixtures);
 
   return (
     <Container>
@@ -79,8 +90,8 @@ const LeagueContainer = ({
             : `/league/${leagueId}/week/${weekId + 1}`
         }
       />
-      <LeagueWeekUserTotals users={users} />
-      <LeagueWeekFixtures weekId={weekId} fixtures={fixtures} />
+      <LeagueWeekUserTotals users={usersGameweekPoints} />
+      <LeagueWeekFixtures weekId={weekId} fixtures={sortedFixtures} />
     </Container>
   );
 };

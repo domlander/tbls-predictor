@@ -1,8 +1,8 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
-import { Fixture } from "@prisma/client";
 import axios from "axios";
+import { Fixture } from "src/types/NewTypes";
 import { FixtureForPopulatingDb, FplApiFixture } from "./types";
 import { FPL_API_FIXTURES_ENDPOINT } from "./index";
 

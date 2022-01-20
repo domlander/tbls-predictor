@@ -1,12 +1,13 @@
-import { League } from "@prisma/client";
 import React from "react";
 import Link from "next/link";
 import styled from "styled-components";
+
+import { League } from "src/types/NewTypes";
 import colours from "@/styles/colours";
 import Heading from "@/components/atoms/Heading";
 
 export interface Props {
-  leagues: Partial<League>[];
+  leagues: League[];
 }
 
 const PublicLeaguesList = ({ leagues }: Props) => {

@@ -1,8 +1,17 @@
 import { gql } from "@apollo/client";
 
+export const UPDATE_USERNAME_MUTATION = gql`
+  mutation UpdateUsername($username: String!) {
+    updateUsername(username: $username) {
+      id
+      username
+    }
+  }
+`;
+
 export const REQUEST_TO_JOIN_LEAGUE_MUTATION = gql`
-  mutation requestToJoinLeague($userId: Int!, $leagueId: Int!) {
-    requestToJoinLeague(userId: $userId, leagueId: $leagueId) {
+  mutation requestToJoinLeague($leagueId: Int!) {
+    requestToJoinLeague(leagueId: $leagueId) {
       user {
         id
       }
@@ -10,23 +19,14 @@ export const REQUEST_TO_JOIN_LEAGUE_MUTATION = gql`
         id
       }
       status
+      createdAt
     }
   }
 `;
 
 export const PROCESS_JOIN_LEAGUE_REQUEST_MUTATION = gql`
-  mutation processJoinLeagueRequest(
-    $userId: Int!
-    $leagueId: Int!
-    $applicantId: Int!
-    $isAccepted: Boolean!
-  ) {
-    processJoinLeagueRequest(
-      userId: $userId
-      leagueId: $leagueId
-      applicantId: $applicantId
-      isAccepted: $isAccepted
-    )
+  mutation processJoinLeagueRequest($input: ProcessJoinLeagueRequestInput!) {
+    processJoinLeagueRequest(input: $input)
   }
 `;
 
@@ -47,12 +47,14 @@ export const UPDATE_FIXTURES_MUTATION = gql`
 
 export const UPDATE_PREDICTIONS_MUTATION = gql`
   mutation UpdatePredictions($input: [UpdatePredictionsInput!]!) {
-    updatePredictions(input: $input)
-  }
-`;
-
-export const UPDATE_USERNAME_MUTATION = gql`
-  mutation UpdateUsername($input: UpdateUsernameInput!) {
-    updateUsername(input: $input)
+    updatePredictions(input: $input) {
+      predictions {
+        fixtureId
+        homeGoals
+        awayGoals
+        big_boy_bonus
+        score
+      }
+    }
   }
 `;

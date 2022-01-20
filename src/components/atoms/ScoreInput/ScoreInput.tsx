@@ -1,6 +1,6 @@
 import React from "react";
+import { Fixture } from "src/types/NewTypes";
 import styled from "styled-components";
-import { Fixture } from "@prisma/client";
 import colours from "../../../styles/colours";
 
 interface StyleProps {

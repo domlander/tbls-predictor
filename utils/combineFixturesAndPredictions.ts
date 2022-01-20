@@ -1,4 +1,4 @@
-import { Fixture, Prediction } from "@prisma/client";
+import { Fixture, Prediction } from "src/types/NewTypes";
 import { FixtureWithPrediction } from "@/types";
 
 const combineFixturesAndPredictions = (

@@ -1,19 +1,17 @@
 import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
-
-import Heading from "@/components/atoms/Heading";
-import Button from "@/components/Button";
 import { useMutation } from "@apollo/client";
+
 import { CREATE_LEAGUE_MUTATION } from "apollo/mutations";
-import { useSession } from "next-auth/client";
+import Button from "@/components/Button";
+import Heading from "@/components/atoms/Heading";
 import FormInput from "../../components/atoms/FormInput";
 
 const CreateLeague = () => {
-  const [session] = useSession();
   const [leagueName, setLeagueName] = useState("");
-  const [userFeedback, setUserFeedback] = useState<string>("");
-  const [gameweekStart, setGameweekStart] = useState<string>("1");
-  const [weeksToRun, setWeeksToRun] = useState<string>("17");
+  const [userFeedback, setUserFeedback] = useState("");
+  const [gameweekStart, setGameweekStart] = useState("1");
+  const [weeksToRun, setWeeksToRun] = useState("10");
 
   const [createLeague, { loading }] = useMutation(CREATE_LEAGUE_MUTATION, {
     onError: (error) => setUserFeedback(error.message),
@@ -32,20 +30,21 @@ const CreateLeague = () => {
       createLeague({
         variables: {
           input: {
-            userId: session?.user.id,
             name: leagueName,
             gameweekStart: startWeek,
             gameweekEnd: endWeek,
           },
         },
       }).then(({ data, errors }) => {
-        if (errors?.length) setUserFeedback(errors[0].message);
-        else if (data?.createLeague)
+        if (errors?.length) {
+          setUserFeedback(errors[0].message);
+        } else if (data?.createLeague) {
           setUserFeedback(
             `Success! League "${data.createLeague.name}" was created! Ask friends to join using ID: ${data.createLeague.id}`
           );
+          setLeagueName("");
+        }
       });
-      setLeagueName("");
     }
   };
 

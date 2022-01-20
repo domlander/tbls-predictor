@@ -10,14 +10,12 @@ import ChangeUsernameForm from "@/components/ChangeUsernameForm";
 
 const AccountContainer = () => {
   const [currentUsername, setCurrentUsername] = useState();
-  const [userId, setUserId] = useState();
   const [formUsername, setFormUsername] = useState("");
   const [userFeedback, setUserFeedback] = useState("");
   const [processRequest] = useMutation(UPDATE_USERNAME_MUTATION);
 
   const { loading, error } = useQuery(USER_QUERY, {
     onCompleted: ({ user }) => {
-      setUserId(user.id);
       setCurrentUsername(user.username);
       setFormUsername(user.username);
     },
@@ -30,11 +28,13 @@ const AccountContainer = () => {
     else
       processRequest({
         variables: {
-          input: { userId, username: formUsername },
+          username: formUsername,
         },
-      }).then(({ data }) => {
-        setUserFeedback(`Success! Username changed to ${data.updateUsername}`);
-        setCurrentUsername(data.updateUsername);
+      }).then(({ data: { updateUsername } }) => {
+        setUserFeedback(
+          `Success! Username changed to ${updateUsername.username}`
+        );
+        setCurrentUsername(updateUsername.username);
       });
   };
 

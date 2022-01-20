@@ -1,24 +1,25 @@
 import React from "react";
-import { League } from "@prisma/client";
-import useLeagues from "src/hooks/useLeagues";
+
+import useUserLeagues from "src/hooks/useUserLeagues";
+import { League } from "src/types/NewTypes";
 import Loading from "@/components/atoms/Loading";
 import LeaguesList from "@/components/molecules/LeagueList";
 import PublicLeaguesList from "@/components/molecules/PublicLeaguesList";
 
 interface Props {
-  userId: number | null;
+  publicLeagues: League[];
 }
 
-const Leagues = ({ userId }: Props) => {
-  const [data, loading, error] = useLeagues(userId);
+const Leagues = ({ publicLeagues }: Props) => {
+  const [userLeagues, loading, error] = useUserLeagues();
 
   if (loading) return <Loading />;
   if (error) return <div>An error has occurred. Please try again later.</div>;
 
   return (
     <>
-      <LeaguesList leagues={data?.userLeagues} />
-      <PublicLeaguesList leagues={data?.publicLeagues as Partial<League>[]} />
+      <LeaguesList leagues={userLeagues} />
+      <PublicLeaguesList leagues={publicLeagues} />
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { Fixture } from "@prisma/client";
+import { Fixture } from "src/types/NewTypes";
 
 /* eslint-disable camelcase */
 export type FplApiFixture = {

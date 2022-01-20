@@ -1,11 +1,11 @@
 import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
-import { Fixture } from "@prisma/client";
 
 import {
   formatFixtureKickoffTime,
   whenIsTheFixture,
 } from "utils/kickoffDateHelpers";
+import { Fixture } from "src/types/NewTypes";
 import Heading from "@/components/atoms/Heading";
 import Button from "@/components/Button";
 import GridRow from "@/components/molecules/GridRow";
@@ -41,8 +41,6 @@ const UpdateResultsPage = ({ fixtures }: Props) => {
         homeGoals,
         awayGoals,
       }));
-
-    console.log({ updatedScores });
 
     if (!updatedScores?.length) return;
 

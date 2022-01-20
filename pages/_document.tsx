@@ -42,7 +42,7 @@ export default class MyDocument extends Document {
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Nunito&family=Nunito+Sans&family=Patrick+Hand&display=swap"
+            href="https://fonts.googleapis.com/css2?family=Nunito&family=Patrick+Hand&display=swap"
           />
           <meta property="og:type" content="game" />
           <meta property="og:url" content="https://www.desmondtwotwo.com/" />

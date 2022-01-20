@@ -6,18 +6,18 @@ import {
   formatFixtureKickoffTime,
   whenIsTheFixture,
 } from "utils/kickoffDateHelpers";
-import { FixtureWithUsersPredictions } from "@/types";
+import { Fixture } from "src/types/NewTypes";
 import LeagueWeekPrediction from "@/components/molecules/LeagueWeekPrediction";
 import isPastDeadline from "../../../../utils/isPastDeadline";
 import colours from "../../../styles/colours";
 import pageSizes from "../../../styles/pageSizes";
 
 export type Props = {
-  fixtures: FixtureWithUsersPredictions[];
   weekId: number;
+  fixtures: Fixture[];
 };
 
-const LeagueWeekFixtures = ({ fixtures, weekId }: Props) => {
+const LeagueWeekFixtures = ({ weekId, fixtures }: Props) => {
   const firstFixtureKickoffTiming = whenIsTheFixture(fixtures[0].kickoff);
 
   return (
@@ -38,13 +38,13 @@ const LeagueWeekFixtures = ({ fixtures, weekId }: Props) => {
                 {formatFixtureKickoffTime(kickoff, firstFixtureKickoffTiming)}
               </Kickoff>
               {isPastDeadline(kickoff) ? (
-                <Fixture>
+                <UnclickableFixture>
                   {homeTeam}
                   &nbsp;&nbsp;
                   {homeGoals} - {awayGoals}
                   &nbsp;&nbsp;
                   {awayTeam}
-                </Fixture>
+                </UnclickableFixture>
               ) : (
                 <ClickableFixture>
                   <Link href={`/predictions/${weekId}`}>
@@ -57,15 +57,17 @@ const LeagueWeekFixtures = ({ fixtures, weekId }: Props) => {
             </FixtureRow>
             {isPastDeadline(kickoff) ? (
               <PredictionRow>
-                {predictions.map((prediction, i) => (
-                  <LeagueWeekPrediction
-                    homeGoals={prediction.homeGoals || 0}
-                    awayGoals={prediction.awayGoals || 0}
-                    score={prediction.score || 0}
-                    isBigBoyBonus={prediction.big_boy_bonus}
-                    key={i}
-                  />
-                ))}
+                {predictions?.map((prediction) => {
+                  return (
+                    <LeagueWeekPrediction
+                      homeGoals={prediction.homeGoals || 0}
+                      awayGoals={prediction.awayGoals || 0}
+                      score={prediction.score || 0}
+                      isBigBoyBonus={prediction.big_boy_bonus || false}
+                      key={`${prediction.fixtureId}${prediction.user.id}`}
+                    />
+                  );
+                })}
               </PredictionRow>
             ) : null}
           </Container>
@@ -83,7 +85,6 @@ const Container = styled.div`
   margin: 0.4em 0;
   padding: 1.2em 0.8em 1.6em;
   border-radius: 0.2em;
-  font-family: "Nunito" sans-serif;
 `;
 
 const FixtureRow = styled.div`
@@ -100,7 +101,7 @@ const Kickoff = styled.div`
   color: ${colours.grey400};
 `;
 
-const Fixture = styled.div`
+const StyledFixture = styled.div`
   flex-basis: 100%;
   text-align: center;
   font-size: 1.1rem;
@@ -110,7 +111,9 @@ const Fixture = styled.div`
   }
 `;
 
-const ClickableFixture = styled(Fixture)`
+const UnclickableFixture = styled(StyledFixture)``;
+
+const ClickableFixture = styled(StyledFixture)`
   :hover,
   :focus {
     color: ${colours.cyan100};

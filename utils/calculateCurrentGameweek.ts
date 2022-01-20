@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { Fixture } from "@prisma/client";
+import { Fixture } from "src/types/NewTypes";
 
 type PartialFixture = Pick<Fixture, "id" | "gameweek" | "kickoff">;
 

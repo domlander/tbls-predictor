@@ -6,10 +6,8 @@ import { REQUEST_TO_JOIN_LEAGUE_MUTATION } from "apollo/mutations";
 import Heading from "@/components/atoms/Heading";
 import Button from "@/components/Button";
 import FormInput from "@/components/atoms/FormInput";
-import { useSession } from "next-auth/client";
 
 const JoinLeague = () => {
-  const [session] = useSession();
   const [leagueId, setLeagueId] = useState<string>("");
   const [userFeedback, setUserFeedback] = useState<string>("");
   const [requestToJoinLeague, { loading }] = useMutation(
@@ -26,7 +24,7 @@ const JoinLeague = () => {
       setUserFeedback("Please enter a league code");
     } else {
       requestToJoinLeague({
-        variables: { userId: session?.user.id, leagueId: parseInt(leagueId) },
+        variables: { leagueId: parseInt(leagueId) },
       });
       setLeagueId("");
       setUserFeedback(

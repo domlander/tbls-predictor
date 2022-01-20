@@ -5,7 +5,7 @@ import * as Sentry from "@sentry/nextjs";
 
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import { getSession } from "next-auth/client";
-import { Fixture } from "@prisma/client";
+import { Fixture } from "src/types/NewTypes";
 import { FixtureForPopulatingDb } from "./types";
 import { getFixturesFromApi } from "./utils";
 
