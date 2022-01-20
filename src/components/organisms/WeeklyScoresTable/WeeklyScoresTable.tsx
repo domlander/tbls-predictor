@@ -105,7 +105,7 @@ const ParticipantsAndTotalPoints = styled.div<{ numParticipants: number }>`
   grid-template-columns: 1fr 4em;
   grid-template-rows: ${({ numParticipants }) =>
     `82px repeat(${numParticipants}, 72px)`};
-  color: ${colours.grey300};
+  color: ${colours.grey200};
 
   @media (max-width: ${pageSizes.tablet}) {
     grid-template-columns: 1fr 3.4em;
@@ -160,13 +160,13 @@ const AllPoints = styled.div<{ numWeeks: number; numParticipants: number }>`
     `20px repeat(${numWeeks}, 70px) 20px`};
   grid-template-rows: ${({ numParticipants }) =>
     `61px repeat(${numParticipants}, 72px)`};
-  color: ${colours.grey300};
+  color: ${colours.grey200};
   transform: rotateX(180deg);
   -webkit-transform: rotateX(180deg);
 
   @media (max-width: ${pageSizes.tablet}) {
     grid-template-columns: ${({ numWeeks }) =>
-      `12px repeat(${numWeeks}, 32px) 12px`};
+      `12px repeat(${numWeeks}, 44px) 12px`};
     grid-template-rows: ${({ numParticipants }) =>
       `39px repeat(${numParticipants}, 50px)`};
   }
@@ -204,7 +204,7 @@ const ClickableRowHeading = styled.a`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: ${colours.grey400};
+  color: ${colours.grey300};
 
   p {
     margin: 0;
@@ -236,17 +236,17 @@ const WeekNumber = styled.p`
 
 const Participant = styled.div`
   justify-self: flex-start;
-  margin: 0 1em;
+  border-left: 1px solid ${colours.grey500opacity50};
+  padding: 0 1em;
   font-size: 1.6rem;
 
   @media (max-width: ${pageSizes.tablet}) {
     font-size: 1rem;
-    margin: 0 0.4em;
+    padding: 0 0.8em;
   }
 `;
 
 const TotalPoints = styled.div`
-  color: ${colours.white};
   border-left: 1px solid ${colours.grey500opacity50};
   font-size: 2rem;
 
