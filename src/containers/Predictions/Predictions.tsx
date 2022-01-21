@@ -70,6 +70,15 @@ const Predictions = ({
 
     await processRequest({
       variables: { input: updatedPredictions },
+      update: (cache, { data }) => {
+        cache.writeQuery({
+          query: PREDICTIONS_QUERY,
+          variables: { weekId: gameweek },
+          data: {
+            predictions: [...data.updatePredictions.predictions],
+          },
+        });
+      },
     });
   };
 
@@ -145,6 +154,7 @@ const Predictions = ({
   if (!fixtures.length)
     return <div>No fixtures found for gameweek {gameweek}</div>;
 
+  console.log({ predictions });
   const fixturesWithPredictions: FixtureWithPrediction[] =
     combineFixturesAndPredictions(fixtures, predictions);
 

@@ -474,7 +474,19 @@ const resolvers = {
         return null;
       }
 
-      return { predictions };
+      return {
+        predictions: predictions.map(
+          ({ userId, fixtureId, homeGoals, awayGoals, big_boy_bonus }) => ({
+            fixtureId,
+            homeGoals,
+            awayGoals,
+            big_boy_bonus,
+            user: {
+              id: userId,
+            },
+          })
+        ),
+      };
     },
   },
   User: {

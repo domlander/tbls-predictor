@@ -82,14 +82,14 @@ export const LEAGUE_ADMIN_QUERY = gql`
 export const PREDICTIONS_QUERY = gql`
   query Predictions($weekId: Int!) {
     predictions(weekId: $weekId) {
+      user {
+        id
+      }
       fixtureId
       homeGoals
       awayGoals
       big_boy_bonus
       score
-      user {
-        id
-      }
     }
   }
 `;
