@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { Fixture } from "src/types/NewTypes";
+import { Fixture } from "src/types/Fixture";
 
 type PartialFixture = Pick<Fixture, "id" | "gameweek" | "kickoff">;
 

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
 
-import { Fixture } from "src/types/NewTypes";
+import { Fixture } from "src/types/Fixture";
 import useUserLeagues from "src/hooks/useUserLeagues";
 import colours from "@/styles/colours";
 import pageSizes from "@/styles/pageSizes";

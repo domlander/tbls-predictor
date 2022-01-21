@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Link from "next/link";
 
 import { useSession } from "next-auth/client";
-import { User } from "src/types/NewTypes";
+import { User } from "src/types/User";
 import WeeklyScoresTable from "@/components/organisms/WeeklyScoresTable";
 import colours from "../../styles/colours";
 

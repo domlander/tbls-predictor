@@ -7,7 +7,8 @@ import { ALL_FIXTURES_QUERY, LEAGUE_QUERY } from "apollo/queries";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import redirectInternal from "utils/redirects";
-import { User, WeeklyPoints } from "src/types/NewTypes";
+import { WeeklyPoints } from "src/types/WeeklyPoints";
+import { User } from "src/types/User";
 import LeagueHome from "src/containers/League";
 
 interface Props {

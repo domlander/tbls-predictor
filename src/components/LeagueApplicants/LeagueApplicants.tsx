@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useMutation } from "@apollo/client";
 
 import { PROCESS_JOIN_LEAGUE_REQUEST_MUTATION } from "apollo/mutations";
-import { Applicant } from "src/types/NewTypes";
+import { Applicant } from "src/types/Applicant";
 import Button from "../Button";
 import Heading from "../atoms/Heading";
 

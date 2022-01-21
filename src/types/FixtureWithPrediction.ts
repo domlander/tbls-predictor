@@ -1,4 +1,5 @@
-import { Fixture, Prediction } from "./NewTypes";
+import { Prediction } from "./Prediction";
+import { Fixture } from "./Fixture";
 
 export type FixtureWithPrediction = {
   fixtureId: Fixture["id"];

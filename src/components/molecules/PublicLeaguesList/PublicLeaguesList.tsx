@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import styled from "styled-components";
 
-import { League } from "src/types/NewTypes";
+import { League } from "src/types/League";
 import colours from "@/styles/colours";
 import Heading from "@/components/atoms/Heading";
 

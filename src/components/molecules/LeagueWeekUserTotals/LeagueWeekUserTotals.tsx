@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { UserPoints } from "src/types/NewTypes";
+import { UserPoints } from "src/types/UserPoints";
 import LeagueWeekUserScore from "../LeagueWeekUserScore";
 import pageSizes from "../../../styles/pageSizes";
 

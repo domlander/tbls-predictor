@@ -6,7 +6,9 @@ import { initializeApollo } from "apollo/client";
 import { LEAGUE_WEEK_QUERY } from "apollo/queries";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import redirectInternal from "utils/redirects";
-import { User, Fixture, League } from "src/types/NewTypes";
+import { League } from "src/types/League";
+import { Fixture } from "src/types/Fixture";
+import { User } from "src/types/User";
 import LeagueWeek from "@/containers/LeagueWeek";
 
 interface Props {

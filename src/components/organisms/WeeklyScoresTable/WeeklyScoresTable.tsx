@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 
-import { User } from "src/types/NewTypes";
+import { User } from "src/types/User";
 import pageSizes from "../../../styles/pageSizes";
 import colours from "../../../styles/colours";
 import Heading from "../../../components/atoms/Heading";

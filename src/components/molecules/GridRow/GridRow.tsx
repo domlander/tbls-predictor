@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-import { Fixture } from "src/types/NewTypes";
+import { Fixture } from "src/types/Fixture";
 import GridItemHomeTeam from "../../atoms/GridItemHomeTeam";
 import GridItemAwayTeam from "../../atoms/GridItemAwayTeam";
 import GridItemKickoff from "../../atoms/GridItemKickoff";

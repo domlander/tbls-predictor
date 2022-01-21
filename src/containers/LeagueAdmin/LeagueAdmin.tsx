@@ -3,7 +3,8 @@ import { useQuery } from "@apollo/client";
 
 import { LEAGUE_ADMIN_QUERY } from "apollo/queries";
 import styled from "styled-components";
-import { Applicant, User } from "src/types/NewTypes";
+import { User } from "src/types/User";
+import { Applicant } from "src/types/Applicant";
 import LeagueApplicants from "@/components/LeagueApplicants";
 import LeagueParticipants from "@/components/LeagueParticipants";
 import Heading from "@/components/atoms/Heading";

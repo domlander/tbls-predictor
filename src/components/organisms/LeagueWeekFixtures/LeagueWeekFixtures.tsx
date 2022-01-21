@@ -6,7 +6,7 @@ import {
   formatFixtureKickoffTime,
   whenIsTheFixture,
 } from "utils/kickoffDateHelpers";
-import { Fixture } from "src/types/NewTypes";
+import { Fixture } from "src/types/Fixture";
 import LeagueWeekPrediction from "@/components/molecules/LeagueWeekPrediction";
 import isPastDeadline from "../../../../utils/isPastDeadline";
 import colours from "../../../styles/colours";
