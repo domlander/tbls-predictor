@@ -38,6 +38,11 @@ const resolvers = {
       return fixtures;
     },
     fixturesWithPredictions: async (_, { leagueId, weekId }) => {
+      if (weekId < 1 || weekId > 38)
+        throw new UserInputError("Gameweek start week is not valid", {
+          argumentName: "gameweekStart",
+        });
+
       const league = await prisma.league.findUnique({
         where: {
           id: leagueId,
@@ -77,6 +82,9 @@ const resolvers = {
           gameweek: weekId,
         },
       });
+      if (!fixtures?.length) {
+        throw new ApolloError("No fixtures found for this gameweek.");
+      }
 
       const users = league.users.sort((a, b) => {
         const totalPointsA = a.predictions.reduce(

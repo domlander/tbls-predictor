@@ -54,10 +54,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { data } = await apolloClient.query({
     query: LEAGUE_WEEK_QUERY,
     variables: { leagueId, weekId },
+    errorPolicy: "ignore",
   });
 
-  const fixtures = data?.fixturesWithPredictions?.fixtures || [];
-  const league = data?.league;
+  if (!data?.league || !data?.fixturesWithPredictions?.fixtures?.length) {
+    return { notFound: true };
+  }
+
+  const fixtures = data.fixturesWithPredictions.fixtures || [];
+  const { league } = data;
 
   return {
     props: {
@@ -106,7 +111,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false,
+    fallback: "blocking",
   };
 };
 
