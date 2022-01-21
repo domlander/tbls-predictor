@@ -126,10 +126,10 @@ const AllPointsWrapper = styled.div`
   overflow-x: scroll;
   border: 1px solid ${colours.grey500opacity50};
   border-top: none; /* equiv to border-bottom without the transform */
-  padding-bottom: 8px; /* equiv to padding-top without the transform */
+  padding-bottom: 11px; /* equiv to padding-top without the transform */
 
   @media (max-width: ${pageSizes.tablet}) {
-    padding-bottom: 4px; /* equiv to padding-top without the transform */
+    padding-bottom: 6px; /* equiv to padding-top without the transform */
   }
 
   ::-webkit-scrollbar {
@@ -159,7 +159,7 @@ const AllPoints = styled.div<{ numWeeks: number; numParticipants: number }>`
   grid-template-columns: ${({ numWeeks }) =>
     `20px repeat(${numWeeks}, 70px) 20px`};
   grid-template-rows: ${({ numParticipants }) =>
-    `61px repeat(${numParticipants}, 72px)`};
+    `58px repeat(${numParticipants}, 72px)`};
   color: ${colours.grey200};
   transform: rotateX(180deg);
   -webkit-transform: rotateX(180deg);
@@ -168,7 +168,7 @@ const AllPoints = styled.div<{ numWeeks: number; numParticipants: number }>`
     grid-template-columns: ${({ numWeeks }) =>
       `12px repeat(${numWeeks}, 44px) 12px`};
     grid-template-rows: ${({ numParticipants }) =>
-      `39px repeat(${numParticipants}, 50px)`};
+      `37px repeat(${numParticipants}, 50px)`};
   }
 
   > div {
@@ -220,17 +220,25 @@ const ClickableRowHeading = styled.a`
 
 const WeekText = styled.p`
   font-size: 0.8rem;
+  line-height: 0.8rem;
 
   @media (max-width: ${pageSizes.tablet}) {
     font-size: 0.5rem;
+    line-height: 0.5rem;
   }
 `;
 
 const WeekNumber = styled.p`
   font-size: 1.4rem;
+  line-height: 1.6rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
 
   @media (max-width: ${pageSizes.tablet}) {
     font-size: 0.9rem;
+    line-height: 1.1rem;
+    text-underline-offset: 2px;
   }
 `;
 
