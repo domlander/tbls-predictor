@@ -135,7 +135,6 @@ const ButtonContainer = styled.div`
 
 const Tab = styled(Button)`
   margin-bottom: 1em;
-  font-size: 1.5rem;
 `;
 
 const Table = styled.div`

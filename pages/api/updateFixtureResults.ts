@@ -43,6 +43,22 @@ const updateFixtureScoreAndEvaluatePredictions = async (
   await evaluatePredictions(fixtureId, homeGoals, awayGoals);
 };
 
+const updateFixtureScore = async (
+  id: number,
+  homeGoals: number | null,
+  awayGoals: number | null
+) => {
+  await prisma.fixture.update({
+    where: {
+      id,
+    },
+    data: {
+      homeGoals,
+      awayGoals,
+    },
+  });
+};
+
 const evaluatePredictions = async (
   fixtureId: number,
   homeGoals: number | null,
@@ -90,22 +106,6 @@ const evaluatePredictions = async (
   );
 
   await Promise.all(results);
-};
-
-const updateFixtureScore = async (
-  id: number,
-  homeGoals: number | null,
-  awayGoals: number | null
-) => {
-  await prisma.fixture.update({
-    where: {
-      id,
-    },
-    data: {
-      homeGoals,
-      awayGoals,
-    },
-  });
 };
 
 export default withSentry(handler);
