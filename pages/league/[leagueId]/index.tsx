@@ -41,14 +41,17 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   if (!leagueId || leagueId <= 0) return redirectInternal("/leagues");
 
   const apolloClient = initializeApollo();
-  const {
-    data: {
-      league: { name, gameweekStart, gameweekEnd, administratorId, users },
-    },
-  } = await apolloClient.query({
+  const { data } = await apolloClient.query({
     query: LEAGUE_QUERY,
     variables: { leagueId },
+    errorPolicy: "ignore",
   });
+
+  if (!data) return { notFound: true };
+
+  const { league } = data;
+  const { gameweekStart } = league;
+  const { gameweekEnd } = league;
 
   const {
     data: { allFixtures },
@@ -63,7 +66,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     .map((x) => x + gameweekStart)
     .reverse();
 
-  const sortedUsers = [...users]
+  const sortedUsers = [...league.users]
     .sort(
       (a, b) => b.totalPoints - a.totalPoints || parseInt(a.id) - parseInt(b.id)
     )
@@ -81,9 +84,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   return {
     props: {
       id: leagueId,
-      name,
+      name: league.name,
       users: sortedUsers,
-      administratorId,
+      administratorId: league.administratorId,
       fixtureWeeksAvailable,
     },
     revalidate: 60,
@@ -98,7 +101,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false,
+    fallback: "blocking",
   };
 };
 

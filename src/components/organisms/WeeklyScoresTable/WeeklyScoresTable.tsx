@@ -106,6 +106,7 @@ const ParticipantsAndTotalPoints = styled.div<{ numParticipants: number }>`
   grid-template-rows: ${({ numParticipants }) =>
     `82px repeat(${numParticipants}, 72px)`};
   color: ${colours.grey200};
+  border-bottom: 1px solid ${colours.grey500opacity50};
 
   @media (max-width: ${pageSizes.tablet}) {
     grid-template-columns: 1fr 3.4em;
@@ -125,7 +126,6 @@ const AllPointsWrapper = styled.div`
   -webkit-transform: rotateX(180deg); /* Safari and Chrome */
   overflow-x: scroll;
   border: 1px solid ${colours.grey500opacity50};
-  border-top: none; /* equiv to border-bottom without the transform */
   padding-bottom: 11px; /* equiv to padding-top without the transform */
 
   @media (max-width: ${pageSizes.tablet}) {
@@ -244,7 +244,6 @@ const WeekNumber = styled.p`
 
 const Participant = styled.div`
   justify-self: flex-start;
-  border-left: 1px solid ${colours.grey500opacity50};
   padding: 0 1em;
   font-size: 1.6rem;
 

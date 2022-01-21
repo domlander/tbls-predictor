@@ -6,8 +6,13 @@ import { CREATE_LEAGUE_MUTATION } from "apollo/mutations";
 import Button from "@/components/Button";
 import Heading from "@/components/atoms/Heading";
 import FormInput from "../../components/atoms/FormInput";
+import colours from "@/styles/colours";
 
-const CreateLeague = () => {
+interface Props {
+  currentGameweek: number;
+}
+
+const CreateLeague = ({ currentGameweek }: Props) => {
   const [leagueName, setLeagueName] = useState("");
   const [userFeedback, setUserFeedback] = useState("");
   const [gameweekStart, setGameweekStart] = useState("1");
@@ -71,6 +76,7 @@ const CreateLeague = () => {
               }
             />
           </Label>
+          <Info>(Select a week between {currentGameweek} and 38)</Info>
           <Label>
             <LabelText>Weeks to run:</LabelText>
             <input
@@ -103,20 +109,40 @@ const Container = styled.div`
 `;
 
 const ButtonContainer = styled.div`
-  margin: 3em 0;
+  margin: 6em 0;
 `;
 
 const Label = styled.label`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 4em;
+  :first-child {
+    margin-top: 0;
+  }
+
+  input {
+    height: 2.4em;
+    padding-left: 1em;
+    border: 0;
+    color: ${colours.grey100};
+    background-color: ${colours.blackblue600};
+  }
 `;
 
 const LabelText = styled.p`
   font-size: 1.2rem;
+  margin: 0 0 0.2em;
 `;
 
 const Feedback = styled.p`
   font-size: 1rem;
   font-style: italic;
+`;
+
+const Info = styled.p`
+  margin-top: 0.5em;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: ${colours.grey300};
 `;
