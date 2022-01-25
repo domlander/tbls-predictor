@@ -60,7 +60,7 @@ const PredictionsTable = ({
   else state = "IDLE";
 
   const isBbbLockedForGameweek = predictions.some(
-    (predo) => predo.big_boy_bonus && isPastDeadline(predo.kickoff)
+    ({ bigBoyBonus, kickoff }) => bigBoyBonus && isPastDeadline(kickoff)
   );
 
   return (
@@ -75,7 +75,7 @@ const PredictionsTable = ({
               awayTeam,
               predictedHomeGoals,
               predictedAwayGoals,
-              big_boy_bonus: bigBoyBonus,
+              bigBoyBonus,
               predictionScore,
             },
             i

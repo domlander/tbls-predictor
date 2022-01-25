@@ -80,12 +80,12 @@ const evaluatePredictions = async (
       userId,
       homeGoals: predictedHomeGoals,
       awayGoals: predictedAwayGoals,
-      big_boy_bonus,
+      bigBoyBonus,
     }) => {
       const predictedResult: [number, number, boolean] = [
         predictedHomeGoals || 0,
         predictedAwayGoals || 0,
-        big_boy_bonus,
+        bigBoyBonus,
       ];
       const actualResult: [number, number] = [homeGoals, awayGoals];
       const score = calculatePredictionScore(predictedResult, actualResult);

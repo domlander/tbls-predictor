@@ -63,7 +63,7 @@ const typeDefs = gql`
     fixtureId: Int!
     homeGoals: Int
     awayGoals: Int
-    big_boy_bonus: Boolean
+    bigBoyBonus: Boolean
   }
 
   type UpdatePredictionsPayload {
@@ -86,7 +86,7 @@ const typeDefs = gql`
     fixtureId: Int!
     homeGoals: Int
     awayGoals: Int
-    big_boy_bonus: Boolean
+    bigBoyBonus: Boolean
     score: Int
   }
 

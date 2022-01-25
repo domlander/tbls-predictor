@@ -19,7 +19,7 @@ export type Props = StyleProps & {
   ) => void;
 };
 
-const focusNextInput = (name: string, value: string) => {
+const focusNextElement = (name: string, value: string) => {
   const inputs = document.querySelectorAll("input");
   const thisInput = Array.from(inputs)
     .map((input) => input.name)
@@ -59,7 +59,7 @@ const ScoreInput = ({
       name={name}
       onChange={(e) => {
         updateGoals(fixtureId, isHome, e.target.value);
-        focusNextInput(name, e.target.value);
+        focusNextElement(name, e.target.value);
       }}
       type="number"
       value={goals}

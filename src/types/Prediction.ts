@@ -5,7 +5,7 @@ type Prediction = {
   fixtureId: number;
   homeGoals: number | null;
   awayGoals: number | null;
-  big_boy_bonus: boolean;
+  bigBoyBonus: boolean;
   score: number | null;
 };
 

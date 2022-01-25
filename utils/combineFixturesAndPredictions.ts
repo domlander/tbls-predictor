@@ -13,7 +13,7 @@ const combineFixturesAndPredictions = (
       predictedHomeGoals: prediction?.homeGoals?.toString() || null,
       predictedAwayGoals: prediction?.awayGoals?.toString() || null,
       predictionScore: prediction?.score || null,
-      big_boy_bonus: prediction?.big_boy_bonus || false,
+      bigBoyBonus: prediction?.bigBoyBonus || false,
       ...f,
     };
   });

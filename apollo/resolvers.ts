@@ -58,7 +58,7 @@ const resolvers = {
                   score: true,
                   homeGoals: true,
                   awayGoals: true,
-                  big_boy_bonus: true,
+                  bigBoyBonus: true,
                   fixture: {
                     select: {
                       gameweek: true,
@@ -117,7 +117,7 @@ const resolvers = {
               fixtureId: fixture.id,
               homeGoals: userPrediction.homeGoals,
               awayGoals: userPrediction.awayGoals,
-              big_boy_bonus: userPrediction.big_boy_bonus,
+              bigBoyBonus: userPrediction.bigBoyBonus,
               score: userPrediction.score,
             });
           } else {
@@ -128,7 +128,7 @@ const resolvers = {
               fixtureId: fixture.id,
               homeGoals: null,
               awayGoals: null,
-              big_boy_bonus: false,
+              bigBoyBonus: false,
               score: null,
             });
           }
@@ -453,7 +453,7 @@ const resolvers = {
 
       try {
         const predictionsUpsert = predictions.map(
-          ({ userId, fixtureId, homeGoals, awayGoals, big_boy_bonus }) => {
+          ({ userId, fixtureId, homeGoals, awayGoals, bigBoyBonus }) => {
             // Don't let the user submit predictions after the match has finished! We cannot trust the client
             if (!updateableFixtures.includes(fixtureId)) return;
 
@@ -462,7 +462,7 @@ const resolvers = {
               fixtureId,
               homeGoals,
               awayGoals,
-              big_boy_bonus,
+              bigBoyBonus,
             };
 
             // eslint-disable-next-line consistent-return
@@ -484,11 +484,11 @@ const resolvers = {
 
       return {
         predictions: predictions.map(
-          ({ userId, fixtureId, homeGoals, awayGoals, big_boy_bonus }) => ({
+          ({ userId, fixtureId, homeGoals, awayGoals, bigBoyBonus }) => ({
             fixtureId,
             homeGoals,
             awayGoals,
-            big_boy_bonus,
+            bigBoyBonus,
             user: {
               id: userId,
             },

@@ -1,6 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
-  previewFeatures = "dataproxy"
+  provider        = "prisma-client-js"
+  previewFeatures = ["dataProxy"]
 }
 
 datasource db {
@@ -106,14 +106,14 @@ model Fixture {
 }
 
 model Prediction {
-  fixtureId     Int     @map("fixture_id")
-  userId        Int     @map("user_id")
-  homeGoals     Int?    @map("home_goals") @db.SmallInt
-  score         Int?    @db.SmallInt
-  big_boy_bonus Boolean
-  awayGoals     Int?    @map("away_goals") @db.SmallInt
-  fixture       Fixture @relation(fields: [fixtureId], references: [id], onDelete: Cascade)
-  user          User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fixtureId   Int     @map("fixture_id")
+  userId      Int     @map("user_id")
+  homeGoals   Int?    @map("home_goals") @db.SmallInt
+  score       Int?    @db.SmallInt
+  bigBoyBonus Boolean @map("big_boy_bonus")
+  awayGoals   Int?    @map("away_goals") @db.SmallInt
+  fixture     Fixture @relation(fields: [fixtureId], references: [id], onDelete: Cascade)
+  user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([fixtureId, userId])
   @@map("predictions")

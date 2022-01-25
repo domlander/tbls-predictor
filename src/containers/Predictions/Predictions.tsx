@@ -18,7 +18,7 @@ type UpdatePredictionsInputType = {
   fixtureId: Fixture["id"];
   homeGoals: Prediction["homeGoals"];
   awayGoals: Prediction["awayGoals"];
-  big_boy_bonus: Prediction["big_boy_bonus"];
+  bigBoyBonus: Prediction["bigBoyBonus"];
 };
 
 interface Props {
@@ -64,7 +64,7 @@ const Predictions = ({
         fixtureId: prediction.fixtureId,
         homeGoals: parseInt(prediction.homeGoals?.toString() || "") ?? null,
         awayGoals: parseInt(prediction.awayGoals?.toString() || "") ?? null,
-        big_boy_bonus: prediction.big_boy_bonus,
+        bigBoyBonus: prediction.bigBoyBonus,
       })
     );
 
@@ -110,7 +110,7 @@ const Predictions = ({
         userId: session!.user!.id,
         homeGoals: isHomeTeam ? predictedGoals : null,
         awayGoals: !isHomeTeam ? predictedGoals : null,
-        big_boy_bonus: false,
+        bigBoyBonus: false,
         score: null,
       });
     } else {
@@ -138,13 +138,11 @@ const Predictions = ({
     if (!editedPrediction) return;
 
     // Find the old fixture with big boy bonus and reset
-    const oldBbb = updatedPredictions.find(
-      ({ big_boy_bonus }) => big_boy_bonus
-    );
-    if (oldBbb) oldBbb.big_boy_bonus = false;
+    const oldBbb = updatedPredictions.find(({ bigBoyBonus }) => bigBoyBonus);
+    if (oldBbb) oldBbb.bigBoyBonus = false;
 
     // Set the new choice to the big boy bonus
-    editedPrediction.big_boy_bonus = true;
+    editedPrediction.bigBoyBonus = true;
 
     setPredictions(updatedPredictions);
   };
@@ -154,7 +152,6 @@ const Predictions = ({
   if (!fixtures.length)
     return <div>No fixtures found for gameweek {gameweek}</div>;
 
-  console.log({ predictions });
   const fixturesWithPredictions: FixtureWithPrediction[] =
     combineFixturesAndPredictions(fixtures, predictions);
 

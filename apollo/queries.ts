@@ -88,7 +88,7 @@ export const PREDICTIONS_QUERY = gql`
       fixtureId
       homeGoals
       awayGoals
-      big_boy_bonus
+      bigBoyBonus
       score
     }
   }
@@ -147,7 +147,7 @@ export const LEAGUE_WEEK_QUERY = gql`
           }
           homeGoals
           awayGoals
-          big_boy_bonus
+          bigBoyBonus
           score
         }
       }

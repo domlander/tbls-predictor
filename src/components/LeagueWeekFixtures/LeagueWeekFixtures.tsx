@@ -63,7 +63,7 @@ const LeagueWeekFixtures = ({ weekId, fixtures }: Props) => {
                       homeGoals={prediction.homeGoals || 0}
                       awayGoals={prediction.awayGoals || 0}
                       score={prediction.score || 0}
-                      isBigBoyBonus={prediction.big_boy_bonus || false}
+                      isBigBoyBonus={prediction.bigBoyBonus || false}
                       key={`${prediction.fixtureId}${prediction.user.id}`}
                     />
                   );

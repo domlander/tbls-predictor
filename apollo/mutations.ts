@@ -55,7 +55,7 @@ export const UPDATE_PREDICTIONS_MUTATION = gql`
         fixtureId
         homeGoals
         awayGoals
-        big_boy_bonus
+        bigBoyBonus
         score
       }
     }
