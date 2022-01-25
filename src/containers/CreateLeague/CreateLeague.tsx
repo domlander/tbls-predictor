@@ -3,10 +3,10 @@ import styled from "styled-components";
 import { useMutation } from "@apollo/client";
 
 import { CREATE_LEAGUE_MUTATION } from "apollo/mutations";
-import Button from "@/components/Button";
-import Heading from "@/components/atoms/Heading";
-import FormInput from "../../components/atoms/FormInput";
-import colours from "@/styles/colours";
+import Button from "src/components/Button";
+import colours from "src/styles/colours";
+import Heading from "src/components/Heading";
+import FormInput from "src/components/FormInput";
 
 interface Props {
   currentGameweek: number;

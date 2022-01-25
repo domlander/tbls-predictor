@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import User from "src/types/User";
-import Heading from "../atoms/Heading";
+import Heading from "../Heading";
 
 interface Props {
   participants: User[];

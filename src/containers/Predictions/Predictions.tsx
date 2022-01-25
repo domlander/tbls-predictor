@@ -10,8 +10,8 @@ import Prediction from "src/types/Prediction";
 import Fixture from "src/types/Fixture";
 import User from "src/types/User";
 import FixtureWithPrediction from "src/types/FixtureWithPrediction";
-import PredictionsTable from "@/components/PredictionsTable";
-import WeekNavigator from "@/components/molecules/WeekNavigator";
+import WeekNavigator from "src/components/WeekNavigator";
+import PredictionsTable from "src/components/PredictionsTable";
 
 type UpdatePredictionsInputType = {
   userId: User["id"];

@@ -8,10 +8,10 @@ import { FIXTURES_QUERY } from "apollo/queries";
 import { UPDATE_FIXTURES_MUTATION } from "apollo/mutations";
 import sortFixtures from "utils/sortFixtures";
 import Fixture from "src/types/Fixture";
-import Heading from "@/components/atoms/Heading";
-import Button from "@/components/Button";
-import colours from "@/styles/colours";
-import pageSizes from "@/styles/pageSizes";
+import colours from "src/styles/colours";
+import pageSizes from "src/styles/pageSizes";
+import Heading from "src/components/Heading";
+import Button from "src/components/Button";
 
 interface Props {
   fixtures: Pick<Fixture, "id" | "kickoff" | "homeTeam" | "awayTeam">[];

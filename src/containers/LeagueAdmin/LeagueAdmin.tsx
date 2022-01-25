@@ -5,10 +5,10 @@ import { LEAGUE_ADMIN_QUERY } from "apollo/queries";
 import styled from "styled-components";
 import User from "src/types/User";
 import Applicant from "src/types/Applicant";
-import LeagueApplicants from "@/components/LeagueApplicants";
-import LeagueParticipants from "@/components/LeagueParticipants";
-import Heading from "@/components/atoms/Heading";
-import Loading from "@/components/atoms/Loading";
+import LeagueApplicants from "src/components/LeagueApplicantsRequests";
+import LeagueParticipants from "src/components/LeagueParticipants";
+import Heading from "src/components/Heading";
+import Loading from "src/components/Loading";
 
 interface Props {
   leagueId: number;

@@ -3,9 +3,10 @@ import styled from "styled-components";
 import { useMutation } from "@apollo/client";
 
 import { REQUEST_TO_JOIN_LEAGUE_MUTATION } from "apollo/mutations";
-import Heading from "@/components/atoms/Heading";
-import Button from "@/components/Button";
-import FormInput from "@/components/atoms/FormInput";
+import Heading from "src/components/Heading";
+import Button from "src/components/Button";
+import FormInput from "src/components/FormInput";
+import colours from "src/styles/colours";
 
 const JoinLeague = () => {
   const [leagueId, setLeagueId] = useState<string>("");
@@ -68,6 +69,14 @@ const Label = styled.label`
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  input {
+    height: 2.4em;
+    padding-left: 1em;
+    border: 0;
+    color: ${colours.grey100};
+    background-color: ${colours.blackblue600};
+  }
 `;
 
 const LabelText = styled.p`

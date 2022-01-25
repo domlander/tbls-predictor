@@ -6,10 +6,10 @@ import {
   whenIsTheFixture,
 } from "utils/kickoffDateHelpers";
 import Fixture from "src/types/Fixture";
-import Heading from "@/components/atoms/Heading";
-import Button from "@/components/Button";
-import GridRow from "@/components/molecules/GridRow";
-import pageSizes from "../../styles/pageSizes";
+import pageSizes from "src/styles/pageSizes";
+import GridRow from "src/components/GridRow";
+import Heading from "src/components/Heading";
+import Button from "src/components/Button";
 
 interface Props {
   fixtures: Fixture[];

@@ -5,10 +5,10 @@ import Image from "next/image";
 
 import Fixture from "src/types/Fixture";
 import useUserLeagues from "src/hooks/useUserLeagues";
-import colours from "@/styles/colours";
-import pageSizes from "@/styles/pageSizes";
-import Heading from "@/components/atoms/Heading";
-import LeaguesList from "@/components/molecules/LeagueList";
+import LeaguesList from "src/components/LeagueList";
+import pageSizes from "src/styles/pageSizes";
+import colours from "src/styles/colours";
+import Heading from "src/components/Heading";
 import Predictions from "../Predictions";
 
 interface Props {

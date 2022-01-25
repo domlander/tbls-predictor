@@ -5,7 +5,7 @@ import { ALL_LEAGUES_QUERY } from "apollo/queries";
 
 import Leagues from "src/containers/Leagues";
 import League from "src/types/League";
-import Heading from "@/components/atoms/Heading";
+import Heading from "src/components/Heading";
 
 interface Props {
   publicLeagues: League[];

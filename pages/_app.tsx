@@ -5,7 +5,7 @@ import Head from "next/head";
 import { Provider } from "next-auth/client";
 import { AppProps } from "next/dist/next-server/lib/router/router";
 import { ApolloProvider } from "@apollo/client";
-import GlobalStyle from "@/styles/globalStyles";
+import GlobalStyle from "src/styles/globalStyles";
 import Layout from "@/containers/Layout";
 
 import { useApollo } from "../apollo/client";

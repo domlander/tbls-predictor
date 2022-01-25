@@ -4,7 +4,7 @@ import ChangeUsernameForm, { Props } from "./ChangeUsernameForm";
 
 // 👇 This default export determines where your story goes in the story list
 export default {
-  title: "Organisms/ChangeUsernameForm",
+  title: "ChangeUsernameForm",
   component: ChangeUsernameForm,
 } as Meta;
 

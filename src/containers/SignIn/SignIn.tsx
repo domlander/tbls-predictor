@@ -2,8 +2,8 @@ import React from "react";
 import { signIn } from "next-auth/client";
 import styled from "styled-components";
 
-import Heading from "@/components/atoms/Heading";
-import Button from "@/components/Button";
+import Heading from "src/components/Heading";
+import Button from "src/components/Button";
 
 const SignInContainer = () => (
   <>

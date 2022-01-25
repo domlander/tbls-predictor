@@ -4,8 +4,8 @@ import Link from "next/link";
 
 import { useSession } from "next-auth/client";
 import User from "src/types/User";
-import WeeklyScoresTable from "@/components/organisms/WeeklyScoresTable";
-import colours from "../../styles/colours";
+import WeeklyScoresTable from "src/components/WeeklyScoresTable";
+import colours from "src/styles/colours";
 
 interface Props {
   id: number;

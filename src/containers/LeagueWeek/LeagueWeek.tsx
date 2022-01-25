@@ -9,11 +9,11 @@ import UserPoints from "src/types/UserPoints";
 import Fixture from "src/types/Fixture";
 import User from "src/types/User";
 import sortFixtures from "utils/sortFixtures";
-import WeekNavigator from "@/components/molecules/WeekNavigator";
-import LeagueWeekUserTotals from "@/components/molecules/LeagueWeekUserTotals";
-import LeagueWeekFixtures from "@/components/organisms/LeagueWeekFixtures";
-import colours from "@/styles/colours";
-import pageSizes from "@/styles/pageSizes";
+import WeekNavigator from "src/components/WeekNavigator";
+import LeagueWeekUserTotals from "src/components/LeagueWeekUserTotals";
+import LeagueWeekFixtures from "src/components/LeagueWeekFixtures";
+import pageSizes from "src/styles/pageSizes";
+import colours from "src/styles/colours";
 
 interface Props {
   leagueId: number;

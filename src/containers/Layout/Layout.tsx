@@ -4,10 +4,10 @@ import React, { ReactNode, useState } from "react";
 import styled from "styled-components";
 import { useSession } from "next-auth/client";
 
-import HeaderBar from "@/components/molecules/HeaderBar";
-import Sidebar from "@/components/molecules/Sidebar";
-import Loading from "@/components/atoms/Loading";
-import pageSizes from "@/styles/pageSizes";
+import HeaderBar from "src/components/HeaderBar";
+import Sidebar from "src/components/Sidebar";
+import Loading from "src/components/Loading";
+import pageSizes from "src/styles/pageSizes";
 
 const DEFAULT_USERNAME = "Me";
 

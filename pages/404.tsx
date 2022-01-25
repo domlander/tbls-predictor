@@ -1,5 +1,5 @@
 import React from "react";
-import ErrorPage from "@/components/organisms/ErrorPage";
+import ErrorPage from "src/components/ErrorPage";
 
 const Page404 = () => <ErrorPage type="404" />;
 

@@ -4,7 +4,7 @@ import Button, { Props } from "./Button";
 
 // 👇 This default export determines where your story goes in the story list
 export default {
-  title: "Atoms/Button",
+  title: "Button",
   component: Button,
   argTypes: {
     disabled: { control: { type: "boolean" } },

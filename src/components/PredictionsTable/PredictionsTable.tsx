@@ -8,10 +8,10 @@ import {
 } from "utils/kickoffDateHelpers";
 import useTransientState from "src/hooks/useTransientState";
 import FixtureWithPrediction from "src/types/FixtureWithPrediction";
-import Button from "../Button";
-import GridRow from "../molecules/GridRow";
-import colours from "../../styles/colours";
-import pageSizes from "../../styles/pageSizes";
+import colours from "src/styles/colours";
+import pageSizes from "src/styles/pageSizes";
+import Button from "src/components/Button";
+import GridRow from "src/components/GridRow";
 
 type STATE = "LOADING" | "IDLE" | "SAVING" | "SAVE_SUCCESS" | "SAVE_FAILED";
 
