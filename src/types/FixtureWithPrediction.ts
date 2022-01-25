@@ -1,7 +1,7 @@
-import { Prediction } from "./Prediction";
-import { Fixture } from "./Fixture";
+import Prediction from "./Prediction";
+import Fixture from "./Fixture";
 
-export type FixtureWithPrediction = {
+type FixtureWithPrediction = {
   fixtureId: Fixture["id"];
   gameweek: Fixture["gameweek"];
   kickoff: Fixture["kickoff"];
@@ -14,3 +14,5 @@ export type FixtureWithPrediction = {
   big_boy_bonus: Prediction["big_boy_bonus"];
   predictionScore: Prediction["score"];
 };
+
+export default FixtureWithPrediction;

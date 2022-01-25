@@ -1,6 +1,6 @@
 import { Prediction } from "./Prediction";
 
-export type Fixture = {
+type Fixture = {
   id: number;
   gameweek: number;
   kickoff: Date;
@@ -10,3 +10,5 @@ export type Fixture = {
   awayGoals: number | null;
   predictions?: Prediction[];
 };
+
+export default Fixture;

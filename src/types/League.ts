@@ -1,8 +1,8 @@
 import { LeagueStatus } from "@prisma/client";
-import { Applicant } from "./Applicant";
-import { User } from "./User";
+import Applicant from "./Applicant";
+import User from "./User";
 
-export type League = {
+type League = {
   id: number;
   name: string;
   status?: LeagueStatus;
@@ -12,3 +12,5 @@ export type League = {
   applicants?: Applicant[];
   users?: User[];
 };
+
+export default League;

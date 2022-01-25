@@ -65,7 +65,6 @@ const CreateLeague = ({ currentGameweek }: Props) => {
               onChange={(e) => setLeagueName(e.target.value)}
             />
           </Label>
-          {/* TODO start: Find components for these when decided on a design */}
           <Label>
             <LabelText>Gameweek start:</LabelText>
             <input
@@ -85,7 +84,6 @@ const CreateLeague = ({ currentGameweek }: Props) => {
               onChange={(e) => setWeeksToRun(e.target.value.replace(/\D/, ""))}
             />
           </Label>
-          {/* TODO end */}
           {userFeedback && !loading && <Feedback>{userFeedback}</Feedback>}
           <ButtonContainer>
             <Button type="submit" disabled={loading} variant="primary">
@@ -138,6 +136,10 @@ const LabelText = styled.p`
 const Feedback = styled.p`
   font-size: 1rem;
   font-style: italic;
+  padding: 1em;
+  border-radius: 1em;
+  margin-top: 2em;
+  background: ${colours.grey700};
 `;
 
 const Info = styled.p`

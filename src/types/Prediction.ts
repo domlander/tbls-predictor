@@ -1,6 +1,6 @@
-import { User } from "./User";
+import User from "src/types/User";
 
-export type Prediction = {
+type Prediction = {
   user: User;
   fixtureId: number;
   homeGoals: number | null;
@@ -8,3 +8,5 @@ export type Prediction = {
   big_boy_bonus: boolean;
   score: number | null;
 };
+
+export default Prediction;

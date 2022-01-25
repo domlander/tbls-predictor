@@ -4,7 +4,7 @@ import { getSession } from "next-auth/client";
 import prisma from "prisma/client";
 
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
-import { Fixture } from "src/types/Fixture";
+import Fixture from "src/types/Fixture";
 import ManageFixtures from "@/containers/ManageFixtures";
 
 interface Props {

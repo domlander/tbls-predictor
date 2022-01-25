@@ -3,6 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/client";
 import { withSentry } from "@sentry/nextjs";
 import prisma from "prisma/client";
+
 import { Prediction, Prisma } from "@prisma/client";
 import calculatePredictionScore from "../../utils/calculatePredictionScore";
 
@@ -20,9 +21,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const scores = (req.body.scores as Prediction[]) || [];
-
   if (!scores?.length) {
-    res.status(400).send("No scores.");
+    res.status(400).send("No scores found.");
     return;
   }
 
@@ -71,6 +71,7 @@ const evaluatePredictions = async (
       fixtureId,
     },
   });
+  if (!predictions?.length) return;
 
   // Synchronously make the database updates to the prediction table: In time there may be a lot of them
   const results: Prisma.Prisma__PredictionClient<Prediction>[] = [];

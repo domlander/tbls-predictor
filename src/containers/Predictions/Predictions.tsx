@@ -6,11 +6,11 @@ import { UPDATE_PREDICTIONS_MUTATION } from "apollo/mutations";
 import { useMutation, useQuery } from "@apollo/client";
 import { PREDICTIONS_QUERY } from "apollo/queries";
 import combineFixturesAndPredictions from "utils/combineFixturesAndPredictions";
-import { Prediction } from "src/types/Prediction";
-import { Fixture } from "src/types/Fixture";
-import { User } from "src/types/User";
+import Prediction from "src/types/Prediction";
+import Fixture from "src/types/Fixture";
+import User from "src/types/User";
+import FixtureWithPrediction from "src/types/FixtureWithPrediction";
 import PredictionsTable from "@/components/PredictionsTable";
-import { FixtureWithPrediction } from "@/types";
 import WeekNavigator from "@/components/molecules/WeekNavigator";
 
 type UpdatePredictionsInputType = {

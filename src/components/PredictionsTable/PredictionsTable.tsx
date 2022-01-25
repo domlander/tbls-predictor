@@ -7,7 +7,7 @@ import {
   whenIsTheFixture,
 } from "utils/kickoffDateHelpers";
 import useTransientState from "src/hooks/useTransientState";
-import { FixtureWithPrediction } from "@/types";
+import FixtureWithPrediction from "src/types/FixtureWithPrediction";
 import Button from "../Button";
 import GridRow from "../molecules/GridRow";
 import colours from "../../styles/colours";

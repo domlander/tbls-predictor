@@ -1,6 +1,6 @@
-import { Prediction } from "src/types/Prediction";
-import { Fixture } from "src/types/Fixture";
-import { FixtureWithPrediction } from "@/types";
+import Prediction from "src/types/Prediction";
+import Fixture from "src/types/Fixture";
+import FixtureWithPrediction from "src/types/FixtureWithPrediction";
 
 const combineFixturesAndPredictions = (
   fixtures: Fixture[],

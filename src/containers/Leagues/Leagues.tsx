@@ -1,7 +1,7 @@
 import React from "react";
 
 import useUserLeagues from "src/hooks/useUserLeagues";
-import { League } from "src/types/League";
+import League from "src/types/League";
 import Loading from "@/components/atoms/Loading";
 import LeaguesList from "@/components/molecules/LeagueList";
 import PublicLeaguesList from "@/components/molecules/PublicLeaguesList";

@@ -4,7 +4,7 @@ import { initializeApollo } from "apollo/client";
 import { ALL_LEAGUES_QUERY } from "apollo/queries";
 
 import Leagues from "src/containers/Leagues";
-import { League } from "src/types/League";
+import League from "src/types/League";
 import Heading from "@/components/atoms/Heading";
 
 interface Props {

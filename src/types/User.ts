@@ -1,9 +1,9 @@
-import { Applicant } from "./Applicant";
-import { WeeklyPoints } from "./WeeklyPoints";
-import { Prediction } from "./Prediction";
-import { UserLeague } from "./UserLeague";
+import Applicant from "src/types/Applicant";
+import WeeklyPoints from "src/types/WeeklyPoints";
+import Prediction from "src/types/Prediction";
+import UserLeague from "src/types/UserLeague";
 
-export type User = {
+type User = {
   id: number;
   username?: string;
   email?: string;
@@ -13,3 +13,5 @@ export type User = {
   totalPoints?: number;
   weeklyPoints?: WeeklyPoints[];
 };
+
+export default User;

@@ -5,7 +5,7 @@ import {
   formatFixtureKickoffTime,
   whenIsTheFixture,
 } from "utils/kickoffDateHelpers";
-import { Fixture } from "src/types/Fixture";
+import Fixture from "src/types/Fixture";
 import Heading from "@/components/atoms/Heading";
 import Button from "@/components/Button";
 import GridRow from "@/components/molecules/GridRow";

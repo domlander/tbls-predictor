@@ -5,9 +5,9 @@ import Image from "next/image";
 import { useQuery } from "@apollo/client";
 
 import { LEAGUE_WEEK_QUERY } from "apollo/queries";
-import { UserPoints } from "src/types/UserPoints";
-import { Fixture } from "src/types/Fixture";
-import { User } from "src/types/User";
+import UserPoints from "src/types/UserPoints";
+import Fixture from "src/types/Fixture";
+import User from "src/types/User";
 import sortFixtures from "utils/sortFixtures";
 import WeekNavigator from "@/components/molecules/WeekNavigator";
 import LeagueWeekUserTotals from "@/components/molecules/LeagueWeekUserTotals";

@@ -1,5 +1,5 @@
 import React from "react";
-import { Fixture } from "src/types/Fixture";
+import Fixture from "src/types/Fixture";
 import styled from "styled-components";
 import colours from "../../../styles/colours";
 

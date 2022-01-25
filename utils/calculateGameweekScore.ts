@@ -1,4 +1,4 @@
-import { FixtureWithPrediction } from "@/types";
+import FixtureWithPrediction from "src/types/FixtureWithPrediction";
 
 export function calculateGameweekScore(predictions: FixtureWithPrediction[]) {
   // If not all results have been entered, the gameweek is not complete

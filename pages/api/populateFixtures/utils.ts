@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import axios from "axios";
-import { Fixture } from "src/types/Fixture";
+import Fixture from "src/types/Fixture";
 import { FixtureForPopulatingDb, FplApiFixture } from "./types";
 import { FPL_API_FIXTURES_ENDPOINT } from "./index";
 

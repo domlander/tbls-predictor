@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@apollo/client";
 
 import { USER_LEAGUES_QUERY } from "apollo/queries";
-import { UserLeague } from "src/types/UserLeague";
+import UserLeague from "src/types/UserLeague";
 
 const useUserLeagues = () => {
   const [userLeagues, setUserLeagues] = useState<UserLeague[]>([]);

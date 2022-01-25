@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import { UserLeague } from "src/types/UserLeague";
+import UserLeague from "src/types/UserLeague";
 import pageSizes from "@/styles/pageSizes";
 import Heading from "../../atoms/Heading";
 import colours from "../../../styles/colours";

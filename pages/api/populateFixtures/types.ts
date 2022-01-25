@@ -1,4 +1,4 @@
-import { Fixture } from "src/types/Fixture";
+import Fixture from "src/types/Fixture";
 
 /* eslint-disable camelcase */
 export type FplApiFixture = {

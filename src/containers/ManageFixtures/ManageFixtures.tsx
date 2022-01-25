@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 import { FIXTURES_QUERY } from "apollo/queries";
 import { UPDATE_FIXTURES_MUTATION } from "apollo/mutations";
 import sortFixtures from "utils/sortFixtures";
-import { Fixture } from "src/types/Fixture";
+import Fixture from "src/types/Fixture";
 import Heading from "@/components/atoms/Heading";
 import Button from "@/components/Button";
 import colours from "@/styles/colours";

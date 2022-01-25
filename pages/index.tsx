@@ -8,7 +8,7 @@ import { initializeApollo } from "apollo/client";
 import { ALL_FIXTURES_QUERY } from "apollo/queries";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import sortFixtures from "utils/sortFixtures";
-import { Fixture } from "src/types/Fixture";
+import Fixture from "src/types/Fixture";
 import Home from "@/containers/Home";
 
 interface Props {

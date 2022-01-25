@@ -7,10 +7,10 @@ import isUserAppliedToLeague from "utils/isUserAppliedToLeague";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import isPastDeadline from "utils/isPastDeadline";
 import sortFixtures from "utils/sortFixtures";
-import { League } from "src/types/League";
-import { Fixture } from "src/types/Fixture";
-import { UserLeague } from "src/types/UserLeague";
-import { User } from "src/types/User";
+import League from "src/types/League";
+import Fixture from "src/types/Fixture";
+import UserLeague from "src/types/UserLeague";
+import User from "src/types/User";
 import dateScalar from "./scalars";
 
 const resolvers = {
