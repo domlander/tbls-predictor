@@ -1,5 +1,5 @@
 import React from "react";
-import { signOut } from "next-auth/client";
+import { signOut } from "next-auth/react";
 import styled from "styled-components";
 
 import pageSizes from "src/styles/pageSizes";

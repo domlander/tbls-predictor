@@ -2,7 +2,7 @@ import "reflect-metadata";
 
 import React, { ReactNode, useState } from "react";
 import styled from "styled-components";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 
 import HeaderBar from "src/components/HeaderBar";
 import Sidebar from "src/components/Sidebar";
@@ -16,12 +16,13 @@ interface Props {
 }
 
 const Layout = ({ children }: Props) => {
-  const [session, loading] = useSession();
+  const { data: session, status } = useSession();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const username = (!loading && session?.user.name) || DEFAULT_USERNAME;
+  const username =
+    (status === "authenticated" && session?.user?.name) || DEFAULT_USERNAME;
   const initial = username[0].toUpperCase();
 
-  return loading ? (
+  return status === "loading" ? (
     <Loading />
   ) : (
     <Container>
@@ -36,7 +37,7 @@ const Layout = ({ children }: Props) => {
         <Sidebar
           username={username}
           initial={initial}
-          isLoggedIn={!!session?.user.id}
+          isLoggedIn={status === "authenticated"}
           handleClick={() => setIsSidebarOpen((isOpen) => !isOpen)}
         />
       </SidebarContainer>

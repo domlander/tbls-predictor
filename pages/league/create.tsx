@@ -1,6 +1,7 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
+
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import { ALL_FIXTURES_QUERY } from "apollo/queries";
 import { initializeApollo } from "apollo/client";
@@ -14,8 +15,6 @@ const CreateLeaguePage = ({ currentGameweek }: Props) => (
   <CreateLeague currentGameweek={currentGameweek} />
 );
 
-export default CreateLeaguePage;
-
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
   if (!session?.user?.id) {
@@ -27,6 +26,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
+
   const apolloClient = initializeApollo();
   const {
     data: { allFixtures },
@@ -36,5 +36,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const thisGameweek = calculateCurrentGameweek(allFixtures);
 
-  return { props: { currentGameweek: thisGameweek } };
+  return {
+    props: {
+      currentGameweek: thisGameweek,
+    },
+  };
 };
+
+export default CreateLeaguePage;

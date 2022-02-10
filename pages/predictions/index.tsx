@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import { initializeApollo } from "apollo/client";
 import { ALL_FIXTURES_QUERY } from "apollo/queries";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
@@ -9,7 +9,7 @@ const RedirectURL = () => null;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
-  if (!session) {
+  if (!session?.user?.id) {
     return {
       props: {},
       redirect: {
@@ -18,7 +18,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-  if (!session?.user?.id) return redirectInternal("/");
 
   const apolloClient = initializeApollo();
   const {

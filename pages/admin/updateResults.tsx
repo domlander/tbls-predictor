@@ -1,6 +1,6 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import prisma from "prisma/client";
 
 import sortFixtures from "utils/sortFixtures";

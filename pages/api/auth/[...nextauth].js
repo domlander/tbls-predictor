@@ -1,14 +1,20 @@
 import NextAuth from "next-auth";
-import Providers from "next-auth/providers";
+import EmailProvider from "next-auth/providers/email";
+import GoogleProvider from "next-auth/providers/google";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 const options = {
   site: process.env.NEXTAUTH_URL,
+  adapter: PrismaAdapter(prisma),
   providers: [
-    Providers.Email({
+    EmailProvider({
       server: process.env.EMAIL_SERVER,
       from: process.env.EMAIL_FROM,
     }),
-    Providers.Google({
+    GoogleProvider({
       clientId: process.env.GOOGLE_AUTH_CLIENT_ID,
       clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
     }),
@@ -20,30 +26,30 @@ const options = {
     username: process.env.POSTGRESQL_USERNAME,
     password: process.env.POSTGRESQL_PASSWORD,
     database: process.env.POSTGRESQL_DATABASE,
-    ssl: process.env.ENVIRONMENT !== "local",
-    extra: {
-      ssl:
-        process.env.ENVIRONMENT === "local"
-          ? false
-          : {
-              rejectUnauthorized: false,
-            },
-    },
+    ssl: false,
+  },
+  session: {
+    strategy: "database",
   },
   secret: process.env.SECRET,
   callbacks: {
-    /**
-     * @param  {object} session      Session object
-     * @param  {object} token        User object    (if using database sessions)
-     *                               JSON Web Token (if not using database sessions)
-     * @return {object}              Session that will be returned to the client
-     */
-    async session(session, token) {
-      if (token?.id) {
-        session.user.id = token.id;
+    async session({ session, user }) {
+      if (session?.user && user?.id) {
+        return {
+          ...session,
+          user: {
+            ...user,
+            id: user.id,
+            name: user.name,
+          },
+        };
       }
       return session;
     },
+  },
+  theme: {
+    colorScheme: "dark",
+    brandColor: "#0D151C",
   },
 };
 

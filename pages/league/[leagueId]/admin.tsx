@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import React from "react";
 
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
@@ -7,17 +7,16 @@ import LeagueAdmin from "src/containers/LeagueAdmin";
 import redirectInternal from "../../../utils/redirects";
 
 interface Props {
-  userId: number;
   leagueId: number;
 }
 
-const LeagueAdminPage = ({ userId, leagueId }: Props) => (
-  <LeagueAdmin userId={userId} leagueId={leagueId} />
+const LeagueAdminPage = ({ leagueId }: Props) => (
+  <LeagueAdmin leagueId={leagueId} />
 );
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
-  if (!session) {
+  if (!session?.user?.id) {
     return {
       props: {},
       redirect: {
@@ -26,7 +25,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       },
     };
   }
-  if (!session?.user.id) return redirectInternal("/");
 
   // Get the leagueId from the URL
   const leagueId = convertUrlParamToNumber(context.params?.leagueId);
@@ -34,7 +32,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      userId: session.user.id,
       leagueId,
     },
   };

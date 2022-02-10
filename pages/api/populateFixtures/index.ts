@@ -4,7 +4,7 @@ import prisma from "prisma/client";
 import * as Sentry from "@sentry/nextjs";
 
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import Fixture from "src/types/Fixture";
 import { FixtureForPopulatingDb } from "./types";
 import { getFixturesFromApi } from "./utils";

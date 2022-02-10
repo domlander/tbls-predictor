@@ -1,6 +1,6 @@
 import { ApolloServer } from "apollo-server-micro";
 import { schema } from "apollo/schema";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 
 const apolloServer = new ApolloServer({
   schema,

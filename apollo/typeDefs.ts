@@ -59,7 +59,7 @@ const typeDefs = gql`
   }
 
   input UpdatePredictionsInput {
-    userId: Int!
+    userId: String!
     fixtureId: Int!
     homeGoals: Int
     awayGoals: Int
@@ -71,7 +71,7 @@ const typeDefs = gql`
   }
 
   type User {
-    id: Int!
+    id: String!
     username: String
     email: String
     predictions: [Prediction!]
@@ -94,7 +94,7 @@ const typeDefs = gql`
     id: Int!
     name: String!
     status: LeagueStatus
-    administratorId: Int
+    administratorId: String
     gameweekStart: Int
     gameweekEnd: Int
     applicants: [Applicant!]

@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 
 import { UPDATE_PREDICTIONS_MUTATION } from "apollo/mutations";
 import { useMutation, useQuery } from "@apollo/client";
@@ -34,7 +34,7 @@ const Predictions = ({
   firstGameweek,
   lastGameweek,
 }: Props) => {
-  const [session] = useSession();
+  const { data: session } = useSession();
   const userId = session?.user?.id;
   const [predictions, setPredictions] = useState<Prediction[]>([]);
 
@@ -107,7 +107,7 @@ const Predictions = ({
     if (!editedPrediction) {
       updatedPredictions.push({
         fixtureId,
-        userId: session!.user!.id,
+        user: { id: session!.user.id },
         homeGoals: isHomeTeam ? predictedGoals : null,
         awayGoals: !isHomeTeam ? predictedGoals : null,
         bigBoyBonus: false,

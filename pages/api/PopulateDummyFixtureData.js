@@ -1,5 +1,5 @@
 // import prisma from "prisma/client";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 
 /*
   Populates the Fixture table in the DB with dummy fixtures.

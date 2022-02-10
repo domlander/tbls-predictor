@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
-import { useSession } from "next-auth/client";
 import User from "src/types/User";
 import WeeklyScoresTable from "src/components/WeeklyScoresTable";
 import colours from "src/styles/colours";
@@ -10,7 +10,7 @@ import colours from "src/styles/colours";
 interface Props {
   id: number;
   name: string;
-  administratorId: number;
+  administratorId: string;
   users: User[];
   fixtureWeeksAvailable: number[];
 }
@@ -22,7 +22,7 @@ const LeagueContainer = ({
   users,
   fixtureWeeksAvailable,
 }: Props) => {
-  const [session] = useSession();
+  const { data: session } = useSession();
 
   return (
     <>

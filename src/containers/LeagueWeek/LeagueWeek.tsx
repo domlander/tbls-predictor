@@ -55,7 +55,11 @@ const LeagueContainer = ({
       username,
       points: weeklyPoints?.find(({ week }) => week === weekId)?.points || 0,
     }))
-    .sort((a, b) => b.points - a.points || a.userId - b.userId);
+    .sort(
+      (a, b) =>
+        b.points - a.points ||
+        (b.username && a.username ? (b.username > a.username ? 1 : -1) : 0)
+    );
 
   const sortedFixtures = sortFixtures(fixtures);
 

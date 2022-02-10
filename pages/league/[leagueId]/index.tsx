@@ -14,7 +14,7 @@ import LeagueHome from "src/containers/League";
 interface Props {
   id: number;
   name: string;
-  administratorId: number;
+  administratorId: string;
   users: User[];
   fixtureWeeksAvailable: number[];
 }

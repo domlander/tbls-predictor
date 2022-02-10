@@ -4,7 +4,7 @@ import Prediction from "src/types/Prediction";
 import UserLeague from "src/types/UserLeague";
 
 type User = {
-  id: number;
+  id: string;
   username?: string;
   email?: string;
   predictions?: Prediction[];

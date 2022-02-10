@@ -2,7 +2,7 @@ import "reflect-metadata";
 
 import React from "react";
 import Head from "next/head";
-import { Provider } from "next-auth/client";
+import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/dist/next-server/lib/router/router";
 import { ApolloProvider } from "@apollo/client";
 import GlobalStyle from "src/styles/globalStyles";
@@ -14,13 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const apolloClient = useApollo(pageProps.initialApolloState);
 
   return (
-    <Provider
-      options={{
-        clientMaxAge: 0,
-        keepAlive: 0,
-      }}
-      session={pageProps.session}
-    >
+    <SessionProvider session={pageProps.session}>
       <ApolloProvider client={apolloClient}>
         <Head>
           <title>Premier League score predictor game | DesmondTwoTwo</title>
@@ -35,6 +29,6 @@ export default function App({ Component, pageProps }: AppProps) {
           <Component {...pageProps} />
         </Layout>
       </ApolloProvider>
-    </Provider>
+    </SessionProvider>
   );
 }
