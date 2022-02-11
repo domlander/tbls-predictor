@@ -20,11 +20,14 @@ const options = {
     username: process.env.POSTGRESQL_USERNAME,
     password: process.env.POSTGRESQL_PASSWORD,
     database: process.env.POSTGRESQL_DATABASE,
-    ssl: true,
+    ssl: process.env.ENVIRONMENT !== "local",
     extra: {
-      ssl: {
-        rejectUnauthorized: false,
-      },
+      ssl:
+        process.env.ENVIRONMENT === "local"
+          ? false
+          : {
+              rejectUnauthorized: false,
+            },
     },
   },
   secret: process.env.SECRET,
