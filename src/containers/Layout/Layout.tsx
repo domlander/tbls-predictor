@@ -19,8 +19,7 @@ const Layout = ({ children }: Props) => {
   const { data: session, status } = useSession();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const username =
-    (status === "authenticated" && session?.user?.name) || DEFAULT_USERNAME;
-  const initial = username[0].toUpperCase();
+    (status === "authenticated" && session?.user?.username) || DEFAULT_USERNAME;
 
   return status === "loading" ? (
     <Loading />
@@ -28,7 +27,7 @@ const Layout = ({ children }: Props) => {
     <Container>
       <MainContent isSidebarOpen={isSidebarOpen}>
         <HeaderBar
-          initial={initial}
+          initial={username[0].toUpperCase()}
           handleClick={() => setIsSidebarOpen((isOpen) => !isOpen)}
         />
         <InnerContainer>{children}</InnerContainer>
@@ -36,7 +35,6 @@ const Layout = ({ children }: Props) => {
       <SidebarContainer isSidebarOpen={isSidebarOpen}>
         <Sidebar
           username={username}
-          initial={initial}
           isLoggedIn={status === "authenticated"}
           handleClick={() => setIsSidebarOpen((isOpen) => !isOpen)}
         />

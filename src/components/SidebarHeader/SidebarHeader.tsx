@@ -6,11 +6,10 @@ import colours from "src/styles/colours";
 
 export interface Props {
   username: string;
-  initial: string;
   handleClick: () => void;
 }
 
-const SidebarHeader = ({ username, initial, handleClick }: Props) => (
+const SidebarHeader = ({ username, handleClick }: Props) => (
   <Container>
     <User>
       <UserIcon initial={username ? username[0].toUpperCase() : ""} />

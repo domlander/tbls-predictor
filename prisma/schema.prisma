@@ -6,6 +6,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model Account {
@@ -102,9 +103,9 @@ model Prediction {
   fixtureId   Int     @map("fixture_id")
   userId      String  @map("user_id")
   homeGoals   Int?    @map("home_goals") @db.SmallInt
-  score       Int?    @db.SmallInt
-  bigBoyBonus Boolean @map("big_boy_bonus")
   awayGoals   Int?    @map("away_goals") @db.SmallInt
+  bigBoyBonus Boolean @map("big_boy_bonus")
+  score       Int?    @db.SmallInt
   fixture     Fixture @relation(fields: [fixtureId], references: [id], onDelete: Cascade)
   user        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 

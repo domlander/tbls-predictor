@@ -2,9 +2,7 @@ import NextAuth from "next-auth";
 import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "prisma/client";
 
 const options = {
   site: process.env.NEXTAUTH_URL,
@@ -19,15 +17,6 @@ const options = {
       clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
     }),
   ],
-  database: {
-    type: "postgres",
-    host: process.env.POSTGRESQL_HOST,
-    port: 5432,
-    username: process.env.POSTGRESQL_USERNAME,
-    password: process.env.POSTGRESQL_PASSWORD,
-    database: process.env.POSTGRESQL_DATABASE,
-    ssl: false,
-  },
   session: {
     strategy: "database",
   },
@@ -39,8 +28,6 @@ const options = {
           ...session,
           user: {
             ...user,
-            id: user.id,
-            name: user.name,
           },
         };
       }

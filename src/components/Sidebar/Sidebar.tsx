@@ -9,18 +9,13 @@ import SidebarMenuItem from "../SidebarMenuItem";
 
 export type Props = {
   username: string;
-  initial: string;
   isLoggedIn: boolean;
   handleClick: () => void; // TODO this closes the sidebar. Can we use global state for this?
 };
 
-const Sidebar = ({ username, initial, isLoggedIn, handleClick }: Props) => (
+const Sidebar = ({ username, isLoggedIn, handleClick }: Props) => (
   <Container>
-    <SidebarHeader
-      username={username}
-      initial={initial}
-      handleClick={handleClick}
-    />
+    <SidebarHeader username={username} handleClick={handleClick} />
     <SidebarItemsContainer>
       <SidebarMenuItem
         onClick={handleClick}
