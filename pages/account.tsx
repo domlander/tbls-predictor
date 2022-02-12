@@ -1,6 +1,6 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import prisma from "prisma/client";
 import Account from "src/containers/Account/Account";
 import { generateDefaultUsername } from "utils/generateDefaultUsername";
@@ -9,7 +9,7 @@ const AccountPage = () => <Account />;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
-  if (!session?.user.id) {
+  if (!session?.user?.id) {
     return {
       props: {},
       redirect: {
@@ -56,7 +56,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   return {
     props: {
-      // userId: session?.user.id,
+      // userId: session?.user?.id,
     },
   };
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/client";
 import Head from "next/head";
+import { getSession } from "next-auth/react";
 import prisma from "prisma/client";
 
 import { initializeApollo } from "apollo/client";

@@ -6,7 +6,7 @@ type League = {
   id: number;
   name: string;
   status?: LeagueStatus;
-  administratorId?: number;
+  administratorId?: string;
   gameweekStart?: number;
   gameweekEnd?: number;
   applicants?: Applicant[];

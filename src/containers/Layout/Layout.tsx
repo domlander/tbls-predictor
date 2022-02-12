@@ -2,7 +2,7 @@ import "reflect-metadata";
 
 import React, { ReactNode, useState } from "react";
 import styled from "styled-components";
-import { useSession } from "next-auth/client";
+import { useSession } from "next-auth/react";
 
 import HeaderBar from "src/components/HeaderBar";
 import Sidebar from "src/components/Sidebar";
@@ -16,18 +16,18 @@ interface Props {
 }
 
 const Layout = ({ children }: Props) => {
-  const [session, loading] = useSession();
+  const { data: session, status } = useSession();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const username = (!loading && session?.user.name) || DEFAULT_USERNAME;
-  const initial = username[0].toUpperCase();
+  const username =
+    (status === "authenticated" && session?.user?.username) || DEFAULT_USERNAME;
 
-  return loading ? (
+  return status === "loading" ? (
     <Loading />
   ) : (
     <Container>
       <MainContent isSidebarOpen={isSidebarOpen}>
         <HeaderBar
-          initial={initial}
+          initial={username[0].toUpperCase()}
           handleClick={() => setIsSidebarOpen((isOpen) => !isOpen)}
         />
         <InnerContainer>{children}</InnerContainer>
@@ -35,8 +35,7 @@ const Layout = ({ children }: Props) => {
       <SidebarContainer isSidebarOpen={isSidebarOpen}>
         <Sidebar
           username={username}
-          initial={initial}
-          isLoggedIn={!!session?.user.id}
+          isLoggedIn={status === "authenticated"}
           handleClick={() => setIsSidebarOpen((isOpen) => !isOpen)}
         />
       </SidebarContainer>

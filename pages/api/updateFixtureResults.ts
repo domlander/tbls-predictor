@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
 import { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import { withSentry } from "@sentry/nextjs";
 import prisma from "prisma/client";
 

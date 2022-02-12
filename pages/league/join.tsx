@@ -1,6 +1,6 @@
 import React from "react";
 import { GetServerSideProps } from "next";
-import { getSession } from "next-auth/client";
+import { getSession } from "next-auth/react";
 import JoinLeague from "@/containers/JoinLeague";
 
 const JoinLeaguePage = () => <JoinLeague />;
@@ -9,7 +9,7 @@ export default JoinLeaguePage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
-  if (!session?.user.id) {
+  if (!session?.user?.id) {
     return {
       props: {},
       redirect: {
@@ -19,5 +19,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  return { props: {} };
+  return {
+    props: {},
+  };
 };
