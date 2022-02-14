@@ -23,6 +23,18 @@ export default NextAuth({
     GoogleProvider({
       clientId: process.env.GOOGLE_AUTH_CLIENT_ID,
       clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
+      profile(profile) {
+        if (profile)
+          return {
+            id: profile.sub,
+            email: profile.email,
+            emailVerified: profile.email_verified,
+            username: profile.name,
+            image: profile.picture,
+          };
+
+        return null;
+      },
     }),
   ],
   session: {
