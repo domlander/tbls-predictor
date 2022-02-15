@@ -8,7 +8,6 @@
     "sb": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "prisma:generate": "PRISMA_CLIENT_ENGINE_TYPE='dataproxy' prisma generate",
-    "prisma:deploy": "DATABASE_URL=\"$MIGRATE_DATABASE_URL\" prisma migrate deploy",
     "vercel-build": "yarn prisma:generate && next build"
   },
   "dependencies": {
