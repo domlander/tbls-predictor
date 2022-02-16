@@ -54,6 +54,5 @@ export default NextAuth({
   },
   theme: {
     colorScheme: "dark",
-    brandColor: "#0D151C",
   },
 });
