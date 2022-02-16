@@ -68,7 +68,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const sortedUsers = [...league.users]
     .sort(
-      (a, b) => b.totalPoints - a.totalPoints || parseInt(a.id) - parseInt(b.id)
+      (a, b) => b.totalPoints - a.totalPoints || (b.userId > a.userId ? 1 : -1)
     )
     .map((user) => ({
       ...user,

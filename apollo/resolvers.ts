@@ -96,7 +96,7 @@ const resolvers = {
           0
         );
 
-        return totalPointsB - totalPointsA || a.id - b.id;
+        return totalPointsB - totalPointsA || (b.id > a.id ? 1 : -1);
       });
 
       const fixturesWithPredictions: Fixture[] = fixtures.map((fixture) => ({
