@@ -1,8 +1,18 @@
 import { ApolloServer } from "apollo-server-micro";
 import { schema } from "apollo/schema";
+import Cors from "micro-cors";
+import { PageConfig } from "next";
 import { getSession } from "next-auth/react";
 
-const apolloServer = new ApolloServer({
+export const config: PageConfig = {
+  api: {
+    bodyParser: false, // Tell Next.js not to parse the incoming request and let GraphQL handle it for us
+  },
+};
+
+const cors = Cors();
+
+const server = new ApolloServer({
   schema,
   context: async ({ req }) => {
     const session = await getSession({ req });
@@ -11,12 +21,14 @@ const apolloServer = new ApolloServer({
   },
 });
 
-export const config = {
-  api: {
-    bodyParser: false, // Tell Next.js not to parse the incoming request and let GraphQL handle it for us
-  },
-};
+const startServer = server.start();
 
-export default apolloServer.createHandler({
-  path: "/api/graphql",
+export default cors(async (req, res) => {
+  if (req.method === "OPTIONS") {
+    res.end();
+    return false;
+  }
+
+  await startServer;
+  await server.createHandler({ path: "/api/graphql" })(req, res);
 });
