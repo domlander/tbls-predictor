@@ -100,7 +100,7 @@ const LeagueContainer = ({
 
 const Container = styled.div`
   max-width: ${pageSizes.tablet};
-  margin: 0 auto 4em;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
 `;

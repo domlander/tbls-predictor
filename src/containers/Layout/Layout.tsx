@@ -53,6 +53,7 @@ const Container = styled.div`
 const InnerContainer = styled.div`
   max-width: 992px;
   margin: 0 auto;
+  padding-bottom: 6em;
 
   @media (max-width: ${pageSizes.laptop}) {
     margin: 0 1.6em;

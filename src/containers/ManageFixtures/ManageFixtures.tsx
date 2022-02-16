@@ -257,7 +257,6 @@ const ManageFixtures = ({
 const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  margin-bottom: 4em;
 `;
 
 const DbFixturesPanel = styled.div`
