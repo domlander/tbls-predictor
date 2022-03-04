@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 
 import {
@@ -7,9 +7,11 @@ import {
 } from "utils/kickoffDateHelpers";
 import Fixture from "src/types/Fixture";
 import pageSizes from "src/styles/pageSizes";
+import colours from "src/styles/colours";
 import GridRow from "src/components/GridRow";
 import Heading from "src/components/Heading";
 import Button from "src/components/Button";
+import useTransientState from "src/hooks/useTransientState";
 
 interface Props {
   fixtures: Fixture[];
@@ -20,9 +22,19 @@ const UpdateResultsPage = ({ fixtures }: Props) => {
   const [savedScores, setSavedScores] = useState(fixtures);
   const [scores, setScores] = useState(fixtures);
   const [isCurrentGameweekTab, setIsCurrentGameweekTab] = useState(true);
+  const [showFeedback, setShowFeedback] = useTransientState(false, 3000);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+
+  useEffect(() => {
+    if (isSaving || isSaved) setShowFeedback(true);
+  }, [isSaving, isSaved]);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    setIsSaving(true);
+    setIsSaved(false);
 
     const updatedScores: Partial<Fixture>[] = scores
       .filter(({ id, homeGoals, awayGoals }) => {
@@ -51,7 +63,17 @@ const UpdateResultsPage = ({ fixtures }: Props) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ scores: updatedScores }),
-    }).then(() => setSavedScores(scores));
+    })
+      .then(() => {
+        setSavedScores(scores);
+        setIsSaved(true);
+      })
+      .catch(() => {
+        setIsSaved(false);
+      })
+      .finally(() => {
+        setIsSaving(false);
+      });
   };
 
   const updateGoals = (
@@ -124,6 +146,12 @@ const UpdateResultsPage = ({ fixtures }: Props) => {
             Save
           </Button>
         </ButtonContainer>
+        {showFeedback &&
+          (isSaving ? (
+            <UserFeedback>Saving...</UserFeedback>
+          ) : isSaved ? (
+            <UserFeedback>Save successful!</UserFeedback>
+          ) : null)}
       </form>
     </>
   );
@@ -150,6 +178,13 @@ const Table = styled.div`
   @media (max-width: ${pageSizes.mobileM}) {
     grid-template-columns: 6em 1fr auto 5px auto 1fr;
   }
+`;
+
+const UserFeedback = styled.p`
+  color: ${colours.cyan300};
+  font-size: 1.8em;
+  font-style: italic;
+  margin-top: 1em;
 `;
 
 export default UpdateResultsPage;
