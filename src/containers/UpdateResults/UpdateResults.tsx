@@ -39,14 +39,12 @@ const UpdateResultsPage = ({ fixtures }: Props) => {
     const updatedScores: Partial<Fixture>[] = scores
       .filter(({ id, homeGoals, awayGoals }) => {
         const savedScore = savedScores.find((x) => x.id === id);
-        if (
-          !savedScore ||
-          (savedScore.homeGoals === homeGoals &&
-            savedScore.awayGoals === awayGoals)
-        )
-          return false;
+        if (!savedScore) return false;
 
-        return true;
+        return (
+          savedScore.homeGoals !== homeGoals ||
+          savedScore.awayGoals !== awayGoals
+        );
       })
       .map(({ id, homeGoals, awayGoals }) => ({
         fixtureId: id,
