@@ -57,12 +57,13 @@ const BbbButton = styled.button<{
   isBbbSelected: Props["isBbbSelected"];
 }>`
   color: ${({ isBbbSelected }) =>
-    isBbbSelected ? colours.blackblue500 : colours.cyan700};
+    isBbbSelected ? colours.blackblue500 : colours.cyan300};
   background-color: ${({ isBbbSelected }) =>
-    isBbbSelected ? colours.cyan500 : colours.blackblue500};
+    isBbbSelected ? colours.cyan300 : colours.blackblue500};
   border: ${({ isBbbSelected }) =>
-    `1px solid ${isBbbSelected ? colours.cyan500 : colours.cyan700}`};
+    `1px solid ${isBbbSelected ? colours.cyan300 : colours.cyan500}`};
   border-radius: 0.2em;
+  cursor: pointer;
 
   padding: 0 0.5em;
   @media (max-width: ${pageSizes.mobileL}) {
@@ -71,10 +72,8 @@ const BbbButton = styled.button<{
 
   :hover,
   :focus {
-    background-color: ${({ isBbbSelected }) =>
-      isBbbSelected && colours.cyan300};
-    color: ${({ isBbbSelected }) =>
-      isBbbSelected ? colours.black700 : colours.cyan300};
+    background-color: ${colours.cyan300};
+    color: ${colours.blackblue500};
     border: 1px solid ${colours.cyan300};
   }
 `;

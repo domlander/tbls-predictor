@@ -4,6 +4,8 @@ import Image from "next/image";
 import UserIcon from "src/components/UserIcon";
 import colours from "src/styles/colours";
 
+const MAX_USERNAME_LENGTH = 16;
+
 export interface Props {
   username: string;
   handleClick: () => void;
@@ -14,18 +16,19 @@ const SidebarHeader = ({ username, handleClick }: Props) => (
     <User>
       <UserIcon initial={username ? username[0].toUpperCase() : ""} />
       <Username>
-        {username.length > 16 ? `${username.substring(0, 14)}...` : username}
+        {username.length > MAX_USERNAME_LENGTH
+          ? `${username.substring(0, MAX_USERNAME_LENGTH - 2)}...`
+          : username}
       </Username>
     </User>
-    <IconContainer tabIndex={0}>
-      <Icon
-        onClick={handleClick}
+    <ImageContainer tabIndex={0} onClick={handleClick}>
+      <Image
         src="/images/Cross.svg"
-        alt="exit"
-        width="18.5"
-        height="19.5"
+        alt="close sidebar cross"
+        height={20}
+        width={20}
       />
-    </IconContainer>
+    </ImageContainer>
   </Container>
 );
 
@@ -51,19 +54,16 @@ const Username = styled.p`
   font-weight: 400;
 `;
 
-const IconContainer = styled.div`
+const ImageContainer = styled.div`
   margin-right: 1.6em;
   display: flex;
   align-items: center;
+  cursor: pointer;
 
   :focus,
   :hover {
     outline: 1px solid ${colours.grey100};
   }
-`;
-
-const Icon = styled(Image)`
-  cursor: pointer;
 `;
 
 export default SidebarHeader;

@@ -12,6 +12,7 @@ export default {
 
   black100: "#333333",
   black700: "#111111",
+  black: "#000",
 
   cyan50: "#8cfdf5",
   cyan100: "#66FCF1",
