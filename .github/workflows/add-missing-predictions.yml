@@ -3,7 +3,7 @@ on:
   schedule:
     - cron: "10,40 * * * *"
 jobs:
-  updates-fixtures:
+  add-missing-predictions:
     runs-on: ubuntu-latest
     steps:
       - name: Hit endpoint
