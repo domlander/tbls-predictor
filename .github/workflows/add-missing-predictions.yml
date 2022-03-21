@@ -1,0 +1,13 @@
+name: add-missing-predictions
+on:
+  schedule:
+    - cron: "10,40 * * * *"
+jobs:
+  updates-fixtures:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hit endpoint
+        env:
+          SECRET: ${{ secrets.ACTIONS_SECRET }}
+        run: |
+          curl "https://www.desmondtwotwo.com/api/addMissingPredictions?secret=$SECRET"
