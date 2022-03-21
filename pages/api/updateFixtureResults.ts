@@ -4,33 +4,39 @@ import { getSession } from "next-auth/react";
 import { withSentry } from "@sentry/nextjs";
 import prisma from "prisma/client";
 
-import { Prediction, Prisma } from "@prisma/client";
+import { Fixture, Prediction, Prisma } from "@prisma/client";
 import calculatePredictionScore from "../../utils/calculatePredictionScore";
 
-/*
-  Updates the score of a Premier League match. Evaluates the score of all predictions for this fixtures.
-
-  Params:
-  - scores: An array of objects containing the following fields: fixtureId, homeScore, awayScore
-*/
+/**
+ * Updates the score of a match and evaluates the score of all predictions for this fixtures.
+ *
+ * Params:
+ *   - req.scores: An array of objects containing the following fields: id, homeGoals, awayGoals
+ */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const secret = req.query.secret as string;
   const session = await getSession({ req });
-  if (session?.user?.email !== process.env.ADMIN_EMAIL) {
-    res.status(401).send("You are not authorised to perform this action.");
-    return;
+
+  if (
+    session?.user?.email !== process.env.ADMIN_EMAIL &&
+    secret !== process.env.ACTIONS_SECRET
+  ) {
+    return res
+      .status(401)
+      .send("You are not authorised to perform this action.");
   }
 
-  const scores = (req.body.scores as Prediction[]) || [];
+  const scores = (req.body.scores as Fixture[]) || [];
+
   if (!scores?.length) {
-    res.status(400).send("No scores found.");
-    return;
+    return res.status(400).send("No scores found.");
   }
 
-  scores.forEach(({ fixtureId, homeGoals, awayGoals }) => {
-    updateFixtureScoreAndEvaluatePredictions(fixtureId, homeGoals, awayGoals);
+  scores.forEach(({ id, homeGoals, awayGoals }) => {
+    updateFixtureScoreAndEvaluatePredictions(id, homeGoals, awayGoals);
   });
 
-  res.send(200);
+  return res.send(200);
 };
 
 const updateFixtureScoreAndEvaluatePredictions = async (
@@ -38,15 +44,17 @@ const updateFixtureScoreAndEvaluatePredictions = async (
   homeGoals: number | null,
   awayGoals: number | null
 ) => {
-  // Be sure to update the fixture table with the score before updating prediction evaluations.
+  if (homeGoals === null || awayGoals === null) return;
+
+  // Update the fixture table score BEFORE updating prediction scores.
   await updateFixtureScore(fixtureId, homeGoals, awayGoals);
-  await evaluatePredictions(fixtureId, homeGoals, awayGoals);
+  await findAllPredictionsAndUpdateScore(fixtureId, homeGoals, awayGoals);
 };
 
 const updateFixtureScore = async (
   id: number,
-  homeGoals: number | null,
-  awayGoals: number | null
+  homeGoals: number,
+  awayGoals: number
 ) => {
   await prisma.fixture.update({
     where: {
@@ -59,13 +67,14 @@ const updateFixtureScore = async (
   });
 };
 
-const evaluatePredictions = async (
+/**
+ * Finds all predictions for the given fixture and updates the score for each prediction.
+ */
+const findAllPredictionsAndUpdateScore = async (
   fixtureId: number,
-  homeGoals: number | null,
-  awayGoals: number | null
+  homeGoals: number,
+  awayGoals: number
 ) => {
-  if (homeGoals === null || awayGoals === null) return;
-
   const predictions = await prisma.prediction.findMany({
     where: {
       fixtureId,

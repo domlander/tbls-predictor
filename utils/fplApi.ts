@@ -2,13 +2,25 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import timezone from "dayjs/plugin/timezone";
 import axios from "axios";
+import * as Sentry from "@sentry/nextjs";
 import Fixture from "src/types/Fixture";
-import { FixtureForPopulatingDb, FplApiFixture } from "./types";
-import { FPL_API_FIXTURES_ENDPOINT } from "./index";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Europe/London");
+
+/* eslint-disable camelcase */
+export type FplApiFixture = {
+  kickoff_time: string;
+  team_h: number;
+  team_a: number;
+  team_h_score: number;
+  team_a_score: number;
+  finished: boolean;
+};
+
+export const FPL_API_FIXTURES_ENDPOINT =
+  "https://fantasy.premierleague.com/api/fixtures";
 
 export const mapFplApiFixtureToFixture = (
   fixture: FplApiFixture,
@@ -17,8 +29,8 @@ export const mapFplApiFixtureToFixture = (
   gameweek: currentGameweek,
   homeTeam: teamsDictionary[fixture.team_h],
   awayTeam: teamsDictionary[fixture.team_a],
-  homeGoals: fixture.team_h_goals || null,
-  awayGoals: fixture.team_a_goals || null,
+  homeGoals: fixture.team_h_score ?? null,
+  awayGoals: fixture.team_a_score ?? null,
   kickoff: dayjs(fixture.kickoff_time).utc(true).toDate(),
 });
 
@@ -48,10 +60,10 @@ export const teamsDictionary: TeamsDictionary = {
   20: "Wolves",
 };
 
-/*
- *  Fetches fixtures from the FPL API and maps to a usable type
+/**
+ *  Fetches fixtures from the FPL API and maps to our Fixture type
  */
-export const getFixturesFromApi = async (gameweek: number) => {
+export const getFixturesFromApiForGameweek = async (gameweek: number) => {
   const url = `${FPL_API_FIXTURES_ENDPOINT}/?event=${gameweek}`;
 
   let apiData;
@@ -64,13 +76,14 @@ export const getFixturesFromApi = async (gameweek: number) => {
       })
       .then((resp) => resp.data);
   } catch (e) {
+    Sentry.captureException(e);
     throw new Error(
       `There was an error fetching fixture data from the FPL API:\n${e}`
     );
   }
 
-  const fixturesFromApi: FixtureForPopulatingDb[] = apiData.map(
-    (fixture: FplApiFixture) => mapFplApiFixtureToFixture(fixture, gameweek)
+  const fixturesFromApi: Fixture[] = apiData.map((fixture: FplApiFixture) =>
+    mapFplApiFixtureToFixture(fixture, gameweek)
   );
 
   return fixturesFromApi;

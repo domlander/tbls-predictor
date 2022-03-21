@@ -1,4 +1,4 @@
-import { Prediction } from "./Prediction";
+import Prediction from "./Prediction";
 
 type Fixture = {
   id: number;

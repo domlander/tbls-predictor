@@ -6,14 +6,10 @@ import * as Sentry from "@sentry/nextjs";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import { getSession } from "next-auth/react";
 import Fixture from "src/types/Fixture";
-import { FixtureForPopulatingDb } from "./types";
-import { getFixturesFromApi } from "./utils";
-
-export const FPL_API_FIXTURES_ENDPOINT =
-  "https://fantasy.premierleague.com/api/fixtures";
+import { getFixturesFromApiForGameweek } from "utils/fplApi";
 
 /*
-  Updates fixtures in the database using the FPL fixtures API.
+  Adds or updates fixtures in the database using the FPL fixtures API.
 
   Params:
    - gameweek: The gameweek in which to update fixtures. Defaults to the current gameweek
@@ -65,7 +61,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 const fetchApiData = async (gameweek: number, numGameweeks: number) => {
   const results = [];
   for (let i = gameweek; i <= Math.min(gameweek + numGameweeks - 1, 38); i++) {
-    results.push(getFixturesFromApi(i));
+    results.push(getFixturesFromApiForGameweek(i));
   }
 
   const data = await Promise.all(results);
@@ -82,12 +78,12 @@ const fetchApiData = async (gameweek: number, numGameweeks: number) => {
 */
 const populateFixtures = async (
   theGameweek: number,
-  apiFixtures: FixtureForPopulatingDb[],
+  apiFixtures: Fixture[],
   dbFixtures: Fixture[]
 ) => {
-  const fixturesToAdd: FixtureForPopulatingDb[] = [];
-  const fixturesToUpdate: FixtureForPopulatingDb[] = [];
-  const fixturesToDelete: FixtureForPopulatingDb[] = [];
+  const fixturesToAdd: Fixture[] = [];
+  const fixturesToUpdate: Fixture[] = [];
+  const fixturesToDelete: Fixture[] = [];
 
   // Add fixtures that we don't have yet and amend kickoff where the date/time has changed
   apiFixtures.forEach((apiFixture) => {

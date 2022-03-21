@@ -33,11 +33,8 @@ const UpdateResultsPage = ({ fixtures }: Props) => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setIsSaving(true);
-    setIsSaved(false);
-
-    const updatedScores: Partial<Fixture>[] = scores
-      .filter(({ id, homeGoals, awayGoals }) => {
+    const updatedScores: Partial<Fixture>[] = scores.filter(
+      ({ id, homeGoals, awayGoals }) => {
         const savedScore = savedScores.find((x) => x.id === id);
         if (!savedScore) return false;
 
@@ -45,14 +42,12 @@ const UpdateResultsPage = ({ fixtures }: Props) => {
           savedScore.homeGoals !== homeGoals ||
           savedScore.awayGoals !== awayGoals
         );
-      })
-      .map(({ id, homeGoals, awayGoals }) => ({
-        fixtureId: id,
-        homeGoals,
-        awayGoals,
-      }));
-
+      }
+    );
     if (!updatedScores?.length) return;
+
+    setIsSaving(true);
+    setIsSaved(false);
 
     fetch("/api/updateFixtureResults", {
       method: "post",
