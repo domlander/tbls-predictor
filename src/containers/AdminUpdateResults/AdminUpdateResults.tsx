@@ -18,7 +18,7 @@ interface Props {
 }
 
 // TODO: There is a lot of similar logic with Predictions page. May want to extract out common logic
-const UpdateResultsPage = ({ fixtures }: Props) => {
+const AdminUpdateResults = ({ fixtures }: Props) => {
   const [savedScores, setSavedScores] = useState(fixtures);
   const [scores, setScores] = useState(fixtures);
   const [isCurrentGameweekTab, setIsCurrentGameweekTab] = useState(true);
@@ -180,4 +180,4 @@ const UserFeedback = styled.p`
   margin-top: 1em;
 `;
 
-export default UpdateResultsPage;
+export default AdminUpdateResults;

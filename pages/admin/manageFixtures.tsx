@@ -5,7 +5,7 @@ import prisma from "prisma/client";
 
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import Fixture from "src/types/Fixture";
-import ManageFixtures from "@/containers/ManageFixtures";
+import ManageFixtures from "@/containers/AdminManageFixtures";
 
 interface Props {
   gameweek: number;

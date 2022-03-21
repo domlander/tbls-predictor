@@ -5,7 +5,7 @@ import prisma from "prisma/client";
 
 import sortFixtures from "utils/sortFixtures";
 import Fixture from "src/types/Fixture";
-import UpdateResults from "@/containers/UpdateResults";
+import UpdateResults from "@/containers/AdminUpdateResults";
 
 interface Props {
   fixtures: Fixture[];

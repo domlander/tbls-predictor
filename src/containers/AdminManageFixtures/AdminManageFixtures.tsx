@@ -18,7 +18,7 @@ interface Props {
   gameweek: number;
 }
 
-const ManageFixtures = ({
+const AdminManageFixtures = ({
   gameweek: initialGameweek,
   fixtures: initialFixtures = [],
 }: Props) => {
@@ -315,4 +315,4 @@ const FixturesTable = styled.div`
   }
 `;
 
-export default ManageFixtures;
+export default AdminManageFixtures;
