@@ -1,10 +1,12 @@
 # TBLS Predictor League
 
-Predict footy scores to beat your mates and inflate your ego in a completely new way.
+A free-to-play Premier League football scores predictor game. Create or join leagues to compare your predictions in a league table with your friends.
 
 ## How do I play?
 
-[https://www.desmondtwotwo.com/](https://www.desmondtwotwo.com/)
+[https://www.desmondtwotwo.com/signIn/](https://www.desmondtwotwo.com/signIn/)
+
+Enter your predictions for the current gameweek and select a game to you feel confident in to double your points. Three points for a correct score. One point for a correct result. The deadline for a prediction is 90 minutes before kick-off.
 
 ## When can I add predictions?
 
@@ -12,11 +14,11 @@ Right away, once you have signed up. We use passwordless login, so all you need 
 
 ## Can I play with friends?
 
-Sure. Navigate to the "Create League" section and share the league code with your friends. You will be able to accept your friends requests to join your league
+Sure. Navigate to the "Create League" section and share the league code with your friends. If your friend has already created a league, go to the "Join League" section to join their league.
 
 ## When do I need to add a prediction for a match?
 
-Fixtures are usually added two weeks in advance. Predictions for a match lock 90 minutes before kickoff, so enter your score in before then. If you forget, a default score of 0-0 will apply.
+Fixtures are usually added two gameweeks in advance. Predictions for a match lock 90 minutes before kickoff, so enter your score in before then. If you forget, a default score of 0-0 will apply, so you won't miss out completely!
 
 ## Tech Section
 
