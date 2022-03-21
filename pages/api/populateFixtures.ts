@@ -23,7 +23,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const numGameweeks = parseInt(req.query.numGameweeks as string) || 1;
   const shouldSaveToDatabase = (req.query.persist as string) === "true";
 
-  // Authenticate
+  if (!process.env.ADMIN_EMAIL)
+    return res
+      .status(500)
+      .send("Please ensure the ADMIN_EMAIL environment variable is set.");
+
+  if (!process.env.ACTIONS_SECRET)
+    return res
+      .status(500)
+      .send("Please ensure the ACTIONS_SECRET environment variable is set.");
+
   const session = await getSession({ req });
   if (
     session?.user?.email !== process.env.ADMIN_EMAIL &&

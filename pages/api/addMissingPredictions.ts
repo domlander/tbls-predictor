@@ -30,6 +30,16 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const secret = req.query.secret as string;
   const session = await getSession({ req });
 
+  if (!process.env.ADMIN_EMAIL)
+    return res
+      .status(500)
+      .send("Please ensure the ADMIN_EMAIL environment variable is set.");
+
+  if (!process.env.ACTIONS_SECRET)
+    return res
+      .status(500)
+      .send("Please ensure the ACTIONS_SECRET environment variable is set.");
+
   if (
     session?.user?.email !== process.env.ADMIN_EMAIL &&
     secret !== process.env.ACTIONS_SECRET
