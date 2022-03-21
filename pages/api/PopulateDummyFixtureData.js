@@ -7,6 +7,12 @@ import { getSession } from "next-auth/react";
 */
 export default async (req, res) => {
   const session = await getSession({ req });
+
+  if (!process.env.ADMIN_EMAIL)
+    return res
+      .status(500)
+      .send("Please ensure the ADMIN_EMAIL environment variable is set.");
+
   if (session.user.email !== process.env.ADMIN_EMAIL) {
     res.status(401).send("You are not authorised to perform this action.");
   }

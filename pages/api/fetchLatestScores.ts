@@ -30,6 +30,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const secret = req.query.secret as string;
   const session = await getSession({ req });
 
+  if (!process.env.NEXTAUTH_URL)
+    return res
+      .status(500)
+      .send("Please ensure the NEXTAUTH_URL environment variable is set.");
+
   if (!process.env.ADMIN_EMAIL)
     return res
       .status(500)
