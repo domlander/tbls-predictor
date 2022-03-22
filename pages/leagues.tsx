@@ -23,14 +23,18 @@ const LeaguesPage = ({ publicLeagues }: Props) => {
 export const getStaticProps: GetStaticProps = async () => {
   const apolloClient = initializeApollo();
   const {
-    data: { allLeagues },
-  } = await apolloClient.query({
-    query: ALL_LEAGUES_QUERY,
-  });
+    data: {
+      allLeagues: { leagues },
+    },
+  }: { data: { allLeagues: { leagues: League[] } } } = await apolloClient.query(
+    {
+      query: ALL_LEAGUES_QUERY,
+    }
+  );
 
   return {
     props: {
-      publicLeagues: allLeagues?.leagues || [],
+      publicLeagues: leagues || [],
     },
   };
 };

@@ -7,14 +7,14 @@ import dayjs from "dayjs";
 import { FIXTURES_QUERY } from "apollo/queries";
 import { UPDATE_FIXTURES_MUTATION } from "apollo/mutations";
 import sortFixtures from "utils/sortFixtures";
+import Heading from "src/components/Heading";
+import Button from "src/components/Button";
 import Fixture from "src/types/Fixture";
 import colours from "src/styles/colours";
 import pageSizes from "src/styles/pageSizes";
-import Heading from "src/components/Heading";
-import Button from "src/components/Button";
 
 interface Props {
-  fixtures: Pick<Fixture, "id" | "kickoff" | "homeTeam" | "awayTeam">[];
+  fixtures: Fixture[];
   gameweek: number;
 }
 

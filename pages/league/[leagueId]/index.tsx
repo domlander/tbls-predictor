@@ -3,13 +3,14 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import prisma from "prisma/client";
 
 import { initializeApollo } from "apollo/client";
+import LeagueHome from "src/containers/League";
 import { ALL_FIXTURES_QUERY, LEAGUE_QUERY } from "apollo/queries";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import redirectInternal from "utils/redirects";
 import WeeklyPoints from "src/types/WeeklyPoints";
 import User from "src/types/User";
-import LeagueHome from "src/containers/League";
+import Fixture from "src/types/Fixture";
 
 interface Props {
   id: number;
@@ -55,7 +56,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const {
     data: { allFixtures },
-  } = await apolloClient.query({
+  }: { data: { allFixtures: Fixture[] } } = await apolloClient.query({
     query: ALL_FIXTURES_QUERY,
   });
   const currentGameweek = calculateCurrentGameweek(allFixtures);

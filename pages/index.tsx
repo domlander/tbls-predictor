@@ -72,14 +72,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const apolloClient = initializeApollo();
   const {
     data: { allFixtures },
-  } = await apolloClient.query({
+  }: { data: { allFixtures: Fixture[] } } = await apolloClient.query({
     query: ALL_FIXTURES_QUERY,
   });
 
   const thisGameweek = calculateCurrentGameweek(allFixtures);
 
   const fixtures = sortFixtures(
-    allFixtures.filter((f: Fixture) => f.gameweek === thisGameweek)
+    allFixtures.filter(({ gameweek }) => gameweek === thisGameweek)
   );
 
   return {

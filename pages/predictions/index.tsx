@@ -3,7 +3,8 @@ import { getSession } from "next-auth/react";
 import { initializeApollo } from "apollo/client";
 import { ALL_FIXTURES_QUERY } from "apollo/queries";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
-import redirectInternal from "../../utils/redirects";
+import redirectInternal from "utils/redirects";
+import Fixture from "src/types/Fixture";
 
 const RedirectURL = () => null;
 
@@ -22,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const apolloClient = initializeApollo();
   const {
     data: { allFixtures },
-  } = await apolloClient.query({
+  }: { data: { allFixtures: Fixture[] } } = await apolloClient.query({
     query: ALL_FIXTURES_QUERY,
   });
 

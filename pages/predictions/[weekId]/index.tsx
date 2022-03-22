@@ -17,12 +17,6 @@ interface Props {
   lastGameweek: number;
 }
 
-type AllFixturesDataObject = {
-  data: {
-    allFixtures: Fixture[];
-  };
-};
-
 const PredictionsPage = ({
   fixtures,
   weekId,
@@ -56,16 +50,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = initializeApollo();
   const {
     data: { allFixtures },
-  }: AllFixturesDataObject = await apolloClient.query({
+  }: { data: { allFixtures: Fixture[] } } = await apolloClient.query({
     query: ALL_FIXTURES_QUERY,
   });
 
   const firstGameweek = allFixtures.reduce(
-    (acc, cur) => (cur.gameweek < acc ? cur.gameweek : acc),
+    (acc, fixture) => (fixture.gameweek < acc ? fixture.gameweek : acc),
     allFixtures[0].gameweek
   );
   const lastGameweek = allFixtures.reduce(
-    (acc, cur) => (cur.gameweek > acc ? cur.gameweek : acc),
+    (acc, fixture) => (fixture.gameweek > acc ? fixture.gameweek : acc),
     allFixtures[0].gameweek
   );
 
