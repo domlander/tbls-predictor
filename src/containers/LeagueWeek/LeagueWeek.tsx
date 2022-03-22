@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
-import { useQuery } from "@apollo/client";
+import { NetworkStatus, useQuery } from "@apollo/client";
 
 import { LEAGUE_WEEK_QUERY } from "apollo/queries";
 import UserPoints from "src/types/UserPoints";
@@ -37,8 +37,12 @@ const LeagueContainer = ({
   const [fixtures, setFixtures] = useState(fixturesFromProps);
   const [users, setUsers] = useState(usersFromProps);
 
-  const { loading } = useQuery(LEAGUE_WEEK_QUERY, {
-    variables: { leagueId, weekId: gameweek },
+  const { loading, refetch, networkStatus } = useQuery(LEAGUE_WEEK_QUERY, {
+    variables: {
+      leagueId,
+      weekId: gameweek,
+      notifyOnNetworkStatusChange: true,
+    },
     onCompleted: (data) => {
       if (data?.fixturesWithPredictions?.fixtures) {
         setFixtures(data.fixturesWithPredictions.fixtures);
@@ -64,16 +68,20 @@ const LeagueContainer = ({
       <TopBar>
         <Breadcrumbs>
           <Link href={`/league/${leagueId}`} passHref>
-            <A>{leagueName}</A>
+            <a>{leagueName}</a>
           </Link>
           <span>|</span>
           <p>{`Gameweek ${gameweek}`}</p>
         </Breadcrumbs>
-        {loading ? (
+        {loading || networkStatus === NetworkStatus.refetch ? (
           <SpinnerContainer>
-            <Image src="/images/spinner.gif" height="12" width="12" alt="" />
+            <Image src="/images/spinner.gif" height="20" width="20" alt="" />
           </SpinnerContainer>
-        ) : null}
+        ) : (
+          <RefreshButton type="button" onClick={() => refetch()}>
+            <Image src="/images/refresh.svg" height="20" width="20" alt="" />
+          </RefreshButton>
+        )}
       </TopBar>
       <WeekNavigator
         week={gameweek}
@@ -142,7 +150,9 @@ const Breadcrumbs = styled.div`
   }
 `;
 
-const A = styled.a``;
+const RefreshButton = styled.button`
+  cursor: pointer;
+`;
 
 const SpinnerContainer = styled.div`
   height: 12px;
