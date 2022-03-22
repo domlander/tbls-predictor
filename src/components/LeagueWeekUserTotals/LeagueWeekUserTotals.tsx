@@ -4,6 +4,7 @@ import styled from "styled-components";
 import UserPoints from "src/types/UserPoints";
 import pageSizes from "src/styles/pageSizes";
 import LeagueWeekUserScore from "../LeagueWeekUserScore";
+import colours from "@/styles/colours";
 
 export type Props = {
   users: UserPoints[];
@@ -28,6 +29,11 @@ const Container = styled.div<{ numUsers: number }>`
   display: grid;
   grid-template-columns: ${({ numUsers }) => `repeat(${numUsers}, 1fr)`};
   justify-items: center;
+  position: sticky;
+  top: 0;
+  background: ${colours.blackblue500};
+  /* box-shadow: offset-x | offset-y | blur-radius | color */
+  box-shadow: 0 10px 10px ${colours.blackblue500};
 `;
 
 const Username = styled.div`

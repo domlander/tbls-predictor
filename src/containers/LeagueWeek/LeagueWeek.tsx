@@ -92,11 +92,17 @@ const LeagueContainer = ({
             : `/league/${leagueId}/week/${weekId + 1}`
         }
       />
-      <LeagueWeekUserTotals users={usersGameweekPoints} />
-      <LeagueWeekFixtures weekId={weekId} fixtures={sortedFixtures} />
+      <Table>
+        <LeagueWeekUserTotals users={usersGameweekPoints} />
+        <LeagueWeekFixtures weekId={weekId} fixtures={sortedFixtures} />
+      </Table>
     </Container>
   );
 };
+
+const Table = styled.div`
+  display: contents;
+`;
 
 const Container = styled.div`
   max-width: ${pageSizes.tablet};
