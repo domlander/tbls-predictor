@@ -75,7 +75,7 @@ const PredictionsHeader = styled.div`
     color: ${colours.grey300};
     cursor: pointer;
     text-decoration: underline;
-    text-underline-offset: 0.1em;
+    text-underline-offset: 1px;
 
     :hover,
     :focus {

@@ -89,7 +89,6 @@ const Container = styled.div`
 
 const FixtureRow = styled.div`
   width: 100%;
-  margin-bottom: 0.4em;
   display: flex;
 `;
 
@@ -114,17 +113,19 @@ const StyledFixture = styled.div`
 const UnclickableFixture = styled(StyledFixture)``;
 
 const ClickableFixture = styled(StyledFixture)`
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
   :hover,
   :focus {
     color: ${colours.cyan100};
-    text-decoration: underline;
   }
 `;
 
 const PredictionRow = styled.div`
   display: flex;
   justify-content: space-around;
-  margin-top: 0.6em;
+  margin-top: 1em;
   font-size: 1.1rem;
 
   @media (max-width: ${pageSizes.tablet}) {

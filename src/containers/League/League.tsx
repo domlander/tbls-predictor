@@ -56,7 +56,7 @@ const AdminLink = styled.a`
   font-size: 1rem;
   text-decoration: underline;
   cursor: pointer;
-  text-underline-offset: 0.2em;
+  text-underline-offset: 2px;
 
   :hover,
   :focus {

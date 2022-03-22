@@ -43,8 +43,11 @@ const List = styled.ul`
 const ListElement = styled.li`
   list-style: none;
   text-decoration: underline;
-  text-underline-offset: 0.2em;
-  :hover {
+  text-underline-offset: 2px;
+  width: fit-content;
+
+  :hover,
+  :focus {
     color: ${colours.cyan100};
     text-decoration: none;
   }

@@ -214,7 +214,6 @@ const ClickableRowHeading = styled.a`
   :hover,
   :focus {
     color: ${colours.cyan100};
-    text-decoration: underline;
   }
 `;
 
@@ -234,6 +233,11 @@ const WeekNumber = styled.p`
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
+
+  :hover,
+  :focus {
+    color: ${colours.cyan100};
+  }
 
   @media (max-width: ${pageSizes.tablet}) {
     font-size: 0.9rem;

@@ -66,7 +66,7 @@ const NoLeagues = styled.div`
   a {
     margin-left: 0.1em;
     text-decoration: underline;
-    text-underline-offset: 0.2em;
+    text-underline-offset: 2px;
 
     :hover,
     :focus {
