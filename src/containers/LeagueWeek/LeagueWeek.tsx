@@ -41,8 +41,8 @@ const LeagueContainer = ({
     variables: {
       leagueId,
       weekId: gameweek,
-      notifyOnNetworkStatusChange: true,
     },
+    notifyOnNetworkStatusChange: true,
     onCompleted: (data) => {
       if (data?.fixturesWithPredictions?.fixtures) {
         setFixtures(data.fixturesWithPredictions.fixtures);
@@ -79,7 +79,7 @@ const LeagueContainer = ({
           </SpinnerContainer>
         ) : (
           <RefreshButton type="button" onClick={() => refetch()}>
-            <Image src="/images/refresh.svg" height="20" width="20" alt="" />
+            <Image src="/images/refresh.svg" height="16" width="16" alt="" />
           </RefreshButton>
         )}
       </TopBar>
