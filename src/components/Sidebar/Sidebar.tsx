@@ -63,7 +63,7 @@ const Container = styled.div`
   }
 `;
 
-const SidebarItemsContainer = styled.div`
+const SidebarItemsContainer = styled.ul`
   margin-right: 1.6em;
 `;
 

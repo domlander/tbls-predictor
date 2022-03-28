@@ -12,25 +12,25 @@ export interface Props {
 const SidebarMenuItem = ({ label, url, onClick }: Props) => (
   <Container onClick={onClick}>
     <Link passHref href={url}>
-      <A>{label}</A>
+      <a>{label}</a>
     </Link>
   </Container>
 );
 
-const Container = styled.div`
+const Container = styled.li`
   width: 100%;
   height: 4.4em;
   line-height: 4.4em;
   text-align: right;
-`;
 
-const A = styled.a`
-  color: ${colours.grey200};
-  font-size: 1.6em;
-  cursor: pointer;
-  :hover,
-  :focus {
-    color: ${colours.cyan100};
+  a {
+    color: ${colours.grey200};
+    font-size: 1.6em;
+    cursor: pointer;
+    :hover,
+    :focus {
+      color: ${colours.cyan100};
+    }
   }
 `;
 

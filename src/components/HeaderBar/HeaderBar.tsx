@@ -32,9 +32,7 @@ const HeaderBar = ({ initial, handleClick }: Props) => (
         </li>
       </ul>
     </HeaderLinks>
-    <UserIconContainer>
-      <UserIcon initial={initial} handleClick={handleClick} />
-    </UserIconContainer>
+    <UserIcon initial={initial} handleClick={handleClick} />
   </Container>
 );
 
@@ -45,6 +43,7 @@ const Container = styled.header`
   background-color: var(--header-background);
   height: 4rem;
   font-size: 0.9rem;
+  padding-right: 1em;
 
   @media (max-width: ${pageSizes.tablet}) {
     height: 3rem;
@@ -78,10 +77,6 @@ const HeaderLinks = styled.nav`
       color: ${colours.cyan100};
     }
   }
-`;
-
-const UserIconContainer = styled.div`
-  margin-right: 1rem;
 `;
 
 export default HeaderBar;
