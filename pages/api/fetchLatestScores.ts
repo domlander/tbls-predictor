@@ -2,6 +2,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import { withSentry } from "@sentry/nextjs";
+import dayjs from "dayjs";
+
 import prisma from "prisma/client";
 import { getFixturesFromApiForGameweek } from "utils/fplApi";
 import Fixture from "src/types/Fixture";
@@ -12,12 +14,16 @@ const hasScoreChanged = (
   newScore: [number | null, number | null]
 ) => oldScore[0] !== newScore[0] || oldScore[1] !== newScore[1];
 
-const isGameLiveOrRecentlyFinished = (kickoff: Date) => {
-  const now = new Date();
-  const timeIn150Minutes = new Date();
-  timeIn150Minutes.setMinutes(timeIn150Minutes.getMinutes() + 150);
+/**
+ * Returns true if the match has started at maximum 150 minutes ago.
+ * Matches usually finish after 110-120 mins after kickoff, so there is a little extra
+ * time given, in case of injuries.
+ */
+export const isGameLiveOrRecentlyFinished = (kickoff: Date): boolean => {
+  const now = dayjs();
+  const kickoffPlus150Minutes = dayjs(kickoff).add(150, "minute");
 
-  return kickoff > now && kickoff < timeIn150Minutes;
+  return now > dayjs(kickoff) && now < kickoffPlus150Minutes;
 };
 
 /*
