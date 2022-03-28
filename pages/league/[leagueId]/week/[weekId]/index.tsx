@@ -9,7 +9,7 @@ import redirectInternal from "utils/redirects";
 import League from "src/types/League";
 import Fixture from "src/types/Fixture";
 import User from "src/types/User";
-import LeagueWeek from "@/containers/LeagueWeek";
+import LeagueWeek from "src/containers/LeagueWeek";
 
 interface Props {
   leagueId: number;

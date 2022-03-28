@@ -9,7 +9,7 @@ import { ALL_FIXTURES_QUERY } from "apollo/queries";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import sortFixtures from "utils/sortFixtures";
 import Fixture from "src/types/Fixture";
-import Home from "@/containers/Home";
+import Home from "src/containers/Home";
 
 interface Props {
   weekId: number;

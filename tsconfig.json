@@ -20,15 +20,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "baseUrl": ".",
-    "paths": {
-      "@/containers/*": ["src/containers/*"],
-      "@/components/*": ["src/components/*"],
-      "@/styles/*": ["src/styles/*"],
-      "@/types": ["src/types/index"],
-      "@/utils": ["src/utils/index"]
-    },
     "incremental": true,
-    "types": ["node", "jest"]
+    "types": ["node", "jest", "@testing-library/jest-dom"]
   },
   "exclude": ["node_modules"],
   "include": [

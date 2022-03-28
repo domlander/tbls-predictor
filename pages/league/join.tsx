@@ -1,7 +1,7 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
-import JoinLeague from "@/containers/JoinLeague";
+import JoinLeague from "src/containers/JoinLeague";
 
 const JoinLeaguePage = () => <JoinLeague />;
 

@@ -8,7 +8,7 @@ import { ALL_FIXTURES_QUERY } from "apollo/queries";
 import { initializeApollo } from "apollo/client";
 import sortFixtures from "utils/sortFixtures";
 import Fixture from "src/types/Fixture";
-import Predictions from "@/containers/Predictions";
+import Predictions from "src/containers/Predictions";
 
 interface Props {
   fixtures: Fixture[];
