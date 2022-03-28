@@ -30,7 +30,7 @@ const HeaderBar = ({ initial, handleClick }: Props) => (
   </Container>
 );
 
-const Container = styled.div`
+const Container = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -44,7 +44,7 @@ const Container = styled.div`
   }
 `;
 
-const HeaderLinks = styled.div``;
+const HeaderLinks = styled.nav``;
 
 const HeaderLink = styled.a`
   color: ${colours.grey400};

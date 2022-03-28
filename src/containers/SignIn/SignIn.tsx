@@ -6,14 +6,14 @@ import Heading from "src/components/Heading";
 import Button from "src/components/Button";
 
 const SignInContainer = () => (
-  <>
-    <Heading level="h1">TBLS Predictor</Heading>
+  <main>
+    <Heading level="h1">Welcome!</Heading>
     <ButtonContainer>
       <Button handleClick={() => signIn()} type="button" variant="primary">
         Sign in
       </Button>
     </ButtonContainer>
-  </>
+  </main>
 );
 
 const ButtonContainer = styled.div`

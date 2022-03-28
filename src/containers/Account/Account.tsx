@@ -55,7 +55,7 @@ const AccountContainer = () => {
   );
 };
 
-const Container = styled.div`
+const Container = styled.main`
   max-width: 560px;
   margin: 0 auto;
 `;

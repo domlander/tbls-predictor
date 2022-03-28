@@ -54,51 +54,47 @@ const CreateLeague = ({ currentGameweek }: Props) => {
   };
 
   return (
-    <>
-      <Container>
-        <Heading level="h1">Create League</Heading>
-        <form onSubmit={handleSubmit}>
-          <Label>
-            <LabelText>Name:</LabelText>
-            <FormInput
-              value={leagueName}
-              onChange={(e) => setLeagueName(e.target.value)}
-            />
-          </Label>
-          <Label>
-            <LabelText>Gameweek start:</LabelText>
-            <input
-              type="number"
-              value={gameweekStart}
-              onChange={(e) =>
-                setGameweekStart(e.target.value.replace(/\D/, ""))
-              }
-            />
-          </Label>
-          <Info>(Select a week between {currentGameweek} and 38)</Info>
-          <Label>
-            <LabelText>Weeks to run:</LabelText>
-            <input
-              type="number"
-              value={weeksToRun}
-              onChange={(e) => setWeeksToRun(e.target.value.replace(/\D/, ""))}
-            />
-          </Label>
-          {userFeedback && !loading && <Feedback>{userFeedback}</Feedback>}
-          <ButtonContainer>
-            <Button type="submit" disabled={loading} variant="primary">
-              {loading ? "Loading..." : "Create"}
-            </Button>
-          </ButtonContainer>
-        </form>
-      </Container>
-    </>
+    <Container>
+      <Heading level="h1">Create League</Heading>
+      <form onSubmit={handleSubmit}>
+        <Label>
+          <LabelText>Name:</LabelText>
+          <FormInput
+            value={leagueName}
+            onChange={(e) => setLeagueName(e.target.value)}
+          />
+        </Label>
+        <Label>
+          <LabelText>Gameweek start:</LabelText>
+          <input
+            type="number"
+            value={gameweekStart}
+            onChange={(e) => setGameweekStart(e.target.value.replace(/\D/, ""))}
+          />
+        </Label>
+        <Info>(Select a week between {currentGameweek} and 38)</Info>
+        <Label>
+          <LabelText>Weeks to run:</LabelText>
+          <input
+            type="number"
+            value={weeksToRun}
+            onChange={(e) => setWeeksToRun(e.target.value.replace(/\D/, ""))}
+          />
+        </Label>
+        {userFeedback && !loading && <Feedback>{userFeedback}</Feedback>}
+        <ButtonContainer>
+          <Button type="submit" disabled={loading} variant="primary">
+            {loading ? "Loading..." : "Create"}
+          </Button>
+        </ButtonContainer>
+      </form>
+    </Container>
   );
 };
 
 export default CreateLeague;
 
-const Container = styled.div`
+const Container = styled.main`
   max-width: 400px;
   margin: 0 auto;
   display: flex;

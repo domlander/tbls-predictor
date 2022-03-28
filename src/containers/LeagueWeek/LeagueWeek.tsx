@@ -108,7 +108,7 @@ const Table = styled.div`
   display: contents;
 `;
 
-const Container = styled.div`
+const Container = styled.main`
   max-width: ${pageSizes.tablet};
   margin: 0 auto;
   display: flex;
