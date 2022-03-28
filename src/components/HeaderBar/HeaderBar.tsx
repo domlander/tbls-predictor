@@ -14,15 +14,23 @@ export interface Props {
 const HeaderBar = ({ initial, handleClick }: Props) => (
   <Container>
     <HeaderLinks>
-      <Link href="/" passHref>
-        <HeaderLink tabIndex={0}>Home</HeaderLink>
-      </Link>
-      <Link href="/predictions" passHref>
-        <HeaderLink tabIndex={0}>Predictions</HeaderLink>
-      </Link>
-      <Link href="/leagues" passHref>
-        <HeaderLink tabIndex={0}>Leagues</HeaderLink>
-      </Link>
+      <ul>
+        <li>
+          <Link href="/" passHref>
+            <a>Home</a>
+          </Link>
+        </li>
+        <li>
+          <Link href="/predictions" passHref>
+            <a>Predictions</a>
+          </Link>
+        </li>
+        <li>
+          <Link href="/leagues" passHref>
+            <a>Leagues</a>
+          </Link>
+        </li>
+      </ul>
     </HeaderLinks>
     <UserIconContainer>
       <UserIcon initial={initial} handleClick={handleClick} />
@@ -44,24 +52,31 @@ const Container = styled.header`
   }
 `;
 
-const HeaderLinks = styled.nav``;
+const HeaderLinks = styled.nav`
+  width: 100%;
 
-const HeaderLink = styled.a`
-  color: ${colours.grey400};
-  font-size: 1.2em;
-  cursor: pointer;
-  margin-left: 4em;
-  :first-child {
+  ul {
+    display: flex;
+    gap: 4em;
     margin-left: 2em;
+    width: fit-content;
   }
 
-  :hover,
-  :focus {
-    color: ${colours.cyan100};
+  li {
+    color: ${colours.grey400};
+    font-size: 1.2em;
+    cursor: pointer;
+
+    @media (max-width: ${pageSizes.mobileL}) {
+      margin-left: 3em;
+    }
   }
 
-  @media (max-width: ${pageSizes.mobileL}) {
-    margin-left: 3em;
+  a {
+    :hover,
+    :focus {
+      color: ${colours.cyan100};
+    }
   }
 `;
 

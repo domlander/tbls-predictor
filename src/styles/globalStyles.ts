@@ -57,6 +57,10 @@ const GlobalStyle = createGlobalStyle`
     text-decoration: inherit;
     color: inherit;
   }
+
+  li {
+    list-style: none;
+  }
 `;
 
 export default GlobalStyle;

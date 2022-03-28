@@ -41,7 +41,6 @@ const List = styled.ul`
 `;
 
 const ListElement = styled.li`
-  list-style: none;
   text-decoration: underline;
   text-underline-offset: 2px;
   width: fit-content;

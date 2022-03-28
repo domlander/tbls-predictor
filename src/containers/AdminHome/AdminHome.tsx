@@ -23,7 +23,6 @@ const AdminHome = () => (
 );
 
 const Li = styled.li`
-  list-style: none;
   font-size: 2rem;
   margin: 2rem 0;
 
