@@ -74,12 +74,12 @@ const LeagueContainer = ({
           <p>{`Gameweek ${gameweek}`}</p>
         </Breadcrumbs>
         {loading || networkStatus === NetworkStatus.refetch ? (
-          <SpinnerContainer>
+          <div>
             <Image src="/images/spinner.gif" height="20" width="20" alt="" />
-          </SpinnerContainer>
+          </div>
         ) : (
           <RefreshButton type="button" onClick={() => refetch()}>
-            <Image src="/images/refresh.svg" height="16" width="16" alt="" />
+            <Image src="/images/refresh.svg" height="20" width="20" alt="" />
           </RefreshButton>
         )}
       </TopBar>
@@ -141,7 +141,7 @@ const Breadcrumbs = styled.div`
     align-items: center;
     cursor: pointer;
     text-decoration: underline;
-    text-underline-offset: 1px;
+    text-underline-offset: 2px;
 
     :hover,
     :focus {
@@ -152,12 +152,6 @@ const Breadcrumbs = styled.div`
 
 const RefreshButton = styled.button`
   cursor: pointer;
-`;
-
-const SpinnerContainer = styled.div`
-  height: 12px;
-  width: 12px;
-  margin-top: 8px;
 `;
 
 export default LeagueContainer;
