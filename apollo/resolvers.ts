@@ -35,7 +35,10 @@ const resolvers = {
     },
     allFixtures: async () => {
       const fixtures = await prisma.fixture.findMany();
-      return fixtures;
+
+      const currentGameweek = calculateCurrentGameweek(fixtures);
+
+      return { fixtures, currentGameweek };
     },
     fixturesWithPredictions: async (_, { leagueId, weekId }) => {
       if (weekId < 1 || weekId > 38)
@@ -524,7 +527,7 @@ const resolvers = {
         leagueId: league.id,
         leagueName: league.name,
         // position: null, // TODO
-        // weeksToGo: null, // TODO
+        weeksToGo: 0,
       }));
 
       return leagues;

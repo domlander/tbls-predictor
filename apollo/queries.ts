@@ -24,11 +24,14 @@ export const FIXTURES_QUERY = gql`
 export const ALL_FIXTURES_QUERY = gql`
   query AllFixtures {
     allFixtures {
-      id
-      gameweek
-      kickoff
-      homeTeam
-      awayTeam
+      fixtures {
+        id
+        gameweek
+        kickoff
+        homeTeam
+        awayTeam
+      }
+      currentGameweek
     }
   }
 `;

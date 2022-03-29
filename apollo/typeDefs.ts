@@ -6,7 +6,7 @@ const typeDefs = gql`
   type Query {
     user: User
     fixtures(weekId: Int!): [Fixture!]
-    allFixtures: [Fixture!]
+    allFixtures: AllFixturesPayload!
     predictions(weekId: Int!): [Prediction!]
     allLeagues: AllLeaguesPayload!
     leagueAdmin(leagueId: Int!): LeagueAdminPayload!
@@ -30,6 +30,11 @@ const typeDefs = gql`
 
   type LeagueAdminPayload {
     league: League!
+  }
+
+  type AllFixturesPayload {
+    fixtures: [Fixture!]
+    currentGameweek: Int
   }
 
   type AllLeaguesPayload {

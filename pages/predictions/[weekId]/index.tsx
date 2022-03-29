@@ -49,27 +49,31 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const apolloClient = initializeApollo();
   const {
-    data: { allFixtures },
-  }: { data: { allFixtures: Fixture[] } } = await apolloClient.query({
+    data: {
+      allFixtures: { fixtures },
+    },
+  }: {
+    data: { allFixtures: { fixtures: Fixture[] } };
+  } = await apolloClient.query({
     query: ALL_FIXTURES_QUERY,
   });
 
-  const firstGameweek = allFixtures.reduce(
+  const firstGameweek = fixtures.reduce(
     (acc, fixture) => (fixture.gameweek < acc ? fixture.gameweek : acc),
-    allFixtures[0].gameweek
+    fixtures[0].gameweek
   );
-  const lastGameweek = allFixtures.reduce(
+  const lastGameweek = fixtures.reduce(
     (acc, fixture) => (fixture.gameweek > acc ? fixture.gameweek : acc),
-    allFixtures[0].gameweek
+    fixtures[0].gameweek
   );
 
-  const fixtures = sortFixtures(
-    allFixtures.filter((fixture) => fixture.gameweek === weekId)
+  const sortedFixtures = sortFixtures(
+    fixtures.filter((fixture) => fixture.gameweek === weekId)
   );
 
   return {
     props: {
-      fixtures,
+      fixtures: sortedFixtures,
       weekId,
       firstGameweek,
       lastGameweek,
