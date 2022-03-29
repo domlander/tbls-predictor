@@ -17,7 +17,7 @@ const image = (src: string, alt: string) => (
 );
 
 const WeekNavigator = ({ prevGameweekUrl, nextGameweekUrl, week }: Props) => (
-  <StyledWeekNavigator>
+  <Container>
     {prevGameweekUrl ? (
       <Link href={prevGameweekUrl}>
         <a>{image("/images/ArrowLeft.svg", "Go to previous week")}</a>
@@ -25,7 +25,9 @@ const WeekNavigator = ({ prevGameweekUrl, nextGameweekUrl, week }: Props) => (
     ) : (
       image("/images/ArrowLeftDisabled.svg", "disabled navigation")
     )}
-    <WeekHeading level="h1">Week {week}</WeekHeading>
+    <WeekHeading level="h1" variant="secondary">
+      Week {week}
+    </WeekHeading>
     {nextGameweekUrl ? (
       <Link href={nextGameweekUrl}>
         <a>{image("/images/ArrowRight.svg", "Go to next week")}</a>
@@ -33,10 +35,10 @@ const WeekNavigator = ({ prevGameweekUrl, nextGameweekUrl, week }: Props) => (
     ) : (
       image("/images/ArrowRightDisabled.svg", "disabled navigation")
     )}
-  </StyledWeekNavigator>
+  </Container>
 );
 
-const StyledWeekNavigator = styled.div`
+const Container = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;

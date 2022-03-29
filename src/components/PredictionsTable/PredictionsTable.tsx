@@ -132,11 +132,9 @@ const PredictionsTable = ({
           )}
         </ButtonsAndMessageContainer>
       ) : (
-        <GameweekScore>
-          {gameweekScore !== null
-            ? `Result: ${gameweekScore} points`
-            : "Score not yet available"}
-        </GameweekScore>
+        gameweekScore !== null && (
+          <GameweekScore>{`Result: ${gameweekScore} points`}</GameweekScore>
+        )
       )}
     </form>
   );
@@ -204,7 +202,7 @@ const UserFeedback = styled.p`
   }
 `;
 
-const GameweekScore = styled.div`
+const GameweekScore = styled.p`
   color: ${colours.grey400};
   margin: 1.4rem 0 0 1rem;
   font-size: 2em;

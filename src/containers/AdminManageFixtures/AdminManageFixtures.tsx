@@ -134,7 +134,9 @@ const AdminManageFixtures = ({
             height="44"
           />
         )}
-        <Heading level="h1">Week {gameweek}</Heading>
+        <Heading level="h1" variant="secondary">
+          Week {gameweek}
+        </Heading>
         {gameweek !== 38 ? (
           <Image
             onClick={() => {
@@ -157,8 +159,10 @@ const AdminManageFixtures = ({
       </StyledWeekNavigator>
 
       <DbFixturesPanel>
-        <form onSubmit={submitFixtures}>
-          <h3>DB Fixtures</h3>
+        <Form onSubmit={submitFixtures}>
+          <Heading level="h2" variant="secondary">
+            DB Fixtures
+          </Heading>
           {loading ? (
             <div>Loading fixtures...</div>
           ) : error ? (
@@ -195,17 +199,16 @@ const AdminManageFixtures = ({
               ))}
             </FixturesTable>
           )}
-
-          <ButtonContainer>
-            <Button type="submit" variant="primary">
-              Save Fixtures
-            </Button>
-          </ButtonContainer>
-        </form>
+          <Button type="submit" variant="primary">
+            Save Fixtures
+          </Button>
+        </Form>
       </DbFixturesPanel>
 
       <FplFixturesPanel>
-        <h3>API Fixtures</h3>
+        <Heading level="h2" variant="secondary">
+          API Fixtures
+        </Heading>
         {fixturesAPI?.length ? (
           <FixturesTable>
             <span>Kickoff</span>
@@ -225,29 +228,23 @@ const AdminManageFixtures = ({
             {gameweek}. This will send a get request to FPL Towers&rsquo; API.
           </p>
         )}
-        <ButtonContainer>
+        <Button
+          type="button"
+          variant="secondary"
+          disabled={fetchingData}
+          handleClick={fetchFplData}
+        >
+          {fetchingData ? "Fetching fixtures..." : "Fetch fixtures from FPL"}
+        </Button>
+        {fixturesAPI?.length ? (
           <Button
             type="button"
-            variant="secondary"
-            disabled={fetchingData}
-            handleClick={fetchFplData}
+            variant="primary"
+            disabled={savingApiDataToDB}
+            handleClick={saveApiFixturesToDatabase}
           >
-            {fetchingData ? "Fetching fixtures..." : "Fetch fixtures from FPL"}
+            {savingApiDataToDB ? "Saving..." : "Save all fixtures to database"}
           </Button>
-        </ButtonContainer>
-        {fixturesAPI?.length ? (
-          <ButtonContainer>
-            <Button
-              type="button"
-              variant="primary"
-              disabled={savingApiDataToDB}
-              handleClick={saveApiFixturesToDatabase}
-            >
-              {savingApiDataToDB
-                ? "Saving..."
-                : "Save all fixtures to database"}
-            </Button>
-          </ButtonContainer>
         ) : null}
       </FplFixturesPanel>
     </Container>
@@ -272,16 +269,16 @@ const FplFixturesPanel = styled.div`
     grid-column: 1 / span 12;
   }
 
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+
   p {
     font-size: 1rem;
     padding: 1em;
     background: #c9c9a8;
     color: ${colours.black100};
   }
-`;
-
-const ButtonContainer = styled.div`
-  margin-top: 4em;
 `;
 
 const StyledWeekNavigator = styled.div`
@@ -313,6 +310,12 @@ const FixturesTable = styled.div`
     font-size: 1rem;
     width: 9em;
   }
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
 `;
 
 export default AdminManageFixtures;

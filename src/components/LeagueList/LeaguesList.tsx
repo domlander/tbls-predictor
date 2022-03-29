@@ -24,8 +24,10 @@ const LeaguesList = ({ leagues }: Props) => {
     );
 
   return (
-    <MyLeagues>
-      <Heading level="h2">My Leagues</Heading>
+    <Container>
+      <Heading level="h2" variant="secondary">
+        My Leagues
+      </Heading>
       <LeagueCards>
         {leagues.map(({ leagueId: id, leagueName: name, position }) => (
           <LeagueCard
@@ -33,7 +35,9 @@ const LeaguesList = ({ leagues }: Props) => {
             key={id}
             onClick={() => router.push(`/league/${id}`)}
           >
-            <LeagueCardHeading level="h2">{name}</LeagueCardHeading>
+            <LeagueCardHeading level="h2" variant="secondary">
+              {name}
+            </LeagueCardHeading>
             <p>
               Current position:{" "}
               <span style={{ fontSize: "1.2rem", fontWeight: 700 }}>
@@ -49,9 +53,15 @@ const LeaguesList = ({ leagues }: Props) => {
           </LeagueCard>
         ))}
       </LeagueCards>
-    </MyLeagues>
+    </Container>
   );
 };
+
+const Container = styled.section`
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+`;
 
 const NoLeagues = styled.div`
   display: flex;
@@ -73,10 +83,6 @@ const NoLeagues = styled.div`
       color: ${colours.cyan100};
     }
   }
-`;
-
-const MyLeagues = styled.div`
-  margin-bottom: 6em;
 `;
 
 const LeagueCards = styled.div`

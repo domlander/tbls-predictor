@@ -37,7 +37,9 @@ const JoinLeague = () => {
   return (
     <Container>
       <form onSubmit={handleSubmit}>
-        <Heading level="h1">Join league</Heading>
+        <Heading level="h1" variant="secondary">
+          Join league
+        </Heading>
         <Label>
           <LabelText>League ID:</LabelText>
           <FormInput

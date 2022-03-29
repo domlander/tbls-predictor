@@ -15,40 +15,47 @@ const PublicLeaguesList = ({ leagues }: Props) => {
 
   return (
     <Container>
-      <Heading level="h2">Public leagues</Heading>
-      <List>
+      <Heading level="h2" variant="secondary">
+        Public leagues
+      </Heading>
+      <ul>
         {leagues.map((league) => (
-          <ListElement key={league.id}>
+          <li key={league.id}>
             <Link href={`league/${league.id}`}>
               <a>{league.name}</a>
             </Link>
-          </ListElement>
+          </li>
         ))}
-      </List>
+      </ul>
     </Container>
   );
 };
 
-const Container = styled.div`
-  font-size: 1rem;
-`;
-
-const List = styled.ul`
-  padding-left: 0.2em;
+const Container = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 1em;
-`;
+  gap: 2em;
+  margin-top: 2em;
 
-const ListElement = styled.li`
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  width: fit-content;
+  ul {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding-left: 0.2em;
+    font-size: 1rem;
+    gap: 1em;
+  }
 
-  :hover,
-  :focus {
-    color: ${colours.cyan100};
-    text-decoration: none;
+  li {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    width: fit-content;
+
+    :hover,
+    :focus {
+      color: ${colours.cyan100};
+      text-decoration: none;
+    }
   }
 `;
 

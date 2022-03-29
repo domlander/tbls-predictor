@@ -6,7 +6,9 @@ import colours from "src/styles/colours";
 
 const AdminUpdatePredictions = () => (
   <main>
-    <Heading level="h1">Admin</Heading>
+    <Heading level="h1" variant="secondary">
+      Admin
+    </Heading>
     <ul>
       <Li>
         <Link href="admin/updateResults">

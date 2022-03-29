@@ -57,18 +57,19 @@ const HeaderLinks = styled.nav`
   ul {
     display: flex;
     gap: 4em;
-    margin-left: 2em;
+    margin-left: 4em;
     width: fit-content;
+
+    @media (max-width: ${pageSizes.mobileL}) {
+      gap: 3em;
+      margin-left: 3em;
+    }
   }
 
   li {
     color: ${colours.grey400};
     font-size: 1.2em;
     cursor: pointer;
-
-    @media (max-width: ${pageSizes.mobileL}) {
-      margin-left: 3em;
-    }
   }
 
   a {

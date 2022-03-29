@@ -5,7 +5,9 @@ import Heading from "src/components/Heading";
 export default function Maintenance() {
   return (
     <Container>
-      <Heading level="h2">Come back later...</Heading>
+      <Heading level="h2" variant="secondary">
+        Come back later...
+      </Heading>
       <Message>The site is currently under maintenance</Message>
     </Container>
   );

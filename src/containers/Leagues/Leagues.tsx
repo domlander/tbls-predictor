@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 
 import useUserLeagues from "src/hooks/useUserLeagues";
 import League from "src/types/League";
@@ -18,12 +19,20 @@ const Leagues = ({ publicLeagues }: Props) => {
   if (error) return <div>An error has occurred. Please try again later.</div>;
 
   return (
-    <main>
-      <Heading level="h1">Leagues</Heading>
+    <Container>
+      <Heading level="h1" variant="secondary">
+        Leagues
+      </Heading>
       <LeaguesList leagues={userLeagues} />
       <PublicLeaguesList leagues={publicLeagues} />
-    </main>
+    </Container>
   );
 };
+
+const Container = styled.main`
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+`;
 
 export default Leagues;

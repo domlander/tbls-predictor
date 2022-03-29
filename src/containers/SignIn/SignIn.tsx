@@ -7,7 +7,9 @@ import Button from "src/components/Button";
 
 const SignInContainer = () => (
   <main>
-    <Heading level="h1">Welcome!</Heading>
+    <Heading level="h1" variant="secondary">
+      Welcome!
+    </Heading>
     <ButtonContainer>
       <Button handleClick={() => signIn()} type="button" variant="primary">
         Sign in

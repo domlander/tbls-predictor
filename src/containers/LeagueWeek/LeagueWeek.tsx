@@ -66,12 +66,17 @@ const LeagueContainer = ({
   return (
     <Container>
       <TopBar>
-        <Breadcrumbs>
-          <Link href={`/league/${leagueId}`} passHref>
-            <a>{leagueName}</a>
-          </Link>
-          <span>|</span>
-          <p>{`Gameweek ${gameweek}`}</p>
+        <Breadcrumbs aria-label="breadcrumbs">
+          <ul>
+            <li>
+              <Link href={`/league/${leagueId}`} passHref>
+                <a>{leagueName}</a>
+              </Link>
+            </li>
+            <li>
+              <p>{`Gameweek ${gameweek}`}</p>
+            </li>
+          </ul>
         </Breadcrumbs>
         {loading || networkStatus === NetworkStatus.refetch ? (
           <div>
@@ -83,30 +88,26 @@ const LeagueContainer = ({
           </RefreshButton>
         )}
       </TopBar>
-      <WeekNavigator
-        week={gameweek}
-        prevGameweekUrl={
-          gameweek === firstGameweek
-            ? undefined
-            : `/league/${leagueId}/week/${gameweek - 1}`
-        }
-        nextGameweekUrl={
-          gameweek === lastGameweek
-            ? undefined
-            : `/league/${leagueId}/week/${gameweek + 1}`
-        }
-      />
-      <Table>
+      <section>
+        <WeekNavigator
+          week={gameweek}
+          prevGameweekUrl={
+            gameweek === firstGameweek
+              ? undefined
+              : `/league/${leagueId}/week/${gameweek - 1}`
+          }
+          nextGameweekUrl={
+            gameweek === lastGameweek
+              ? undefined
+              : `/league/${leagueId}/week/${gameweek + 1}`
+          }
+        />
         <LeagueWeekUserTotals users={usersGameweekPoints} />
         <LeagueWeekFixtures weekId={gameweek} fixtures={sortedFixtures} />
-      </Table>
+      </section>
     </Container>
   );
 };
-
-const Table = styled.div`
-  display: contents;
-`;
 
 const Container = styled.main`
   max-width: ${pageSizes.tablet};
@@ -115,18 +116,30 @@ const Container = styled.main`
   flex-direction: column;
 `;
 
-const TopBar = styled.section`
+const TopBar = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 0.8em 0;
 `;
 
-const Breadcrumbs = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-end;
+const Breadcrumbs = styled.nav`
   font-size: 0.8rem;
   color: ${colours.grey300};
+
+  ul {
+    padding: 0;
+    display: flex;
+    gap: 0.8em;
+  }
+
+  li:not(:first-child) {
+    display: flex;
+
+    &:before {
+      content: "|";
+      width: 0.8em;
+    }
+  }
 
   p {
     margin: 0;

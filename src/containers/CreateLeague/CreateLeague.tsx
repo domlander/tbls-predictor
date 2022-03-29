@@ -55,7 +55,9 @@ const CreateLeague = ({ currentGameweek }: Props) => {
 
   return (
     <Container>
-      <Heading level="h1">Create League</Heading>
+      <Heading level="h1" variant="secondary">
+        Create League
+      </Heading>
       <form onSubmit={handleSubmit}>
         <Label>
           <LabelText>Name:</LabelText>

@@ -94,7 +94,12 @@ const AdminUpdateResults = ({ fixtures }: Props) => {
     setScores(updatedScore);
   };
 
-  if (!scores?.length) return <Heading level="h1">No fixtures</Heading>;
+  if (!scores?.length)
+    return (
+      <Heading level="h1" variant="secondary">
+        No fixtures
+      </Heading>
+    );
 
   const firstFixtureKickoffTiming = whenIsTheFixture(scores[0].kickoff);
 
@@ -107,7 +112,9 @@ const AdminUpdateResults = ({ fixtures }: Props) => {
 
   return (
     <>
-      <Heading level="h1">Update Results</Heading>
+      <Heading level="h1" variant="secondary">
+        Update Results
+      </Heading>
       <Tab
         variant="secondary"
         handleClick={() => setIsCurrentGameweekTab((x) => !x)}

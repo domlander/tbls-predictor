@@ -43,7 +43,9 @@ const AccountContainer = () => {
 
   return (
     <Container>
-      <Heading level="h1">Account</Heading>
+      <Heading level="h1" variant="secondary">
+        Account
+      </Heading>
       <ChangeUsernameForm
         username={formUsername}
         setUsername={setFormUsername}

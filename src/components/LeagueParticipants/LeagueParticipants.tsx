@@ -10,7 +10,9 @@ interface Props {
 
 const LeagueParticipants = ({ participants }: Props) => (
   <div>
-    <Heading level="h2">Participants</Heading>
+    <Heading level="h2" variant="secondary">
+      Participants
+    </Heading>
     {participants?.map((participant) => (
       <UserLabel key={participant.id}>{participant.username}</UserLabel>
     ))}

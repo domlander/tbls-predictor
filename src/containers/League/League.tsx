@@ -27,7 +27,7 @@ const LeagueContainer = ({
   return (
     <>
       <Container>
-        {session?.user?.id !== administratorId && (
+        {session?.user?.id === administratorId && (
           <Link href={`/league/${id}/admin`}>
             <AdminLink>Admin</AdminLink>
           </Link>
@@ -57,10 +57,15 @@ const AdminLink = styled.a`
   text-decoration: underline;
   cursor: pointer;
   text-underline-offset: 2px;
+  margin-top: 1em;
 
   :hover,
   :focus {
     color: ${colours.cyan100};
+  }
+
+  @media (max-width: 600px) {
+    font-size: 0.8rem;
   }
 `;
 

@@ -21,7 +21,9 @@ const ChangeUsernameForm = ({
   handleSubmit,
 }: Props) => (
   <Container>
-    <Heading level="h2">Change username</Heading>
+    <Heading level="h2" variant="secondary">
+      Change username
+    </Heading>
     <form onSubmit={handleSubmit}>
       <Label>
         <LabelText>Username:</LabelText>
@@ -42,8 +44,11 @@ const ChangeUsernameForm = ({
   </Container>
 );
 
-const Container = styled.div`
+const Container = styled.section`
   max-width: 450px;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
 `;
 
 const Label = styled.label`

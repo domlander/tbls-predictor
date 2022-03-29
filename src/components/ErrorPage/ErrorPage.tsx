@@ -13,7 +13,7 @@ export interface Props {
 const ErrorPage = ({ type }: Props) => (
   <Container>
     <Title>{type}</Title>
-    <Heading level="h2">
+    <Heading level="h2" variant="secondary">
       {type === "404" ? "Ooooooooooooooops!" : "Something went wrong..."}
     </Heading>
     <ButtonContainer>

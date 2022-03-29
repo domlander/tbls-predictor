@@ -21,7 +21,7 @@ const LeagueApplicantsRequests = ({
   const [userFeedback, setUserFeedback] = useState<string>("");
   const [processRequest] = useMutation(PROCESS_JOIN_LEAGUE_REQUEST_MUTATION);
 
-  const handleAcceptOrReject = (applicantId: number, accept: boolean) => {
+  const handleAcceptOrReject = (applicantId: string, accept: boolean) => {
     processRequest({
       variables: {
         input: {
@@ -48,7 +48,9 @@ const LeagueApplicantsRequests = ({
 
   return (
     <div>
-      <Heading level="h2">Requests</Heading>
+      <Heading level="h2" variant="secondary">
+        Requests
+      </Heading>
       {!validApplicants?.length ? (
         <Label>No valid applicants</Label>
       ) : (

@@ -37,6 +37,7 @@ const GlobalStyle = createGlobalStyle`
   h1, h2, h3, h4 ,h5, h6 {
     font-family: Nunito, sans-serif;
     font-weight: 400;
+    margin: 0;
   }
 
   h1 {
@@ -51,11 +52,15 @@ const GlobalStyle = createGlobalStyle`
     }
   }
   h3 { font-size: 1.7rem; }
-  h4 { font-size: 1.5em; }
 
   a {
     text-decoration: inherit;
     color: inherit;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
   }
 
   li {

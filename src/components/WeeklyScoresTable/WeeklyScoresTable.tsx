@@ -22,7 +22,9 @@ const WeeklyScoresTable = ({
 }: Props) => {
   return (
     <Container>
-      <ScoresHeading level="h2">{leagueName}</ScoresHeading>
+      <Heading level="h2" as="h1" variant="secondary">
+        {leagueName}
+      </Heading>
       <Table>
         <ParticipantsAndTotalPoints numParticipants={users.length}>
           <BlankHeaderItem />
@@ -74,20 +76,11 @@ const WeeklyScoresTable = ({
   );
 };
 
-const Container = styled.div`
+const Container = styled.section`
   display: flex;
   flex-direction: column;
+  gap: 4em;
   margin-top: 4em;
-
-  @media (max-width: ${pageSizes.tablet}) {
-    margin-top: 2.5em;
-  }
-`;
-
-const ScoresHeading = styled(Heading)`
-  color: ${colours.cyan500};
-  font-weight: 700;
-  margin: 1em 0;
 `;
 
 const Table = styled.div`
