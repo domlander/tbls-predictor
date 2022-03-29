@@ -12,7 +12,7 @@ export interface Props {
   leagues: UserLeague[];
 }
 
-const LeaguesList = ({ leagues }: Props) => {
+const MyLeagues = ({ leagues }: Props) => {
   const router = useRouter();
   if (!leagues?.length)
     return (
@@ -29,29 +29,49 @@ const LeaguesList = ({ leagues }: Props) => {
         My Leagues
       </Heading>
       <LeagueCards>
-        {leagues.map(({ leagueId: id, leagueName: name, position }) => (
-          <LeagueCard
-            tabIndex={0}
-            key={id}
-            onClick={() => router.push(`/league/${id}`)}
-          >
-            <LeagueCardHeading level="h2" variant="secondary">
-              {name}
-            </LeagueCardHeading>
-            <p>
-              Current position:{" "}
-              <span style={{ fontSize: "1.2rem", fontWeight: 700 }}>
-                {position || "Unknown"}
-              </span>
-            </p>
-            {/* <p>
-              Weeks to go:{" "}
-              <span style={{ fontSize: "1.2rem", fontWeight: 700 }}>
-                {weeksToGo || "Unknown"}
-              </span>
-            </p> */}
-          </LeagueCard>
-        ))}
+        {leagues.map(
+          ({
+            leagueId: id,
+            leagueName: name,
+            position,
+            weeksToGo,
+            weeksUntilStart,
+          }) => (
+            <LeagueCard
+              tabIndex={0}
+              key={id}
+              onClick={() => router.push(`/league/${id}`)}
+            >
+              <LeagueCardHeading level="h2" variant="secondary">
+                {name}
+              </LeagueCardHeading>
+              <p>
+                Current position:{" "}
+                <span style={{ fontSize: "1.2rem", fontWeight: 700 }}>
+                  {position || "Unknown"}
+                </span>
+              </p>
+              {weeksUntilStart ? (
+                <p>
+                  League starts in{" "}
+                  <span style={{ fontSize: "1.2rem", fontWeight: 700 }}>
+                    {weeksUntilStart}
+                  </span>{" "}
+                  weeks
+                </p>
+              ) : weeksToGo ? (
+                <p>
+                  Weeks remaining:{" "}
+                  <span style={{ fontSize: "1.2rem", fontWeight: 700 }}>
+                    {weeksToGo}
+                  </span>
+                </p>
+              ) : (
+                <p>League finished!</p>
+              )}
+            </LeagueCard>
+          )
+        )}
       </LeagueCards>
     </Container>
   );
@@ -124,4 +144,4 @@ const LeagueCardHeading = styled(Heading)`
   margin: 0;
 `;
 
-export default LeaguesList;
+export default MyLeagues;

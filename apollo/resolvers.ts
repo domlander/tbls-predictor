@@ -526,8 +526,9 @@ const resolvers = {
       leagues = userLeagues.leagues.map((league) => ({
         leagueId: league.id,
         leagueName: league.name,
+        gameweekStart: league.gameweekStart,
+        gameweekEnd: league.gameweekEnd,
         // position: null, // TODO
-        weeksToGo: 0,
       }));
 
       return leagues;

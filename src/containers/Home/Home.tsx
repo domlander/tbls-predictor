@@ -5,7 +5,7 @@ import Image from "next/image";
 
 import Fixture from "src/types/Fixture";
 import useUserLeagues from "src/hooks/useUserLeagues";
-import LeaguesList from "src/components/LeagueList";
+import MyLeagues from "src/components/MyLeagues";
 import pageSizes from "src/styles/pageSizes";
 import colours from "src/styles/colours";
 import Heading from "src/components/Heading";
@@ -42,7 +42,7 @@ export default function Home({ weekId, fixtures }: Props) {
           again later.
         </LeagueError>
       ) : (
-        <LeaguesList leagues={userLeagues} />
+        <MyLeagues leagues={userLeagues} />
       )}
     </Container>
   );

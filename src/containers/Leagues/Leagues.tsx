@@ -4,7 +4,7 @@ import styled from "styled-components";
 import useUserLeagues from "src/hooks/useUserLeagues";
 import League from "src/types/League";
 import Loading from "src/components/Loading";
-import LeaguesList from "src/components/LeagueList";
+import MyLeagues from "src/components/MyLeagues";
 import PublicLeaguesList from "src/components/PublicLeaguesList";
 import Heading from "src/components/Heading";
 
@@ -23,7 +23,7 @@ const Leagues = ({ publicLeagues }: Props) => {
       <Heading level="h1" variant="secondary">
         Leagues
       </Heading>
-      <LeaguesList leagues={userLeagues} />
+      <MyLeagues leagues={userLeagues} />
       <PublicLeaguesList leagues={publicLeagues} />
     </Container>
   );

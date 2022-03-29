@@ -109,8 +109,9 @@ const typeDefs = gql`
   type UserLeague {
     leagueId: Int!
     leagueName: String!
+    gameweekStart: Int!
+    gameweekEnd: Int!
     position: Int
-    weeksToGo: Int
   }
 
   type Fixture {

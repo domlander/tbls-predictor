@@ -1,14 +1,14 @@
 import React from "react";
 import { Story, Meta } from "@storybook/react";
-import LeaguesList, { Props } from "./LeaguesList";
+import MyLeagues, { Props } from "./MyLeagues";
 
 // 👇 This default export determines where your story goes in the story list
 export default {
-  title: "LeaguesList ",
-  component: LeaguesList,
+  title: "MyLeagues",
+  component: MyLeagues,
 } as Meta;
 
-const Template: Story<Props> = (args) => <LeaguesList {...args} />;
+const Template: Story<Props> = (args) => <MyLeagues {...args} />;
 
 export const primary = Template.bind({});
 primary.args = {

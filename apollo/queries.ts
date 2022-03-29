@@ -42,9 +42,13 @@ export const USER_LEAGUES_QUERY = gql`
       leagues {
         leagueId
         leagueName
+        gameweekStart
+        gameweekEnd
         position
-        weeksToGo
       }
+    }
+    allFixtures {
+      currentGameweek
     }
   }
 `;
