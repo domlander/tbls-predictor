@@ -51,10 +51,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const updateFixtureScoreAndEvaluatePredictions = async (
   fixtureId: number,
-  homeGoals: number | null,
-  awayGoals: number | null
+  homeGoals?: number | null,
+  awayGoals?: number | null
 ) => {
-  if (homeGoals === null || awayGoals === null) return;
+  if (typeof homeGoals !== "number" || typeof awayGoals !== "number") {
+    return;
+  }
 
   // Update the fixture table score BEFORE updating prediction scores.
   await updateFixtureScore(fixtureId, homeGoals, awayGoals);
