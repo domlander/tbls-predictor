@@ -29,7 +29,7 @@ const Leagues = ({ publicLeagues }: Props) => {
   );
 };
 
-const Container = styled.main`
+const Container = styled.section`
   display: flex;
   flex-direction: column;
   gap: 2em;

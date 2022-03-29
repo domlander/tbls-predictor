@@ -62,7 +62,7 @@ const JoinLeague = () => {
 
 export default JoinLeague;
 
-const Container = styled.main`
+const Container = styled.section`
   max-width: 400px;
   margin: 0 auto;
 `;

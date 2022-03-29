@@ -48,7 +48,7 @@ export default function Home({ weekId, fixtures }: Props) {
   );
 }
 
-const Container = styled.main`
+const Container = styled.div`
   padding-top: 6em;
   padding-bottom: 6em;
   display: flex;

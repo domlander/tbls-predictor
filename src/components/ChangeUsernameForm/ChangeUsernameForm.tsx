@@ -46,6 +46,7 @@ const ChangeUsernameForm = ({
 
 const Container = styled.section`
   max-width: 450px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   gap: 2em;

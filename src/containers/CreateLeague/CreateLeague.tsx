@@ -96,7 +96,7 @@ const CreateLeague = ({ currentGameweek }: Props) => {
 
 export default CreateLeague;
 
-const Container = styled.main`
+const Container = styled.section`
   max-width: 400px;
   margin: 0 auto;
   display: flex;

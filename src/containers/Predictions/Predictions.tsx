@@ -186,7 +186,7 @@ const Predictions = ({
   );
 };
 
-const Container = styled.main`
+const Container = styled.section`
   display: flex;
   flex-direction: column;
   align-items: stretch;

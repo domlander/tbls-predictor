@@ -50,7 +50,7 @@ const Container = styled.div`
   grid-template-columns: [stack] 1fr;
 `;
 
-const InnerContainer = styled.div`
+const InnerContainer = styled.main`
   max-width: 992px;
   margin: 0 auto;
   padding-bottom: 6em;

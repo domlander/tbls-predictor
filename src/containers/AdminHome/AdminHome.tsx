@@ -5,7 +5,7 @@ import Heading from "src/components/Heading";
 import colours from "src/styles/colours";
 
 const AdminHome = () => (
-  <main>
+  <section>
     <Heading level="h1" variant="secondary">
       Admin
     </Heading>
@@ -21,7 +21,7 @@ const AdminHome = () => (
         </Link>
       </Li>
     </ul>
-  </main>
+  </section>
 );
 
 const Li = styled.li`

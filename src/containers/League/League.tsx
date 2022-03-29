@@ -43,7 +43,7 @@ const LeagueContainer = ({
   );
 };
 
-const Container = styled.main`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
 

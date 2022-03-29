@@ -6,7 +6,7 @@ import Heading from "src/components/Heading";
 import Button from "src/components/Button";
 
 const SignInContainer = () => (
-  <main>
+  <section>
     <Heading level="h1" variant="secondary">
       Welcome!
     </Heading>
@@ -15,7 +15,7 @@ const SignInContainer = () => (
         Sign in
       </Button>
     </ButtonContainer>
-  </main>
+  </section>
 );
 
 const ButtonContainer = styled.div`

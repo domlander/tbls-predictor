@@ -5,7 +5,7 @@ import Heading from "src/components/Heading";
 import colours from "src/styles/colours";
 
 const AdminUpdatePredictions = () => (
-  <main>
+  <section>
     <Heading level="h1" variant="secondary">
       Admin
     </Heading>
@@ -26,7 +26,7 @@ const AdminUpdatePredictions = () => (
         </Link>
       </Li>
     </ul>
-  </main>
+  </section>
 );
 
 const Li = styled.li`

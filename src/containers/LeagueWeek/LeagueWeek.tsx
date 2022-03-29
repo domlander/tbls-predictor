@@ -109,7 +109,7 @@ const LeagueContainer = ({
   );
 };
 
-const Container = styled.main`
+const Container = styled.div`
   max-width: ${pageSizes.tablet};
   margin: 0 auto;
   display: flex;

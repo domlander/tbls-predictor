@@ -42,7 +42,7 @@ const AccountContainer = () => {
   if (error) return <div>An error has occurred. Please try again later.</div>;
 
   return (
-    <Container>
+    <>
       <Heading level="h1" variant="secondary">
         Account
       </Heading>
@@ -53,13 +53,8 @@ const AccountContainer = () => {
         userFeedback={userFeedback}
         handleSubmit={handleSubmit}
       />
-    </Container>
+    </>
   );
 };
-
-const Container = styled.main`
-  max-width: 560px;
-  margin: 0 auto;
-`;
 
 export default AccountContainer;

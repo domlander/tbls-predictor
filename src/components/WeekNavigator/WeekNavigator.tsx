@@ -38,7 +38,7 @@ const WeekNavigator = ({ prevGameweekUrl, nextGameweekUrl, week }: Props) => (
   </Container>
 );
 
-const Container = styled.div`
+const Container = styled.section`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
