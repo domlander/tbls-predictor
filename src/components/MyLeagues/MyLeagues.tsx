@@ -21,7 +21,7 @@ const MyLeagues = ({ leagues }: Props) => {
   ) : (
     <Container>
       <Heading level="h2" variant="secondary">
-        My Leagues
+        My leagues
       </Heading>
       <LeaguesCardsList leagues={leagues} />
     </Container>

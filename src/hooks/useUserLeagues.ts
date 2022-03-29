@@ -1,8 +1,22 @@
 import { useState } from "react";
-import { useQuery } from "@apollo/client";
+import { ApolloError, useQuery } from "@apollo/client";
 
 import { USER_LEAGUES_QUERY } from "apollo/queries";
 import UserLeague from "src/types/UserLeague";
+
+/**
+ * We know that gameweekStart and gameweekEnd are provided, so this removes Typescript warnings that
+ * these field may not exist. There is a UserLeague type we can use if we can get around this.
+ */
+type League = {
+  leagueId: UserLeague["leagueId"];
+  leagueName: UserLeague["leagueName"];
+  gameweekStart: number;
+  gameweekEnd: number;
+  position: UserLeague["leagueId"];
+  weeksToGo?: number | null;
+  weeksUntilStart?: number | null;
+};
 
 const calculateWeeksRemaining = (
   currentGameweek: number,
@@ -22,8 +36,26 @@ const calculateWeeksUntilStart = (
   return weeksUntilStart > 0 ? weeksUntilStart : null;
 };
 
-const useUserLeagues = () => {
-  const [leagues, setLeagues] = useState<UserLeague[]>([]);
+const leagueMapping = (league: League, currentGameweek: number) => {
+  if (!league.gameweekStart || !league.gameweekEnd) return league;
+
+  return {
+    ...league,
+    weeksToGo: calculateWeeksRemaining(currentGameweek, league.gameweekEnd),
+    weeksUntilStart: calculateWeeksUntilStart(
+      currentGameweek,
+      league.gameweekStart
+    ),
+  };
+};
+
+const useUserLeagues = (): [
+  League[],
+  League[],
+  boolean,
+  ApolloError | undefined
+] => {
+  const [leagues, setLeagues] = useState<League[]>([]);
   const [currentGameweek, setCurrentGameweek] = useState<number | null>();
 
   const { loading, error } = useQuery(USER_LEAGUES_QUERY, {
@@ -33,21 +65,19 @@ const useUserLeagues = () => {
     },
   });
 
-  const userLeagues = leagues.map((league) => {
-    if (!currentGameweek || !league.gameweekStart || !league.gameweekEnd)
-      return league;
+  if (!currentGameweek) return [[], [], loading, error];
 
-    return {
-      ...league,
-      weeksToGo: calculateWeeksRemaining(currentGameweek, league.gameweekEnd),
-      weeksUntilStart: calculateWeeksUntilStart(
-        currentGameweek,
-        league.gameweekStart
-      ),
-    };
-  });
+  const activeLeagues = leagues
+    .filter((league) => league.gameweekEnd >= currentGameweek)
+    .map((league) => leagueMapping(league, currentGameweek))
+    .sort((a, b) => a.gameweekStart - b.gameweekStart);
 
-  return [userLeagues, loading, error];
+  const finishedLeagues = leagues
+    .filter((league) => league.gameweekEnd < currentGameweek)
+    .map((league) => leagueMapping(league, currentGameweek))
+    .sort((a, b) => b.gameweekEnd - a.gameweekEnd);
+
+  return [activeLeagues, finishedLeagues, loading, error];
 };
 
 export default useUserLeagues;
