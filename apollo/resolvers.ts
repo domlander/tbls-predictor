@@ -31,6 +31,7 @@ const resolvers = {
         },
       });
       const fixtures = sortFixtures(unsortedFixtures);
+
       return fixtures;
     },
     allFixtures: async () => {

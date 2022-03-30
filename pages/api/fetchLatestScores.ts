@@ -27,7 +27,8 @@ export const isGameLiveOrRecentlyFinished = (kickoff: Date): boolean => {
 };
 
 /*
-  Fetches the up-to-date results of a match using the FPL API.
+  Fetches the up-to-date results of a live or recently finished fixture in
+  the current gameweek using the FPL API.
   Makes no changes if there is not a live game (kickoff between now and 150 minutes from now)
   If a goal has been scored, calls the updateFixtureResults API to update the
   fixture score and subsequent predictions score for all predictions.
