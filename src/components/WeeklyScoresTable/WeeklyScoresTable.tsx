@@ -11,13 +11,15 @@ export interface Props {
   leagueName: string;
   users: User[];
   leagueId: number;
-  fixtureWeeksAvailable: number[];
+  gameweekStart: number;
+  fixtureWeeksAvailable: number[] | null;
 }
 
 const WeeklyScoresTable = ({
   leagueName,
   users,
   leagueId,
+  gameweekStart,
   fixtureWeeksAvailable,
 }: Props) => {
   return (
@@ -25,53 +27,65 @@ const WeeklyScoresTable = ({
       <Heading level="h2" as="h1" variant="secondary">
         {leagueName}
       </Heading>
-      <Table>
-        <ParticipantsAndTotalPoints numParticipants={users.length}>
-          <BlankHeaderItem />
-          {users.map(({ id, username, totalPoints }) => (
-            <React.Fragment key={id}>
-              <Participant>{username}</Participant>
-              <TotalPoints>{totalPoints}</TotalPoints>
-            </React.Fragment>
-          ))}
-        </ParticipantsAndTotalPoints>
-        <AllPointsWrapper>
-          <AllPoints
-            numWeeks={fixtureWeeksAvailable.length}
-            numParticipants={users.length}
-          >
-            <BlankTableHeaderItem />
-            {fixtureWeeksAvailable.map((week) => (
-              <HeaderItem key={week}>
-                {fixtureWeeksAvailable.indexOf(week) !== -1 ? (
-                  <Link href={`/league/${leagueId}/week/${week}`}>
-                    <ClickableRowHeading>
-                      <WeekText>Week</WeekText>
-                      <WeekNumber>{week}</WeekNumber>
-                    </ClickableRowHeading>
-                  </Link>
-                ) : (
-                  <RowHeading>{`Week ${week}`}</RowHeading>
-                )}
-              </HeaderItem>
-            ))}
-            <BlankTableHeaderItem />
-            {users.map(({ id, weeklyPoints }) => (
+      {fixtureWeeksAvailable ? (
+        <Table>
+          <ParticipantsAndTotalPoints numParticipants={users.length}>
+            <BlankHeaderItem />
+            {users.map(({ id, username, totalPoints }) => (
               <React.Fragment key={id}>
-                <BlankTableItem />
-                {weeklyPoints?.map(({ week, points }, i) => (
-                  <React.Fragment key={`${id}${week}`}>
-                    <WeeklyPoints rowIndex={i} key={week}>
-                      {points}
-                    </WeeklyPoints>
-                  </React.Fragment>
-                ))}
-                <BlankTableItem />
+                <Participant>{username}</Participant>
+                <TotalPoints>{totalPoints}</TotalPoints>
               </React.Fragment>
             ))}
-          </AllPoints>
-        </AllPointsWrapper>
-      </Table>
+          </ParticipantsAndTotalPoints>
+          <AllPointsWrapper>
+            <AllPoints
+              numWeeks={fixtureWeeksAvailable.length}
+              numParticipants={users.length}
+            >
+              <BlankTableHeaderItem />
+              {fixtureWeeksAvailable.map((week) => (
+                <HeaderItem key={week}>
+                  {fixtureWeeksAvailable.indexOf(week) !== -1 ? (
+                    <Link href={`/league/${leagueId}/week/${week}`}>
+                      <ClickableRowHeading>
+                        <WeekText>Week</WeekText>
+                        <WeekNumber>{week}</WeekNumber>
+                      </ClickableRowHeading>
+                    </Link>
+                  ) : (
+                    <RowHeading>{`Week ${week}`}</RowHeading>
+                  )}
+                </HeaderItem>
+              ))}
+              <BlankTableHeaderItem />
+              {users.map(({ id, weeklyPoints }) => (
+                <React.Fragment key={id}>
+                  <BlankTableItem />
+                  {weeklyPoints?.map(({ week, points }, i) => (
+                    <React.Fragment key={`${id}${week}`}>
+                      <WeeklyPoints rowIndex={i} key={week}>
+                        {points}
+                      </WeeklyPoints>
+                    </React.Fragment>
+                  ))}
+                  <BlankTableItem />
+                </React.Fragment>
+              ))}
+            </AllPoints>
+          </AllPointsWrapper>
+        </Table>
+      ) : (
+        <LeagueNotStarted>
+          <p>
+            This league does not start until gameweek{" "}
+            <Link href={`/predictions/${gameweekStart}`}>
+              <a>{gameweekStart}</a>
+            </Link>
+          </p>
+          <p>Come back later.</p>
+        </LeagueNotStarted>
+      )}
     </Container>
   );
 };
@@ -260,5 +274,21 @@ const TotalPoints = styled.div`
 `;
 
 const WeeklyPoints = styled.div<{ rowIndex: number }>``;
+
+const LeagueNotStarted = styled.section`
+  p {
+    font-size: 1rem;
+  }
+
+  a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    :hover,
+    :focus {
+      color: ${colours.cyan100};
+    }
+  }
+`;
 
 export default WeeklyScoresTable;

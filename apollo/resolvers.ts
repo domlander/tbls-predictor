@@ -511,7 +511,6 @@ const resolvers = {
     leagues: async (_, __, { user }) => {
       if (!user?.id) return [];
 
-      let leagues: UserLeague[] | null = [];
       const userLeagues = await prisma.user.findUnique({
         include: {
           leagues: true,
@@ -520,18 +519,56 @@ const resolvers = {
           id: user.id,
         },
       });
-
       if (!userLeagues?.leagues.length) return [];
 
-      leagues = userLeagues.leagues.map((league) => ({
+      return userLeagues.leagues.map((league) => ({
         leagueId: league.id,
         leagueName: league.name,
         gameweekStart: league.gameweekStart,
         gameweekEnd: league.gameweekEnd,
-        // position: null, // TODO
       }));
+    },
+  },
+  UserLeague: {
+    users: async ({ leagueId }: UserLeague) => {
+      const league = await prisma.league.findUnique({
+        where: {
+          id: leagueId,
+        },
+        include: {
+          users: {
+            select: {
+              id: true,
+              predictions: {
+                select: {
+                  score: true,
+                  fixture: {
+                    select: {
+                      gameweek: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+      if (!league) throw new ApolloError("Cannot find league.");
 
-      return leagues;
+      const users = league.users
+        .map((user) => ({
+          id: user.id,
+          totalPoints: user.predictions
+            .filter(
+              ({ fixture }) =>
+                fixture.gameweek >= league.gameweekStart &&
+                fixture.gameweek <= league.gameweekEnd
+            )
+            .reduce((acc, cur) => acc + (cur.score || 0), 0),
+        }))
+        .sort((a, b) => b.totalPoints - a.totalPoints);
+
+      return users;
     },
   },
   League: {
@@ -588,13 +625,10 @@ const resolvers = {
             .map((_, i) => ({ week: i + league.gameweekStart, points: 0 }))
         );
 
-        const totalPoints = predictions
-          .filter(
-            (prediction) =>
-              prediction.fixture.gameweek >= league.gameweekStart &&
-              prediction.fixture.gameweek <= league.gameweekEnd
-          )
-          .reduce((acc, cur) => acc + (cur.score || 0), 0);
+        const totalPoints = predictions.reduce(
+          (acc, cur) => acc + (cur.score || 0),
+          0
+        );
 
         return {
           ...user,

@@ -10,14 +10,16 @@ import colours from "src/styles/colours";
 interface Props {
   id: number;
   name: string;
+  gameweekStart: number;
   administratorId: string;
   users: User[];
-  fixtureWeeksAvailable: number[];
+  fixtureWeeksAvailable: number[] | null;
 }
 
 const LeagueContainer = ({
   id,
   name,
+  gameweekStart,
   administratorId,
   users,
   fixtureWeeksAvailable,
@@ -36,6 +38,7 @@ const LeagueContainer = ({
           leagueName={name}
           users={users}
           leagueId={id}
+          gameweekStart={gameweekStart}
           fixtureWeeksAvailable={fixtureWeeksAvailable}
         />
       </Container>

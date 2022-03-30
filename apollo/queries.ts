@@ -44,7 +44,10 @@ export const USER_LEAGUES_QUERY = gql`
         leagueName
         gameweekStart
         gameweekEnd
-        position
+        users {
+          id
+          totalPoints
+        }
       }
     }
     allFixtures {

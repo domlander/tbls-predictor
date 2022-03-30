@@ -1,6 +1,7 @@
 import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 import { UPDATE_PREDICTIONS_MUTATION } from "apollo/mutations";
 import { useMutation, useQuery } from "@apollo/client";
@@ -12,6 +13,7 @@ import User from "src/types/User";
 import FixtureWithPrediction from "src/types/FixtureWithPrediction";
 import WeekNavigator from "src/components/WeekNavigator";
 import PredictionsTable from "src/components/PredictionsTable";
+import colours from "src/styles/colours";
 
 type UpdatePredictionsInputType = {
   userId: User["id"];
@@ -148,9 +150,20 @@ const Predictions = ({
   };
 
   if (isQueryError)
-    return <div>An error has occurred. Please try again later.</div>;
-  if (!fixtures.length)
-    return <div>No fixtures found for gameweek {gameweek}</div>;
+    return <p>An error has occurred. Please try again later.</p>;
+
+  if (!fixtures?.length)
+    return (
+      <NoFixtures>
+        <p>No fixtures found for gameweek {gameweek}</p>
+        <p>
+          Go to{" "}
+          <Link href="/predictions">
+            <a>this weeks predictions</a>
+          </Link>
+        </p>
+      </NoFixtures>
+    );
 
   const fixturesWithPredictions: FixtureWithPrediction[] =
     combineFixturesAndPredictions(fixtures, predictions);
@@ -190,6 +203,22 @@ const Container = styled.section`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+`;
+
+const NoFixtures = styled.section`
+  p {
+    font-size: 1rem;
+  }
+
+  a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+
+    :hover,
+    :focus {
+      color: ${colours.cyan100};
+    }
+  }
 `;
 
 export default Predictions;

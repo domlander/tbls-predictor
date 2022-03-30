@@ -47,7 +47,7 @@ const typeDefs = gql`
 
   input ProcessJoinLeagueRequestInput {
     leagueId: Int!
-    applicantId: Int!
+    applicantId: String!
     isAccepted: Boolean!
   }
 
@@ -111,7 +111,7 @@ const typeDefs = gql`
     leagueName: String!
     gameweekStart: Int!
     gameweekEnd: Int!
-    position: Int
+    users: [User!]
   }
 
   type Fixture {

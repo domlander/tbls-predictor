@@ -13,14 +13,16 @@ import User from "src/types/User";
 interface Props {
   id: number;
   name: string;
-  administratorId: string;
+  gameweekStart: number;
   users: User[];
+  administratorId: string;
   fixtureWeeksAvailable: number[];
 }
 
 const LeaguePage = ({
   id,
   name,
+  gameweekStart,
   administratorId,
   users,
   fixtureWeeksAvailable,
@@ -28,6 +30,7 @@ const LeaguePage = ({
   <LeagueHome
     id={id}
     name={name}
+    gameweekStart={gameweekStart}
     administratorId={administratorId}
     users={users}
     fixtureWeeksAvailable={fixtureWeeksAvailable}
@@ -62,11 +65,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     query: ALL_FIXTURES_QUERY,
   });
 
-  const fixtureWeeksAvailable = [
-    ...Array(Math.min(currentGameweek, gameweekEnd) - gameweekStart + 1).keys(),
-  ]
-    .map((x) => x + gameweekStart)
-    .reverse();
+  const gameweeksPlayed =
+    Math.min(currentGameweek, gameweekEnd) - gameweekStart + 1;
+
+  const fixtureWeeksAvailable =
+    gameweeksPlayed > 0
+      ? [...Array(gameweeksPlayed).keys()]
+          .map((x) => x + gameweekStart)
+          .reverse()
+      : null;
 
   const sortedUsers = [...league.users]
     .sort(
@@ -87,6 +94,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     props: {
       id: leagueId,
       name: league.name,
+      gameweekStart,
       users: sortedUsers,
       administratorId: league.administratorId,
       fixtureWeeksAvailable,

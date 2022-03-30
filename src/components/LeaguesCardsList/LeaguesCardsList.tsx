@@ -6,6 +6,7 @@ import UserLeague from "src/types/UserLeague";
 import pageSizes from "src/styles/pageSizes";
 import colours from "src/styles/colours";
 import Heading from "src/components/Heading";
+import { positionify } from "utils/positionify";
 
 export interface Props {
   leagues: UserLeague[];
@@ -20,44 +21,49 @@ const LeaguesCardsList = ({ leagues }: Props) => {
         ({
           leagueId: id,
           leagueName: name,
+          users,
           position,
           weeksToGo,
           weeksUntilStart,
-        }) => (
-          <LeagueCard
-            tabIndex={0}
-            key={id}
-            onClick={() => router.push(`/league/${id}`)}
-          >
-            <LeagueCardHeading level="h2" variant="secondary">
-              {name}
-            </LeagueCardHeading>
-            <p>
-              Current position:{" "}
-              <span style={{ fontSize: "1.2rem", fontWeight: 700 }}>
-                {position || "Unknown"}
-              </span>
-            </p>
-            {weeksUntilStart ? (
-              <p>
-                League starts in{" "}
-                <span style={{ fontSize: "1.2rem", fontWeight: 700 }}>
-                  {weeksUntilStart}
-                </span>{" "}
-                weeks
-              </p>
-            ) : weeksToGo ? (
-              <p>
-                Weeks remaining:{" "}
-                <span style={{ fontSize: "1.2rem", fontWeight: 700 }}>
-                  {weeksToGo}
-                </span>
-              </p>
-            ) : (
-              <p>League finished!</p>
-            )}
-          </LeagueCard>
-        )
+        }) => {
+          const numUsers = users?.length as number;
+          const displayPosition = position ? positionify(position) : null;
+          const isPositionRelevant = displayPosition && !weeksUntilStart;
+
+          return (
+            <LeagueCard
+              tabIndex={0}
+              key={id}
+              onClick={() => router.push(`/league/${id}`)}
+            >
+              <LeagueCardHeading level="h2" variant="secondary">
+                {name}
+              </LeagueCardHeading>
+              {isPositionRelevant &&
+                (weeksToGo ? (
+                  <p>
+                    Current position: <BoldText>{displayPosition}</BoldText> of{" "}
+                    <BoldText>{numUsers}</BoldText>
+                  </p>
+                ) : (
+                  <p>
+                    You finished: <BoldText>{displayPosition}</BoldText> of{" "}
+                    <BoldText>{numUsers}</BoldText>
+                  </p>
+                ))}
+              {weeksUntilStart ? (
+                <p>
+                  League starts in <BoldText>{weeksUntilStart}</BoldText>{" "}
+                  gameweeks!
+                </p>
+              ) : weeksToGo ? (
+                <p>
+                  Weeks remaining: <BoldText>{weeksToGo}</BoldText>
+                </p>
+              ) : null}
+            </LeagueCard>
+          );
+        }
       )}
     </Container>
   );
@@ -100,6 +106,11 @@ const LeagueCard = styled.div`
 
 const LeagueCardHeading = styled(Heading)`
   margin: 0;
+`;
+
+const BoldText = styled.span`
+  font-size: 1.2rem;
+  font-weight: 700;
 `;
 
 export default LeaguesCardsList;
