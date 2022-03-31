@@ -20,6 +20,11 @@ const AdminHome = () => (
           <a>Manage Fixtures</a>
         </Link>
       </Li>
+      <Li>
+        <Link href="admin/mangePredictions">
+          <a>Add/edit predictions</a>
+        </Link>
+      </Li>
     </ul>
   </section>
 );
@@ -27,6 +32,8 @@ const AdminHome = () => (
 const Li = styled.li`
   font-size: 2rem;
   margin: 2rem 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 
   a {
     :hover {

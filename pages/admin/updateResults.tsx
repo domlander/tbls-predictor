@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
       props: {},
       redirect: {
-        destination: "/signIn",
+        destination: "/",
         permanent: false,
       },
     };
