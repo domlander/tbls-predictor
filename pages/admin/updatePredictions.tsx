@@ -1,11 +1,12 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
+import AdminUpdatePredictions from "src/containers/AdminUpdatePredictions";
 
 interface Props {}
 
-const ManagePredictions = () => {
-  return <h1>Manage Predictions</h1>;
+const UpdatePredictions = () => {
+  return <AdminUpdatePredictions />;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -36,4 +37,4 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 };
 
-export default ManagePredictions;
+export default UpdatePredictions;

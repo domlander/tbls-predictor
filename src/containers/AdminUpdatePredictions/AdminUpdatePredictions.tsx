@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 import styled from "styled-components";
 import Heading from "src/components/Heading";
 import colours from "src/styles/colours";
@@ -7,25 +6,8 @@ import colours from "src/styles/colours";
 const AdminUpdatePredictions = () => (
   <section>
     <Heading level="h1" variant="secondary">
-      Admin
+      Update Predictions
     </Heading>
-    <ul>
-      <Li>
-        <Link href="admin/updateResults">
-          <a>Update Results</a>
-        </Link>
-      </Li>
-      <Li>
-        <Link href="admin/manageFixtures">
-          <a>Manage Fixtures</a>
-        </Link>
-      </Li>
-      <Li>
-        <Link href="admin/updatePredictions">
-          <a>Update Predictions</a>
-        </Link>
-      </Li>
-    </ul>
   </section>
 );
 
