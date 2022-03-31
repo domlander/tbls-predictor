@@ -47,7 +47,7 @@ const LeagueApplicantsRequests = ({
   );
 
   return (
-    <div>
+    <section>
       <Heading level="h2" variant="secondary">
         Requests
       </Heading>
@@ -79,7 +79,7 @@ const LeagueApplicantsRequests = ({
         })
       )}
       {userFeedback && <Feedback>{userFeedback}</Feedback>}
-    </div>
+    </section>
   );
 };
 

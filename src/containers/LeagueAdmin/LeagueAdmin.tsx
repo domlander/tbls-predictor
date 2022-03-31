@@ -9,6 +9,7 @@ import LeagueApplicants from "src/components/LeagueApplicantsRequests";
 import LeagueParticipants from "src/components/LeagueParticipants";
 import Heading from "src/components/Heading";
 import Loading from "src/components/Loading";
+import ManagePredictions from "src/components/ManagePredictions";
 
 interface Props {
   leagueId: number;
@@ -18,13 +19,17 @@ const LeagueAdminContainer = ({ leagueId }: Props) => {
   const [leagueName, setLeagueName] = useState("League");
   const [applicants, setApplicants] = useState<Applicant[]>([]);
   const [participants, setParticipants] = useState<User[]>([]);
+  const [gameweekStart, setGameweekStart] = useState<number | null>(null);
+  const [gameweekEnd, setGameweekEnd] = useState<number | null>(null);
 
   const { loading, error } = useQuery(LEAGUE_ADMIN_QUERY, {
     variables: { leagueId },
-    onCompleted: ({ leagueAdmin: { league } }) => {
+    onCompleted: async ({ leagueAdmin: { league } }) => {
       setLeagueName(league.name);
       setApplicants(league.applicants);
       setParticipants(league.users);
+      setGameweekStart(league.gameweekStart);
+      setGameweekEnd(league.gameweekEnd);
     },
   });
 
@@ -42,6 +47,15 @@ const LeagueAdminContainer = ({ leagueId }: Props) => {
         leagueId={leagueId}
       />
       <LeagueParticipants participants={participants} />
+      {/* We can remove this check when we have automatic batching in React 18 */}
+      {gameweekStart && gameweekEnd && participants?.length && (
+        <ManagePredictions
+          leagueId={leagueId}
+          gameweekStart={gameweekStart}
+          gameweekEnd={gameweekEnd}
+          participants={participants}
+        />
+      )}
     </Container>
   );
 };

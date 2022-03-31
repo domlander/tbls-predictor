@@ -75,6 +75,8 @@ export const LEAGUE_ADMIN_QUERY = gql`
       league {
         id
         name
+        gameweekStart
+        gameweekEnd
         applicants {
           user {
             id
@@ -92,8 +94,8 @@ export const LEAGUE_ADMIN_QUERY = gql`
 `;
 
 export const PREDICTIONS_QUERY = gql`
-  query Predictions($weekId: Int!) {
-    predictions(weekId: $weekId) {
+  query Predictions($weekId: Int!, $userId: String) {
+    predictions(weekId: $weekId, userId: $userId) {
       user {
         id
       }

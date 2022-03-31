@@ -7,7 +7,7 @@ const typeDefs = gql`
     user: User
     fixtures(weekId: Int!): [Fixture!]
     allFixtures: AllFixturesPayload!
-    predictions(weekId: Int!): [Prediction!]
+    predictions(weekId: Int!, userId: String): [Prediction!]
     allLeagues: AllLeaguesPayload!
     leagueAdmin(leagueId: Int!): LeagueAdminPayload!
     league(leagueId: Int!): League!

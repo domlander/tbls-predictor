@@ -184,13 +184,11 @@ const resolvers = {
         fixtures: fixturesWithPredictions,
       };
     },
-    predictions: async (_, { weekId }, { user }) => {
-      const userId = user.id;
-
+    predictions: async (_, { weekId, userId }, { user }) => {
       const predictions = await prisma.prediction.findMany({
         where: {
           AND: [
-            { userId },
+            { userId: userId || user.id },
             {
               fixture: {
                 gameweek: weekId,

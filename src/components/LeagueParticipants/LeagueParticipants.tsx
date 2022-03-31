@@ -9,14 +9,14 @@ interface Props {
 }
 
 const LeagueParticipants = ({ participants }: Props) => (
-  <div>
+  <section>
     <Heading level="h2" variant="secondary">
       Participants
     </Heading>
     {participants?.map((participant) => (
       <UserLabel key={participant.id}>{participant.username}</UserLabel>
     ))}
-  </div>
+  </section>
 );
 
 const UserLabel = styled.p`
