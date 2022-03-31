@@ -29,17 +29,19 @@ const LeagueWeekPage = ({
   fixtures,
   firstGameweek,
   lastGameweek,
-}: Props) => (
-  <LeagueWeek
-    leagueId={leagueId}
-    leagueName={leagueName}
-    weekId={weekId}
-    users={users}
-    fixtures={fixtures}
-    firstGameweek={firstGameweek}
-    lastGameweek={lastGameweek}
-  />
-);
+}: Props) => {
+  return (
+    <LeagueWeek
+      leagueId={leagueId}
+      leagueName={leagueName}
+      weekId={weekId}
+      users={users}
+      fixtures={fixtures}
+      firstGameweek={firstGameweek}
+      lastGameweek={lastGameweek}
+    />
+  );
+};
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   // Get the league ID from the URL
@@ -66,6 +68,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   return {
     props: {
+      key: `${leagueId}-${weekId}`,
       leagueId,
       leagueName: league.name,
       weekId,

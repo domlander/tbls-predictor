@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
-import { NetworkStatus, useQuery } from "@apollo/client";
+import { NetworkStatus, useLazyQuery } from "@apollo/client";
 
 import { LEAGUE_WEEK_QUERY } from "apollo/queries";
 import UserPoints from "src/types/UserPoints";
@@ -25,7 +25,7 @@ interface Props {
   lastGameweek: number;
 }
 
-const LeagueContainer = ({
+const LeagueWeekContainer = ({
   leagueId,
   leagueName,
   weekId: gameweek,
@@ -37,21 +37,28 @@ const LeagueContainer = ({
   const [fixtures, setFixtures] = useState(fixturesFromProps);
   const [users, setUsers] = useState(usersFromProps);
 
-  const { loading, refetch, networkStatus } = useQuery(LEAGUE_WEEK_QUERY, {
-    variables: {
-      leagueId,
-      weekId: gameweek,
-    },
-    notifyOnNetworkStatusChange: true,
-    onCompleted: (data) => {
-      if (data?.fixturesWithPredictions?.fixtures) {
-        setFixtures(data.fixturesWithPredictions.fixtures);
-      }
-      if (data?.league?.users) {
-        setUsers(data?.league?.users);
-      }
-    },
-  });
+  /**
+   * We build this page statically, so already have the data.
+   * If the user wants up-to-date data, this will fetch it.
+   */
+  const [getData, { loading, networkStatus }] = useLazyQuery(
+    LEAGUE_WEEK_QUERY,
+    {
+      variables: {
+        leagueId,
+        weekId: gameweek,
+      },
+      notifyOnNetworkStatusChange: true,
+      onCompleted: (data) => {
+        if (data?.fixturesWithPredictions?.fixtures) {
+          setFixtures(data.fixturesWithPredictions.fixtures);
+        }
+        if (data?.league?.users) {
+          setUsers(data?.league?.users);
+        }
+      },
+    }
+  );
 
   const usersGameweekPoints: UserPoints[] = users
     .map(({ id: userId, username, weeklyPoints }: User) => ({
@@ -88,7 +95,7 @@ const LeagueContainer = ({
             />
           </div>
         ) : !loading ? (
-          <RefreshButton type="button" onClick={() => refetch()}>
+          <RefreshButton type="button" onClick={() => getData()}>
             <Image src="/images/refresh.svg" height="20" width="20" alt="" />
           </RefreshButton>
         ) : null}
@@ -204,4 +211,4 @@ const Loading = styled.section`
   }
 `;
 
-export default LeagueContainer;
+export default LeagueWeekContainer;
