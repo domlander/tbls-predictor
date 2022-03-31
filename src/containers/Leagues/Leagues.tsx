@@ -25,7 +25,9 @@ const Leagues = ({ publicLeagues }: Props) => {
         Leagues
       </LeaguesHeading>
       <MyLeagues leagues={activeLeagues} />
-      <MyFinishedLeagues leagues={finishedLeagues} />
+      {finishedLeagues?.length ? (
+        <MyFinishedLeagues leagues={finishedLeagues} />
+      ) : null}
       <PublicLeaguesList leagues={publicLeagues} />
     </Container>
   );

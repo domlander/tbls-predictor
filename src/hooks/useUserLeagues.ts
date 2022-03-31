@@ -89,6 +89,7 @@ const useUserLeagues = (): [
       setCurrentGameweek(data?.allFixtures?.currentGameweek || null);
       setLeagues(data?.user?.leagues || []);
     },
+    skip: !session?.user.id,
   });
 
   if (!currentGameweek || !session?.user.id) return [[], [], loading, error];
