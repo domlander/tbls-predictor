@@ -1,60 +1,52 @@
-import { days, months, pad } from "./dateHelpers";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 
 type DateFormat = "past" | "today" | "soon" | "future";
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
+const dateFormatDictionary = {
+  past: "DD/MM HH:mm",
+  today: "HH:mm",
+  soon: "ddd HH:mm",
+  future: "ddd D MMM",
+};
+
 const getLocalKickoffTime = (dateInput: Date | string) => {
-  const fixtureUTC: Date =
+  const fixture: Date =
     typeof dateInput === "string" ? new Date(dateInput) : dateInput;
 
-  return new Date(
-    fixtureUTC.setMinutes(
-      fixtureUTC.getMinutes() - new Date().getTimezoneOffset()
-    )
+  return (
+    dayjs(fixture)
+      // If we're in BST, subtract an hour to account for UTC
+      .subtract(dayjs().tz("Europe/London").utcOffset(), "minutes")
+      .tz(dayjs.tz.guess()) // Guess the user's timezone
+      .toDate()
   );
 };
 
 export function formatFixtureKickoffTime(
   dateInput: Date | string,
-  format: DateFormat = "future"
+  when: DateFormat = "future"
 ) {
-  const fixture = getLocalKickoffTime(dateInput);
+  const localTime = getLocalKickoffTime(dateInput);
+  const dateFormat = dateFormatDictionary[when];
 
-  const monthIndex = fixture.getUTCMonth();
-  const dayIndex = fixture.getUTCDay();
-
-  const dayOfMonth = pad(fixture.getUTCDate());
-  const month = months[monthIndex].substring(0, 3);
-  const day = days[dayIndex];
-  const hours = pad(fixture.getUTCHours());
-  const minutes = pad(fixture.getUTCMinutes());
-
-  if (format === "past") {
-    return `${dayOfMonth}/${pad(monthIndex + 1)} ${hours}:${minutes}`;
-  }
-
-  if (format === "today") {
-    return `${hours}:${minutes}`;
-  }
-
-  if (format === "soon") {
-    const today = new Date();
-    return fixture.toDateString() === today.toDateString()
-      ? `${hours}:${minutes}`
-      : `${day} ${hours}:${minutes}`;
-  }
-
-  return `${day} ${dayOfMonth} ${month}`;
+  return dayjs(localTime).format(dateFormat);
 }
 
-// 16/04 19:45  past   `${dayOfMonth}/${pad(monthIndex + 1)} ${hours}:${minutes}`;
-// 19:45        today  `${hours}:${minutes}`;
-// Fri 16 Apr   soon   `${day} ${dayOfMonth} ${month}`;
-// Fri 16/04    future `${day} ${dayOfMonth}/${pad(monthIndex + 1)}`;
-
-export function whenIsTheFixture(dateInput: Date | string) {
+/**
+ * 16/04 19:45  past   `${dayOfMonth}/${pad(monthIndex + 1)} ${hours}:${minutes}`;
+ * 19:45        today  `${hours}:${minutes}`;
+ * Fri 16 Apr   soon   `${day} ${dayOfMonth} ${month}`;
+ * Fri 16/04    future `${day} ${dayOfMonth}/${pad(monthIndex + 1)}`;
+ */
+export function whenIsTheFixture(dateInput: Date | string): DateFormat {
   const fixture = getLocalKickoffTime(dateInput);
 
-  // Note an edge case here: If the match is 7 days away, the match is classified as being far away
+  // Edge case: If the match is 7 days away, the match is classified as being far away
   const thisDayNextWeek = new Date();
   thisDayNextWeek.setDate(thisDayNextWeek.getDate() + 7);
   if (fixture > thisDayNextWeek) {
