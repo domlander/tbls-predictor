@@ -13,7 +13,14 @@ import pageSizes from "src/styles/pageSizes";
 import Button from "src/components/Button";
 import GridRow from "src/components/GridRow";
 
-type STATE = "LOADING" | "IDLE" | "SAVING" | "SAVE_SUCCESS" | "SAVE_FAILED";
+const StateFeedback = {
+  LOADING: "Loading...",
+  SAVING: "Saving...",
+  IDLE: "",
+  SAVE_SUCCESS: "Predictions updated!",
+  SAVE_FAILED:
+    "There was an error updating your predictions. Please try again.",
+};
 
 interface Props {
   predictions: FixtureWithPrediction[];
@@ -53,7 +60,7 @@ const PredictionsTable = ({
 
   const firstFixtureKickoffTiming = whenIsTheFixture(predictions[0].kickoff);
 
-  let state: STATE;
+  let state: keyof typeof StateFeedback;
   if (isLoading) state = "LOADING";
   else if (isSaving) state = "SAVING";
   else if (showFeedback) state = isSaveError ? "SAVE_FAILED" : "SAVE_SUCCESS";
@@ -112,23 +119,17 @@ const PredictionsTable = ({
               id="save"
               type="submit"
               variant="primary"
-              disabled={isLoading}
+              disabled={state === "LOADING" || state === "SAVING"}
             >
-              Save predictions
+              {state === "LOADING" || state === "SAVING"
+                ? StateFeedback[state]
+                : "Save predictions"}
             </Button>
           </ButtonContainer>
-          {state === "LOADING" && (
-            <UserFeedback>Loading predictions...</UserFeedback>
-          )}
-          {state === "IDLE" && <span />}
-          {state === "SAVING" && <UserFeedback>Saving...</UserFeedback>}
-          {state === "SAVE_SUCCESS" && (
-            <UserFeedback>Predictions updated!</UserFeedback>
-          )}
-          {state === "SAVE_FAILED" && (
-            <UserFeedback>
-              There was an error updating your predictions. Please try again.
-            </UserFeedback>
+          {state !== "LOADING" && state !== "SAVING" ? (
+            <UserFeedback>{StateFeedback[state]}</UserFeedback>
+          ) : (
+            <span />
           )}
         </ButtonsAndMessageContainer>
       ) : (
@@ -183,6 +184,7 @@ const ButtonsAndMessageContainer = styled.div`
 
 const ButtonContainer = styled.div`
   order: 3;
+  flex-basis: 250px;
 
   @media (max-width: 650px) {
     order: 1;
