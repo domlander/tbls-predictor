@@ -56,6 +56,7 @@ model User {
   sessions            Session[]
   leagueApplications  Applicant[]
   predictions         Prediction[]
+  predictionLogs      PredictionLog[]
   leagues             League[]
 }
 
@@ -87,14 +88,15 @@ model Applicant {
 }
 
 model Fixture {
-  id          Int          @id @default(autoincrement())
-  gameweek    Int          @db.SmallInt
-  homeTeam    String       @map("home_team") @db.VarChar(255)
-  awayTeam    String       @map("away_team") @db.VarChar(255)
-  homeGoals   Int?         @map("home_goals") @db.SmallInt
-  awayGoals   Int?         @map("away_goals") @db.SmallInt
-  kickoff     DateTime     @db.Timestamptz(6)
-  predictions Prediction[]
+  id              Int          @id @default(autoincrement())
+  gameweek        Int          @db.SmallInt
+  homeTeam        String       @map("home_team") @db.VarChar(255)
+  awayTeam        String       @map("away_team") @db.VarChar(255)
+  homeGoals       Int?         @map("home_goals") @db.SmallInt
+  awayGoals       Int?         @map("away_goals") @db.SmallInt
+  kickoff         DateTime     @db.Timestamptz(6)
+  predictions     Prediction[]
+  predictionLogs  PredictionLog[]
 
   @@map("fixtures")
 }
@@ -111,6 +113,23 @@ model Prediction {
 
   @@id([fixtureId, userId])
   @@map("predictions")
+}
+
+model PredictionLog {
+  id               Int       @id @default(autoincrement())
+  userId           String
+  fixtureId        Int
+  oldHomeGoals     Int?      @db.SmallInt
+  newHomeGoals     Int?      @db.SmallInt
+  oldAwayGoals     Int?      @db.SmallInt
+  newAwayGoals     Int?      @db.SmallInt
+  oldBigBoyBonus   Boolean?
+  newBigBoyBonus   Boolean?
+  createdAt        DateTime  @default(now()) @map("created_at") @db.Timestamp(6)
+  fixture          Fixture   @relation(fields: [fixtureId], references: [id], onDelete: Cascade)
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("prediction_log")
 }
 
 enum LeagueApplicantStatus {
