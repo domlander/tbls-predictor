@@ -78,17 +78,22 @@ const LeagueContainer = ({
             </li>
           </ul>
         </Breadcrumbs>
-        {loading || networkStatus === NetworkStatus.refetch ? (
+        {networkStatus === NetworkStatus.refetch ? (
           <div>
-            <Image src="/images/spinner.gif" height="20" width="20" alt="" />
+            <Image
+              src="/images/refreshDisabled.svg"
+              height="20"
+              width="20"
+              alt=""
+            />
           </div>
-        ) : (
+        ) : !loading ? (
           <RefreshButton type="button" onClick={() => refetch()}>
             <Image src="/images/refresh.svg" height="20" width="20" alt="" />
           </RefreshButton>
-        )}
+        ) : null}
       </TopBar>
-      <section>
+      <>
         <WeekNavigator
           week={gameweek}
           prevGameweekUrl={
@@ -102,9 +107,25 @@ const LeagueContainer = ({
               : `/league/${leagueId}/week/${gameweek + 1}`
           }
         />
-        <LeagueWeekUserTotals users={usersGameweekPoints} />
-        <LeagueWeekFixtures weekId={gameweek} fixtures={sortedFixtures} />
-      </section>
+        <section>
+          <LeagueWeekUserTotals users={usersGameweekPoints} />
+          {!loading ? (
+            <LeagueWeekFixtures weekId={gameweek} fixtures={sortedFixtures} />
+          ) : (
+            <Loading>
+              <p>Loading...</p>
+              <div>
+                <Image
+                  src="/images/spinner.gif"
+                  height="50"
+                  width="50"
+                  alt=""
+                />
+              </div>
+            </Loading>
+          )}
+        </section>
+      </>
     </Container>
   );
 };
@@ -123,6 +144,7 @@ const TopBar = styled.div`
 `;
 
 const Breadcrumbs = styled.nav`
+  height: 1.875em;
   font-size: 0.8rem;
   color: ${colours.grey300};
 
@@ -165,6 +187,21 @@ const Breadcrumbs = styled.nav`
 
 const RefreshButton = styled.button`
   cursor: pointer;
+`;
+
+const Loading = styled.section`
+  display: flex;
+  align-items: center;
+  gap: 2em;
+
+  p {
+    font-size: 2rem;
+  }
+
+  div {
+    height: 50px;
+    width: 50px;
+  }
 `;
 
 export default LeagueContainer;
