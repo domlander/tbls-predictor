@@ -59,6 +59,52 @@ const resolvers = {
 
       return { fixtures, currentGameweek };
     },
+    predictionAndFixture: async (_, { weekId, userId }) => {
+      const result = await prisma.user.findUnique({
+        where: {
+          id: userId,
+        },
+        select: {
+          predictions: {
+            select: {
+              fixtureId: true,
+              homeGoals: true,
+              awayGoals: true,
+              bigBoyBonus: true,
+              score: true,
+              fixture: {
+                select: {
+                  homeTeam: true,
+                  awayTeam: true,
+                  kickoff: true,
+                  gameweek: true,
+                },
+              },
+            },
+            where: {
+              fixture: {
+                gameweek: weekId,
+              },
+            },
+          },
+        },
+      });
+
+      const predictions =
+        result?.predictions.map((prediction) => ({
+          fixtureId: prediction.fixtureId,
+          gameweek: prediction.fixture.gameweek,
+          kickoff: prediction.fixture.kickoff,
+          homeTeam: prediction.fixture.homeTeam,
+          awayTeam: prediction.fixture.awayTeam,
+          homeGoals: prediction.homeGoals,
+          awayGoals: prediction.awayGoals,
+          bigBoyBonus: prediction.bigBoyBonus,
+          score: prediction.score,
+        })) || [];
+
+      return { predictions };
+    },
     fixturesWithPredictions: async (_, { leagueId, weekId }) => {
       if (weekId < 1 || weekId > 38)
         throw new UserInputError("Gameweek start week is not valid", {

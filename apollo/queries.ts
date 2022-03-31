@@ -108,6 +108,24 @@ export const PREDICTIONS_QUERY = gql`
   }
 `;
 
+export const PREDICTION_AND_FIXTURE_QUERY = gql`
+  query PredictionAndFixture($leagueId: Int!, $weekId: Int!, $userId: String!) {
+    predictionAndFixture(weekId: $weekId, userId: $userId) {
+      predictions {
+        fixtureId
+        gameweek
+        kickoff
+        homeTeam
+        awayTeam
+        homeGoals
+        awayGoals
+        bigBoyBonus
+        score
+      }
+    }
+  }
+`;
+
 export const LEAGUE_QUERY = gql`
   query League($leagueId: Int!) {
     league(leagueId: $leagueId) {

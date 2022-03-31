@@ -2,9 +2,8 @@ import React, { FormEvent, useState } from "react";
 import styled from "styled-components";
 
 import User from "src/types/User";
-import Prediction from "src/types/Prediction";
 import { useLazyQuery } from "@apollo/client";
-import { PREDICTIONS_QUERY } from "apollo/queries";
+import { PREDICTION_AND_FIXTURE_QUERY } from "apollo/queries";
 import Button from "../Button";
 import Heading from "../Heading";
 
@@ -23,13 +22,13 @@ const ManagePredictions = ({
 }: Props) => {
   const [userId, setUserId] = useState<string>(participants[0].id);
   const [gameweek, setGameweek] = useState<number>(gameweekStart);
-  const [predictions, setPredictions] = useState<Prediction[]>([]);
+  const [predictions, setPredictions] = useState<any[]>([]);
 
   // Query for getting fixtures from the database
-  const [fetchPredictions] = useLazyQuery(PREDICTIONS_QUERY, {
+  const [fetchPredictions] = useLazyQuery(PREDICTION_AND_FIXTURE_QUERY, {
     variables: { weekId: gameweek, userId },
     onCompleted: (data) => {
-      setPredictions(data?.predictions || []);
+      setPredictions(data?.predictionAndFixture.predictions || []);
     },
     fetchPolicy: "network-only",
   });
@@ -87,7 +86,7 @@ const ManagePredictions = ({
         {predictions?.length
           ? predictions.map((p) => (
               <p key={p.fixtureId}>
-                {p.homeGoals}-{p.awayGoals}
+                {`Fixture ID: ${p.fixtureId}: ${p.homeTeam} ${p.homeGoals}-${p.awayGoals} ${p.awayTeam} | ${p.score}pts`}
               </p>
             ))
           : null}
@@ -107,25 +106,5 @@ const Form = styled.form`
     gap: 0.5em;
   }
 `;
-
-// interface Props {
-//   label: string;
-//   value: string;
-//   options: any;
-//   onChange: () => {};
-// }
-
-// const Dropdown = ({ label, value, options, onChange }) => {
-//   return (
-//     <label>
-//       {label}
-//       <select value={value} onChange={onChange}>
-//         {options.map((option) => (
-//           <option value={option.value}>{option.label}</option>
-//         ))}
-//       </select>
-//     </label>
-//   );
-// };
 
 export default ManagePredictions;

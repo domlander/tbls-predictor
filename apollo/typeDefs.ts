@@ -11,6 +11,10 @@ const typeDefs = gql`
     allLeagues: AllLeaguesPayload!
     leagueAdmin(leagueId: Int!): LeagueAdminPayload!
     league(leagueId: Int!): League!
+    predictionAndFixture(
+      weekId: Int!
+      userId: String!
+    ): PredictionAndFixturePayload
     fixturesWithPredictions(
       leagueId: Int!
       weekId: Int!
@@ -40,6 +44,22 @@ const typeDefs = gql`
 
   type AllLeaguesPayload {
     leagues: [League!]
+  }
+
+  type PredictionAndFixture {
+    fixtureId: Int!
+    gameweek: Int!
+    kickoff: DateTime!
+    homeTeam: String!
+    awayTeam: String!
+    homeGoals: Int
+    awayGoals: Int
+    bigBoyBonus: Boolean
+    score: Int
+  }
+
+  type PredictionAndFixturePayload {
+    predictions: [PredictionAndFixture!]
   }
 
   type FixturesWithPredictionPayload {
