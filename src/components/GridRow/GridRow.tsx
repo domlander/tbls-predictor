@@ -88,31 +88,31 @@ const GridRow = ({
 const Kickoff = styled(GridItemKickoff)<{ locked: boolean; topRow: boolean }>`
   color: ${({ locked }) => (locked ? colours.grey500 : colours.grey100)};
   border-top: ${({ topRow }) =>
-    !topRow ? `1px solid ${colours.whiteOpacity25}` : "none"};
+    !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
 `;
 
 const HomeTeam = styled(GridItemHomeTeam)<{ locked: boolean; topRow: boolean }>`
   color: ${({ locked }) => (locked ? colours.grey500 : colours.grey100)};
   border-top: ${({ topRow }) =>
-    !topRow ? `1px solid ${colours.whiteOpacity25}` : "none"};
+    !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
 `;
 
 const AwayTeam = styled(GridItemAwayTeam)<{ locked: boolean; topRow: boolean }>`
   color: ${({ locked }) => (locked ? colours.grey500 : colours.grey100)};
   border-top: ${({ topRow }) =>
-    !topRow ? `1px solid ${colours.whiteOpacity25}` : "none"};
+    !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
 `;
 
 const Score = styled(ScoreInput)<{ isScoreEditable: boolean; topRow: boolean }>`
   color: ${({ isScoreEditable }) =>
     !isScoreEditable ? colours.grey500 : colours.grey100};
   border-top: ${({ topRow }) =>
-    !topRow ? `1px solid ${colours.whiteOpacity25}` : "none"};
+    !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
 `;
 
 const Divider = styled.span<{ locked: boolean; topRow: boolean }>`
   border-top: ${({ topRow }) =>
-    !topRow ? `1px solid ${colours.whiteOpacity25}` : "none"};
+    !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
   color: ${({ locked }) => (locked ? colours.grey500 : colours.grey100)};
   align-self: stretch;
   display: flex;
