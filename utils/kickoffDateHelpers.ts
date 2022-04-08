@@ -18,13 +18,10 @@ const getLocalKickoffTime = (dateInput: Date | string) => {
   const fixture: Date =
     typeof dateInput === "string" ? new Date(dateInput) : dateInput;
 
-  return (
-    dayjs(fixture)
-      // If we're in BST, subtract an hour to account for UTC
-      .subtract(dayjs().tz("Europe/London").utcOffset(), "minutes")
-      .tz(dayjs.tz.guess()) // Guess the user's timezone
-      .toDate()
-  );
+  return dayjs(fixture)
+    .subtract(60 - dayjs(fixture).utcOffset(), "minutes")
+    .tz(dayjs.tz.guess()) // Guess the user's timezone
+    .toDate();
 };
 
 export function formatFixtureKickoffTime(
