@@ -6,7 +6,7 @@ import League from "src/types/League";
 import Loading from "src/components/Loading";
 import Heading from "src/components/Heading";
 import MyLeagues from "src/components/MyLeagues";
-import PublicLeaguesList from "src/components/PublicLeaguesList";
+// import PublicLeaguesList from "src/components/PublicLeaguesList";
 import MyFinishedLeagues from "src/components/MyFinishedLeagues";
 
 interface Props {
@@ -28,7 +28,7 @@ const Leagues = ({ publicLeagues }: Props) => {
       {finishedLeagues?.length ? (
         <MyFinishedLeagues leagues={finishedLeagues} />
       ) : null}
-      <PublicLeaguesList leagues={publicLeagues} />
+      {/* <PublicLeaguesList leagues={publicLeagues} /> */}
     </Container>
   );
 };

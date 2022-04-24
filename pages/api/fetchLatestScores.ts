@@ -37,6 +37,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const secret = req.query.secret as string;
   const session = await getSession({ req });
 
+  console.log("Running fetchLatestScores function");
+
   if (!process.env.NEXTAUTH_URL)
     return res
       .status(500)
@@ -61,18 +63,26 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .send("You are not authorised to perform this action.");
   }
 
+  console.log("User authenticated");
+
   const fixtures = await prisma.fixture.findMany();
   const currentGameweek = calculateCurrentGameweek(fixtures);
   const fixturesFromDb = fixtures.filter(
     ({ gameweek }) => gameweek === currentGameweek
   );
 
+  console.log(`Current Gameweek: ${currentGameweek}`);
+  console.log(`fixturesFromDb: ${fixturesFromDb}`);
+
   const liveFixtures = fixturesFromDb.filter(({ kickoff }) =>
     isGameLiveOrRecentlyFinished(kickoff)
   );
   if (!liveFixtures?.length) {
+    console.log("No live games found");
     return res.status(200).send("No live games found");
   }
+
+  console.log(`liveFixtures: ${liveFixtures}`);
 
   const fixturesFromApi = await getFixturesFromApiForGameweek(currentGameweek);
 
@@ -85,6 +95,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return acc;
     }
 
+    console.log(
+      `Fixture ID: ${matchingFixtureFromApi.id}. Checking fixture ${matchingFixtureFromApi.homeTeam} vs ${matchingFixtureFromApi.awayTeam}`
+    );
+
     if (
       hasScoreChanged(
         [fixture.homeGoals, fixture.awayGoals],
@@ -96,16 +110,27 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         homeGoals: matchingFixtureFromApi?.homeGoals ?? null,
         awayGoals: matchingFixtureFromApi?.awayGoals ?? null,
       });
+
+      console.log(
+        `Fixture ID: ${matchingFixtureFromApi.id}. Will update score to ${matchingFixtureFromApi?.homeGoals} vs ${matchingFixtureFromApi?.awayGoals}`
+      );
     }
 
     return acc;
   }, [] as Fixture[]);
 
   if (!fixturesToUpdate?.length) {
+    console.log("No goals have been scored. No fixtures to update.");
     return res
       .status(200)
       .json("No recent goals have been scored. No scores to update.");
   }
+
+  fixturesToUpdate.forEach((x) => {
+    console.log(
+      `Fixture ID: ${x.id}. GOAL!!! Updating score to ${x.homeGoals} - ${x.awayGoals}`
+    );
+  });
 
   fetch(
     `${process.env.NEXTAUTH_URL}/api/updateFixtureResults?secret=${process.env.ACTIONS_SECRET}`,
@@ -117,7 +142,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       },
       body: JSON.stringify({ scores: fixturesToUpdate }),
     }
-  );
+  ).catch((e) => {
+    console.log("An error occurred:", e);
+  });
 
   return res.status(200).json({ fixtures: fixturesToUpdate });
 };
