@@ -53,7 +53,9 @@ const PredictionsTable = ({
   const gameweekScore = calculateGameweekScore(predictions);
 
   useEffect(() => {
-    if (!isSaving && (isSaved || isSaveError)) setShowFeedback(true);
+    if (!isSaving && (isSaved || isSaveError)) {
+      setShowFeedback(true);
+    }
   }, [isSaving, isSaved]);
 
   if (!predictions?.length) return null;

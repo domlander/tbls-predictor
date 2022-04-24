@@ -1,11 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 
 // https://malcolmkee.com/blog/use-transient-state/
-const useTransientState = (steadyState: unknown, restorationTime = 2000) => {
-  const [state, setState] = useState(steadyState);
+const useTransientState = (steadyState: boolean, restorationTime = 2000) => {
+  const [state, setState] = useState<boolean>(steadyState);
+  const [calledTimes, setCallTimes] = useState(0);
 
-  const setTemporaryState = useCallback((newValue) => {
+  const setTemporaryState = useCallback((newValue: boolean): void => {
     setState(newValue);
+    setCallTimes((x) => x + 1);
   }, []);
 
   useEffect(() => {
@@ -17,9 +19,12 @@ const useTransientState = (steadyState: unknown, restorationTime = 2000) => {
 
       return () => clearTimeout(timeoutId);
     }
-  }, [state, steadyState, restorationTime]);
 
-  return [state, setTemporaryState];
+    return () => {};
+  }, [state, steadyState, restorationTime, calledTimes]);
+
+  // https://fettblog.eu/typescript-react-typeing-custom-hooks/#option-2%3A-as-const
+  return [state, setTemporaryState] as const;
 };
 
 export default useTransientState;
