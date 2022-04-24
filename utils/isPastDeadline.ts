@@ -1,4 +1,4 @@
-const minutesBeforeKickoff = 90;
+const minutesBeforeKickoff = 5;
 
 const isPastDeadline = (input: Date | string) => {
   let kickoff;
