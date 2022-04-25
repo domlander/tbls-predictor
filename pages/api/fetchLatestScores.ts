@@ -37,6 +37,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const secret = req.query.secret as string;
   const session = await getSession({ req });
 
+  const startTime = new Date();
+
   console.log("Running fetchLatestScores function");
 
   if (!process.env.NEXTAUTH_URL)
@@ -63,7 +65,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .send("You are not authorised to perform this action.");
   }
 
-  console.log("User authenticated");
+  console.log(
+    "User authenticated. Time:",
+    new Date().getMilliseconds() - startTime.getMilliseconds()
+  );
 
   const fixtures = await prisma.fixture.findMany();
   const currentGameweek = calculateCurrentGameweek(fixtures);
@@ -82,7 +87,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).send("No live games found");
   }
 
-  console.log(`liveFixtures: ${liveFixtures}`);
+  console.log(`liveFixtures`);
+  liveFixtures.forEach((x) => {
+    console.log(`fixture: ${x.homeTeam} - ${x.awayTeam}`);
+  });
 
   const fixturesFromApi = await getFixturesFromApiForGameweek(currentGameweek);
 
@@ -96,7 +104,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     console.log(
-      `Fixture ID: ${matchingFixtureFromApi.id}. Checking fixture ${matchingFixtureFromApi.homeTeam} vs ${matchingFixtureFromApi.awayTeam}`
+      `Checking ${matchingFixtureFromApi.homeTeam} vs ${matchingFixtureFromApi.awayTeam} fixture`
     );
 
     if (
@@ -112,7 +120,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
 
       console.log(
-        `Fixture ID: ${matchingFixtureFromApi.id}. Will update score to ${matchingFixtureFromApi?.homeGoals} vs ${matchingFixtureFromApi?.awayGoals}`
+        `Will update score to ${matchingFixtureFromApi?.homeGoals} - ${matchingFixtureFromApi?.awayGoals}`
       );
     }
 
@@ -128,7 +136,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   fixturesToUpdate.forEach((x) => {
     console.log(
-      `Fixture ID: ${x.id}. GOAL!!! Updating score to ${x.homeGoals} - ${x.awayGoals}`
+      `Fixture ID: ${x.id}. Score update! Updating score to ${x.homeGoals} - ${x.awayGoals}`
     );
   });
 
