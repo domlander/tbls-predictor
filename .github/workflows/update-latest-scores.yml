@@ -2,6 +2,7 @@ name: update-latest-scores
 on:
   schedule:
     - cron: "*,5 12-23 * * *"
+  workflow_dispatch:
 jobs:
   update-latest-scores:
     runs-on: ubuntu-latest

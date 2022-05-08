@@ -99,9 +99,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       // If two teams playing against each other twice in a gameweek becomes a thing, we can compare on the day as well
       (x) => x.homeTeam === fixture.homeTeam && x.awayTeam === fixture.awayTeam
     );
-    if (!matchingFixtureFromApi) {
-      return acc;
-    }
+    if (!matchingFixtureFromApi) return acc;
 
     console.log(
       `Checking ${matchingFixtureFromApi.homeTeam} vs ${matchingFixtureFromApi.awayTeam} fixture`

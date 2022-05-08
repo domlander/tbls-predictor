@@ -2,6 +2,7 @@ name: add-missing-predictions
 on:
   schedule:
     - cron: "10,40 12-23 * * *"
+  workflow_dispatch:
 jobs:
   add-missing-predictions:
     runs-on: ubuntu-latest
