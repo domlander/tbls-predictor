@@ -19,7 +19,6 @@ export default {
   cyan300: "#0cb3a7",
   cyan500: "#2B8E87",
   cyan600: "#1f6762",
-  cyan700: "#13403d",
 
   blackblue400: "#151D26",
   blackblue400opacity50: "#151D2680",
