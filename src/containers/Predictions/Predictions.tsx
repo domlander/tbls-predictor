@@ -203,6 +203,7 @@ const Container = styled.section`
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  max-width: 800px;
 `;
 
 const NoFixtures = styled.section`

@@ -54,6 +54,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6em;
+  max-width: 800px;
 
   @media (max-width: ${pageSizes.tablet}) {
     padding: 4em 0;
