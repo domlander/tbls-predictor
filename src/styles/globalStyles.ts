@@ -47,14 +47,14 @@ const GlobalStyle = createGlobalStyle`
   h2 {
     font-weight: 300;
     letter-spacing: -1px;
-    font-size: 2rem;
+    font-size: 2.2rem;
     @media (max-width: ${pageSizes.mobileL}) {
       font-size: 1.6rem;
     }
   }
 
   h3 { 
-    font-size: 1.7rem;
+    font-size: 1.8rem;
   }
 
   a {

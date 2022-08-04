@@ -13,8 +13,9 @@ const GridItemKickoff = ({ className, label }: Props) => (
 
 const Kickoff = styled.span`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  padding-left: 4px;
 
   font-size: 1.6em;
   @media (max-width: ${pageSizes.tablet}) {

@@ -105,6 +105,7 @@ const LeagueCard = styled.div`
 `;
 
 const LeagueCardHeading = styled(Heading)`
+  font-weight: 400;
   margin: 0;
 `;
 
