@@ -243,7 +243,7 @@ const AdminManageFixtures = ({
             disabled={savingApiDataToDB}
             handleClick={saveApiFixturesToDatabase}
           >
-            {savingApiDataToDB ? "Saving..." : "Save all fixtures to database"}
+            {savingApiDataToDB ? "Saving..." : "Save to database"}
           </Button>
         ) : null}
       </FplFixturesPanel>

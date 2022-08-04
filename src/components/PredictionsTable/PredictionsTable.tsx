@@ -73,75 +73,81 @@ const PredictionsTable = ({
   );
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Table>
-        {predictions.map(
-          (
-            {
-              fixtureId,
-              kickoff,
-              homeTeam,
-              awayTeam,
-              predictedHomeGoals,
-              predictedAwayGoals,
-              bigBoyBonus,
-              predictionScore,
-            },
-            i
-          ) => (
-            <GridRow
-              key={fixtureId}
-              fixtureId={fixtureId}
-              kickoff={formatFixtureKickoffTime(
+    <Container>
+      <form onSubmit={handleSubmit}>
+        <Table>
+          {predictions.map(
+            (
+              {
+                fixtureId,
                 kickoff,
-                firstFixtureKickoffTiming
-              )}
-              homeTeam={homeTeam}
-              awayTeam={awayTeam}
-              homeGoals={predictedHomeGoals ?? ""}
-              awayGoals={predictedAwayGoals ?? ""}
-              updateGoals={updateGoals}
-              isBigBoyBonus={bigBoyBonus}
-              isBbbLocked={isBbbLockedForGameweek}
-              predictionScore={predictionScore || undefined}
-              locked={
-                isLoading || (!isAlwaysEditable && isPastDeadline(kickoff))
-              }
-              topRow={i === 0}
-              handleBbbUpdate={handleBbbUpdate}
-            />
+                homeTeam,
+                awayTeam,
+                predictedHomeGoals,
+                predictedAwayGoals,
+                bigBoyBonus,
+                predictionScore,
+              },
+              i
+            ) => (
+              <GridRow
+                key={fixtureId}
+                fixtureId={fixtureId}
+                kickoff={formatFixtureKickoffTime(
+                  kickoff,
+                  firstFixtureKickoffTiming
+                )}
+                homeTeam={homeTeam}
+                awayTeam={awayTeam}
+                homeGoals={predictedHomeGoals ?? ""}
+                awayGoals={predictedAwayGoals ?? ""}
+                updateGoals={updateGoals}
+                isBigBoyBonus={bigBoyBonus}
+                isBbbLocked={isBbbLockedForGameweek}
+                predictionScore={predictionScore || undefined}
+                locked={
+                  isLoading || (!isAlwaysEditable && isPastDeadline(kickoff))
+                }
+                topRow={i === 0}
+                handleBbbUpdate={handleBbbUpdate}
+              />
+            )
+          )}
+        </Table>
+        {isAlwaysEditable ||
+        predictions.some(
+          (prediction) => !isPastDeadline(prediction.kickoff)
+        ) ? (
+          <ButtonsAndMessageContainer>
+            <ButtonContainer>
+              <Button
+                id="save"
+                type="submit"
+                variant="primary"
+                disabled={state === "LOADING" || state === "SAVING"}
+              >
+                {state === "LOADING" || state === "SAVING"
+                  ? StateFeedback[state]
+                  : "Save predictions"}
+              </Button>
+            </ButtonContainer>
+            {state !== "LOADING" && state !== "SAVING" ? (
+              <UserFeedback>{StateFeedback[state]}</UserFeedback>
+            ) : (
+              <span />
+            )}
+          </ButtonsAndMessageContainer>
+        ) : (
+          gameweekScore !== null && (
+            <GameweekScore>{`Result: ${gameweekScore} points`}</GameweekScore>
           )
         )}
-      </Table>
-      {isAlwaysEditable ||
-      predictions.some((prediction) => !isPastDeadline(prediction.kickoff)) ? (
-        <ButtonsAndMessageContainer>
-          <ButtonContainer>
-            <Button
-              id="save"
-              type="submit"
-              variant="primary"
-              disabled={state === "LOADING" || state === "SAVING"}
-            >
-              {state === "LOADING" || state === "SAVING"
-                ? StateFeedback[state]
-                : "Save predictions"}
-            </Button>
-          </ButtonContainer>
-          {state !== "LOADING" && state !== "SAVING" ? (
-            <UserFeedback>{StateFeedback[state]}</UserFeedback>
-          ) : (
-            <span />
-          )}
-        </ButtonsAndMessageContainer>
-      ) : (
-        gameweekScore !== null && (
-          <GameweekScore>{`Result: ${gameweekScore} points`}</GameweekScore>
-        )
-      )}
-    </form>
+      </form>
+    </Container>
   );
 };
+
+const Container = styled.article``;
 
 const Table = styled.div`
   display: grid;

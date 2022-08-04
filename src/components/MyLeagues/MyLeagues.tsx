@@ -34,7 +34,7 @@ const Container = styled.section`
   gap: 2em;
 `;
 
-const NoLeagues = styled.div`
+const NoLeagues = styled.section`
   display: flex;
   flex-direction: column;
   font-size: 2.5em;
