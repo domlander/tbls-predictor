@@ -64,8 +64,9 @@ const BbbButton = styled.button<{
     `1px solid ${isBbbSelected ? colours.cyan300 : colours.cyan500}`};
   border-radius: 0.2em;
   cursor: pointer;
+  line-height: 1.3em;
 
-  padding: 0 0.5em;
+  padding: 0px 0.4em;
   @media (max-width: ${pageSizes.mobileL}) {
     padding: 0 0.3em;
   }
