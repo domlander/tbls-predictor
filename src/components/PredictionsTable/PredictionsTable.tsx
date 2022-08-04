@@ -186,7 +186,6 @@ const ButtonsAndMessageContainer = styled.div`
 
 const ButtonContainer = styled.div`
   order: 3;
-  flex-basis: 250px;
 
   @media (max-width: 650px) {
     order: 1;

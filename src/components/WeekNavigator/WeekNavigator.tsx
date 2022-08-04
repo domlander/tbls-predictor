@@ -38,7 +38,7 @@ const WeekNavigator = ({ prevGameweekUrl, nextGameweekUrl, week }: Props) => (
   </Container>
 );
 
-const Container = styled.section`
+const Container = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -46,6 +46,7 @@ const Container = styled.section`
 
 const WeekHeading = styled(Heading)`
   font-size: 4.8em;
+  font-weight: 300;
 
   @media (max-width: ${pageSizes.tablet}) {
     font-size: 3.6em;

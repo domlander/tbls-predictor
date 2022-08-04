@@ -21,7 +21,7 @@ export default function Home({ weekId, fixtures }: Props) {
 
   return (
     <Container>
-      <PredictionsSection>
+      <PredictionsContainer>
         <PredictionsHeader>
           <Heading level="h2" variant="secondary">
             This week
@@ -31,7 +31,7 @@ export default function Home({ weekId, fixtures }: Props) {
           </Link>
         </PredictionsHeader>
         <Predictions fixtures={fixtures} weekId={weekId} />
-      </PredictionsSection>
+      </PredictionsContainer>
       {leaguesLoading ? (
         <SpinnerContainer>
           <Image src="/images/spinner.gif" height="50" width="50" alt="" />
@@ -53,17 +53,17 @@ const Container = styled.div`
   padding-bottom: 6em;
   display: flex;
   flex-direction: column;
-  gap: 5em;
+  gap: 6em;
 
   @media (max-width: ${pageSizes.tablet}) {
     padding: 4em 0;
   }
 `;
 
-const PredictionsSection = styled.section`
+const PredictionsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2em;
+  gap: 3em;
 `;
 
 const PredictionsHeader = styled.div`

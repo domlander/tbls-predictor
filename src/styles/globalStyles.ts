@@ -4,7 +4,7 @@ import pageSizes from "./pageSizes";
 
 const GlobalStyle = createGlobalStyle`
   * {
-    font-family: Nunito, sans-serif;
+    font-family: 'Work Sans', sans-serif;
   }
 
   html {
@@ -35,7 +35,6 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h1, h2, h3, h4 ,h5, h6 {
-    font-family: Nunito, sans-serif;
     font-weight: 400;
     margin: 0;
   }
@@ -46,12 +45,17 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h2 {
+    font-weight: 300;
+    letter-spacing: -1px;
     font-size: 2rem;
     @media (max-width: ${pageSizes.mobileL}) {
       font-size: 1.6rem;
     }
   }
-  h3 { font-size: 1.7rem; }
+
+  h3 { 
+    font-size: 1.7rem;
+  }
 
   a {
     text-decoration: inherit;
