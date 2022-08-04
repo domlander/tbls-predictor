@@ -224,8 +224,8 @@ const AdminManageFixtures = ({
           </FixturesTable>
         ) : (
           <p>
-            Click the button below to fetch fresh fixture data for gameweek{" "}
-            {gameweek}. This will send a get request to FPL Towers&rsquo; API.
+            Fetch fresh fixture data for Gameweek {gameweek}. This will send a
+            GET request to FPL Towers&rsquo; API.
           </p>
         )}
         <Button
