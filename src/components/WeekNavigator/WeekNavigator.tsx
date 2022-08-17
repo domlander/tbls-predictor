@@ -2,8 +2,6 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
-
-import pageSizes from "src/styles/pageSizes";
 import Heading from "src/components/Heading";
 
 export type Props = {
@@ -25,9 +23,9 @@ const WeekNavigator = ({ prevGameweekUrl, nextGameweekUrl, week }: Props) => (
     ) : (
       image("/images/ArrowLeftDisabled.svg", "disabled navigation")
     )}
-    <WeekHeading level="h1" variant="secondary">
+    <Heading level="h1" variant="secondary">
       Week {week}
-    </WeekHeading>
+    </Heading>
     {nextGameweekUrl ? (
       <Link href={nextGameweekUrl}>
         <a>{image("/images/ArrowRight.svg", "Go to next week")}</a>
@@ -42,15 +40,6 @@ const Container = styled.div`
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-`;
-
-const WeekHeading = styled(Heading)`
-  font-size: 4.8em;
-  font-weight: 300;
-
-  @media (max-width: ${pageSizes.tablet}) {
-    font-size: 3.6em;
-  }
 `;
 
 export default WeekNavigator;

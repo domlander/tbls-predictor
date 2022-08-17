@@ -23,7 +23,7 @@ export default function Home({ weekId, fixtures }: Props) {
     <Container>
       <PredictionsContainer>
         <PredictionsHeader>
-          <Heading level="h2" variant="secondary">
+          <Heading level="h2" as="h1" variant="secondary">
             This week
           </Heading>
           <Link href={`/predictions/${weekId}`}>
@@ -64,7 +64,7 @@ const Container = styled.div`
 const PredictionsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 3em;
+  gap: 4em;
 `;
 
 const PredictionsHeader = styled.div`
