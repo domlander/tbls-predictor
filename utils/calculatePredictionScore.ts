@@ -1,12 +1,17 @@
 const calculatePredictionScore = (
   prediction: [number | null, number | null, boolean],
-  actual: [number, number]
+  actual: [number | null, number | null]
 ): number => {
   const homeGoalsPredicted = prediction[0] || 0;
   const awayGoalsPredicted = prediction[1] || 0;
-  const bigBoyBonusMultiplier = prediction[2] ? 2 : 1; // prediction is either 1 or 0, rather than true or false
+  const bigBoyBonusMultiplier = prediction[2] ? 2 : 1;
   const homeGoalsActual = actual[0];
   const awayGoalsActual = actual[1];
+
+  // The match hasn't finished yet
+  if (homeGoalsActual === null || awayGoalsActual === null) {
+    return 0;
+  }
 
   if (
     homeGoalsPredicted === homeGoalsActual &&

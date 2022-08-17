@@ -3,8 +3,6 @@ import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import AdminUpdatePredictions from "src/containers/AdminUpdatePredictions";
 
-interface Props {}
-
 const UpdatePredictions = () => {
   return <AdminUpdatePredictions />;
 };

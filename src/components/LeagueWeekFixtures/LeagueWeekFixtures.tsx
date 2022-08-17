@@ -10,6 +10,7 @@ import Fixture from "src/types/Fixture";
 import LeagueWeekPrediction from "src/components/LeagueWeekPrediction";
 import colours from "src/styles/colours";
 import pageSizes from "src/styles/pageSizes";
+import calculatePredictionScore from "utils/calculatePredictionScore";
 import isPastDeadline from "utils/isPastDeadline";
 
 export type Props = {
@@ -58,12 +59,20 @@ const LeagueWeekFixtures = ({ weekId, fixtures }: Props) => {
             {isPastDeadline(kickoff) ? (
               <PredictionRow>
                 {predictions?.map((prediction) => {
+                  const predictedHomeGoals = prediction.homeGoals ?? 0;
+                  const predictedAwayGoals = prediction.awayGoals ?? 0;
+                  const bigBoyBonus = prediction.bigBoyBonus ?? false;
+                  const score = calculatePredictionScore(
+                    [predictedHomeGoals, predictedAwayGoals, bigBoyBonus],
+                    [homeGoals, awayGoals]
+                  );
+
                   return (
                     <LeagueWeekPrediction
-                      homeGoals={prediction.homeGoals || 0}
-                      awayGoals={prediction.awayGoals || 0}
-                      score={prediction.score || 0}
-                      isBigBoyBonus={prediction.bigBoyBonus || false}
+                      homeGoals={predictedHomeGoals}
+                      awayGoals={predictedAwayGoals}
+                      score={score}
+                      isBigBoyBonus={bigBoyBonus}
                       key={`${prediction.fixtureId}${prediction.user.id}`}
                     />
                   );

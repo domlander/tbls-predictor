@@ -5,6 +5,7 @@ import * as Sentry from "@sentry/nextjs";
 import { isUserAlreadyBelongToLeague } from "utils/isUserAlreadyBelongToLeague";
 import isUserAppliedToLeague from "utils/isUserAppliedToLeague";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
+import calculatePredictionScore from "utils/calculatePredictionScore";
 import isPastDeadline from "utils/isPastDeadline";
 import sortFixtures from "utils/sortFixtures";
 import League from "src/types/League";
@@ -59,13 +60,14 @@ const resolvers = {
               predictions: {
                 select: {
                   fixtureId: true,
-                  score: true,
                   homeGoals: true,
                   awayGoals: true,
                   bigBoyBonus: true,
                   fixture: {
                     select: {
                       gameweek: true,
+                      homeGoals: true,
+                      awayGoals: true,
                     },
                   },
                 },
@@ -91,14 +93,23 @@ const resolvers = {
       }
 
       const users = league.users.sort((a, b) => {
-        const totalPointsA = a.predictions.reduce(
-          (acc, cur) => acc + (cur.score || 0),
-          0
-        );
-        const totalPointsB = b.predictions.reduce(
-          (acc, cur) => acc + (cur.score || 0),
-          0
-        );
+        const totalPointsA = a.predictions.reduce((acc, cur) => {
+          const score = calculatePredictionScore(
+            [cur.homeGoals ?? 0, cur.awayGoals ?? 0, cur.bigBoyBonus ?? false],
+            [cur.fixture.homeGoals, cur.fixture.awayGoals]
+          );
+
+          return acc + score;
+        }, 0);
+
+        const totalPointsB = b.predictions.reduce((acc, cur) => {
+          const score = calculatePredictionScore(
+            [cur.homeGoals ?? 0, cur.awayGoals ?? 0, cur.bigBoyBonus ?? false],
+            [cur.fixture.homeGoals, cur.fixture.awayGoals]
+          );
+
+          return acc + score;
+        }, 0);
 
         return totalPointsB - totalPointsA || (b.id > a.id ? 1 : -1);
       });
@@ -113,7 +124,20 @@ const resolvers = {
           const userPrediction = user.predictions.find(
             (p) => p.fixtureId === fixture.id
           );
+
           if (userPrediction) {
+            const score = calculatePredictionScore(
+              [
+                userPrediction.homeGoals ?? 0,
+                userPrediction.awayGoals ?? 0,
+                userPrediction.bigBoyBonus ?? false,
+              ],
+              [
+                userPrediction.fixture.homeGoals,
+                userPrediction.fixture.awayGoals,
+              ]
+            );
+
             fixture.predictions?.push({
               user: {
                 id: user.id,
@@ -122,7 +146,7 @@ const resolvers = {
               homeGoals: userPrediction.homeGoals,
               awayGoals: userPrediction.awayGoals,
               bigBoyBonus: userPrediction.bigBoyBonus,
-              score: userPrediction.score,
+              score,
             });
           } else {
             fixture.predictions?.push({
@@ -542,10 +566,14 @@ const resolvers = {
               id: true,
               predictions: {
                 select: {
-                  score: true,
+                  homeGoals: true,
+                  awayGoals: true,
+                  bigBoyBonus: true,
                   fixture: {
                     select: {
                       gameweek: true,
+                      homeGoals: true,
+                      awayGoals: true,
                     },
                   },
                 },
@@ -565,7 +593,20 @@ const resolvers = {
                 fixture.gameweek >= league.gameweekStart &&
                 fixture.gameweek <= league.gameweekEnd
             )
-            .reduce((acc, cur) => acc + (cur.score || 0), 0),
+            .reduce((totalPoints, prediction) => {
+              const score = calculatePredictionScore(
+                [
+                  prediction.homeGoals ?? 0,
+                  prediction.awayGoals ?? 0,
+                  prediction.bigBoyBonus ?? false,
+                ],
+                [
+                  prediction.fixture.homeGoals || 0,
+                  prediction.fixture.homeGoals || 0,
+                ]
+              );
+              return totalPoints + score;
+            }, 0),
         }))
         .sort((a, b) => b.totalPoints - a.totalPoints);
 
@@ -590,7 +631,10 @@ const resolvers = {
               id: true,
               predictions: {
                 select: {
-                  score: true,
+                  fixtureId: true,
+                  homeGoals: true,
+                  awayGoals: true,
+                  bigBoyBonus: true,
                   fixture: {
                     select: {
                       gameweek: true,
@@ -604,6 +648,15 @@ const resolvers = {
       });
       if (!league) throw new ApolloError("Cannot find league.");
 
+      const fixtures = await prisma.fixture.findMany({
+        select: {
+          id: true,
+          homeGoals: true,
+          awayGoals: true,
+          gameweek: true,
+        },
+      });
+
       const users = league.users.map((user) => {
         const predictions = user.predictions.filter(
           (prediction) =>
@@ -611,14 +664,32 @@ const resolvers = {
             prediction.fixture.gameweek <= league.gameweekEnd
         );
 
-        const weeklyPoints = predictions.reduce(
+        /**
+           The accumulator is an array of the form:
+           [{ week: 1, points: 0 }, { week: 2, points: 0 }, ... , { week: n, points: 0 }]
+
+           The callback function iterates through the fixtures, compares predictions against
+           each fixture to obtain the points for that fixture, then adds the points to the 
+           correct array index in the accumulator
+         */
+        const weeklyPoints = fixtures.reduce(
           (acc, cur) => {
-            acc[cur.fixture.gameweek - league.gameweekStart] = {
-              week: cur.fixture.gameweek,
-              points: (acc[
-                cur.fixture.gameweek - league.gameweekStart
-              ].points += cur.score || 0),
+            const prediction = predictions.find((p) => p.fixtureId === cur.id);
+            const score = calculatePredictionScore(
+              [
+                prediction?.homeGoals ?? 0,
+                prediction?.awayGoals ?? 0,
+                prediction?.bigBoyBonus ?? false,
+              ],
+              [cur.homeGoals, cur.awayGoals]
+            );
+
+            const arrayIndex = cur.gameweek - league.gameweekStart;
+            acc[arrayIndex] = {
+              week: cur.gameweek,
+              points: (acc[arrayIndex].points += score),
             };
+
             return acc;
           },
           new Array(league.gameweekEnd - league.gameweekStart + 1)
@@ -626,8 +697,8 @@ const resolvers = {
             .map((_, i) => ({ week: i + league.gameweekStart, points: 0 }))
         );
 
-        const totalPoints = predictions.reduce(
-          (acc, cur) => acc + (cur.score || 0),
+        const totalPoints = weeklyPoints.reduce(
+          (acc, cur) => acc + (cur.points || 0),
           0
         );
 
