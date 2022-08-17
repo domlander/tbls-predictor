@@ -151,16 +151,16 @@ const Container = styled.article``;
 
 const Table = styled.div`
   display: grid;
-  grid-template-columns: 11em 1fr auto 5px auto 1fr;
+  grid-template-columns: 11em 0.8fr auto 5px auto 1fr;
   grid-auto-rows: 4.8em;
 
   @media (max-width: ${pageSizes.tablet}) {
-    grid-template-columns: 7em 1fr auto 5px auto 1fr;
+    grid-template-columns: 7em 0.8fr auto 5px auto 1fr;
     grid-auto-rows: 3em;
   }
 
   @media (max-width: ${pageSizes.mobileM}) {
-    grid-template-columns: 6em 1fr auto 5px auto 1fr;
+    grid-template-columns: 6em 0.8fr auto 5px auto 1fr;
   }
 
   > div,
