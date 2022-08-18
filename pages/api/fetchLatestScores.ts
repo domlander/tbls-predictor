@@ -65,10 +65,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .send("You are not authorised to perform this action.");
   }
 
-  console.log(
-    "User authenticated. Time:",
+  let log = `Running fetchLatestScores function. User authenticated. Time: ${
     new Date().getMilliseconds() - startTime.getMilliseconds()
-  );
+  }\n`;
 
   const fixtures = await prisma.fixture.findMany();
   const currentGameweek = calculateCurrentGameweek(fixtures);
@@ -76,21 +75,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     ({ gameweek }) => gameweek === currentGameweek
   );
 
-  console.log(`Current Gameweek: ${currentGameweek}`);
-  console.log(`fixturesFromDb: ${fixturesFromDb}`);
+  log += `Current Gameweek: ${currentGameweek}\n`;
+  log += `fixturesFromDb: ${fixturesFromDb}\n`;
 
   const liveFixtures = fixturesFromDb.filter(({ kickoff }) =>
     isGameLiveOrRecentlyFinished(kickoff)
   );
   if (!liveFixtures?.length) {
-    console.log("No live games found");
-    return res.status(200).send("No live games found");
+    log += "No live games found\n";
+    return res.status(200).send(log);
   }
 
-  console.log(`liveFixtures`);
-  liveFixtures.forEach((x) => {
-    console.log(`fixture: ${x.homeTeam} - ${x.awayTeam}`);
-  });
+  log += `liveFixtures\n: 
+  ${liveFixtures.forEach((x) => {
+    log += `fixture: ${x.homeTeam} - ${x.awayTeam}\n`;
+  })}`;
 
   const fixturesFromApi = await getFixturesFromApiForGameweek(currentGameweek);
 
@@ -101,9 +100,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
     if (!matchingFixtureFromApi) return acc;
 
-    console.log(
-      `Checking ${matchingFixtureFromApi.homeTeam} vs ${matchingFixtureFromApi.awayTeam} fixture`
-    );
+    log += `Checking ${matchingFixtureFromApi.homeTeam} vs ${matchingFixtureFromApi.awayTeam} fixture\n`;
 
     if (
       hasScoreChanged(
@@ -117,25 +114,19 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         awayGoals: matchingFixtureFromApi?.awayGoals ?? null,
       });
 
-      console.log(
-        `Will update score to ${matchingFixtureFromApi?.homeGoals} - ${matchingFixtureFromApi?.awayGoals}`
-      );
+      log += `Will update score to ${matchingFixtureFromApi?.homeGoals} - ${matchingFixtureFromApi?.awayGoals}\n`;
     }
 
     return acc;
   }, [] as Fixture[]);
 
   if (!fixturesToUpdate?.length) {
-    console.log("No goals have been scored. No fixtures to update.");
-    return res
-      .status(200)
-      .json("No recent goals have been scored. No scores to update.");
+    log += "No goals have been scored. No fixtures to update\n";
+    return res.status(200).json(log);
   }
 
   fixturesToUpdate.forEach((x) => {
-    console.log(
-      `Fixture ID: ${x.id}. Score update! Updating score to ${x.homeGoals} - ${x.awayGoals}`
-    );
+    log += `Fixture ID: ${x.id}. Score update! Updating score to ${x.homeGoals} - ${x.awayGoals}\n`;
   });
 
   fetch(
@@ -149,10 +140,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       body: JSON.stringify({ scores: fixturesToUpdate }),
     }
   ).catch((e) => {
-    console.log("An error occurred:", e);
+    log += `An error occurred: ${e}\n`;
   });
 
-  return res.status(200).json({ fixtures: fixturesToUpdate });
+  return res.status(200).json({ fixtures: fixturesToUpdate, log });
 };
 
 export default withSentry(handler);
