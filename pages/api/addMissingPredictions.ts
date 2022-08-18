@@ -2,8 +2,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import { withSentry } from "@sentry/nextjs";
-import prisma from "prisma/client";
-import { Prediction, Prisma } from "@prisma/client";
+import { Prediction, Prisma, PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: process.env.RAW_DATABASE_URL,
+    },
+  },
+});
 
 const DEFAULT_HOME_GOALS = 0;
 const DEFAULT_AWAY_GOALS = 0;

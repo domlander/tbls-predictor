@@ -2,10 +2,16 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import { withSentry } from "@sentry/nextjs";
-import prisma from "prisma/client";
-
-import { Fixture, Prediction, Prisma } from "@prisma/client";
+import { Fixture, Prediction, Prisma, PrismaClient } from "@prisma/client";
 import calculatePredictionScore from "../../utils/calculatePredictionScore";
+
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: process.env.RAW_DATABASE_URL,
+    },
+  },
+});
 
 /**
  * Updates the score of a match and evaluates the score of all predictions for this fixtures.

@@ -3,11 +3,18 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/react";
 import { withSentry } from "@sentry/nextjs";
 import dayjs from "dayjs";
-
-import prisma from "prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { getFixturesFromApiForGameweek } from "utils/fplApi";
 import Fixture from "src/types/Fixture";
 import { calculateCurrentGameweek } from "../../utils/calculateCurrentGameweek";
+
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: process.env.RAW_DATABASE_URL,
+    },
+  },
+});
 
 const hasScoreChanged = (
   oldScore: [number | null, number | null],
