@@ -21,7 +21,7 @@ declare global {
 // eslint-disable-next-line import/no-mutable-exports
 let prisma: PrismaClient;
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.ENVIRONMENT === "production") {
   prisma = new PrismaClient();
 } else {
   if (!global.prisma) {
