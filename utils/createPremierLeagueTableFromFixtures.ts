@@ -1,5 +1,5 @@
 import Fixture from "src/types/Fixture";
-import type PremierLeagueTeam from "src/types/PremierLeagueTeam";
+import type { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
 import calculateMatchResult from "./calculateMatchResult";
 
 type FixtureType = Pick<
@@ -24,6 +24,9 @@ const addTeamToTable = (
   table.push({
     team,
     points: calculateMatchResult(goals, conceded) || 0,
+    wins: goals > conceded ? 1 : 0,
+    draws: goals === conceded ? 1 : 0,
+    losses: goals < conceded ? 1 : 0,
     homeGoals: isHome ? goals : 0,
     awayGoals: !isHome ? goals : 0,
     homeGoalsConceded: isHome ? conceded : 0,
@@ -43,6 +46,12 @@ const createPremierLeagueTableFromFixtures = (
         addTeamToTable(teams, homeTeam, true, homeGoals, awayGoals);
       } else {
         tableHomeTeam.points += calculateMatchResult(homeGoals, awayGoals) || 0;
+        tableHomeTeam.wins +=
+          calculateMatchResult(homeGoals, awayGoals) === 3 ? 1 : 0;
+        tableHomeTeam.draws +=
+          calculateMatchResult(homeGoals, awayGoals) === 1 ? 1 : 0;
+        tableHomeTeam.losses +=
+          calculateMatchResult(homeGoals, awayGoals) === 0 ? 1 : 0;
         tableHomeTeam.homeGoals += homeGoals || 0;
         tableHomeTeam.homeGoalsConceded += awayGoals || 0;
       }
@@ -52,6 +61,12 @@ const createPremierLeagueTableFromFixtures = (
         addTeamToTable(teams, awayTeam, false, awayGoals, homeGoals);
       } else {
         tableAwayTeam.points += calculateMatchResult(awayGoals, homeGoals) || 0;
+        tableAwayTeam.wins +=
+          calculateMatchResult(awayGoals, homeGoals) === 3 ? 1 : 0;
+        tableAwayTeam.draws +=
+          calculateMatchResult(awayGoals, homeGoals) === 1 ? 1 : 0;
+        tableAwayTeam.losses +=
+          calculateMatchResult(awayGoals, homeGoals) === 0 ? 1 : 0;
         tableAwayTeam.awayGoals += awayGoals || 0;
         tableAwayTeam.awayGoalsConceded += homeGoals || 0;
       }

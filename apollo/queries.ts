@@ -170,6 +170,9 @@ export const PREMIER_LEAGUE_QUERY = gql`
     premierLeagueTable {
       team
       points
+      wins
+      draws
+      losses
       homeGoals
       awayGoals
       homeGoalsConceded

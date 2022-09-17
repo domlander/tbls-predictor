@@ -141,6 +141,9 @@ const typeDefs = gql`
   type PremierLeagueTeam {
     team: String!
     points: Int!
+    wins: Int!
+    draws: Int!
+    losses: Int!
     homeGoals: Int!
     awayGoals: Int!
     homeGoalsConceded: Int!

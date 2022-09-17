@@ -4,10 +4,13 @@ import { initializeApollo } from "apollo/client";
 import { PREMIER_LEAGUE_QUERY } from "apollo/queries";
 
 import PremierLeague from "src/containers/PremierLeague";
-import PremierLeagueTeam from "src/types/PremierLeagueTeam";
+import {
+  PremierLeagueTeam,
+  PremierLeagueTeamDisplay,
+} from "src/types/PremierLeagueTeam";
 
 interface Props {
-  teams: PremierLeagueTeam[];
+  teams: PremierLeagueTeamDisplay[];
 }
 
 const PremierLeaguePage = ({ teams }: Props) => {
@@ -18,13 +21,26 @@ export const getStaticProps: GetStaticProps = async () => {
   const apolloClient = initializeApollo();
   const {
     data: { premierLeagueTable },
-  } = await apolloClient.query({
-    query: PREMIER_LEAGUE_QUERY,
-  });
+  }: { data: { premierLeagueTable: PremierLeagueTeam[] } } =
+    await apolloClient.query({
+      query: PREMIER_LEAGUE_QUERY,
+    });
+
+  const teams: (PremierLeagueTeam & PremierLeagueTeamDisplay)[] =
+    premierLeagueTable.map((team) => ({
+      ...team,
+      played: team.wins + team.draws + team.losses,
+      goalsScored: team.homeGoals + team.awayGoals,
+      goalsConceded: team.homeGoalsConceded + team.awayGoalsConceded,
+      goalDifference:
+        team.homeGoals +
+        team.awayGoals -
+        (team.homeGoalsConceded + team.awayGoalsConceded),
+    }));
 
   return {
     props: {
-      teams: premierLeagueTable,
+      teams,
     },
   };
 };

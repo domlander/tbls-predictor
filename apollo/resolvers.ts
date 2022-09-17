@@ -12,7 +12,7 @@ import League from "src/types/League";
 import Fixture from "src/types/Fixture";
 import UserLeague from "src/types/UserLeague";
 import User from "src/types/User";
-import type PremierLeagueTeam from "src/types/PremierLeagueTeam";
+import type { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
 import createPremierLeagueTableFromFixtures from "utils/createPremierLeagueTableFromFixtures";
 import dateScalar from "./scalars";
 
