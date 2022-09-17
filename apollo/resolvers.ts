@@ -12,6 +12,8 @@ import League from "src/types/League";
 import Fixture from "src/types/Fixture";
 import UserLeague from "src/types/UserLeague";
 import User from "src/types/User";
+import type PremierLeagueTeam from "src/types/PremierLeagueTeam";
+import createPremierLeagueTableFromFixtures from "utils/createPremierLeagueTableFromFixtures";
 import dateScalar from "./scalars";
 
 const resolvers = {
@@ -34,6 +36,31 @@ const resolvers = {
       const fixtures = sortFixtures(unsortedFixtures);
 
       return fixtures;
+    },
+    premierLeagueTable: async () => {
+      const fixtures = await prisma.fixture.findMany({
+        where: {
+          AND: [
+            {
+              NOT: { homeGoals: null },
+            },
+            {
+              NOT: { awayGoals: null },
+            },
+          ],
+        },
+        select: {
+          homeTeam: true,
+          awayTeam: true,
+          homeGoals: true,
+          awayGoals: true,
+        },
+      });
+
+      const premierLeagueTable: PremierLeagueTeam[] =
+        createPremierLeagueTableFromFixtures(fixtures);
+
+      return premierLeagueTable;
     },
     allFixtures: async () => {
       const fixtures = await prisma.fixture.findMany();

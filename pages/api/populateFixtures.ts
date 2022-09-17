@@ -65,7 +65,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 /*
- *  Fetches all the api data we need to process this serverless function
+ * Fetches all the api data we need to process this serverless function
  */
 const fetchApiData = async (gameweek: number, numGameweeks: number) => {
   const results = [];
