@@ -15,6 +15,7 @@ const typeDefs = gql`
       leagueId: Int!
       weekId: Int!
     ): FixturesWithPredictionPayload
+    premierLeagueTable: [PremierLeagueTeam]
   }
 
   type Mutation {
@@ -135,6 +136,15 @@ const typeDefs = gql`
   type WeeklyPoints {
     week: Int!
     points: Int!
+  }
+
+  type PremierLeagueTeam {
+    team: String!
+    points: Int!
+    homeGoals: Int!
+    awayGoals: Int!
+    homeGoalsConceded: Int!
+    awayGoalsConceded: Int!
   }
 
   enum LeagueApplicantStatus {

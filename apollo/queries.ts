@@ -164,3 +164,16 @@ export const LEAGUE_WEEK_QUERY = gql`
     }
   }
 `;
+
+export const PREMIER_LEAGUE_QUERY = gql`
+  query PremierLeagueTable {
+    premierLeagueTable {
+      team
+      points
+      homeGoals
+      awayGoals
+      homeGoalsConceded
+      awayGoalsConceded
+    }
+  }
+`;
