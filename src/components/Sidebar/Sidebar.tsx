@@ -20,21 +20,30 @@ const Sidebar = ({ username, isLoggedIn, handleClick }: Props) => {
       <SidebarItemsContainer>
         <SidebarMenuItem
           onClick={handleClick}
-          label="Predictions"
+          label="My Predictions"
           url="/predictions"
         />
-        <SidebarMenuItem onClick={handleClick} label="Leagues" url="/leagues" />
+        <SidebarMenuItem
+          onClick={handleClick}
+          label="My Leagues"
+          url="/leagues"
+        />
         {isLoggedIn ? (
           <>
             <SidebarMenuItem
               onClick={handleClick}
-              label="Join league"
+              label="Join League"
               url="/league/join"
             />
             <SidebarMenuItem
               onClick={handleClick}
-              label="Create league"
+              label="Create League"
               url="/league/create"
+            />
+            <SidebarMenuItem
+              onClick={handleClick}
+              label="Premier League Table"
+              url="/premierleague"
             />
             <SidebarMenuItem
               onClick={handleClick}

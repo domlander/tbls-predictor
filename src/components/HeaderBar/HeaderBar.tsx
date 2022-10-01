@@ -30,6 +30,11 @@ const HeaderBar = ({ initial, handleClick }: Props) => (
             <a>Leagues</a>
           </Link>
         </li>
+        <li>
+          <Link href="/premierleague" passHref>
+            <a>Table</a>
+          </Link>
+        </li>
       </ul>
     </HeaderLinks>
     <UserIcon initial={initial} handleClick={handleClick} />
@@ -44,6 +49,7 @@ const Container = styled.header`
   height: 4rem;
   font-size: 0.9rem;
   padding-right: 1em;
+  gap: 2em;
 
   @media (max-width: ${pageSizes.tablet}) {
     height: 3rem;
@@ -70,6 +76,14 @@ const HeaderLinks = styled.nav`
     color: ${colours.grey400};
     font-size: 1.2em;
     cursor: pointer;
+  }
+
+  // Select all header items excluding the first three
+
+  @media (max-width: ${pageSizes.tablet}) {
+    li:nth-child(n + 4) {
+      display: none;
+    }
   }
 
   a {
