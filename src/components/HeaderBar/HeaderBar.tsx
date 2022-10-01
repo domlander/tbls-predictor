@@ -37,7 +37,9 @@ const HeaderBar = ({ initial, handleClick }: Props) => (
         </li>
       </ul>
     </HeaderLinks>
-    <UserIcon initial={initial} handleClick={handleClick} />
+    <div>
+      <UserIcon initial={initial} handleClick={handleClick} />
+    </div>
   </Container>
 );
 

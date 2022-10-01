@@ -19,6 +19,7 @@ const PremierLeague = ({ teams }: Props) => {
         Premier League
       </HeadingMobile>
       <Table>
+        <HeaderRow />
         <HeaderRowFirst>Club</HeaderRowFirst>
         <HeaderRow>P</HeaderRow>
         <HeaderRow>W</HeaderRow>
@@ -29,20 +30,24 @@ const PremierLeague = ({ teams }: Props) => {
         <HeaderRow>GD</HeaderRow>
         <HeaderRowLast>PTS</HeaderRowLast>
         {teams.map(
-          ({
-            team,
-            played,
-            wins,
-            draws,
-            losses,
-            goalsScored,
-            goalsConceded,
-            goalDifference,
-            points,
-          }) => {
+          (
+            {
+              team,
+              played,
+              wins,
+              draws,
+              losses,
+              goalsScored,
+              goalsConceded,
+              goalDifference,
+              points,
+            },
+            i
+          ) => {
             return (
               <>
-                <TableDataFirst>{team}</TableDataFirst>
+                <TableDataPosition>{i + 1}</TableDataPosition>
+                <TableDataTeam>{team}</TableDataTeam>
                 <TableData>{played}</TableData>
                 <TableData>{wins}</TableData>
                 <TableData>{draws}</TableData>
@@ -91,6 +96,7 @@ const HeaderRow = styled.div`
   color: ${colours.grey400};
   justify-items: flex-end;
   align-items: flex-end;
+  font-size: 0.9rem;
 
   @media (max-width: ${pageSizes.tablet}) {
     font-size: 0.8rem;
@@ -99,6 +105,12 @@ const HeaderRow = styled.div`
 
 const HeaderRowFirst = styled(HeaderRow)`
   justify-self: flex-start;
+  padding-left: 1.25em;
+  font-size: 0.9rem;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    font-size: 0.8rem;
+  }
 `;
 
 const HeaderRowLast = styled(HeaderRow)`
@@ -111,10 +123,17 @@ const TableDataLast = styled(TableData)`
   font-weight: 700;
 `;
 
-const TableDataFirst = styled(TableData)`
+const TableDataPosition = styled(TableData)`
+  font-weight: 700;
+  justify-self: flex-end;
+  color: ${colours.grey400};
+`;
+
+const TableDataTeam = styled(TableData)`
   justify-self: flex-start;
   font-size: 1.2rem;
   font-weight: 400;
+  padding-left: 1em;
 
   @media (max-width: ${pageSizes.tablet}) {
     font-size: 1rem;
@@ -123,7 +142,7 @@ const TableDataFirst = styled(TableData)`
 
 const Table = styled.div`
   display: grid;
-  grid-template-columns: minmax(max-content, 14em) repeat(8, 2.4em);
+  grid-template-columns: max-content minmax(max-content, 14em) repeat(8, 2.4em);
   grid-template-rows: 2em repeat(20, 3em);
   font-weight: 300;
   justify-items: center;
@@ -133,7 +152,7 @@ const Table = styled.div`
 
   @media (max-width: ${pageSizes.tablet}) {
     font-size: 0.9rem;
-    grid-template-columns: minmax(max-content, 14em) repeat(8, 2em);
+    grid-template-columns: max-content minmax(max-content, 14em) repeat(8, 2em);
   }
 `;
 
