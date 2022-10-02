@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Story, Meta } from "@storybook/react";
-import GridRow from "./GridRow";
 import colours from "src/styles/colours";
+import GridRowFixture from "./GridRowFixture";
 
 // 👇 This default export determines where your story goes in the story list
 export default {
   title: "GridRow",
-  component: GridRow,
+  component: GridRowFixture,
   decorators: [
     (Story) => {
       const [homeGoals, setHomeGoals] = useState("2");
@@ -43,7 +43,7 @@ const sharedArgs = {
   updateGoals: () => {},
 };
 
-const Template: Story = (args) => <GridRow {...args} {...sharedArgs} />;
+const Template: Story = (args) => <GridRowFixture {...args} {...sharedArgs} />;
 
 export const PreDeadline = Template.bind({});
 PreDeadline.args = {

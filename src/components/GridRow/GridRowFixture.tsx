@@ -92,12 +92,14 @@ const Kickoff = styled(GridItemKickoff)<{ locked: boolean; topRow: boolean }>`
 `;
 
 const HomeTeam = styled(GridItemHomeTeam)<{ locked: boolean; topRow: boolean }>`
+  /* font-size: 1.4rem; */
   color: ${({ locked }) => (locked ? colours.grey500 : colours.grey100)};
   border-top: ${({ topRow }) =>
     !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
 `;
 
 const AwayTeam = styled(GridItemAwayTeam)<{ locked: boolean; topRow: boolean }>`
+  /* font-size: 1.4rem; */
   color: ${({ locked }) => (locked ? colours.grey500 : colours.grey100)};
   border-top: ${({ topRow }) =>
     !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
