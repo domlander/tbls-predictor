@@ -9,13 +9,16 @@ import { ALL_FIXTURES_QUERY } from "apollo/queries";
 import sortFixtures from "utils/sortFixtures";
 import Fixture from "src/types/Fixture";
 import Home from "src/containers/Home";
+import generateRecentFixturesByTeam from "utils/generateRecentFixturesByTeam";
+import TeamFixtures from "src/types/TeamFixtures";
 
 interface Props {
   weekId: number;
   fixtures: Fixture[];
+  recentFixturesByTeam: TeamFixtures[];
 }
 
-const HomePage = ({ weekId, fixtures }: Props) => (
+const HomePage = ({ weekId, fixtures, recentFixturesByTeam }: Props) => (
   <>
     <Head>
       <meta
@@ -27,7 +30,11 @@ const HomePage = ({ weekId, fixtures }: Props) => (
         content="Predict Premier League results, create leagues with friends and keep track of your score."
       />
     </Head>
-    <Home weekId={weekId} fixtures={fixtures} />
+    <Home
+      weekId={weekId}
+      fixtures={fixtures}
+      recentFixturesByTeam={recentFixturesByTeam}
+    />
   </>
 );
 
@@ -83,10 +90,16 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     fixtures.filter(({ gameweek }) => gameweek === currentGameweek)
   );
 
+  const recentFixturesByTeam = generateRecentFixturesByTeam(
+    fixtures,
+    currentGameweek
+  );
+
   return {
     props: {
       weekId: currentGameweek,
       fixtures: sortedFixtures,
+      recentFixturesByTeam,
     },
   };
 };

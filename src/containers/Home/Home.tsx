@@ -3,7 +3,8 @@ import styled from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
 
-import Fixture from "src/types/Fixture";
+import type Fixture from "src/types/Fixture";
+import type TeamFixtures from "src/types/TeamFixtures";
 import useUserLeagues from "src/hooks/useUserLeagues";
 import MyLeagues from "src/components/MyLeagues";
 import pageSizes from "src/styles/pageSizes";
@@ -14,9 +15,14 @@ import Predictions from "../Predictions";
 interface Props {
   weekId: number;
   fixtures: Fixture[];
+  recentFixturesByTeam: TeamFixtures[];
 }
 
-export default function Home({ weekId, fixtures }: Props) {
+export default function Home({
+  weekId,
+  fixtures,
+  recentFixturesByTeam,
+}: Props) {
   const [activeLeagues, _, leaguesLoading, leaguesError] = useUserLeagues();
 
   return (
@@ -30,7 +36,11 @@ export default function Home({ weekId, fixtures }: Props) {
             <a>All predictions</a>
           </Link>
         </PredictionsHeader>
-        <Predictions fixtures={fixtures} weekId={weekId} />
+        <Predictions
+          fixtures={fixtures}
+          weekId={weekId}
+          recentFixturesByTeam={recentFixturesByTeam}
+        />
       </PredictionsContainer>
       {leaguesLoading ? (
         <SpinnerContainer>
