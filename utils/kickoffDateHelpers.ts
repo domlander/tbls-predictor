@@ -7,6 +7,12 @@ type DateFormat = "past" | "today" | "soon" | "future";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+/**
+ * 16/04 19:45  past   `${dayOfMonth}/${pad(monthIndex + 1)} ${hours}:${minutes}`;
+ * 19:45        today  `${hours}:${minutes}`;
+ * Fri 16 Apr   soon   `${day} ${dayOfMonth} ${month}`;
+ * Fri 16/04    future `${day} ${dayOfMonth}/${pad(monthIndex + 1)}`;
+ */
 const dateFormatDictionary = {
   past: "DD/MM HH:mm",
   today: "HH:mm",
@@ -34,12 +40,6 @@ export function formatFixtureKickoffTime(
   return dayjs(localTime).format(dateFormat);
 }
 
-/**
- * 16/04 19:45  past   `${dayOfMonth}/${pad(monthIndex + 1)} ${hours}:${minutes}`;
- * 19:45        today  `${hours}:${minutes}`;
- * Fri 16 Apr   soon   `${day} ${dayOfMonth} ${month}`;
- * Fri 16/04    future `${day} ${dayOfMonth}/${pad(monthIndex + 1)}`;
- */
 export function whenIsTheFixture(dateInput: Date | string): DateFormat {
   const fixture = getLocalKickoffTime(dateInput);
 
@@ -58,3 +58,8 @@ export function whenIsTheFixture(dateInput: Date | string): DateFormat {
 
   return "soon";
 }
+
+export const getShortDateKickoffTime = (dateInput: Date | string) => {
+  const localTime = getLocalKickoffTime(dateInput);
+  return dayjs(localTime).format("D MMM");
+};

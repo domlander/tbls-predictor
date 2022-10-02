@@ -7,13 +7,14 @@ import { UPDATE_PREDICTIONS_MUTATION } from "apollo/mutations";
 import { useMutation, useQuery } from "@apollo/client";
 import { PREDICTIONS_QUERY } from "apollo/queries";
 import combineFixturesAndPredictions from "utils/combineFixturesAndPredictions";
-import Prediction from "src/types/Prediction";
-import Fixture from "src/types/Fixture";
-import User from "src/types/User";
-import FixtureWithPrediction from "src/types/FixtureWithPrediction";
 import WeekNavigator from "src/components/WeekNavigator";
 import PredictionsTable from "src/components/PredictionsTable";
 import colours from "src/styles/colours";
+import type Prediction from "src/types/Prediction";
+import type Fixture from "src/types/Fixture";
+import type TeamFixtures from "src/types/TeamFixtures";
+import type User from "src/types/User";
+import type FixtureWithPrediction from "src/types/FixtureWithPrediction";
 
 type UpdatePredictionsInputType = {
   userId: User["id"];
@@ -28,6 +29,7 @@ interface Props {
   weekId: number;
   firstGameweek?: number;
   lastGameweek?: number;
+  recentFixturesByTeam: TeamFixtures[];
 }
 
 const Predictions = ({
@@ -35,6 +37,7 @@ const Predictions = ({
   weekId: gameweek,
   firstGameweek,
   lastGameweek,
+  recentFixturesByTeam,
 }: Props) => {
   const { data: session } = useSession();
   const userId = session?.user?.id;
@@ -187,6 +190,7 @@ const Predictions = ({
       )}
       <PredictionsTable
         predictions={fixturesWithPredictions}
+        recentFixturesByTeam={recentFixturesByTeam}
         updateGoals={updateGoals}
         handleSubmit={handleSubmitPredictions}
         handleBbbUpdate={updateBigBoyBonus}

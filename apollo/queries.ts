@@ -30,6 +30,8 @@ export const ALL_FIXTURES_QUERY = gql`
         kickoff
         homeTeam
         awayTeam
+        homeGoals
+        awayGoals
       }
       currentGameweek
     }

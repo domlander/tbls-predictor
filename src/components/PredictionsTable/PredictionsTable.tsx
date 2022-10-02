@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 import { calculateGameweekScore } from "utils/calculateGameweekScore";
 import isPastDeadline from "utils/isPastDeadline";
@@ -12,6 +12,8 @@ import colours from "src/styles/colours";
 import pageSizes from "src/styles/pageSizes";
 import Button from "src/components/Button";
 import GridRow from "src/components/GridRow";
+import TeamFixtures from "src/types/TeamFixtures";
+import GridRowForm from "../GridRowForm";
 
 const StateFeedback = {
   LOADING: "Loading...",
@@ -24,6 +26,7 @@ const StateFeedback = {
 
 interface Props {
   predictions: FixtureWithPrediction[];
+  recentFixturesByTeam: TeamFixtures[];
   updateGoals: (
     fixtureId: number,
     isHomeTeam: boolean,
@@ -40,6 +43,7 @@ interface Props {
 
 const PredictionsTable = ({
   predictions,
+  recentFixturesByTeam,
   updateGoals,
   handleSubmit,
   handleBbbUpdate,
@@ -50,6 +54,7 @@ const PredictionsTable = ({
   isSaveError = false,
 }: Props) => {
   const [showFeedback, setShowFeedback] = useTransientState(false, 3000);
+  const [displayStats, setDisplayStats] = useState(false);
   const gameweekScore = calculateGameweekScore(predictions);
 
   useEffect(() => {
@@ -65,7 +70,8 @@ const PredictionsTable = ({
   let state: keyof typeof StateFeedback;
   if (isLoading) state = "LOADING";
   else if (isSaving) state = "SAVING";
-  else if (showFeedback) state = isSaveError ? "SAVE_FAILED" : "SAVE_SUCCESS";
+  else if (showFeedback && isSaveError) state = "SAVE_FAILED";
+  else if (showFeedback) state = "SAVE_SUCCESS";
   else state = "IDLE";
 
   const isBbbLockedForGameweek = predictions.some(
@@ -74,8 +80,14 @@ const PredictionsTable = ({
 
   return (
     <Container>
+      <StatsToggle
+        variant="secondary"
+        handleClick={() => setDisplayStats(!displayStats)}
+      >
+        {displayStats ? "Hide stats" : "Show stats"}
+      </StatsToggle>
       <form onSubmit={handleSubmit}>
-        <Table>
+        <Table displayStats={displayStats}>
           {predictions.map(
             (
               {
@@ -89,29 +101,49 @@ const PredictionsTable = ({
                 predictionScore,
               },
               i
-            ) => (
-              <GridRow
-                key={fixtureId}
-                fixtureId={fixtureId}
-                kickoff={formatFixtureKickoffTime(
-                  kickoff,
-                  firstFixtureKickoffTiming
-                )}
-                homeTeam={homeTeam}
-                awayTeam={awayTeam}
-                homeGoals={predictedHomeGoals ?? ""}
-                awayGoals={predictedAwayGoals ?? ""}
-                updateGoals={updateGoals}
-                isBigBoyBonus={bigBoyBonus}
-                isBbbLocked={isBbbLockedForGameweek}
-                predictionScore={predictionScore || undefined}
-                locked={
-                  isLoading || (!isAlwaysEditable && isPastDeadline(kickoff))
-                }
-                topRow={i === 0}
-                handleBbbUpdate={handleBbbUpdate}
-              />
-            )
+            ) => {
+              const homeForm =
+                recentFixturesByTeam.find((rf) => rf.team === homeTeam)
+                  ?.fixtures || [];
+              const awayForm =
+                recentFixturesByTeam.find((rf) => rf.team === awayTeam)
+                  ?.fixtures || [];
+
+              return (
+                <>
+                  <GridRow
+                    key={fixtureId}
+                    fixtureId={fixtureId}
+                    kickoff={formatFixtureKickoffTime(
+                      kickoff,
+                      firstFixtureKickoffTiming
+                    )}
+                    homeTeam={homeTeam}
+                    awayTeam={awayTeam}
+                    homeGoals={predictedHomeGoals ?? ""}
+                    awayGoals={predictedAwayGoals ?? ""}
+                    updateGoals={updateGoals}
+                    isBigBoyBonus={bigBoyBonus}
+                    isBbbLocked={isBbbLockedForGameweek}
+                    predictionScore={predictionScore || undefined}
+                    locked={
+                      isLoading ||
+                      (!isAlwaysEditable && isPastDeadline(kickoff))
+                    }
+                    topRow={i === 0}
+                    handleBbbUpdate={handleBbbUpdate}
+                  />
+                  {displayStats && (
+                    <GridRowForm
+                      homeTeam={homeTeam}
+                      awayTeam={awayTeam}
+                      homeTeamForm={homeForm}
+                      awayTeamForm={awayForm}
+                    />
+                  )}
+                </>
+              );
+            }
           )}
         </Table>
         {isAlwaysEditable ||
@@ -149,10 +181,21 @@ const PredictionsTable = ({
 
 const Container = styled.article``;
 
-const Table = styled.div`
+const StatsToggle = styled(Button)`
+  width: auto;
+  font-size: 1rem;
+  margin-bottom: 0.4em;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    display: none;
+  }
+`;
+
+const Table = styled.div<{ displayStats: boolean }>`
   display: grid;
   grid-template-columns: 11em 0.8fr auto 5px auto 1fr;
-  grid-auto-rows: 4.8em;
+  grid-auto-rows: ${({ displayStats }) =>
+    displayStats ? "4.8em 1fr" : "4.8em"};
 
   @media (max-width: ${pageSizes.tablet}) {
     grid-template-columns: 7em 0.8fr auto 5px auto 1fr;
