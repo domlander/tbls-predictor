@@ -1,4 +1,4 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, Fragment, useEffect, useState } from "react";
 import styled from "styled-components";
 import { calculateGameweekScore } from "utils/calculateGameweekScore";
 import isPastDeadline from "utils/isPastDeadline";
@@ -110,9 +110,8 @@ const PredictionsTable = ({
                   ?.fixtures || [];
 
               return (
-                <>
+                <Fragment key={fixtureId}>
                   <GridRow
-                    key={fixtureId}
                     fixtureId={fixtureId}
                     kickoff={formatFixtureKickoffTime(
                       kickoff,
@@ -141,7 +140,7 @@ const PredictionsTable = ({
                       awayTeamForm={awayForm}
                     />
                   )}
-                </>
+                </Fragment>
               );
             }
           )}

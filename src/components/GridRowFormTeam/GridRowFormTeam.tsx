@@ -20,17 +20,17 @@ const GridRowFormTeam = ({ team, recentFixtures, isHome = false }: Props) => {
   return (
     <Form isHome={isHome}>
       {recentFixtures.map(
-        ({ homeTeam, awayTeam, homeGoals, awayGoals, kickoff }) => {
+        ({ id, homeTeam, awayTeam, homeGoals, awayGoals, kickoff }) => {
           const teamGoals = team === homeTeam ? homeGoals : awayGoals;
           const oppoGoals = team === homeTeam ? awayGoals : homeGoals;
 
           const result = getMatchResultText(teamGoals, oppoGoals);
+          const oppo = homeTeam === team ? `vs ${awayTeam}` : `at ${homeTeam}`;
 
           return (
-            <Match isHome={isHome}>
+            <Match key={id} isHome={isHome}>
               <Result>
-                {result} {homeGoals}-{awayGoals}{" "}
-                {homeTeam === team ? `vs ${awayTeam}` : `at ${homeTeam}`}
+                {result} {homeGoals}-{awayGoals} {oppo}
               </Result>
               <KickoffDate isHome={isHome}>
                 {getShortDateKickoffTime(kickoff)}
