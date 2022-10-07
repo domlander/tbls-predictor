@@ -1,8 +1,5 @@
 import React from "react";
-import styled from "styled-components";
-
 import type FixtureType from "src/types/Fixture";
-import colours from "src/styles/colours";
 import GridRowFormTeam from "../GridRowFormTeam";
 
 export type Props = {
@@ -20,7 +17,7 @@ const GridRowForm = ({
 }: Props) => {
   return (
     <>
-      <Title>Form</Title>
+      <div />
       <GridRowFormTeam team={homeTeam} recentFixtures={homeTeamForm} isHome />
       <div />
       <div />
@@ -29,13 +26,5 @@ const GridRowForm = ({
     </>
   );
 };
-
-const Title = styled.div`
-  font-size: 0.9rem !important;
-  padding-left: 0.2em;
-  padding-top: 0.4em;
-  color: ${colours.grey300};
-  font-weight: 700;
-`;
 
 export default GridRowForm;

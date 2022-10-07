@@ -40,7 +40,7 @@ const generateRecentFixturesByTeam = (
       )
       .filter(({ gameweek }) => gameweek !== selectedGameweek)
       .sort((a, b) => b.gameweek - a.gameweek)
-      .slice(0, 4);
+      .slice(0, 6);
 
     allTeamsRecentFixtures.push({ team, fixtures: teamsRecentFixtures });
   });
