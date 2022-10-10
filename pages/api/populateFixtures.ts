@@ -94,7 +94,7 @@ const populateFixtures = async (
   const fixturesToUpdate: Fixture[] = [];
   const fixturesToDelete: Fixture[] = [];
 
-  // Add fixtures that we don't have yet and amend kickoff where the date/time has changed
+  // Add fixtures that we don't have yet AND amend kickoff where the date/time has changed
   apiFixtures.forEach((apiFixture) => {
     const matchingDbFixture = dbFixtures.find(
       (dbFixture) =>
@@ -186,7 +186,7 @@ const populateFixtures = async (
       ?.filter((x) => !!x);
   }
 
-  const promises = addPromises.concat(updatePromises, deletePromises);
+  const promises = [...addPromises, ...updatePromises, ...deletePromises];
 
   if (promises?.length) {
     await Promise.all(promises).then(() => {
