@@ -25,7 +25,7 @@ const getLocalKickoffTime = (dateInput: Date | string) => {
     typeof dateInput === "string" ? new Date(dateInput) : dateInput;
 
   return dayjs(fixture)
-    .subtract(60 - dayjs(fixture).utcOffset(), "minutes")
+    .subtract(dayjs(fixture).utcOffset(), "minutes")
     .tz(dayjs.tz.guess()) // Guess the user's timezone
     .toDate();
 };
