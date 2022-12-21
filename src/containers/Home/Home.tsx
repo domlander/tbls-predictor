@@ -32,9 +32,7 @@ export default function Home({
           <Heading level="h2" as="h1" variant="secondary">
             This week
           </Heading>
-          <Link href={`/predictions/${weekId}`}>
-            <a>All predictions</a>
-          </Link>
+          <Link href={`/predictions/${weekId}`}>All predictions</Link>
         </PredictionsHeader>
         <Predictions
           fixtures={fixtures}

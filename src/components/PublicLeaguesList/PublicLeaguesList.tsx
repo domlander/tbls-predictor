@@ -21,9 +21,7 @@ const PublicLeaguesList = ({ leagues }: Props) => {
       <ul>
         {leagues.map((league) => (
           <li key={league.id}>
-            <Link href={`league/${league.id}`}>
-              <a>{league.name}</a>
-            </Link>
+            <Link href={`league/${league.id}`}>{league.name}</Link>
           </li>
         ))}
       </ul>

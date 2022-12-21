@@ -160,10 +160,7 @@ const Predictions = ({
       <NoFixtures>
         <p>No fixtures found for gameweek {gameweek}</p>
         <p>
-          Go to{" "}
-          <Link href="/predictions">
-            <a>this weeks predictions</a>
-          </Link>
+          Go to <Link href="/predictions">this weeks predictions</Link>
         </p>
       </NoFixtures>
     );

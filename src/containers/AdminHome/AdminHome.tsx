@@ -11,19 +11,13 @@ const AdminHome = () => (
     </Heading>
     <ul>
       <Li>
-        <Link href="admin/updateResults">
-          <a>Update Results</a>
-        </Link>
+        <Link href="admin/updateResults">Update Results</Link>
       </Li>
       <Li>
-        <Link href="admin/manageFixtures">
-          <a>Manage Fixtures</a>
-        </Link>
+        <Link href="admin/manageFixtures">Manage Fixtures</Link>
       </Li>
       <Li>
-        <Link href="admin/mangePredictions">
-          <a>Add/edit predictions</a>
-        </Link>
+        <Link href="admin/mangePredictions">Add/edit predictions</Link>
       </Li>
     </ul>
   </section>

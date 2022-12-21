@@ -79,9 +79,7 @@ const WeeklyScoresTable = ({
         <LeagueNotStarted>
           <p>
             This league does not start until gameweek{" "}
-            <Link href={`/predictions/${gameweekStart}`}>
-              <a>{gameweekStart}</a>
-            </Link>
+            <Link href={`/predictions/${gameweekStart}`}>{gameweekStart}</Link>
           </p>
           <p>Come back later.</p>
         </LeagueNotStarted>

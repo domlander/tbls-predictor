@@ -77,7 +77,7 @@ const LeagueWeekContainer = ({
           <ul>
             <li>
               <Link href={`/league/${leagueId}`} passHref>
-                <a>{leagueName}</a>
+                {leagueName}
               </Link>
             </li>
             <li>

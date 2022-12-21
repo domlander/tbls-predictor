@@ -49,9 +49,7 @@ const LeagueWeekFixtures = ({ weekId, fixtures }: Props) => {
               ) : (
                 <ClickableFixture>
                   <Link href={`/predictions/${weekId}`}>
-                    <a>
-                      {homeTeam} vs {awayTeam}
-                    </a>
+                    {homeTeam} vs {awayTeam}
                   </Link>
                 </ClickableFixture>
               )}

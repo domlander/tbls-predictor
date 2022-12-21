@@ -17,22 +17,22 @@ const HeaderBar = ({ initial, handleClick }: Props) => (
       <ul>
         <li>
           <Link href="/" passHref>
-            <a>Home</a>
+            Home
           </Link>
         </li>
         <li>
           <Link href="/predictions" passHref>
-            <a>Predictions</a>
+            Predictions
           </Link>
         </li>
         <li>
           <Link href="/leagues" passHref>
-            <a>Leagues</a>
+            Leagues
           </Link>
         </li>
         <li>
           <Link href="/premierleague" passHref>
-            <a>Table</a>
+            Table
           </Link>
         </li>
       </ul>

@@ -12,7 +12,7 @@ export interface Props {
 const SidebarMenuItem = ({ label, url, onClick }: Props) => (
   <Container onClick={onClick}>
     <Link passHref href={url}>
-      <a>{label}</a>
+      {label}
     </Link>
   </Container>
 );

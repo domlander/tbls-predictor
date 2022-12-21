@@ -14,9 +14,7 @@ export interface Props {
 const MyLeagues = ({ leagues }: Props) => {
   return !leagues?.length ? (
     <NoLeagues>
-      <Link href="/league/join">
-        <a>Join a league</a>
-      </Link>
+      <Link href="/league/join">Join a league</Link>
     </NoLeagues>
   ) : (
     <Container>

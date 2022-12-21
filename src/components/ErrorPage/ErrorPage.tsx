@@ -18,9 +18,7 @@ const ErrorPage = ({ type }: Props) => (
     </Heading>
     <ButtonContainer>
       <Link href="/">
-        <a>
-          <Button variant="primary">Go Home</Button>
-        </a>
+        <Button variant="primary">Go Home</Button>
       </Link>
     </ButtonContainer>
   </Container>
