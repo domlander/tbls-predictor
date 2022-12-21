@@ -1,15 +1,18 @@
+import { Work_Sans as WorkSans } from "@next/font/google";
 import { createGlobalStyle } from "styled-components";
 import colours from "./colours";
 import pageSizes from "./pageSizes";
 
-const GlobalStyle = createGlobalStyle`
-  * {
-    font-family: 'Work Sans', sans-serif;
-  }
+const workSans = WorkSans({
+  subsets: ["latin"],
+  weight: ["300", "400"],
+});
 
+const GlobalStyle = createGlobalStyle`
   html {
     --background: ${colours.blackblue500};
     --header-background: ${colours.blackblue400};
+    font-family: ${workSans.style.fontFamily};
   }
 
   body {

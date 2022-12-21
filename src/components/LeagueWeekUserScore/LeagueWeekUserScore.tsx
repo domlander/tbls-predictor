@@ -1,15 +1,22 @@
 import styled from "styled-components";
 import React from "react";
 import pageSizes from "src/styles/pageSizes";
+import { Patrick_Hand as PatrickHand } from "@next/font/google";
+
+const patrickHand = PatrickHand({
+  subsets: ["latin"],
+  weight: "400",
+});
 
 export type Props = {
   score: number;
 };
 
-const LeagueWeekUserScore = ({ score }: Props) => <Total>{score}</Total>;
+const LeagueWeekUserScore = ({ score }: Props) => (
+  <Total className={patrickHand.className}>{score}</Total>
+);
 
 const Total = styled.div`
-  font-family: "Patrick Hand", cursive;
   font-size: 4em;
   line-height: 1.4em;
   letter-spacing: 0.05em;
