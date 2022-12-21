@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
 
+import spinner from "public/images/spinner.gif";
 import type Fixture from "src/types/Fixture";
 import type TeamFixtures from "src/types/TeamFixtures";
 import useUserLeagues from "src/hooks/useUserLeagues";
@@ -40,9 +41,9 @@ export default function Home({
           recentFixturesByTeam={recentFixturesByTeam}
         />
       </PredictionsContainer>
-      {leaguesLoading ? (
+      {!leaguesLoading ? (
         <SpinnerContainer>
-          <Image src="/images/spinner.gif" height="50" width="50" alt="" />
+          <Image src={spinner} alt="loading spinner" height={50} />
         </SpinnerContainer>
       ) : leaguesError ? (
         <LeagueError>

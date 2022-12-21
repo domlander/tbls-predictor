@@ -4,6 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { NetworkStatus, useLazyQuery } from "@apollo/client";
 
+import refresh from "public/images/refresh.svg";
+import refreshDisabled from "public/images/refreshDisabled.svg";
 import { LEAGUE_WEEK_QUERY } from "apollo/queries";
 import UserPoints from "src/types/UserPoints";
 import Fixture from "src/types/Fixture";
@@ -88,15 +90,14 @@ const LeagueWeekContainer = ({
         {networkStatus === NetworkStatus.refetch ? (
           <div>
             <Image
-              src="/images/refreshDisabled.svg"
+              src={refreshDisabled}
               height="20"
-              width="20"
-              alt=""
+              alt="Disabled refresh scores icon"
             />
           </div>
         ) : !loading ? (
           <RefreshButton type="button" onClick={() => getData()}>
-            <Image src="/images/refresh.svg" height="20" width="20" alt="" />
+            <Image src={refresh} height="20" alt="Refresh scores icon" />
           </RefreshButton>
         ) : null}
       </TopBar>

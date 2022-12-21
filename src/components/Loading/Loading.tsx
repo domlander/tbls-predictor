@@ -1,16 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import Image from "next/image";
+import spinner from "public/images/spinner.gif";
 
 const Loading = () => (
   <>
     <Container>
-      <Image
-        height="100"
-        width="100"
-        src="/images/spinner.gif"
-        alt="loading content..."
-      />
+      <Image src={spinner} alt="loading content..." />
     </Container>
   </>
 );

@@ -4,6 +4,10 @@ import styled from "styled-components";
 import { useMutation, useQuery } from "@apollo/client";
 import dayjs from "dayjs";
 
+import arrowLeft from "public/images/ArrowLeft.svg";
+import arrowRight from "public/images/ArrowRight.svg";
+import arrowLeftDisabled from "public/images/ArrowLeftDisabled.svg";
+import arrowRightDisabled from "public/images/ArrowRightDisabled.svg";
 import { FIXTURES_QUERY } from "apollo/queries";
 import { UPDATE_FIXTURES_MUTATION } from "apollo/mutations";
 import sortFixtures from "utils/sortFixtures";
@@ -121,18 +125,11 @@ const AdminManageFixtures = ({
               setFixturesAPI([]);
               setGameweek((x) => x - 1);
             }}
-            src="/images/ArrowLeft.svg"
+            src={arrowLeft}
             alt="Go to previous week"
-            width="30"
-            height="44"
           />
         ) : (
-          <Image
-            src="/images/ArrowLeftDisabled.svg"
-            alt="disabled navigation"
-            width="30"
-            height="44"
-          />
+          <Image src={arrowLeftDisabled} alt="disabled navigation" />
         )}
         <Heading level="h1" variant="secondary">
           Week {gameweek}
@@ -143,18 +140,11 @@ const AdminManageFixtures = ({
               setFixturesAPI([]);
               setGameweek((x) => x + 1);
             }}
-            src="/images/ArrowRight.svg"
+            src={arrowRight}
             alt="Go to next week"
-            width="30"
-            height="44"
           />
         ) : (
-          <Image
-            src="/images/ArrowRightDisabled.svg"
-            alt="disabled navigation"
-            width="30"
-            height="44"
-          />
+          <Image src={arrowRightDisabled} alt="disabled navigation" />
         )}
       </StyledWeekNavigator>
 

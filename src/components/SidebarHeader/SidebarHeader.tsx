@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Image from "next/image";
+import cross from "public/images/Cross.svg";
 import UserIcon from "src/components/UserIcon";
 import colours from "src/styles/colours";
 
@@ -22,12 +23,7 @@ const SidebarHeader = ({ username, handleClick }: Props) => (
       </Username>
     </User>
     <ImageContainer tabIndex={0} onClick={handleClick}>
-      <Image
-        src="/images/Cross.svg"
-        alt="close sidebar cross"
-        height={20}
-        width={20}
-      />
+      <Image src={cross} alt="close sidebar cross" />
     </ImageContainer>
   </Container>
 );
