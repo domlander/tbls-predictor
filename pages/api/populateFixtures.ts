@@ -81,7 +81,7 @@ const fetchApiData = async (gameweek: number, numGameweeks: number) => {
   Compares the up-to-date API fixtures with the existing fixtures in the DB
    - Creates new fixtures where there isn't an equivalent match
    - Updates fixtures where details have changed (Only kickoff for now - possibly score too in the future)
-   - Deletes fixtures which no longer exist. An example being postponements.
+   - Deletes fixtures which no longer exist, e.g. postponements.
 
   Persists the updates to the database
 */

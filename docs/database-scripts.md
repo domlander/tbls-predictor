@@ -12,11 +12,9 @@ Create new procedure/function in PostgreSQL:
 - return type: trigger
 
 ```
-$$
 CREATE OR REPLACE FUNCTION public.log_prediction_changes()
  RETURNS trigger
- LANGUAGE plpgsql
-AS $function$
+AS $$
 BEGIN
 	IF (new.home_goals <> old.home_goals) or (new.away_goals <> old.away_goals) or (new.big_boy_bonus <> old.big_boy_bonus) then
 	insert into prediction_log
@@ -37,8 +35,8 @@ BEGIN
 
 	return new;
 END;
-$function$
-;
+$$
+LANGUAGE 'plpgsql'
 ```
 
 ## Create audit_predictions trigger

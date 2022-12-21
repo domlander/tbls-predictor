@@ -681,6 +681,7 @@ const resolvers = {
           homeGoals: true,
           awayGoals: true,
           gameweek: true,
+          kickoff: true,
         },
       });
 
@@ -699,30 +700,38 @@ const resolvers = {
            each fixture to obtain the points for that fixture, then adds the points to the 
            correct array index in the accumulator
          */
-        const weeklyPoints = fixtures.reduce(
-          (acc, cur) => {
-            const prediction = predictions.find((p) => p.fixtureId === cur.id);
-            const score = calculatePredictionScore(
-              [
-                prediction?.homeGoals ?? 0,
-                prediction?.awayGoals ?? 0,
-                prediction?.bigBoyBonus ?? false,
-              ],
-              [cur.homeGoals, cur.awayGoals]
-            );
+        const weeklyPoints = fixtures
+          .filter(
+            (fixture) =>
+              fixture.gameweek >= league.gameweekStart &&
+              fixture.gameweek <= league.gameweekEnd
+          )
+          .reduce(
+            (acc, cur) => {
+              const prediction = predictions.find(
+                (p) => p.fixtureId === cur.id
+              );
+              const score = calculatePredictionScore(
+                [
+                  prediction?.homeGoals ?? 0,
+                  prediction?.awayGoals ?? 0,
+                  prediction?.bigBoyBonus ?? false,
+                ],
+                [cur.homeGoals, cur.awayGoals]
+              );
 
-            const arrayIndex = cur.gameweek - league.gameweekStart;
-            acc[arrayIndex] = {
-              week: cur.gameweek,
-              points: (acc[arrayIndex].points += score),
-            };
+              const arrayIndex = cur.gameweek - league.gameweekStart;
+              acc[arrayIndex] = {
+                week: cur.gameweek,
+                points: (acc[arrayIndex].points += score),
+              };
 
-            return acc;
-          },
-          new Array(league.gameweekEnd - league.gameweekStart + 1)
-            .fill(0)
-            .map((_, i) => ({ week: i + league.gameweekStart, points: 0 }))
-        );
+              return acc;
+            },
+            new Array(league.gameweekEnd - league.gameweekStart + 1)
+              .fill(0)
+              .map((_, i) => ({ week: i + league.gameweekStart, points: 0 }))
+          );
 
         const totalPoints = weeklyPoints.reduce(
           (acc, cur) => acc + (cur.points || 0),
@@ -736,7 +745,22 @@ const resolvers = {
         };
       });
 
-      return users;
+      const currentGameweek = calculateCurrentGameweek(fixtures);
+      const sortedUsers = users
+        .sort((a, b) => b.totalPoints - a.totalPoints || (b.id > a.id ? 1 : -1))
+        .map((user) => ({
+          ...user,
+          weeklyPoints: [
+            ...user.weeklyPoints.filter(
+              (weeklyPoints) =>
+                weeklyPoints.week >= league.gameweekStart &&
+                weeklyPoints.week <=
+                  Math.min(league.gameweekEnd, currentGameweek)
+            ),
+          ].reverse(),
+        }));
+
+      return sortedUsers;
     },
   },
   DateTime: dateScalar,

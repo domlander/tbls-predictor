@@ -7,7 +7,6 @@ import LeagueHome from "src/containers/League";
 import { ALL_FIXTURES_QUERY, LEAGUE_QUERY } from "apollo/queries";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import redirectInternal from "utils/redirects";
-import WeeklyPoints from "src/types/WeeklyPoints";
 import User from "src/types/User";
 
 interface Props {
@@ -48,12 +47,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     variables: { leagueId },
     errorPolicy: "ignore",
   });
-
   if (!data) return { notFound: true };
 
-  const { league } = data;
-  const { gameweekStart } = league;
-  const { gameweekEnd } = league;
+  const {
+    league,
+    league: { gameweekStart, gameweekEnd, users },
+  } = data;
 
   const {
     data: {
@@ -75,27 +74,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
           .reverse()
       : null;
 
-  const sortedUsers = [...league.users]
-    .sort(
-      (a, b) => b.totalPoints - a.totalPoints || (b.userId > a.userId ? 1 : -1)
-    )
-    .map((user) => ({
-      ...user,
-      weeklyPoints: [
-        ...user.weeklyPoints.filter(
-          (weeklyPoints: WeeklyPoints) =>
-            weeklyPoints.week >= gameweekStart &&
-            weeklyPoints.week <= Math.min(currentGameweek, gameweekEnd)
-        ),
-      ].reverse(),
-    }));
-
   return {
     props: {
       id: leagueId,
       name: league.name,
       gameweekStart,
-      users: sortedUsers,
+      users,
       administratorId: league.administratorId,
       fixtureWeeksAvailable,
     },
