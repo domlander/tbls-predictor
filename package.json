@@ -8,7 +8,7 @@
     "test": "jest --watch",
     "sb": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "prisma:generate": "PRISMA_CLIENT_ENGINE_TYPE='dataproxy' prisma generate",
+    "prisma:generate": "prisma generate --data-proxy",
     "vercel-build": "yarn prisma:generate && next build"
   },
   "dependencies": {
