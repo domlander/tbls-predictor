@@ -39,16 +39,6 @@ const resolvers = {
     },
     premierLeagueTable: async () => {
       const fixtures = await prisma.fixture.findMany({
-        where: {
-          AND: [
-            {
-              NOT: { homeGoals: null },
-            },
-            {
-              NOT: { awayGoals: null },
-            },
-          ],
-        },
         select: {
           homeTeam: true,
           awayTeam: true,

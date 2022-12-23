@@ -39,7 +39,38 @@ const createPremierLeagueTableFromFixtures = (
 ): PremierLeagueTeam[] => {
   const table = fixtures.reduce(
     (teams, { homeTeam, awayTeam, homeGoals, awayGoals }) => {
-      if (homeGoals === null || awayGoals === null) return teams;
+      if (homeGoals === null || awayGoals === null) {
+        const tableHomeTeam = teams.find(({ team }) => team === homeTeam);
+        if (!tableHomeTeam) {
+          teams.push({
+            team: homeTeam,
+            points: 0,
+            wins: 0,
+            draws: 0,
+            losses: 0,
+            homeGoals: 0,
+            awayGoals: 0,
+            homeGoalsConceded: 0,
+            awayGoalsConceded: 0,
+          });
+        }
+        const tableAwayTeam = teams.find(({ team }) => team === homeTeam);
+        if (!tableAwayTeam) {
+          teams.push({
+            team: awayTeam,
+            points: 0,
+            wins: 0,
+            draws: 0,
+            losses: 0,
+            homeGoals: 0,
+            awayGoals: 0,
+            homeGoalsConceded: 0,
+            awayGoalsConceded: 0,
+          });
+        }
+
+        return teams;
+      }
 
       const tableHomeTeam = teams.find(({ team }) => team === homeTeam);
       if (!tableHomeTeam) {

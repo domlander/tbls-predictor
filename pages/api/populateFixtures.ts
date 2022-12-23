@@ -105,8 +105,10 @@ const populateFixtures = async (
     if (!matchingDbFixture) {
       fixturesToAdd.push(apiFixture);
     } else if (
-      // Update fixtures whose kickoff time has changed.
-      apiFixture.kickoff.getTime() !== matchingDbFixture.kickoff.getTime()
+      // Update fixtures whose kickoff time or score has changed.
+      apiFixture.kickoff.getTime() !== matchingDbFixture.kickoff.getTime() ||
+      apiFixture.homeGoals !== matchingDbFixture.homeGoals ||
+      apiFixture.awayGoals !== matchingDbFixture.awayGoals
     ) {
       fixturesToUpdate.push({
         ...apiFixture,
@@ -136,39 +138,55 @@ const populateFixtures = async (
   const logMessages: string[] = [];
   if (fixturesToAdd.length) {
     addPromises = fixturesToAdd
-      .map(({ gameweek, homeTeam, awayTeam, kickoff }) => {
-        logMessages.push(
-          `\nFixture added: ${homeTeam} hosting ${awayTeam} at ${kickoff.toLocaleDateString()} in week ${gameweek}.`
-        );
-        return prisma.fixture.create({
-          data: {
-            gameweek,
-            homeTeam,
-            awayTeam,
-            kickoff,
-          },
-        });
-      })
+      .map(
+        ({ gameweek, homeTeam, awayTeam, homeGoals, awayGoals, kickoff }) => {
+          logMessages.push(
+            `\nFixture added: ${homeTeam} hosting ${awayTeam} at ${kickoff.toLocaleDateString()} in week ${gameweek}.`
+          );
+          return prisma.fixture.create({
+            data: {
+              gameweek,
+              homeTeam,
+              awayTeam,
+              homeGoals,
+              awayGoals,
+              kickoff,
+            },
+          });
+        }
+      )
       ?.filter((x) => !!x);
   }
   if (fixturesToUpdate.length) {
     updatePromises = fixturesToUpdate
-      .map(({ id, gameweek, homeTeam, awayTeam, kickoff }) => {
-        logMessages.push(
-          `\nFixture amended: ID: ${id}. ${homeTeam} hosting ${awayTeam} at ${kickoff.toLocaleDateString()} in week ${gameweek}.`
-        );
-        return prisma.fixture.update({
-          where: {
-            id,
-          },
-          data: {
-            gameweek,
-            homeTeam,
-            awayTeam,
-            kickoff,
-          },
-        });
-      })
+      .map(
+        ({
+          id,
+          gameweek,
+          homeTeam,
+          awayTeam,
+          homeGoals,
+          awayGoals,
+          kickoff,
+        }) => {
+          logMessages.push(
+            `\nFixture amended: ID: ${id}. ${homeTeam} hosting ${awayTeam} at ${kickoff.toLocaleDateString()} in week ${gameweek}.`
+          );
+          return prisma.fixture.update({
+            where: {
+              id,
+            },
+            data: {
+              gameweek,
+              homeTeam,
+              awayTeam,
+              homeGoals,
+              awayGoals,
+              kickoff,
+            },
+          });
+        }
+      )
       ?.filter((x) => !!x);
   }
   if (fixturesToDelete.length) {

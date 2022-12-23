@@ -46,8 +46,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const startTime = new Date();
 
-  console.log("Running fetchLatestScores function");
-
   if (!process.env.NEXTAUTH_URL)
     return res
       .status(500)
