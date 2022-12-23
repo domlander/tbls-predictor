@@ -1,5 +1,4 @@
 import React, { FormEvent, useState } from "react";
-import styled from "styled-components";
 import { useMutation, useQuery } from "@apollo/client";
 
 import { USER_QUERY } from "apollo/queries";

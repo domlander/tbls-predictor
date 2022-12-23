@@ -2,7 +2,7 @@ import { Applicant } from "@prisma/client";
 
 export default function isUserAppliedToLeague(
   applicants: Applicant[],
-  userId: number
+  userId: string
 ) {
   return applicants.some(
     (p) =>
