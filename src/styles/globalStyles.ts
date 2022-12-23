@@ -4,6 +4,7 @@ import colours from "./colours";
 import pageSizes from "./pageSizes";
 
 const workSans = WorkSans({
+  display: "swap",
   subsets: ["latin"],
   weight: ["300", "400"],
 });
