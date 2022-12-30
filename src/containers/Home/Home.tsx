@@ -41,10 +41,8 @@ export default function Home({
           recentFixturesByTeam={recentFixturesByTeam}
         />
       </PredictionsContainer>
-      {!leaguesLoading ? (
-        <SpinnerContainer>
-          <Image src={spinner} alt="loading spinner" height={50} />
-        </SpinnerContainer>
+      {leaguesLoading ? (
+        <Image src={spinner} alt="loading spinner" height={50} />
       ) : leaguesError ? (
         <LeagueError>
           Sorry, we could not load leagues at this time. Refresh the page or try
@@ -101,9 +99,4 @@ const PredictionsHeader = styled.div`
 
 const LeagueError = styled.p`
   font-size: 1rem;
-`;
-
-const SpinnerContainer = styled.div`
-  height: 50px;
-  width: 50px;
 `;
