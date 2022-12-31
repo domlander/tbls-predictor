@@ -109,6 +109,10 @@ const PredictionsTable = ({
                 recentFixturesByTeam.find((rf) => rf.team === awayTeam)
                   ?.fixtures || [];
 
+              const isLocked = !isAlwaysEditable && isPastDeadline(kickoff);
+
+              const defaultGoals = isLocked ? "0" : "";
+
               return (
                 <Fragment key={fixtureId}>
                   <GridRow
@@ -119,16 +123,13 @@ const PredictionsTable = ({
                     )}
                     homeTeam={homeTeam}
                     awayTeam={awayTeam}
-                    homeGoals={predictedHomeGoals ?? ""}
-                    awayGoals={predictedAwayGoals ?? ""}
+                    homeGoals={predictedHomeGoals ?? defaultGoals}
+                    awayGoals={predictedAwayGoals ?? defaultGoals}
                     updateGoals={updateGoals}
                     isBigBoyBonus={bigBoyBonus}
                     isBbbLocked={isBbbLockedForGameweek}
                     predictionScore={predictionScore || undefined}
-                    locked={
-                      isLoading ||
-                      (!isAlwaysEditable && isPastDeadline(kickoff))
-                    }
+                    locked={isLoading || isLocked}
                     topRow={i === 0}
                     handleBbbUpdate={handleBbbUpdate}
                   />
