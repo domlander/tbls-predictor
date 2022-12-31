@@ -110,8 +110,7 @@ const PredictionsTable = ({
                   ?.fixtures || [];
 
               const isLocked = !isAlwaysEditable && isPastDeadline(kickoff);
-
-              const defaultGoals = isLocked ? "0" : "";
+              const defaultGoals = isLocked && !isLoading ? "0" : "";
 
               return (
                 <Fragment key={fixtureId}>
