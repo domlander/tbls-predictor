@@ -16,6 +16,15 @@ const moduleExports = {
     // ssr and displayName are configured by default
     styledComponents: true,
   },
+  sentry: {
+    // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/#use-hidden-source-map
+    // Depending on your deployment setup, adding sentry/nextjs to your app may cause your source code 
+    // to be visible in browser devtools when it wasn't before. (This happens because of the default 
+    // behavior of Webpack's source-map built-in devtool.) To prevent this, you can use hidden-source-map 
+    // rather than source-map, which will prevent your built files from containing a sourceMappingURL comment, 
+    // thus making sourcemaps invisible to the browser
+    hideSourceMaps: true
+  }
 };
 
 const sentryWebpackPluginOptions = {
