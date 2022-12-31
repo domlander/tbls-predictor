@@ -11,8 +11,8 @@ const workSans = WorkSans({
 
 const GlobalStyle = createGlobalStyle`
   html {
-    --background: ${colours.blackblue500};
-    --header-background: ${colours.blackblue400};
+    --background: ${colours.blackblue400};
+    --header-background: ${colours.blackblue300};
     font-family: ${workSans.style.fontFamily};
   }
 

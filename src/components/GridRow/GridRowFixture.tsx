@@ -86,28 +86,28 @@ const GridRow = ({
 };
 
 const Kickoff = styled(GridItemKickoff)<{ locked: boolean; topRow: boolean }>`
-  color: ${({ locked }) => (locked ? colours.grey500 : colours.grey100)};
+  color: ${({ locked }) => (locked ? colours.grey500 : colours.grey200)};
   border-top: ${({ topRow }) =>
     !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
 `;
 
 const HomeTeam = styled(GridItemHomeTeam)<{ locked: boolean; topRow: boolean }>`
   /* font-size: 1.4rem; */
-  color: ${({ locked }) => (locked ? colours.grey500 : colours.grey100)};
+  color: ${({ locked }) => (locked ? colours.grey500 : colours.grey200)};
   border-top: ${({ topRow }) =>
     !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
 `;
 
 const AwayTeam = styled(GridItemAwayTeam)<{ locked: boolean; topRow: boolean }>`
   /* font-size: 1.4rem; */
-  color: ${({ locked }) => (locked ? colours.grey500 : colours.grey100)};
+  color: ${({ locked }) => (locked ? colours.grey500 : colours.grey200)};
   border-top: ${({ topRow }) =>
     !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
 `;
 
 const Score = styled(ScoreInput)<{ isScoreEditable: boolean; topRow: boolean }>`
   color: ${({ isScoreEditable }) =>
-    !isScoreEditable ? colours.grey500 : colours.grey100};
+    !isScoreEditable ? colours.grey500 : colours.grey200};
   border-top: ${({ topRow }) =>
     !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
 `;
@@ -115,7 +115,7 @@ const Score = styled(ScoreInput)<{ isScoreEditable: boolean; topRow: boolean }>`
 const Divider = styled.span<{ locked: boolean; topRow: boolean }>`
   border-top: ${({ topRow }) =>
     !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
-  color: ${({ locked }) => (locked ? colours.grey500 : colours.grey100)};
+  color: ${({ locked }) => (locked ? colours.grey500 : colours.grey200)};
   align-self: stretch;
   display: flex;
   flex-direction: column;
