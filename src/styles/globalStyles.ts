@@ -44,10 +44,10 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h1 {
-    font-size: 2.5rem;
+    font-size: 2.4rem;
     margin: 1em 0;
   }
-
+  
   h2 {
     font-weight: 300;
     letter-spacing: -1px;

@@ -31,7 +31,7 @@ export default function Home({
       <PredictionsContainer>
         <PredictionsHeader>
           <Heading level="h2" as="h1" variant="secondary">
-            This week
+            Gameweek {weekId}
           </Heading>
           <Link href={`/predictions/${weekId}`}>All predictions</Link>
         </PredictionsHeader>

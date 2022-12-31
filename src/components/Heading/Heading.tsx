@@ -9,7 +9,7 @@ const variants = {
     colour: colours.cyan500,
   },
   secondary: {
-    colour: colours.grey200,
+    colour: colours.grey300,
   },
 };
 
