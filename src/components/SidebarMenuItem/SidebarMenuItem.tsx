@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import colours from "src/styles/colours";
+import pageSizes from "src/styles/pageSizes";
 
 export interface Props {
   label: string;
@@ -21,15 +22,19 @@ const Container = styled.li`
   width: 100%;
   height: 4.4em;
   line-height: 4.4em;
-  text-align: right;
+  text-align: center;
 
   a {
-    color: ${colours.grey200};
-    font-size: 1.6em;
+    color: ${colours.grey300};
+    font-size: 1.8rem;
     cursor: pointer;
     :hover,
     :focus {
       color: ${colours.cyan100};
+    }
+
+    @media (max-width: ${pageSizes.mobileL}) {
+      font-size: 1.6rem;
     }
   }
 `;

@@ -31,9 +31,9 @@ const Container = styled.div<{ numUsers: number }>`
   justify-items: center;
   position: sticky;
   top: 0;
-  background: ${colours.blackblue500};
+  background: ${colours.blackblue400};
   /* box-shadow: offset-x | offset-y | blur-radius | color */
-  box-shadow: 0 10px 10px ${colours.blackblue500};
+  box-shadow: 0 10px 10px ${colours.blackblue400};
 `;
 
 const Username = styled.div`

@@ -15,7 +15,9 @@ interface Props {
 const CreateLeague = ({ currentGameweek }: Props) => {
   const [leagueName, setLeagueName] = useState("");
   const [userFeedback, setUserFeedback] = useState("");
-  const [gameweekStart, setGameweekStart] = useState("1");
+  const [gameweekStart, setGameweekStart] = useState(
+    currentGameweek.toString()
+  );
   const [weeksToRun, setWeeksToRun] = useState("10");
 
   const [createLeague, { loading }] = useMutation(CREATE_LEAGUE_MUTATION, {

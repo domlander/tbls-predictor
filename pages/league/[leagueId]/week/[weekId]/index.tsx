@@ -77,7 +77,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       firstGameweek: league.gameweekStart,
       lastGameweek: league.gameweekEnd,
     },
-    revalidate: 60,
+    revalidate: 1,
   };
 };
 

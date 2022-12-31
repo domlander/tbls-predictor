@@ -62,8 +62,7 @@ const Sidebar = ({ username, isLoggedIn, handleClick }: Props) => {
 
 const Container = styled.div`
   height: 100vh;
-  width: 70%;
-  max-width: 400px;
+  width: 100%;
   position: absolute;
   top: 0;
   right: 0;
@@ -75,7 +74,10 @@ const Container = styled.div`
 `;
 
 const SidebarItemsContainer = styled.ul`
-  margin-right: 1.6em;
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+  margin-top: 2em;
 `;
 
 export default Sidebar;

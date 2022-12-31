@@ -83,7 +83,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       administratorId: league.administratorId,
       fixtureWeeksAvailable,
     },
-    revalidate: 60,
+    revalidate: 1,
   };
 };
 
