@@ -30,9 +30,7 @@ const LeagueContainer = ({
     <>
       <Container>
         {session?.user?.id === administratorId && (
-          <Link href={`/league/${id}/admin`}>
-            <AdminLink>Admin</AdminLink>
-          </Link>
+          <AdminLink href={`/league/${id}/admin`}>Admin</AdminLink>
         )}
         <WeeklyScoresTable
           leagueName={name}
@@ -55,7 +53,7 @@ const Container = styled.div`
   }
 `;
 
-const AdminLink = styled.a`
+const AdminLink = styled(Link)`
   font-size: 1rem;
   text-decoration: underline;
   cursor: pointer;

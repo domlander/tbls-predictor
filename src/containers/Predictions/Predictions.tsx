@@ -22,6 +22,7 @@ type UpdatePredictionsInputType = {
   homeGoals: Prediction["homeGoals"];
   awayGoals: Prediction["awayGoals"];
   bigBoyBonus: Prediction["bigBoyBonus"];
+  score: Prediction["score"];
 };
 
 interface Props {
@@ -70,6 +71,7 @@ const Predictions = ({
         homeGoals: parseInt(prediction.homeGoals?.toString() || "") ?? null,
         awayGoals: parseInt(prediction.awayGoals?.toString() || "") ?? null,
         bigBoyBonus: prediction.bigBoyBonus,
+        score: prediction.score ?? null,
       })
     );
 

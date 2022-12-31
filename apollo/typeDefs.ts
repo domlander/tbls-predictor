@@ -70,6 +70,7 @@ const typeDefs = gql`
     homeGoals: Int
     awayGoals: Int
     bigBoyBonus: Boolean
+    score: Int
   }
 
   type UpdatePredictionsPayload {

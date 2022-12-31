@@ -47,12 +47,12 @@ const WeeklyScoresTable = ({
               {fixtureWeeksAvailable.map((week) => (
                 <HeaderItem key={week}>
                   {fixtureWeeksAvailable.indexOf(week) !== -1 ? (
-                    <Link href={`/league/${leagueId}/week/${week}`}>
-                      <ClickableRowHeading>
-                        <WeekText>Week</WeekText>
-                        <WeekNumber>{week}</WeekNumber>
-                      </ClickableRowHeading>
-                    </Link>
+                    <ClickableRowHeading
+                      href={`/league/${leagueId}/week/${week}`}
+                    >
+                      <WeekText>Week</WeekText>
+                      <WeekNumber>{week}</WeekNumber>
+                    </ClickableRowHeading>
                   ) : (
                     <RowHeading>{`Week ${week}`}</RowHeading>
                   )}
@@ -203,7 +203,7 @@ const BlankTableHeaderItem = styled.div`
 
 const RowHeading = styled.div``;
 
-const ClickableRowHeading = styled.a`
+const ClickableRowHeading = styled(Link)`
   cursor: pointer;
   font-size: 1.2rem;
   display: flex;

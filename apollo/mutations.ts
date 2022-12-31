@@ -56,6 +56,7 @@ export const UPDATE_PREDICTIONS_MUTATION = gql`
         homeGoals
         awayGoals
         bigBoyBonus
+        score
       }
     }
   }
