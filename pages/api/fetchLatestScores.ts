@@ -11,7 +11,7 @@ import { calculateCurrentGameweek } from "../../utils/calculateCurrentGameweek";
 const prisma = new PrismaClient({
   datasources: {
     db: {
-      url: process.env.RAW_DATABASE_URL,
+      url: process.env.DATABASE_URL,
     },
   },
 });
