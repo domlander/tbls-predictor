@@ -46,7 +46,7 @@ const PremierLeague = ({ teams }: Props) => {
           ) => {
             return (
               <>
-                <TableDataPosition>{i + 1}</TableDataPosition>
+                <TableDataPosition position={i + 1}>{i + 1}</TableDataPosition>
                 <TableDataTeam>{team}</TableDataTeam>
                 <TableData>{played}</TableData>
                 <TableData>{wins}</TableData>
@@ -63,6 +63,22 @@ const PremierLeague = ({ teams }: Props) => {
       </Table>
     </Container>
   );
+};
+
+const getPositionBackgroundColour = (position: number): string => {
+  if (position === 1) {
+    return colours.gold500;
+  }
+
+  if (position > 1 && position <= 4) {
+    return colours.green500;
+  }
+
+  if (position >= 18) {
+    return colours.red500;
+  }
+
+  return "transparent";
 };
 
 const HeadingMobile = styled(Heading)`
@@ -123,10 +139,23 @@ const TableDataLast = styled(TableData)`
   font-weight: 700;
 `;
 
-const TableDataPosition = styled(TableData)`
+const TableDataPosition = styled(TableData)<{ position: number }>`
+  font-size: 1rem;
+  padding: 3px;
   font-weight: 700;
   justify-self: flex-end;
   color: ${colours.grey400};
+  width: 20px;
+  height: 20px;
+  background: ${({ position }) => getPositionBackgroundColour(position)};
+  border-radius: 20px;
+  text-align: center;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    font-size: 0.9rem;
+    width: 18px;
+    height: 18px;
+  }
 `;
 
 const TableDataTeam = styled(TableData)`

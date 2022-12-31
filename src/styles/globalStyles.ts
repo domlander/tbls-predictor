@@ -46,6 +46,10 @@ const GlobalStyle = createGlobalStyle`
   h1 {
     font-size: 2.4rem;
     margin: 1em 0;
+
+    @media (max-width: ${pageSizes.mobileL}) {
+      font-size: 2rem;
+    }
   }
   
   h2 {
