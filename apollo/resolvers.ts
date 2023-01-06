@@ -14,6 +14,8 @@ import UserLeague from "src/types/UserLeague";
 import User from "src/types/User";
 import type { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
 import createPremierLeagueTableFromFixtures from "utils/createPremierLeagueTableFromFixtures";
+import calculateWeeksUntilStart from "utils/calculateWeeksUntilStart";
+import calculateWeeksToGo from "utils/calculateWeeksToGo";
 import dateScalar from "./scalars";
 
 const resolvers = {
@@ -569,6 +571,84 @@ const resolvers = {
         gameweekStart: league.gameweekStart,
         gameweekEnd: league.gameweekEnd,
       }));
+    },
+    activeLeagues: async (_, __, { user }) => {
+      if (!user?.id) return [];
+
+      const userLeagues = await prisma.user.findUnique({
+        include: {
+          leagues: true,
+        },
+        where: {
+          id: user.id,
+        },
+      });
+      if (!userLeagues?.leagues.length) return [];
+
+      const fixtures = await prisma.fixture.findMany({
+        select: {
+          id: true,
+          gameweek: true,
+          kickoff: true,
+        },
+      });
+      const currentGameweek = calculateCurrentGameweek(fixtures);
+
+      return userLeagues.leagues
+        .map((league) => ({
+          leagueId: league.id,
+          leagueName: league.name,
+          gameweekStart: league.gameweekStart,
+          gameweekEnd: league.gameweekEnd,
+          weeksUntilStart: calculateWeeksUntilStart(
+            currentGameweek,
+            league.gameweekStart
+          ),
+          weeksToGo: calculateWeeksToGo(currentGameweek, league.gameweekEnd),
+        }))
+        .filter((league) => league.gameweekEnd >= currentGameweek)
+        .sort((a, b) => a.gameweekStart - b.gameweekStart);
+    },
+    finishedLeagues: async (_, __, { user }) => {
+      if (!user?.id) return [];
+
+      const userLeagues = await prisma.user.findUnique({
+        include: {
+          leagues: {
+            select: {
+              id: true,
+              name: true,
+              gameweekStart: true,
+              gameweekEnd: true,
+              users: true,
+            },
+          },
+        },
+        where: {
+          id: user.id,
+        },
+      });
+      if (!userLeagues?.leagues.length) return [];
+
+      // Cannot start in a past gameweek
+      const fixtures = await prisma.fixture.findMany({
+        select: {
+          id: true,
+          gameweek: true,
+          kickoff: true,
+        },
+      });
+      const currentGameweek = calculateCurrentGameweek(fixtures);
+
+      return userLeagues.leagues
+        .map((league) => ({
+          leagueId: league.id,
+          leagueName: league.name,
+          gameweekStart: league.gameweekStart,
+          gameweekEnd: league.gameweekEnd,
+        }))
+        .filter((league) => league.gameweekEnd < currentGameweek)
+        .sort((a, b) => b.gameweekEnd - a.gameweekEnd);
     },
   },
   UserLeague: {

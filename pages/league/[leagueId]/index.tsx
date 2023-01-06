@@ -3,16 +3,17 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import prisma from "prisma/client";
 
 import { initializeApollo } from "apollo/client";
-import LeagueHome from "src/containers/League";
 import { ALL_FIXTURES_QUERY, LEAGUE_QUERY } from "apollo/queries";
+import LeagueHome from "src/containers/League";
+import User from "src/types/User";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import redirectInternal from "utils/redirects";
-import User from "src/types/User";
 
 interface Props {
   id: number;
   name: string;
   gameweekStart: number;
+  gameweekEnd: number;
   users: User[];
   administratorId: string;
   fixtureWeeksAvailable: number[];
@@ -22,6 +23,7 @@ const LeaguePage = ({
   id,
   name,
   gameweekStart,
+  gameweekEnd,
   administratorId,
   users,
   fixtureWeeksAvailable,
@@ -30,6 +32,7 @@ const LeaguePage = ({
     id={id}
     name={name}
     gameweekStart={gameweekStart}
+    gameweekEnd={gameweekEnd}
     administratorId={administratorId}
     users={users}
     fixtureWeeksAvailable={fixtureWeeksAvailable}
@@ -79,6 +82,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       id: leagueId,
       name: league.name,
       gameweekStart,
+      gameweekEnd,
       users,
       administratorId: league.administratorId,
       fixtureWeeksAvailable,
