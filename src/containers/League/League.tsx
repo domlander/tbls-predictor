@@ -11,6 +11,7 @@ interface Props {
   id: number;
   name: string;
   gameweekStart: number;
+  gameweekEnd: number;
   administratorId: string;
   users: User[];
   fixtureWeeksAvailable: number[] | null;
@@ -20,6 +21,7 @@ const LeagueContainer = ({
   id,
   name,
   gameweekStart,
+  gameweekEnd,
   administratorId,
   users,
   fixtureWeeksAvailable,
@@ -39,6 +41,9 @@ const LeagueContainer = ({
           gameweekStart={gameweekStart}
           fixtureWeeksAvailable={fixtureWeeksAvailable}
         />
+        <FinalWeekText>
+          The league runs until gameweek {gameweekEnd}
+        </FinalWeekText>
       </Container>
     </>
   );
@@ -51,6 +56,11 @@ const Container = styled.div`
   @media (max-width: 600px) {
     margin: 0;
   }
+`;
+
+const FinalWeekText = styled.p`
+  font-size: 0.9rem;
+  margin-top: 2em;
 `;
 
 const AdminLink = styled(Link)`

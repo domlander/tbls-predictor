@@ -1,27 +1,40 @@
 import React from "react";
-import styled from "styled-components";
 import Link from "next/link";
+import styled, { keyframes } from "styled-components";
 
-import UserLeague from "src/types/UserLeague";
-import colours from "src/styles/colours";
 import Heading from "src/components/Heading";
-import LeaguesCardsList from "../LeaguesCardsList";
+import LeaguesCardsList from "src/components/LeaguesCardsList";
+import colours from "src/styles/colours";
+import pageSizes from "src/styles/pageSizes";
+import UserLeague from "src/types/UserLeague";
 
 export interface Props {
   leagues: UserLeague[];
+  loading: boolean;
 }
 
-const MyLeagues = ({ leagues }: Props) => {
-  return !leagues?.length ? (
-    <NoLeagues>
-      <Link href="/league/join">Join a league</Link>
-    </NoLeagues>
-  ) : (
+const MyLeagues = ({ leagues, loading }: Props) => {
+  if (!loading && !leagues?.length) {
+    return (
+      <NoLeagues>
+        <Link href="/league/join">Join a league</Link>
+      </NoLeagues>
+    );
+  }
+
+  return (
     <Container>
       <Heading level="h2" as="h1" variant="secondary">
         My leagues
       </Heading>
-      <LeaguesCardsList leagues={leagues} />
+      {loading ? (
+        <LoadingSkeleton>
+          <div />
+          <div />
+        </LoadingSkeleton>
+      ) : (
+        <LeaguesCardsList leagues={leagues} />
+      )}
     </Container>
   );
 };
@@ -51,6 +64,38 @@ const NoLeagues = styled.section`
     :focus {
       color: ${colours.cyan100};
     }
+  }
+`;
+
+const skeletonLoading = keyframes`
+    0% {
+      background-position: -800px 0
+    }
+    100% {
+      background-position: 800px 0;
+    }
+`;
+
+const LoadingSkeleton = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 400px);
+  grid-gap: 3em;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    grid-template-columns: 1fr;
+  }
+
+  div {
+    height: 200px;
+    border: 1px solid ${colours.grey500};
+    animation: ${skeletonLoading} 1s linear infinite forwards;
+    background: linear-gradient(
+        to right,
+        ${colours.blackblue400} 4%,
+        ${colours.grey700} 25%,
+        ${colours.blackblue400} 36%
+      )
+      0% 0% / 1500px 100%;
   }
 `;
 

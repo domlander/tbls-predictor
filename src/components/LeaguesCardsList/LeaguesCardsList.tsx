@@ -54,7 +54,7 @@ const LeaguesCardsList = ({ leagues }: Props) => {
               {weeksUntilStart ? (
                 <p>
                   League starts in <BoldText>{weeksUntilStart}</BoldText>{" "}
-                  gameweeks!
+                  gameweek{weeksUntilStart === 1 ? "" : "s"}!
                 </p>
               ) : weeksToGo ? (
                 <p>

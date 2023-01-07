@@ -21,24 +21,6 @@ type League = {
   weeksUntilStart?: number | null;
 };
 
-const calculateWeeksRemaining = (
-  currentGameweek: number,
-  gameweekEnd: number
-): number | null => {
-  const weeksRemaining = gameweekEnd - currentGameweek + 1;
-
-  return weeksRemaining > 0 ? weeksRemaining : null;
-};
-
-const calculateWeeksUntilStart = (
-  currentGameweek: number,
-  gameweekStart: number
-): number | null => {
-  const weeksUntilStart = gameweekStart - currentGameweek + 1;
-
-  return weeksUntilStart > 0 ? weeksUntilStart : null;
-};
-
 /**
  * If multiple users have the same score, display the highest position with that score.
  * users are sorted by totalPoints descending in the resolver.
@@ -49,24 +31,6 @@ const findLeaguePosition = (users: User[], userId: string) => {
   return position !== -1 ? position + 1 : null;
 };
 
-const leagueMapping = (
-  userId: string,
-  league: League,
-  currentGameweek: number
-) => {
-  if (!league.gameweekStart || !league.gameweekEnd) return league;
-
-  return {
-    ...league,
-    weeksToGo: calculateWeeksRemaining(currentGameweek, league.gameweekEnd),
-    weeksUntilStart: calculateWeeksUntilStart(
-      currentGameweek,
-      league.gameweekStart
-    ),
-    position: findLeaguePosition(league.users, userId),
-  };
-};
-
 const useUserLeagues = (): [
   League[],
   League[],
@@ -74,7 +38,8 @@ const useUserLeagues = (): [
   ApolloError | undefined
 ] => {
   const { data: session } = useSession();
-  const [leagues, setLeagues] = useState<League[]>([]);
+  const [activeLeagues, setActiveLeagues] = useState<League[]>([]);
+  const [finishedLeagues, setFinishedLeagues] = useState<League[]>([]);
   const [currentGameweek, setCurrentGameweek] = useState<number | null>();
 
   const { loading, error } = useQuery(USER_LEAGUES_QUERY, {
@@ -87,24 +52,26 @@ const useUserLeagues = (): [
     fetchPolicy: "no-cache",
     onCompleted: (data) => {
       setCurrentGameweek(data?.allFixtures?.currentGameweek || null);
-      setLeagues(data?.user?.leagues || []);
+      setActiveLeagues(data?.user?.activeLeagues || []);
+      setFinishedLeagues(data?.user?.finishedLeagues || []);
     },
     skip: !session?.user.id,
   });
 
   if (!currentGameweek || !session?.user.id) return [[], [], loading, error];
 
-  const activeLeagues = leagues
-    .filter((league) => league.gameweekEnd >= currentGameweek)
-    .map((league) => leagueMapping(session?.user.id, league, currentGameweek))
-    .sort((a, b) => a.gameweekStart - b.gameweekStart);
-
-  const finishedLeagues = leagues
-    .filter((league) => league.gameweekEnd < currentGameweek)
-    .map((league) => leagueMapping(session?.user.id, league, currentGameweek))
-    .sort((a, b) => b.gameweekEnd - a.gameweekEnd);
-
-  return [activeLeagues, finishedLeagues, loading, error];
+  return [
+    activeLeagues.map((league) => ({
+      ...league,
+      position: findLeaguePosition(league.users, session.user.id),
+    })),
+    finishedLeagues.map((league) => ({
+      ...league,
+      position: findLeaguePosition(league.users, session.user.id),
+    })),
+    loading,
+    error,
+  ];
 };
 
 export default useUserLeagues;

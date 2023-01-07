@@ -83,6 +83,8 @@ const typeDefs = gql`
     email: String
     predictions: [Prediction!]
     leagues: [UserLeague!]
+    activeLeagues: [UserLeague!]
+    finishedLeagues: [UserLeague!]
     leagueApplications: [Applicant!]
     weeklyPoints: [WeeklyPoints!]
     totalPoints: Int
@@ -114,6 +116,8 @@ const typeDefs = gql`
     gameweekStart: Int!
     gameweekEnd: Int!
     users: [User!]
+    weeksUntilStart: Int
+    weeksToGo: Int
   }
 
   type Fixture {

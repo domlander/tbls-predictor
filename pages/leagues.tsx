@@ -6,12 +6,8 @@ import { ALL_LEAGUES_QUERY } from "apollo/queries";
 import Leagues from "src/containers/Leagues";
 import League from "src/types/League";
 
-interface Props {
-  publicLeagues: League[];
-}
-
-const LeaguesPage = ({ publicLeagues }: Props) => {
-  return <Leagues publicLeagues={publicLeagues} />;
+const LeaguesPage = () => {
+  return <Leagues />;
 };
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -28,7 +24,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   return {
     props: {
-      publicLeagues: leagues || [],
+      // publicLeagues: leagues || [],
     },
   };
 };

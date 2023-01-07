@@ -41,7 +41,19 @@ export const ALL_FIXTURES_QUERY = gql`
 export const USER_LEAGUES_QUERY = gql`
   query UserLeagues {
     user {
-      leagues {
+      activeLeagues {
+        leagueId
+        leagueName
+        gameweekStart
+        gameweekEnd
+        weeksUntilStart
+        weeksToGo
+        users {
+          id
+          totalPoints
+        }
+      }
+      finishedLeagues {
         leagueId
         leagueName
         gameweekStart
