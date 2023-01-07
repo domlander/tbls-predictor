@@ -1,10 +1,9 @@
 import React from "react";
-import Link from "next/link";
 import styled from "styled-components";
 
 import pageSizes from "src/styles/pageSizes";
 import UserIcon from "src/components/UserIcon";
-import colours from "src/styles/colours";
+import HeaderLink from "../HeaderLink";
 
 export interface Props {
   initial: string;
@@ -13,30 +12,14 @@ export interface Props {
 
 const HeaderBar = ({ initial, handleClick }: Props) => (
   <Container>
-    <HeaderLinks>
+    <nav>
       <ul>
-        <li>
-          <Link href="/" passHref>
-            Home
-          </Link>
-        </li>
-        <li>
-          <Link href="/predictions" passHref>
-            Predictions
-          </Link>
-        </li>
-        <li>
-          <Link href="/leagues" passHref>
-            Leagues
-          </Link>
-        </li>
-        <li>
-          <Link href="/premierleague" passHref>
-            Table
-          </Link>
-        </li>
+        <HeaderLink link="/">Home</HeaderLink>
+        <HeaderLink link="/predictions">Predictions</HeaderLink>
+        <HeaderLink link="/leagues">Leagues</HeaderLink>
+        <HeaderLink link="/premierleague">Table</HeaderLink>
       </ul>
-    </HeaderLinks>
+    </nav>
     <div>
       <UserIcon initial={initial} handleClick={handleClick} />
     </div>
@@ -57,12 +40,21 @@ const Container = styled.header`
     height: 3rem;
     font-size: 0.7rem;
   }
-`;
 
-const HeaderLinks = styled.nav`
-  width: 100%;
+  nav {
+    height: 100%;
+    width: 100%;
+
+    // Select all header items excluding the first three
+    @media (max-width: ${pageSizes.tablet}) {
+      li:nth-child(n + 4) {
+        display: none;
+      }
+    }
+  }
 
   ul {
+    height: 100%;
     display: flex;
     gap: 4em;
     margin-left: 4em;
@@ -71,27 +63,6 @@ const HeaderLinks = styled.nav`
     @media (max-width: ${pageSizes.mobileL}) {
       gap: 3em;
       margin-left: 3em;
-    }
-  }
-
-  li {
-    color: ${colours.grey400};
-    font-size: 1.2em;
-    cursor: pointer;
-  }
-
-  // Select all header items excluding the first three
-
-  @media (max-width: ${pageSizes.tablet}) {
-    li:nth-child(n + 4) {
-      display: none;
-    }
-  }
-
-  a {
-    :hover,
-    :focus {
-      color: ${colours.cyan100};
     }
   }
 `;
