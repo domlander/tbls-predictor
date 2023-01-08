@@ -8,12 +8,16 @@ const variants = {
     disabledColour: colours.blackblue400,
     backgroundColour: colours.cyan300,
     hoverBackgroundColour: colours.cyan100,
+    border: 0,
+    borderRadius: "0.1em",
   },
   secondary: {
-    colour: colours.blackblue400,
+    colour: colours.grey300,
     disabledColour: colours.blackblue400,
-    backgroundColour: colours.grey300,
-    hoverBackgroundColour: colours.grey100,
+    backgroundColour: colours.blackblue400,
+    hoverBackgroundColour: colours.blackblue300,
+    border: `1px solid ${colours.grey300}`,
+    borderRadius: "0.4em",
   },
 };
 
@@ -53,8 +57,8 @@ const Button = ({
 
 const ButtonStyles = styled.button<StyleProps>`
   background-color: ${({ variant }) => variants[variant].backgroundColour};
-  border-radius: 0.1em;
-  border: 0;
+  border-radius: ${({ variant }) => variants[variant].borderRadius};
+  border: ${({ variant }) => variants[variant].border};
   color: ${({ disabled, variant }) =>
     disabled ? variants[variant].disabledColour : variants[variant].colour};
   cursor: pointer;

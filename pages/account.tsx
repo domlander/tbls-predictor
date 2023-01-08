@@ -1,6 +1,7 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
+import * as Sentry from "@sentry/nextjs";
 import prisma from "prisma/client";
 import Account from "src/containers/Account/Account";
 import { generateDefaultUsername } from "utils/generateDefaultUsername";
@@ -21,13 +22,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   const user = await prisma.user.findUnique({
     where: {
-      email: session.user.email || "",
+      id: session.user.id || "",
     },
   });
 
   // If error in user data, redirect to login.
   if (!user || user.email === null || user.email === "") {
-    // TODO: Add some logging here. If this fails, something weird has happened
+    Sentry.captureMessage("Login failed. Page: /account");
     return {
       props: {},
       redirect: {

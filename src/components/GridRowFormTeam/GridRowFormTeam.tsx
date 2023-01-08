@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import type Fixture from "src/types/Fixture";
+import type { Result as MatchResult } from "utils/getMatchResultText";
 import colours from "src/styles/colours";
 import { getShortDateKickoffTime } from "utils/kickoffDateHelpers";
 import getMatchResultText from "utils/getMatchResultText";
@@ -29,7 +30,7 @@ const GridRowFormTeam = ({ team, recentFixtures, isHome = false }: Props) => {
 
           return (
             <Match key={id} isHome={isHome}>
-              <Result>
+              <Result result={result}>
                 {result} {homeGoals}-{awayGoals} {oppo}
               </Result>
               <KickoffDate isHome={isHome}>
@@ -64,12 +65,21 @@ const Match = styled.div<{ isHome: boolean }>`
   font-weight: 300;
 `;
 
-const Result = styled.div``;
+const getResultColour = (result: MatchResult): string => {
+  if (result === "Won") return colours.green300;
+  if (result === "Lost") return colours.red300;
+  return colours.grey500;
+};
+
+const Result = styled.div<{ result: MatchResult }>`
+  color: ${({ result }) => getResultColour(result)};
+`;
 
 const KickoffDate = styled.div<{ isHome: boolean }>`
   flex-basis: 4em;
   text-align: ${({ isHome }) => (isHome ? "end" : "start")};
   font-style: italic;
+  color: ${colours.grey400};
 `;
 
 const NoForm = styled.div<{ isHome: boolean }>`

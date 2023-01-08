@@ -80,12 +80,14 @@ const PredictionsTable = ({
 
   return (
     <Container>
-      <StatsToggle
-        variant="secondary"
-        handleClick={() => setDisplayStats(!displayStats)}
-      >
-        {displayStats ? "Hide stats" : "Show stats"}
-      </StatsToggle>
+      <StatsToggleContainer>
+        <StatsToggle
+          variant="secondary"
+          handleClick={() => setDisplayStats(!displayStats)}
+        >
+          {displayStats ? "Hide stats" : "Show stats"}
+        </StatsToggle>
+      </StatsToggleContainer>
       <form onSubmit={handleSubmit}>
         <Table displayStats={displayStats}>
           {predictions.map(
@@ -168,11 +170,9 @@ const PredictionsTable = ({
               <span />
             )}
           </ButtonsAndMessageContainer>
-        ) : (
-          gameweekScore !== null && (
-            <GameweekScore>{`Result: ${gameweekScore} points`}</GameweekScore>
-          )
-        )}
+        ) : gameweekScore !== null ? (
+          <GameweekScore>{`Result: ${gameweekScore} points`}</GameweekScore>
+        ) : null}
       </form>
     </Container>
   );
@@ -180,9 +180,12 @@ const PredictionsTable = ({
 
 const Container = styled.article``;
 
+const StatsToggleContainer = styled.div`
+  width: max-content;
+`;
+
 const StatsToggle = styled(Button)`
-  width: auto;
-  font-size: 1rem;
+  font-size: 0.9rem !important;
   margin-bottom: 0.4em;
 
   @media (max-width: ${pageSizes.tablet}) {
