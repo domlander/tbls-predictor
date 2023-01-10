@@ -1,4 +1,4 @@
-import React from "react";
+import React, { KeyboardEvent } from "react";
 import Fixture from "src/types/Fixture";
 import styled from "styled-components";
 import colours from "src/styles/colours";
@@ -17,6 +17,37 @@ export type Props = StyleProps & {
     isHomeTeam: boolean,
     homeGoals: string
   ) => void;
+};
+
+const preventNonNumericInputs = (event: KeyboardEvent<HTMLInputElement>) => {
+  if (
+    // Number keys
+    event.key !== "0" &&
+    event.key !== "1" &&
+    event.key !== "2" &&
+    event.key !== "3" &&
+    event.key !== "4" &&
+    event.key !== "5" &&
+    event.key !== "6" &&
+    event.key !== "7" &&
+    event.key !== "8" &&
+    event.key !== "9" &&
+    // Editing Keys
+    event.key !== "Backspace" &&
+    event.key !== "Clear" &&
+    event.key !== "Cut" &&
+    event.key !== "Delete" &&
+    event.key !== "EraseEof" &&
+    event.key !== "Insert" &&
+    event.key !== "Paste" &&
+    event.key !== "Redo" &&
+    event.key !== "Undo" &&
+    // UI keys
+    event.key !== "Tab" &&
+    event.key !== "Escape"
+  ) {
+    event?.preventDefault();
+  }
 };
 
 const focusNextElement = (name: string, value: string) => {
@@ -57,10 +88,16 @@ const ScoreInput = ({
       isScoreEditable={isScoreEditable}
       maxLength={1}
       name={name}
-      onChange={(e) => {
-        updateGoals(fixtureId, isHome, e.target.value);
-        focusNextElement(name, e.target.value);
+      onChange={(event) => {
+        const matchSingleDigitOrEmptyStringRegex = /^$|^[0-9]$/;
+        if (matchSingleDigitOrEmptyStringRegex.test(event.target.value)) {
+          updateGoals(fixtureId, isHome, event.target.value);
+        }
+
+        focusNextElement(name, event.target.value);
       }}
+      onFocus={(event) => event.target.select()}
+      onKeyDown={preventNonNumericInputs}
       type="number"
       value={goals}
       className={className}
@@ -71,7 +108,6 @@ const ScoreInput = ({
 };
 
 const Input = styled.input<StyleProps>`
-  border: 0;
   width: 2em;
   background-color: inherit;
   text-align: center;

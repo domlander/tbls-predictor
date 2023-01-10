@@ -108,6 +108,7 @@ const AwayTeam = styled(GridItemAwayTeam)<{ locked: boolean; topRow: boolean }>`
 const Score = styled(ScoreInput)<{ isScoreEditable: boolean; topRow: boolean }>`
   color: ${({ isScoreEditable }) =>
     !isScoreEditable ? colours.grey500 : colours.grey200};
+  border: 0;
   border-top: ${({ topRow }) =>
     !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
 `;

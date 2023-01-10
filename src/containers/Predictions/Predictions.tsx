@@ -94,11 +94,6 @@ const Predictions = ({
     isHomeTeam: boolean,
     goals: string
   ): void => {
-    const matchSingleDigitOrEmptyStringRegex = /^$|^[0-9]$/;
-
-    // Input is invalid
-    if (!matchSingleDigitOrEmptyStringRegex.test(goals)) return;
-
     // Make a copy of current state
     const updatedPredictions: Prediction[] = JSON.parse(
       JSON.stringify(predictions)
