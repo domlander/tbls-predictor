@@ -37,7 +37,7 @@ const useUserLeagues = (): [
   boolean,
   ApolloError | undefined
 ] => {
-  const { data: session } = useSession();
+  const { data: session, status: sessionStatus } = useSession();
   const [activeLeagues, setActiveLeagues] = useState<League[]>([]);
   const [finishedLeagues, setFinishedLeagues] = useState<League[]>([]);
   const [currentGameweek, setCurrentGameweek] = useState<number | null>();
@@ -58,6 +58,7 @@ const useUserLeagues = (): [
     skip: !session?.user.id,
   });
 
+  if (sessionStatus === "loading") return [[], [], true, undefined];
   if (!currentGameweek || !session?.user.id) return [[], [], loading, error];
 
   return [
