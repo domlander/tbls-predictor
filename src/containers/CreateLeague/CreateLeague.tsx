@@ -16,7 +16,8 @@ const CreateLeague = ({ currentGameweek }: Props) => {
   const [leagueName, setLeagueName] = useState("");
   const [userFeedback, setUserFeedback] = useState("");
   const [gameweekStart, setGameweekStart] = useState(
-    currentGameweek.toString()
+    // TODO. If season hasn't started, impossible to start in GW 1
+    (currentGameweek + 1).toString()
   );
   const [weeksToRun, setWeeksToRun] = useState("10");
 
@@ -76,7 +77,7 @@ const CreateLeague = ({ currentGameweek }: Props) => {
             onChange={(e) => setGameweekStart(e.target.value.replace(/\D/, ""))}
           />
         </Label>
-        <Info>(Select a week between {currentGameweek} and 38)</Info>
+        <Info>(Select a week between {currentGameweek + 1} and 38)</Info>
         <Label>
           <LabelText>Weeks to run:</LabelText>
           <input

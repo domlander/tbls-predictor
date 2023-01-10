@@ -431,7 +431,7 @@ const resolvers = {
         },
       });
       const currentGameweek = calculateCurrentGameweek(fixtures);
-      if (gameweekStart < currentGameweek)
+      if (gameweekStart <= currentGameweek)
         throw new UserInputError(
           "Enter a future gameweek in which to begin the league",
           {

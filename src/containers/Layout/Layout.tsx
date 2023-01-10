@@ -6,7 +6,6 @@ import { useSession } from "next-auth/react";
 
 import HeaderBar from "src/components/HeaderBar";
 import Sidebar from "src/components/Sidebar";
-import Loading from "src/components/Loading";
 import pageSizes from "src/styles/pageSizes";
 
 const DEFAULT_USERNAME = "Me";
@@ -21,13 +20,12 @@ const Layout = ({ children }: Props) => {
   const username =
     (status === "authenticated" && session?.user?.username) || DEFAULT_USERNAME;
 
-  return status === "loading" ? (
-    <Loading />
-  ) : (
+  return (
     <Container>
       <MainContent isSidebarOpen={isSidebarOpen}>
         <HeaderBar
           initial={username[0].toUpperCase()}
+          isLoading={status === "loading"}
           handleClick={() => setIsSidebarOpen((isOpen) => !isOpen)}
         />
         <InnerContainer>{children}</InnerContainer>
@@ -36,6 +34,7 @@ const Layout = ({ children }: Props) => {
         <Sidebar
           username={username}
           isLoggedIn={status === "authenticated"}
+          isLoading={status === "loading"}
           handleClick={() => setIsSidebarOpen((isOpen) => !isOpen)}
         />
       </SidebarContainer>

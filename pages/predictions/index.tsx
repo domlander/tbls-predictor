@@ -6,19 +6,9 @@ import redirectInternal from "utils/redirects";
 
 const RedirectURL = () => null;
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getSession(context);
-  if (!session?.user?.id) {
-    return {
-      props: {},
-      redirect: {
-        destination: "/signIn",
-        permanent: false,
-      },
-    };
-  }
-
+const getCurrentGameweekFromFixtures = async () => {
   const apolloClient = initializeApollo();
+
   const {
     data: {
       allFixtures: { currentGameweek },
@@ -29,7 +19,18 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     query: ALL_FIXTURES_QUERY,
   });
 
-  return redirectInternal(`/predictions/${currentGameweek}`);
+  return currentGameweek;
+};
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return Promise.all([
+    getSession(context),
+    getCurrentGameweekFromFixtures(),
+  ]).then(([session, currentGameweek]) => {
+    return !session?.user.id
+      ? redirectInternal("/signIn")
+      : redirectInternal(`/predictions/${currentGameweek}`);
+  });
 };
 
 export default RedirectURL;

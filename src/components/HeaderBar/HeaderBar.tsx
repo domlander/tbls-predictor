@@ -7,10 +7,11 @@ import HeaderLink from "../HeaderLink";
 
 export interface Props {
   initial: string;
+  isLoading: boolean;
   handleClick?: () => void;
 }
 
-const HeaderBar = ({ initial, handleClick }: Props) => (
+const HeaderBar = ({ initial, isLoading, handleClick }: Props) => (
   <Container>
     <nav>
       <ul>
@@ -21,7 +22,9 @@ const HeaderBar = ({ initial, handleClick }: Props) => (
       </ul>
     </nav>
     <div>
-      <UserIcon initial={initial} handleClick={handleClick} />
+      {!isLoading ? (
+        <UserIcon initial={initial} handleClick={handleClick} />
+      ) : null}
     </div>
   </Container>
 );

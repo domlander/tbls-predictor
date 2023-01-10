@@ -42,7 +42,8 @@ const LeaguesCardsList = ({ leagues }: Props) => {
               {isPositionRelevant &&
                 (weeksToGo ? (
                   <p>
-                    Current position: <BoldText>{displayPosition}</BoldText> of{" "}
+                    Current position:{" "}
+                    <BigBoldText>{displayPosition}</BigBoldText> of{" "}
                     <BoldText>{numUsers}</BoldText>
                   </p>
                 ) : (
@@ -112,6 +113,10 @@ const LeagueCardHeading = styled(Heading)`
 const BoldText = styled.span`
   font-size: 1.2rem;
   font-weight: 700;
+`;
+
+const BigBoldText = styled(BoldText)`
+  font-size: 1.4rem;
 `;
 
 export default LeaguesCardsList;

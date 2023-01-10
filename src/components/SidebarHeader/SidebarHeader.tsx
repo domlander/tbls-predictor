@@ -9,19 +9,25 @@ const MAX_USERNAME_LENGTH = 16;
 
 export interface Props {
   username: string;
+  isLoading: boolean;
   handleClick: () => void;
 }
 
-const SidebarHeader = ({ username, handleClick }: Props) => (
+const SidebarHeader = ({ username, isLoading, handleClick }: Props) => (
   <Container>
-    <User>
-      <UserIcon initial={username ? username[0].toUpperCase() : ""} />
-      <Username>
-        {username.length > MAX_USERNAME_LENGTH
-          ? `${username.substring(0, MAX_USERNAME_LENGTH - 2)}...`
-          : username}
-      </Username>
-    </User>
+    {!isLoading ? (
+      <User>
+        <UserIcon initial={username ? username[0].toUpperCase() : ""} />
+        <Username>
+          {username.length > MAX_USERNAME_LENGTH
+            ? `${username.substring(0, MAX_USERNAME_LENGTH - 2)}...`
+            : username}
+        </Username>
+      </User>
+    ) : (
+      // Ensure that flex positioning still works correctly
+      <div />
+    )}
     <ImageContainer tabIndex={0} onClick={handleClick}>
       <Image src={cross} alt="close sidebar cross" />
     </ImageContainer>
