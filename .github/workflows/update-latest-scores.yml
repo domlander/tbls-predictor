@@ -10,10 +10,10 @@ jobs:
       - name: Wait For Response
         uses: nev7n/wait_for_response@v1.0.1
         with:
-          url: "https://www.desmondtwotwo.com/"
+          url: "https://www.desmondtwotwo.com/premierleague"
           responseCode: 200
-          timeout: 10000
-          interval: 2000
+          timeout: 15000
+          interval: 1500
       - name: Hit endpoint
         env:
           SECRET: ${{ secrets.ACTIONS_SECRET }}
