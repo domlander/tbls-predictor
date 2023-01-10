@@ -31,11 +31,11 @@ describe("Home", () => {
     render(
       <SessionProvider session={sessionMock}>
         <MockedProvider mocks={mocks} addTypename={false}>
-          <Home weekId={1} fixtures={[]} />
+          <Home weekId={1} fixtures={[]} recentFixturesByTeam={[]} />
         </MockedProvider>
       </SessionProvider>
     );
 
-    expect(screen.getByRole("heading")).toHaveTextContent("This week");
+    expect(screen.getByRole("heading")).toHaveTextContent("Gameweek 1");
   });
 });

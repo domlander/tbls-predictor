@@ -1,9 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Link from "next/link";
-import Image from "next/image";
 
-import spinner from "public/images/spinner.gif";
 import type Fixture from "src/types/Fixture";
 import type TeamFixtures from "src/types/TeamFixtures";
 import useUserLeagues from "src/hooks/useUserLeagues";
@@ -41,15 +39,13 @@ export default function Home({
           recentFixturesByTeam={recentFixturesByTeam}
         />
       </PredictionsContainer>
-      {leaguesLoading ? (
-        <Image src={spinner} alt="loading spinner" height={50} />
-      ) : leaguesError ? (
+      {leaguesError ? (
         <LeagueError>
           Sorry, we could not load leagues at this time. Refresh the page or try
           again later.
         </LeagueError>
       ) : (
-        <MyLeagues leagues={activeLeagues} />
+        <MyLeagues leagues={activeLeagues} loading={leaguesLoading} />
       )}
     </Container>
   );

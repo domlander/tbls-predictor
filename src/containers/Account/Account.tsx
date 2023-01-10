@@ -4,7 +4,6 @@ import { useMutation, useQuery } from "@apollo/client";
 import { USER_QUERY } from "apollo/queries";
 import { UPDATE_USERNAME_MUTATION } from "apollo/mutations";
 import Heading from "src/components/Heading";
-import Loading from "src/components/Loading";
 import ChangeUsernameForm from "src/components/ChangeUsernameForm";
 
 const AccountContainer = () => {
@@ -37,21 +36,25 @@ const AccountContainer = () => {
       });
   };
 
-  if (loading) return <Loading />;
-  if (error) return <div>An error has occurred. Please try again later.</div>;
-
   return (
     <>
       <Heading level="h1" variant="secondary">
         Account
       </Heading>
-      <ChangeUsernameForm
-        username={formUsername}
-        setUsername={setFormUsername}
-        isFormDisabled={currentUsername === formUsername}
-        userFeedback={userFeedback}
-        handleSubmit={handleSubmit}
-      />
+      {/* TODO: Better loading and error views */}
+      {error ? (
+        <div>An error has occurred. Please try again later.</div>
+      ) : loading ? (
+        <p>Loading...</p>
+      ) : (
+        <ChangeUsernameForm
+          username={formUsername}
+          setUsername={setFormUsername}
+          isFormDisabled={currentUsername === formUsername}
+          userFeedback={userFeedback}
+          handleSubmit={handleSubmit}
+        />
+      )}
     </>
   );
 };

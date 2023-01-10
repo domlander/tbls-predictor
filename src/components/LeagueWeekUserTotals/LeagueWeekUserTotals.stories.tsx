@@ -8,22 +8,21 @@ export default {
   component: LeagueWeekUserTotals,
 } as Meta;
 
+// eslint-disable-next-line react/jsx-props-no-spreading
 const Template: Story<Props> = (args) => <LeagueWeekUserTotals {...args} />;
 
 export const twoUsers = Template.bind({});
 twoUsers.args = {
   users: [
     {
-      userId: 1,
+      userId: "1",
       username: "DomTest1",
-      week: 1,
-      totalPoints: 12,
+      points: 2,
     },
     {
-      userId: 2,
+      userId: "2",
       username: "DomTest2",
-      week: 1,
-      totalPoints: 8,
+      points: 5,
     },
   ],
 };
@@ -32,34 +31,29 @@ export const fiveUsers = Template.bind({});
 fiveUsers.args = {
   users: [
     {
-      userId: 1,
+      userId: "1",
       username: "DomTest1",
-      week: 1,
-      totalPoints: 12,
+      points: 12,
     },
     {
-      userId: 2,
+      userId: "2",
       username: "DomTest2",
-      week: 1,
-      totalPoints: 8,
+      points: 8,
     },
     {
-      userId: 3,
+      userId: "3",
       username: "DomTest3",
-      week: 1,
-      totalPoints: 8,
+      points: 8,
     },
     {
-      userId: 4,
+      userId: "4",
       username: "DomTest4",
-      week: 1,
-      totalPoints: 5,
+      points: 5,
     },
     {
-      userId: 5,
+      userId: "5",
       username: "DomTest5",
-      week: 1,
-      totalPoints: 11,
+      points: 11,
     },
   ],
 };

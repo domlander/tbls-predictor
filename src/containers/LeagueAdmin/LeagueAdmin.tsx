@@ -8,7 +8,6 @@ import Applicant from "src/types/Applicant";
 import LeagueApplicants from "src/components/LeagueApplicantsRequests";
 import LeagueParticipants from "src/components/LeagueParticipants";
 import Heading from "src/components/Heading";
-import Loading from "src/components/Loading";
 
 interface Props {
   leagueId: number;
@@ -28,7 +27,6 @@ const LeagueAdminContainer = ({ leagueId }: Props) => {
     },
   });
 
-  if (loading) return <Loading />;
   if (error) return <div>An error has occurred. Please try again later.</div>;
 
   return (
@@ -36,12 +34,18 @@ const LeagueAdminContainer = ({ leagueId }: Props) => {
       <Heading level="h1" variant="secondary">
         {leagueName} - Admin
       </Heading>
-      <LeagueApplicants
-        applicants={applicants}
-        setApplicants={setApplicants}
-        leagueId={leagueId}
-      />
-      <LeagueParticipants participants={participants} />
+      {loading ? (
+        <LoadingMessage>Loading...</LoadingMessage>
+      ) : (
+        <>
+          <LeagueApplicants
+            applicants={applicants}
+            setApplicants={setApplicants}
+            leagueId={leagueId}
+          />
+          <LeagueParticipants participants={participants} />
+        </>
+      )}
     </Container>
   );
 };
@@ -50,6 +54,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2em;
+`;
+
+const LoadingMessage = styled.p`
+  font-size: 1rem;
 `;
 
 export default LeagueAdminContainer;
