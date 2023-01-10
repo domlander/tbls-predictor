@@ -28,10 +28,9 @@ const MyLeagues = ({ leagues, loading }: Props) => {
         My leagues
       </Heading>
       {loading ? (
-        <LoadingSkeleton>
+        <LeaguesCardsSkeleton>
           <div />
-          <div />
-        </LoadingSkeleton>
+        </LeaguesCardsSkeleton>
       ) : (
         <LeaguesCardsList leagues={leagues} />
       )}
@@ -76,7 +75,7 @@ const skeletonLoading = keyframes`
     }
 `;
 
-const LoadingSkeleton = styled.div`
+const LeaguesCardsSkeleton = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, 400px);
   grid-gap: 3em;

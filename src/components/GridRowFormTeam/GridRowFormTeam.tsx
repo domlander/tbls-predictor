@@ -78,8 +78,7 @@ const Result = styled.div<{ result: MatchResult }>`
 const KickoffDate = styled.div<{ isHome: boolean }>`
   flex-basis: 4em;
   text-align: ${({ isHome }) => (isHome ? "end" : "start")};
-  font-style: italic;
-  color: ${colours.grey400};
+  color: ${colours.grey500};
 `;
 
 const NoForm = styled.div<{ isHome: boolean }>`

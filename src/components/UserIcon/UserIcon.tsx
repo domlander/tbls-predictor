@@ -7,8 +7,8 @@ export interface Props {
   handleClick?: () => void;
 }
 
-const UserIcon = ({ initial, handleClick }: Props) =>
-  handleClick ? (
+const UserIcon = ({ initial, handleClick }: Props) => {
+  return handleClick ? (
     <ClickableCircle onClick={handleClick} tabIndex={0}>
       <Name>{initial}</Name>
     </ClickableCircle>
@@ -17,6 +17,7 @@ const UserIcon = ({ initial, handleClick }: Props) =>
       <Name>{initial}</Name>
     </Circle>
   );
+};
 
 const sharedCircleStyles = css`
   background-color: ${colours.blackblue400};

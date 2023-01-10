@@ -4,11 +4,9 @@ import Image from "next/image";
 import spinner from "public/images/spinner.gif";
 
 const Loading = () => (
-  <>
-    <Container>
-      <Image src={spinner} alt="loading content..." />
-    </Container>
-  </>
+  <Container>
+    <Image src={spinner} alt="loading content..." />
+  </Container>
 );
 
 const Container = styled.div`
