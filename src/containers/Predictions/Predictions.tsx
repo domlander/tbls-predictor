@@ -12,7 +12,6 @@ import PredictionsTable from "src/components/PredictionsTable";
 import colours from "src/styles/colours";
 import type Prediction from "src/types/Prediction";
 import type Fixture from "src/types/Fixture";
-import type TeamFixtures from "src/types/TeamFixtures";
 import type User from "src/types/User";
 import type FixtureWithPrediction from "src/types/FixtureWithPrediction";
 
@@ -30,7 +29,6 @@ interface Props {
   weekId: number;
   firstGameweek?: number;
   lastGameweek?: number;
-  recentFixturesByTeam: TeamFixtures[];
 }
 
 const Predictions = ({
@@ -38,11 +36,13 @@ const Predictions = ({
   weekId: gameweek,
   firstGameweek,
   lastGameweek,
-  recentFixturesByTeam,
 }: Props) => {
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const [predictions, setPredictions] = useState<Prediction[]>([]);
+  const [recentFixturesByTeam, setRecentFixturesByTeam] = useState<
+    Prediction[]
+  >([]);
 
   const [
     processRequest,
@@ -53,8 +53,9 @@ const Predictions = ({
     PREDICTIONS_QUERY,
     {
       variables: { weekId: gameweek },
-      onCompleted: ({ predictions: data }) => {
-        setPredictions(data);
+      onCompleted: (data) => {
+        setPredictions(data.predictions);
+        setRecentFixturesByTeam(data.recentFixturesByTeam);
       },
       skip: !userId,
     }

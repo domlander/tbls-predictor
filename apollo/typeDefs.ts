@@ -16,6 +16,7 @@ const typeDefs = gql`
       weekId: Int!
     ): FixturesWithPredictionPayload
     premierLeagueTable: [PremierLeagueTeam]
+    recentFixturesByTeam(weekId: Int!): [TeamFixtures]
   }
 
   type Mutation {
@@ -153,6 +154,11 @@ const typeDefs = gql`
     awayGoals: Int!
     homeGoalsConceded: Int!
     awayGoalsConceded: Int!
+  }
+
+  type TeamFixtures {
+    team: String!
+    fixtures: [Fixture!]
   }
 
   enum LeagueApplicantStatus {

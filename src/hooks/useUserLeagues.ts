@@ -49,7 +49,7 @@ const useUserLeagues = (): [
      An alternative would be to change the users type on UserLeague in typedefs to a
      new LeagueParticipant type, whose cache keys could be leagueId and userId.
     */
-    fetchPolicy: "no-cache",
+    fetchPolicy: "cache-and-network",
     onCompleted: (data) => {
       setCurrentGameweek(data?.allFixtures?.currentGameweek || null);
       setActiveLeagues(data?.user?.activeLeagues || []);

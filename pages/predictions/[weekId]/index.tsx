@@ -5,11 +5,9 @@ import prisma from "prisma/client";
 import { ALL_FIXTURES_QUERY } from "apollo/queries";
 import { initializeApollo } from "apollo/client";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
-import generateRecentFixturesByTeam from "utils/generateRecentFixturesByTeam";
 import redirectInternal from "utils/redirects";
 import sortFixtures from "utils/sortFixtures";
 import Fixture from "src/types/Fixture";
-import TeamFixtures from "src/types/TeamFixtures";
 import Predictions from "src/containers/Predictions";
 
 interface Props {
@@ -17,7 +15,6 @@ interface Props {
   weekId: number;
   firstGameweek: number;
   lastGameweek: number;
-  recentFixturesByTeam: TeamFixtures[];
 }
 
 const PredictionsPage = ({
@@ -25,7 +22,6 @@ const PredictionsPage = ({
   weekId,
   firstGameweek,
   lastGameweek,
-  recentFixturesByTeam,
 }: Props) => (
   <>
     <Predictions
@@ -33,7 +29,6 @@ const PredictionsPage = ({
       weekId={weekId}
       firstGameweek={firstGameweek}
       lastGameweek={lastGameweek}
-      recentFixturesByTeam={recentFixturesByTeam}
     />
   </>
 );
@@ -66,15 +61,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     fixtures.filter((fixture) => fixture.gameweek === weekId)
   );
 
-  const recentFixturesByTeam = generateRecentFixturesByTeam(fixtures, weekId);
-
   return {
     props: {
       fixtures: sortedFixtures,
       weekId,
       firstGameweek,
       lastGameweek,
-      recentFixturesByTeam,
     },
   };
 };
