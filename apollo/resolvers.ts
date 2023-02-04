@@ -112,7 +112,36 @@ const resolvers = {
         throw new ApolloError("No fixtures found for this gameweek.");
       }
 
-      const users = league.users.sort((a, b) => {
+      // Add missed predictions as 0-0
+      const usersWithAppendedPredictions = league.users.map((user) => {
+        const missingPredictions = [];
+        fixtures.forEach((fixture) => {
+          const isMissingPrediction =
+            user.predictions.findIndex((p) => p.fixtureId === fixture.id) ===
+            -1;
+
+          if (isMissingPrediction) {
+            missingPredictions.push({
+              fixtureId: fixture.id,
+              homeGoals: 0,
+              awayGoals: 0,
+              bigBoyBonus: false,
+              fixture: {
+                gameweek: weekId,
+                homeGoals: fixture.homeGoals,
+                awayGoals: fixture.awayGoals,
+              },
+            });
+          }
+        });
+
+        return {
+          ...user,
+          predictions: [...user.predictions, ...missingPredictions],
+        };
+      });
+
+      const users = usersWithAppendedPredictions.sort((a, b) => {
         const totalPointsA = a.predictions.reduce((acc, cur) => {
           const score = calculatePredictionScore(
             [cur.homeGoals ?? 0, cur.awayGoals ?? 0, cur.bigBoyBonus ?? false],
