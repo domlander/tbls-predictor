@@ -68,6 +68,13 @@ const resolvers = {
           argumentName: "gameweekStart",
         });
 
+      /**
+       * TODO
+       * Change from:
+       * - Fetch users, their predictions and the fixtures those predictions belong to
+       * To:
+       * - Fetch fixtures, fetch users predictions, then match up.
+       */
       const league = await prisma.league.findUnique({
         where: {
           id: leagueId,
@@ -141,6 +148,7 @@ const resolvers = {
         };
       });
 
+      // Sort users
       const users = usersWithAppendedPredictions.sort((a, b) => {
         const totalPointsA = a.predictions.reduce((acc, cur) => {
           const score = calculatePredictionScore(

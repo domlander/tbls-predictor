@@ -96,7 +96,9 @@ const PredictionsTable = ({
                 fixtureId,
                 kickoff,
                 homeTeam,
+                homeGoals,
                 awayTeam,
+                awayGoals,
                 predictedHomeGoals,
                 predictedAwayGoals,
                 bigBoyBonus,
@@ -123,7 +125,18 @@ const PredictionsTable = ({
                       firstFixtureKickoffTiming
                     )}
                     homeTeam={homeTeam}
-                    awayTeam={awayTeam}
+                    awayTeam={
+                      homeGoals !== null && awayGoals !== null ? (
+                        <AwayTeam>
+                          <span>{awayTeam}</span>
+                          <span>
+                            FT {homeGoals} - {awayGoals}
+                          </span>
+                        </AwayTeam>
+                      ) : (
+                        <span>{awayTeam}</span>
+                      )
+                    }
                     homeGoals={predictedHomeGoals ?? defaultGoals}
                     awayGoals={predictedAwayGoals ?? defaultGoals}
                     updateGoals={updateGoals}
@@ -241,6 +254,28 @@ const ButtonContainer = styled.div`
   @media (max-width: 650px) {
     order: 1;
     flex-basis: auto;
+  }
+`;
+
+const AwayTeam = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+
+  span:nth-child(2) {
+    font-size: 1rem;
+
+    @media (max-width: ${pageSizes.tablet}) {
+      font-size: 0.7rem;
+    }
+
+    @media (max-width: ${pageSizes.mobileL}) {
+      font-size: 0.5rem;
+    }
+
+    @media (max-width: ${pageSizes.mobileM}) {
+      display: none;
+    }
   }
 `;
 

@@ -12,7 +12,7 @@ export type Props = {
   fixtureId: Fixture["id"];
   kickoff: string;
   homeTeam: Fixture["homeTeam"];
-  awayTeam: Fixture["awayTeam"];
+  awayTeam: Fixture["awayTeam"] | React.ReactNode;
   homeGoals: string;
   awayGoals: string;
   isBigBoyBonus?: boolean;
