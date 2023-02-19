@@ -264,6 +264,7 @@ const AwayTeam = styled.div`
 
   span:nth-child(2) {
     font-size: 1rem;
+    color: ${colours.grey600};
 
     @media (max-width: ${pageSizes.tablet}) {
       font-size: 0.7rem;
