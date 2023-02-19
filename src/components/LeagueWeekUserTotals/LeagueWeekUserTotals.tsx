@@ -25,7 +25,7 @@ const LeagueWeekUserTotals = ({ users }: Props) => {
 
 const Container = styled.div<{ numUsers: number }>`
   width: 100%;
-  margin: 0.8em auto;
+  margin-bottom: 1.5em;
   display: grid;
   grid-template-columns: ${({ numUsers }) => `repeat(${numUsers}, 1fr)`};
   justify-items: center;
@@ -37,7 +37,7 @@ const Container = styled.div<{ numUsers: number }>`
 `;
 
 const Username = styled.div`
-  margin-top: 0.75em;
+  margin-top: 1.5em;
   text-align: center;
   font-size: 1.2rem;
 
