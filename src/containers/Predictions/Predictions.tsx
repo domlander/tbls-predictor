@@ -10,10 +10,11 @@ import combineFixturesAndPredictions from "utils/combineFixturesAndPredictions";
 import WeekNavigator from "src/components/WeekNavigator";
 import PredictionsTable from "src/components/PredictionsTable";
 import colours from "src/styles/colours";
-import type Prediction from "src/types/Prediction";
 import type Fixture from "src/types/Fixture";
-import type User from "src/types/User";
 import type FixtureWithPrediction from "src/types/FixtureWithPrediction";
+import type Prediction from "src/types/Prediction";
+import type TeamFixtures from "src/types/TeamFixtures";
+import type User from "src/types/User";
 
 type UpdatePredictionsInputType = {
   userId: User["id"];
@@ -27,6 +28,7 @@ type UpdatePredictionsInputType = {
 interface Props {
   fixtures: Fixture[];
   weekId: number;
+  recentFixturesByTeam: TeamFixtures[];
   firstGameweek?: number;
   lastGameweek?: number;
 }
@@ -34,15 +36,13 @@ interface Props {
 const Predictions = ({
   fixtures,
   weekId: gameweek,
+  recentFixturesByTeam,
   firstGameweek,
   lastGameweek,
 }: Props) => {
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const [predictions, setPredictions] = useState<Prediction[]>([]);
-  const [recentFixturesByTeam, setRecentFixturesByTeam] = useState<
-    Prediction[]
-  >([]);
 
   const [
     processRequest,
@@ -55,7 +55,6 @@ const Predictions = ({
       variables: { weekId: gameweek },
       onCompleted: (data) => {
         setPredictions(data.predictions);
-        setRecentFixturesByTeam(data.recentFixturesByTeam);
       },
       skip: !userId,
     }

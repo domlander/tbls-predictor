@@ -107,10 +107,10 @@ const PredictionsTable = ({
               i
             ) => {
               const homeForm =
-                recentFixturesByTeam.find((rf) => rf.team === homeTeam)
+                recentFixturesByTeam?.find((rf) => rf.team === homeTeam)
                   ?.fixtures || [];
               const awayForm =
-                recentFixturesByTeam.find((rf) => rf.team === awayTeam)
+                recentFixturesByTeam?.find((rf) => rf.team === awayTeam)
                   ?.fixtures || [];
 
               const isLocked = !isAlwaysEditable && isPastDeadline(kickoff);

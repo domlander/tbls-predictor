@@ -16,7 +16,6 @@ import type { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
 import createPremierLeagueTableFromFixtures from "utils/createPremierLeagueTableFromFixtures";
 import calculateWeeksUntilStart from "utils/calculateWeeksUntilStart";
 import calculateWeeksToGo from "utils/calculateWeeksToGo";
-import generateRecentFixturesByTeam from "utils/generateRecentFixturesByTeam";
 import dateScalar from "./scalars";
 
 const resolvers = {
@@ -248,16 +247,6 @@ const resolvers = {
       });
 
       return predictions;
-    },
-    recentFixturesByTeam: async (_, { weekId }) => {
-      const fixtures = await prisma.fixture.findMany();
-
-      const recentFixturesByTeam = generateRecentFixturesByTeam(
-        fixtures,
-        weekId
-      );
-
-      return recentFixturesByTeam;
     },
     allLeagues: async () => {
       const leagues = await prisma.league.findMany({

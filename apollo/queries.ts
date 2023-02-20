@@ -115,18 +115,6 @@ export const PREDICTIONS_QUERY = gql`
       bigBoyBonus
       score
     }
-    recentFixturesByTeam(weekId: $weekId) {
-      team
-      fixtures {
-        id
-        gameweek
-        kickoff
-        homeTeam
-        awayTeam
-        homeGoals
-        awayGoals
-      }
-    }
   }
 `;
 

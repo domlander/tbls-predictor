@@ -9,10 +9,13 @@ import redirectInternal from "utils/redirects";
 import sortFixtures from "utils/sortFixtures";
 import Fixture from "src/types/Fixture";
 import Predictions from "src/containers/Predictions";
+import TeamFixtures from "src/types/TeamFixtures";
+import generateRecentFixturesByTeam from "utils/generateRecentFixturesByTeam";
 
 interface Props {
   fixtures: Fixture[];
   weekId: number;
+  recentFixturesByTeam: TeamFixtures[];
   firstGameweek: number;
   lastGameweek: number;
 }
@@ -20,6 +23,7 @@ interface Props {
 const PredictionsPage = ({
   fixtures,
   weekId,
+  recentFixturesByTeam,
   firstGameweek,
   lastGameweek,
 }: Props) => (
@@ -27,6 +31,7 @@ const PredictionsPage = ({
     <Predictions
       fixtures={fixtures}
       weekId={weekId}
+      recentFixturesByTeam={recentFixturesByTeam}
       firstGameweek={firstGameweek}
       lastGameweek={lastGameweek}
     />
@@ -40,10 +45,10 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = initializeApollo();
   const {
     data: {
-      allFixtures: { fixtures },
+      allFixtures: { fixtures, currentGameweek },
     },
   }: {
-    data: { allFixtures: { fixtures: Fixture[] } };
+    data: { allFixtures: { fixtures: Fixture[]; currentGameweek: number } };
   } = await apolloClient.query({
     query: ALL_FIXTURES_QUERY,
   });
@@ -61,10 +66,16 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     fixtures.filter((fixture) => fixture.gameweek === weekId)
   );
 
+  const recentFixturesByTeam = generateRecentFixturesByTeam(
+    fixtures,
+    currentGameweek
+  );
+
   return {
     props: {
       fixtures: sortedFixtures,
       weekId,
+      recentFixturesByTeam,
       firstGameweek,
       lastGameweek,
     },
