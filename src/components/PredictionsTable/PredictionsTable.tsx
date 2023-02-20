@@ -263,6 +263,8 @@ const AwayTeam = styled.div`
   width: 100%;
 
   span:nth-child(2) {
+    display: flex;
+    align-items: center;
     font-size: 1rem;
     color: ${colours.grey600};
 
