@@ -20,6 +20,7 @@ const Total = styled.div`
   font-size: 4em;
   line-height: 1.4em;
   letter-spacing: 0.05em;
+  margin-bottom: 0.4em;
 
   @media (max-width: ${pageSizes.tablet}) {
     font-size: 3em;
