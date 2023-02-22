@@ -6,12 +6,10 @@ import Link from "next/link";
 import { UPDATE_PREDICTIONS_MUTATION } from "apollo/mutations";
 import { useMutation, useQuery } from "@apollo/client";
 import { PREDICTIONS_QUERY } from "apollo/queries";
-import combineFixturesAndPredictions from "utils/combineFixturesAndPredictions";
 import WeekNavigator from "src/components/WeekNavigator";
 import PredictionsTable from "src/components/PredictionsTable";
 import colours from "src/styles/colours";
 import type Fixture from "src/types/Fixture";
-import type FixtureWithPrediction from "src/types/FixtureWithPrediction";
 import type Prediction from "src/types/Prediction";
 import type TeamFixtures from "src/types/TeamFixtures";
 import type User from "src/types/User";
@@ -43,6 +41,7 @@ const Predictions = ({
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const [predictions, setPredictions] = useState<Prediction[]>([]);
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
   const [
     processRequest,
@@ -55,6 +54,7 @@ const Predictions = ({
       variables: { weekId: gameweek },
       onCompleted: (data) => {
         setPredictions(data.predictions);
+        setIsLoaded(true);
       },
       skip: !userId,
     }
@@ -162,9 +162,6 @@ const Predictions = ({
       </NoFixtures>
     );
 
-  const fixturesWithPredictions: FixtureWithPrediction[] =
-    combineFixturesAndPredictions(fixtures, predictions);
-
   return (
     <Container>
       {gameweek && firstGameweek && lastGameweek && (
@@ -183,12 +180,14 @@ const Predictions = ({
         />
       )}
       <PredictionsTable
-        predictions={fixturesWithPredictions}
+        fixtures={fixtures}
+        predictions={predictions}
         recentFixturesByTeam={recentFixturesByTeam}
         updateGoals={updateGoals}
         handleSubmit={handleSubmitPredictions}
         handleBbbUpdate={updateBigBoyBonus}
         isLoading={isQueryLoading}
+        isLoaded={isLoaded}
         isSaved={!!mutationData?.updatePredictions}
         isSaving={mutationLoading}
         isSaveError={!!mutationError}

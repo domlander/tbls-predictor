@@ -11,8 +11,11 @@ import FixtureWithPrediction from "src/types/FixtureWithPrediction";
 import colours from "src/styles/colours";
 import pageSizes from "src/styles/pageSizes";
 import Button from "src/components/Button";
+import Fixture from "src/types/Fixture";
 import GridRow from "src/components/GridRow";
+import Prediction from "src/types/Prediction";
 import TeamFixtures from "src/types/TeamFixtures";
+import combineFixturesAndPredictions from "utils/combineFixturesAndPredictions";
 import GridRowForm from "../GridRowForm";
 
 const StateFeedback = {
@@ -25,7 +28,8 @@ const StateFeedback = {
 };
 
 interface Props {
-  predictions: FixtureWithPrediction[];
+  fixtures: Fixture[];
+  predictions: Prediction[];
   recentFixturesByTeam: TeamFixtures[];
   updateGoals: (
     fixtureId: number,
@@ -36,12 +40,14 @@ interface Props {
   handleBbbUpdate: (fixtureId: number) => void;
   isAlwaysEditable?: boolean;
   isLoading?: boolean;
+  isLoaded?: boolean;
   isSaving?: boolean;
   isSaved?: boolean;
   isSaveError?: boolean;
 }
 
 const PredictionsTable = ({
+  fixtures,
   predictions,
   recentFixturesByTeam,
   updateGoals,
@@ -49,13 +55,13 @@ const PredictionsTable = ({
   handleBbbUpdate,
   isAlwaysEditable = false,
   isLoading = false,
+  isLoaded = false,
   isSaving = false,
   isSaved = false,
   isSaveError = false,
 }: Props) => {
   const [showFeedback, setShowFeedback] = useTransientState(false, 3000);
   const [displayStats, setDisplayStats] = useState(false);
-  const gameweekScore = calculateGameweekScore(predictions);
 
   useEffect(() => {
     if (!isSaving && (isSaved || isSaveError)) {
@@ -63,9 +69,7 @@ const PredictionsTable = ({
     }
   }, [isSaving, isSaved]);
 
-  if (!predictions?.length) return null;
-
-  const firstFixtureKickoffTiming = whenIsTheFixture(predictions[0].kickoff);
+  if (!fixtures?.length) return null;
 
   let state: keyof typeof StateFeedback;
   if (isLoading) state = "LOADING";
@@ -74,7 +78,12 @@ const PredictionsTable = ({
   else if (showFeedback) state = "SAVE_SUCCESS";
   else state = "IDLE";
 
-  const isBbbLockedForGameweek = predictions.some(
+  const fixturesWithPredictions: FixtureWithPrediction[] =
+    combineFixturesAndPredictions(fixtures, predictions);
+
+  const firstFixtureKickoffTiming = whenIsTheFixture(fixtures[0].kickoff);
+  const gameweekScore = calculateGameweekScore(fixturesWithPredictions);
+  const isBbbLockedForGameweek = fixturesWithPredictions.some(
     ({ bigBoyBonus, kickoff }) => bigBoyBonus && isPastDeadline(kickoff)
   );
 
@@ -90,7 +99,7 @@ const PredictionsTable = ({
       </StatsToggleContainer>
       <form onSubmit={handleSubmit}>
         <Table displayStats={displayStats}>
-          {predictions.map(
+          {fixturesWithPredictions.map(
             (
               {
                 fixtureId,
@@ -143,6 +152,8 @@ const PredictionsTable = ({
                     isBigBoyBonus={bigBoyBonus}
                     isBbbLocked={isBbbLockedForGameweek}
                     predictionScore={predictionScore || undefined}
+                    isLoading={state === "LOADING"}
+                    isLoaded={isLoaded}
                     locked={isLoading || isLocked}
                     topRow={i === 0}
                     handleBbbUpdate={handleBbbUpdate}
@@ -161,7 +172,7 @@ const PredictionsTable = ({
           )}
         </Table>
         {isAlwaysEditable ||
-        predictions.some(
+        fixturesWithPredictions.some(
           (prediction) => !isPastDeadline(prediction.kickoff)
         ) ? (
           <ButtonsAndMessageContainer>

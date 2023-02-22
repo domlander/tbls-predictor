@@ -1,6 +1,5 @@
 import React from "react";
-import styled from "styled-components";
-
+import styled, { keyframes } from "styled-components";
 import Fixture from "src/types/Fixture";
 import colours from "src/styles/colours";
 import GridItemHomeTeam from "../GridItemHomeTeam";
@@ -23,6 +22,8 @@ export type Props = {
     homeGoals: string
   ) => void;
   predictionScore?: number;
+  isLoading: boolean;
+  isLoaded: boolean;
   locked: boolean;
   topRow: boolean;
   handleBbbUpdate?: (fixtureId: number) => void;
@@ -39,6 +40,8 @@ const GridRow = ({
   isBbbLocked,
   updateGoals,
   predictionScore,
+  isLoading,
+  isLoaded,
   locked,
   topRow,
   handleBbbUpdate,
@@ -53,25 +56,32 @@ const GridRow = ({
         predictionScore={predictionScore}
         topRow={topRow}
       />
-      <Score
-        fixtureId={fixtureId}
-        goals={homeGoals}
-        isHome
-        isScoreEditable={!locked}
-        topRow={topRow}
-        updateGoals={updateGoals}
-      />
-      <Divider locked={locked} topRow={topRow}>
-        -
-      </Divider>
-      <Score
-        fixtureId={fixtureId}
-        goals={awayGoals}
-        isHome={false}
-        isScoreEditable={!locked}
-        topRow={topRow}
-        updateGoals={updateGoals}
-      />
+      {!isLoaded || isLoading ? (
+        <Loading topRow={topRow} />
+      ) : (
+        <>
+          <Score
+            fixtureId={fixtureId}
+            goals={homeGoals}
+            isHome
+            isScoreEditable={!locked}
+            topRow={topRow}
+            updateGoals={updateGoals}
+          />
+          <Divider locked={locked} topRow={topRow}>
+            -
+          </Divider>
+          <Score
+            fixtureId={fixtureId}
+            goals={awayGoals}
+            isHome={false}
+            isScoreEditable={!locked}
+            topRow={topRow}
+            updateGoals={updateGoals}
+          />
+        </>
+      )}
+
       <AwayTeam
         fixtureId={fixtureId}
         handleBbbUpdate={handleBbbUpdate}
@@ -84,6 +94,30 @@ const GridRow = ({
     </>
   );
 };
+
+const skeletonLoading = keyframes`
+    0% {
+      background-position: -200px 0
+    }
+    100% {
+      background-position: 200px 0;
+    }
+`;
+
+const Loading = styled.div<{ topRow: boolean }>`
+  grid-column: span 3;
+  width: calc(4em + 13px);
+  border-top: ${({ topRow }) =>
+    !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
+  animation: ${skeletonLoading} 1s linear infinite forwards;
+  background: linear-gradient(
+      to right,
+      ${colours.blackblue400} 4%,
+      ${colours.black100} 25%,
+      ${colours.blackblue400} 36%
+    )
+    0% 0% / 400px 100%;
+`;
 
 const Kickoff = styled(GridItemKickoff)<{ locked: boolean; topRow: boolean }>`
   color: ${({ locked }) => (locked ? colours.grey500 : colours.grey200)};
