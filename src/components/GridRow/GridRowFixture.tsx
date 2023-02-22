@@ -1,5 +1,5 @@
 import React from "react";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import Fixture from "src/types/Fixture";
 import colours from "src/styles/colours";
 import GridItemHomeTeam from "../GridItemHomeTeam";
@@ -57,7 +57,7 @@ const GridRow = ({
         topRow={topRow}
       />
       {!isLoaded || isLoading ? (
-        <Loading topRow={topRow} />
+        <EmptySpace topRow={topRow} />
       ) : (
         <>
           <Score
@@ -95,28 +95,11 @@ const GridRow = ({
   );
 };
 
-const skeletonLoading = keyframes`
-    0% {
-      background-position: -200px 0
-    }
-    100% {
-      background-position: 200px 0;
-    }
-`;
-
-const Loading = styled.div<{ topRow: boolean }>`
+const EmptySpace = styled.div<{ topRow: boolean }>`
   grid-column: span 3;
   width: calc(4em + 13px);
   border-top: ${({ topRow }) =>
     !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
-  animation: ${skeletonLoading} 1s linear infinite forwards;
-  background: linear-gradient(
-      to right,
-      ${colours.blackblue400} 4%,
-      ${colours.black100} 25%,
-      ${colours.blackblue400} 36%
-    )
-    0% 0% / 400px 100%;
 `;
 
 const Kickoff = styled(GridItemKickoff)<{ locked: boolean; topRow: boolean }>`
