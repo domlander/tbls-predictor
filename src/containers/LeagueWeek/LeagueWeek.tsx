@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useQuery } from "@apollo/client";
 
-import refresh from "public/images/refresh.svg";
 import { LEAGUE_WEEK_QUERY } from "apollo/queries";
 import UserPoints from "src/types/UserPoints";
 import Fixture from "src/types/Fixture";
@@ -51,7 +50,7 @@ const LeagueWeekContainer = ({
   const [users, setUsers] = useState(usersFromProps);
   const [lastUpdated, setLastUpdated] = useState<Dayjs | null>(null);
 
-  const { loading, refetch } = useQuery(LEAGUE_WEEK_QUERY, {
+  const { loading } = useQuery(LEAGUE_WEEK_QUERY, {
     variables: {
       leagueId,
       weekId: gameweek,
@@ -94,11 +93,6 @@ const LeagueWeekContainer = ({
             </li>
           </ul>
         </Breadcrumbs>
-        {!loading ? (
-          <RefreshButton type="button" onClick={() => refetch()}>
-            <Image src={refresh} height="20" alt="Refresh scores icon" />
-          </RefreshButton>
-        ) : null}
       </TopBar>
       <>
         <WeekNavigator
@@ -212,10 +206,6 @@ const Breadcrumbs = styled.nav`
       color: ${colours.cyan100};
     }
   }
-`;
-
-const RefreshButton = styled.button`
-  cursor: pointer;
 `;
 
 const Loading = styled.section`
