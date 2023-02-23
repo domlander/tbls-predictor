@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
-import { NetworkStatus, useLazyQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 
 import refresh from "public/images/refresh.svg";
-import refreshDisabled from "public/images/refreshDisabled.svg";
 import { LEAGUE_WEEK_QUERY } from "apollo/queries";
 import UserPoints from "src/types/UserPoints";
 import Fixture from "src/types/Fixture";
@@ -16,6 +15,10 @@ import LeagueWeekUserTotals from "src/components/LeagueWeekUserTotals";
 import LeagueWeekFixtures from "src/components/LeagueWeekFixtures";
 import pageSizes from "src/styles/pageSizes";
 import colours from "src/styles/colours";
+import dayjs, { Dayjs } from "dayjs";
+import isToday from "dayjs/plugin/isToday";
+
+dayjs.extend(isToday);
 
 interface Props {
   leagueId: number;
@@ -26,6 +29,14 @@ interface Props {
   firstGameweek: number;
   lastGameweek: number;
 }
+
+const formatDate = (lastUpdated: Dayjs) => {
+  if (dayjs(lastUpdated).isToday()) {
+    return dayjs(lastUpdated).format("h:ma"); // 7:08am
+  }
+
+  return dayjs(lastUpdated).format("ddd D MMM h:ma"); // Sun 14 Jan 7:08am
+};
 
 const LeagueWeekContainer = ({
   leagueId,
@@ -38,29 +49,24 @@ const LeagueWeekContainer = ({
 }: Props) => {
   const [fixtures, setFixtures] = useState(fixturesFromProps);
   const [users, setUsers] = useState(usersFromProps);
+  const [lastUpdated, setLastUpdated] = useState<Dayjs | null>(null);
 
-  /**
-   * We build this page statically, so already have the data.
-   * If the user wants up-to-date data, this will fetch it.
-   */
-  const [getData, { loading, networkStatus }] = useLazyQuery(
-    LEAGUE_WEEK_QUERY,
-    {
-      variables: {
-        leagueId,
-        weekId: gameweek,
-      },
-      notifyOnNetworkStatusChange: true,
-      onCompleted: (data) => {
-        if (data?.fixturesWithPredictions?.fixtures) {
-          setFixtures(data.fixturesWithPredictions.fixtures);
-        }
-        if (data?.league?.users) {
-          setUsers(data?.league?.users);
-        }
-      },
-    }
-  );
+  const { loading, refetch } = useQuery(LEAGUE_WEEK_QUERY, {
+    variables: {
+      leagueId,
+      weekId: gameweek,
+    },
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data) => {
+      if (data?.fixturesWithPredictions?.fixtures) {
+        setFixtures(data.fixturesWithPredictions.fixtures);
+      }
+      if (data?.league?.users) {
+        setUsers(data?.league?.users);
+      }
+      setLastUpdated(dayjs());
+    },
+  });
 
   const usersGameweekPoints: UserPoints[] = users
     .map(({ id: userId, username, weeklyPoints }: User) => ({
@@ -87,16 +93,8 @@ const LeagueWeekContainer = ({
             </li>
           </ul>
         </Breadcrumbs>
-        {networkStatus === NetworkStatus.refetch ? (
-          <div>
-            <Image
-              src={refreshDisabled}
-              height="20"
-              alt="Disabled refresh scores icon"
-            />
-          </div>
-        ) : !loading ? (
-          <RefreshButton type="button" onClick={() => getData()}>
+        {!loading ? (
+          <RefreshButton type="button" onClick={() => refetch()}>
             <Image src={refresh} height="20" alt="Refresh scores icon" />
           </RefreshButton>
         ) : null}
@@ -117,9 +115,7 @@ const LeagueWeekContainer = ({
         />
         <section>
           <LeagueWeekUserTotals users={usersGameweekPoints} />
-          {!loading ? (
-            <LeagueWeekFixtures weekId={gameweek} fixtures={sortedFixtures} />
-          ) : (
+          {loading && !fixtures?.length ? (
             <Loading>
               <p>Loading...</p>
               <div>
@@ -131,12 +127,32 @@ const LeagueWeekContainer = ({
                 />
               </div>
             </Loading>
+          ) : (
+            <>
+              <LeagueWeekFixtures weekId={gameweek} fixtures={sortedFixtures} />
+              {lastUpdated && (
+                <LastUpdated>
+                  <p>{`Last updated: ${formatDate(lastUpdated)}`}</p>
+                </LastUpdated>
+              )}
+            </>
           )}
         </section>
       </>
     </Container>
   );
 };
+
+const LastUpdated = styled.div`
+  display: flex;
+  justify-content: end;
+
+  p {
+    font-size: 0.6rem;
+    color: ${colours.grey500};
+    font-style: italic;
+  }
+`;
 
 const Container = styled.div`
   max-width: ${pageSizes.tablet};
