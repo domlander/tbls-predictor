@@ -31,11 +31,11 @@ interface Props {
 }
 
 const formatDate = (lastUpdated: Dayjs) => {
-  if (dayjs(lastUpdated).isToday()) {
-    return dayjs(lastUpdated).format("h:ma"); // 7:08am
+  if (!dayjs(lastUpdated).isToday()) {
+    return dayjs(lastUpdated).format("h:mma"); // 7:08am
   }
 
-  return dayjs(lastUpdated).format("ddd D MMM h:ma"); // Sun 14 Jan 7:08am
+  return dayjs(lastUpdated).format("ddd D MMM h:mma"); // Sun 14 Jan 7:08am
 };
 
 const LeagueWeekContainer = ({
@@ -149,6 +149,10 @@ const LastUpdated = styled.div`
 
   p {
     font-size: 0.6rem;
+    @media (min-width: ${pageSizes.mobileL}) {
+      font-size: 0.8rem;
+    }
+
     color: ${colours.grey500};
     font-style: italic;
   }

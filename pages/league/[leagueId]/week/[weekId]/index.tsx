@@ -1,8 +1,8 @@
 import React from "react";
 import { GetStaticPaths, GetStaticProps } from "next";
 import prisma from "prisma/client";
-import { initializeApollo } from "apollo/client";
 
+import { addApolloState, initializeApollo } from "apollo/client";
 import { LEAGUE_WEEK_QUERY } from "apollo/queries";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import redirectInternal from "utils/redirects";
@@ -66,7 +66,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const fixtures = data.fixturesWithPredictions.fixtures || [];
   const { league } = data;
 
-  return {
+  return addApolloState(apolloClient, {
     props: {
       key: `${leagueId}-${weekId}`,
       leagueId,
@@ -78,7 +78,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       lastGameweek: league.gameweekEnd,
     },
     revalidate: 1,
-  };
+  });
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
