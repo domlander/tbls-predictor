@@ -31,7 +31,7 @@ interface Props {
 }
 
 const formatDate = (lastUpdated: Dayjs) => {
-  if (!dayjs(lastUpdated).isToday()) {
+  if (dayjs(lastUpdated).isToday()) {
     return dayjs(lastUpdated).format("h:mma"); // 7:08am
   }
 
@@ -57,6 +57,7 @@ const LeagueWeekContainer = ({
       weekId: gameweek,
     },
     notifyOnNetworkStatusChange: true,
+    pollInterval: 3000, // ms
     onCompleted: (data) => {
       if (data?.fixturesWithPredictions?.fixtures) {
         setFixtures(data.fixturesWithPredictions.fixtures);
