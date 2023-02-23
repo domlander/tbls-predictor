@@ -72,7 +72,7 @@ const LeaguesCardsList = ({ leagues }: Props) => {
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, 400px);
+  grid-template-columns: repeat(auto-fill, calc(400px - 1.5em));
   grid-gap: 3em;
 
   @media (max-width: ${pageSizes.tablet}) {

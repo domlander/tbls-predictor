@@ -19,7 +19,7 @@ import combineFixturesAndPredictions from "utils/combineFixturesAndPredictions";
 import GridRowForm from "../GridRowForm";
 
 const StateFeedback = {
-  LOADING: "Loading...",
+  LOADING: "Loading predictions...",
   SAVING: "Saving...",
   IDLE: "",
   SAVE_SUCCESS: "Predictions updated!",

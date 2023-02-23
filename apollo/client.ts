@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import merge from "deepmerge";
 import {
   ApolloClient,
   InMemoryCache,
@@ -6,7 +7,9 @@ import {
   HttpLink,
 } from "@apollo/client";
 
-let apolloClient: ApolloClient<NormalizedCacheObject> | null;
+export const APOLLO_STATE_PROP_NAME = "__APOLLO_STATE__";
+
+let apolloClient: ApolloClient<NormalizedCacheObject> | undefined;
 
 function createIsomorphLink() {
   if (typeof window === "undefined") {
@@ -48,18 +51,30 @@ function createApolloClient() {
  * passed in from getStaticProps() / getServerSideProps()) with the existing client-side
  * Apollo cache, then sets that new, merged data set as the new cache for Apollo Client.
  */
-export function initializeApollo(initialState = null) {
+export function initializeApollo(
+  initialState: NormalizedCacheObject | null = null
+) {
   const _apolloClient = apolloClient ?? createApolloClient();
 
-  // If your page has Next.js data fetching methods that
-  // use Apollo Client, the initial state gets hydrated here
+  // If your page has Next.js data fetching methods that use Apollo Client, the initial state
+  // gets hydrated here
   if (initialState) {
     // Get existing cache, loaded during client side data fetching
     const existingCache = _apolloClient.extract();
 
-    // Restore the cache using the data passed from getStaticProps/getServerSideProps
-    // combined with the existing cached data
-    _apolloClient.cache.restore({ ...existingCache, ...initialState });
+    // Merge the existing cache into data passed from getStaticProps/getServerSideProps
+    const data = merge(initialState, existingCache, {
+      // combine arrays using object equality (like in sets)
+      arrayMerge: (destinationArray, sourceArray) => [
+        ...sourceArray,
+        ...destinationArray.filter((d) =>
+          sourceArray.every((s) => !isEqual(d, s))
+        ),
+      ],
+    });
+
+    // Restore the cache with the merged data
+    _apolloClient.cache.restore(data);
   }
 
   // For SSG and SSR always create a new Apollo Client
@@ -71,7 +86,93 @@ export function initializeApollo(initialState = null) {
   return _apolloClient;
 }
 
-export function useApollo(initialState) {
-  const store = useMemo(() => initializeApollo(initialState), [initialState]);
+export function addApolloState(
+  client: ApolloClient<NormalizedCacheObject>,
+  pageProps: any
+) {
+  if (pageProps?.props) {
+    pageProps.props[APOLLO_STATE_PROP_NAME] = client.cache.extract();
+  }
+
+  return pageProps;
+}
+
+export function useApollo(pageProps: any) {
+  const state = pageProps[APOLLO_STATE_PROP_NAME];
+  const store = useMemo(() => initializeApollo(state), [state]);
   return store;
 }
+
+/**
+ * An alternative to Lodash's isEqual https://www.npmjs.com/package/lodash.isequal
+ *
+ * https://gist.github.com/jsjain/a2ba5d40f20e19f734a53c0aad937fbb
+ */
+const isEqual = (first: any, second: any): boolean => {
+  if (first === second) {
+    return true;
+  }
+  if (
+    (first === undefined ||
+      second === undefined ||
+      first === null ||
+      second === null) &&
+    (first || second)
+  ) {
+    return false;
+  }
+  const firstType = first?.constructor.name;
+  const secondType = second?.constructor.name;
+  if (firstType !== secondType) {
+    return false;
+  }
+  if (firstType === "Array") {
+    if (first.length !== second.length) {
+      return false;
+    }
+    let equal = true;
+    for (let i = 0; i < first.length; i++) {
+      if (!isEqual(first[i], second[i])) {
+        equal = false;
+        break;
+      }
+    }
+    return equal;
+  }
+  if (firstType === "Object") {
+    let equal = true;
+    const fKeys = Object.keys(first);
+    const sKeys = Object.keys(second);
+    if (fKeys.length !== sKeys.length) {
+      return false;
+    }
+    for (let i = 0; i < fKeys.length; i++) {
+      if (first[fKeys[i]] && second[fKeys[i]]) {
+        if (first[fKeys[i]] === second[fKeys[i]]) {
+          continue; // eslint-disable-line
+        }
+        if (
+          first[fKeys[i]] &&
+          (first[fKeys[i]].constructor.name === "Array" ||
+            first[fKeys[i]].constructor.name === "Object")
+        ) {
+          equal = isEqual(first[fKeys[i]], second[fKeys[i]]);
+          if (!equal) {
+            break;
+          }
+        } else if (first[fKeys[i]] !== second[fKeys[i]]) {
+          equal = false;
+          break;
+        }
+      } else if (
+        (first[fKeys[i]] && !second[fKeys[i]]) ||
+        (!first[fKeys[i]] && second[fKeys[i]])
+      ) {
+        equal = false;
+        break;
+      }
+    }
+    return equal;
+  }
+  return first === second;
+};
