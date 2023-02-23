@@ -57,7 +57,7 @@ const LeagueWeekContainer = ({
       weekId: gameweek,
     },
     notifyOnNetworkStatusChange: true,
-    pollInterval: 3000, // ms
+    pollInterval: 10000, // 10 seconds
     onCompleted: (data) => {
       if (data?.fixturesWithPredictions?.fixtures) {
         setFixtures(data.fixturesWithPredictions.fixtures);
