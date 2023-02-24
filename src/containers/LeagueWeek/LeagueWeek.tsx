@@ -14,10 +14,6 @@ import LeagueWeekUserTotals from "src/components/LeagueWeekUserTotals";
 import LeagueWeekFixtures from "src/components/LeagueWeekFixtures";
 import pageSizes from "src/styles/pageSizes";
 import colours from "src/styles/colours";
-import dayjs, { Dayjs } from "dayjs";
-import isToday from "dayjs/plugin/isToday";
-
-dayjs.extend(isToday);
 
 interface Props {
   leagueId: number;
@@ -28,14 +24,6 @@ interface Props {
   firstGameweek: number;
   lastGameweek: number;
 }
-
-const formatDate = (lastUpdated: Dayjs) => {
-  if (dayjs(lastUpdated).isToday()) {
-    return dayjs(lastUpdated).format("h:mma"); // 7:08am
-  }
-
-  return dayjs(lastUpdated).format("ddd D MMM h:mma"); // Sun 14 Jan 7:08am
-};
 
 const LeagueWeekContainer = ({
   leagueId,
@@ -48,7 +36,6 @@ const LeagueWeekContainer = ({
 }: Props) => {
   const [fixtures, setFixtures] = useState(fixturesFromProps);
   const [users, setUsers] = useState(usersFromProps);
-  const [lastUpdated, setLastUpdated] = useState<Dayjs | null>(null);
 
   const { loading } = useQuery(LEAGUE_WEEK_QUERY, {
     variables: {
@@ -64,7 +51,6 @@ const LeagueWeekContainer = ({
       if (data?.league?.users) {
         setUsers(data?.league?.users);
       }
-      setLastUpdated(dayjs());
     },
   });
 
@@ -123,35 +109,13 @@ const LeagueWeekContainer = ({
               </div>
             </Loading>
           ) : (
-            <>
-              <LeagueWeekFixtures weekId={gameweek} fixtures={sortedFixtures} />
-              {lastUpdated && (
-                <LastUpdated>
-                  <p>{`Last updated: ${formatDate(lastUpdated)}`}</p>
-                </LastUpdated>
-              )}
-            </>
+            <LeagueWeekFixtures weekId={gameweek} fixtures={sortedFixtures} />
           )}
         </section>
       </>
     </Container>
   );
 };
-
-const LastUpdated = styled.div`
-  display: flex;
-  justify-content: end;
-
-  p {
-    font-size: 0.6rem;
-    @media (min-width: ${pageSizes.mobileL}) {
-      font-size: 0.8rem;
-    }
-
-    color: ${colours.grey500};
-    font-style: italic;
-  }
-`;
 
 const Container = styled.div`
   max-width: ${pageSizes.tablet};
