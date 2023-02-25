@@ -14,19 +14,21 @@ const GridItem = ({
   isBbb = false,
   label,
   predictionScore,
-}: Props) => (
-  <Container className={className}>
-    <span>{label}</span>
-    {(isBbb || predictionScore) && (
-      <ChipContainer>
-        {predictionScore && predictionScore >= 1 && (
-          <Chip variant={predictionScore >= 3 ? "perfect" : "correct"} />
-        )}
-        {isBbb && <Chip variant="bigBoyBonus" />}
-      </ChipContainer>
-    )}
-  </Container>
-);
+}: Props) => {
+  return (
+    <Container className={className}>
+      <span>{label}</span>
+      {(isBbb || predictionScore) && (
+        <ChipContainer>
+          {predictionScore && predictionScore >= 1 && (
+            <Chip variant={predictionScore >= 3 ? "perfect" : "correct"} />
+          )}
+          {isBbb && <Chip variant="bigBoyBonus" />}
+        </ChipContainer>
+      )}
+    </Container>
+  );
+};
 
 const Container = styled.div`
   position: relative;

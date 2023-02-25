@@ -8,6 +8,7 @@ const combineFixturesAndPredictions = (
 ): FixtureWithPrediction[] =>
   fixtures.map((fixture) => {
     const prediction = predictions.find((p) => p.fixtureId === fixture.id);
+
     return {
       fixtureId: fixture.id,
       predictedHomeGoals: prediction?.homeGoals?.toString() || null,

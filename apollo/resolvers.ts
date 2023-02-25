@@ -568,10 +568,18 @@ const resolvers = {
 
       return {
         predictions: predictions.map(
-          ({ userId, fixtureId, homeGoals, awayGoals, bigBoyBonus }) => ({
+          ({
+            userId,
             fixtureId,
             homeGoals,
             awayGoals,
+            score,
+            bigBoyBonus,
+          }) => ({
+            fixtureId,
+            homeGoals,
+            awayGoals,
+            score,
             bigBoyBonus,
             user: {
               id: userId,

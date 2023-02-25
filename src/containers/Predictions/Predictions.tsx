@@ -106,6 +106,7 @@ const Predictions = ({
       (prediction) => prediction.fixtureId === fixtureId
     );
 
+    // prediction doesn't yet exist
     if (!editedPrediction) {
       updatedPredictions.push({
         fixtureId,
