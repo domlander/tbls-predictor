@@ -154,7 +154,7 @@ const PredictionsTable = ({
                     predictionScore={predictionScore || undefined}
                     isLoading={state === "LOADING"}
                     isLoaded={isLoaded}
-                    locked={isLoading || isLocked}
+                    locked={!isLoaded || isLoading || isLocked}
                     topRow={i === 0}
                     handleBbbUpdate={handleBbbUpdate}
                   />

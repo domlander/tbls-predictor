@@ -41,7 +41,7 @@ const Predictions = ({
   const { data: session } = useSession();
   const userId = session?.user?.id;
   const [predictions, setPredictions] = useState<Prediction[]>([]);
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+  const [isAfterInitialLoad, setIsAfterInitialLoad] = useState<boolean>(false);
 
   const [
     processRequest,
@@ -54,7 +54,7 @@ const Predictions = ({
       variables: { weekId: gameweek },
       onCompleted: (data) => {
         setPredictions(data.predictions);
-        setIsLoaded(true);
+        setIsAfterInitialLoad(true);
       },
       skip: !userId,
     }
@@ -187,7 +187,7 @@ const Predictions = ({
         handleSubmit={handleSubmitPredictions}
         handleBbbUpdate={updateBigBoyBonus}
         isLoading={isQueryLoading}
-        isLoaded={isLoaded}
+        isLoaded={isAfterInitialLoad}
         isSaved={!!mutationData?.updatePredictions}
         isSaving={mutationLoading}
         isSaveError={!!mutationError}
