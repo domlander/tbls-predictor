@@ -51,7 +51,7 @@ const useUserLeagues = (): [
     */
     fetchPolicy: "cache-and-network",
     onCompleted: (data) => {
-      setCurrentGameweek(data?.allFixtures?.currentGameweek || null);
+      setCurrentGameweek(data?.currentGameweek || null);
       setActiveLeagues(data?.user?.activeLeagues || []);
       setFinishedLeagues(data?.user?.finishedLeagues || []);
     },

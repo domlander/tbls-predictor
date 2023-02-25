@@ -33,8 +33,14 @@ export const ALL_FIXTURES_QUERY = gql`
         homeGoals
         awayGoals
       }
-      currentGameweek
     }
+    currentGameweek
+  }
+`;
+
+export const CURRENT_GAMEWEEK_QUERY = gql`
+  query CurrentGameweek {
+    currentGameweek
   }
 `;
 
@@ -64,9 +70,7 @@ export const USER_LEAGUES_QUERY = gql`
         }
       }
     }
-    allFixtures {
-      currentGameweek
-    }
+    currentGameweek
   }
 `;
 

@@ -42,10 +42,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const apolloClient = initializeApollo();
   const {
     data: {
-      allFixtures: { fixtures: allFixtures, currentGameweek },
+      allFixtures: { fixtures: allFixtures },
+      currentGameweek,
     },
   }: {
-    data: { allFixtures: { fixtures: Fixture[]; currentGameweek: number } };
+    data: { allFixtures: { fixtures: Fixture[] }; currentGameweek: number };
   } = await apolloClient.query({
     query: ALL_FIXTURES_QUERY,
   });

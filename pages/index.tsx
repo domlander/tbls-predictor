@@ -4,7 +4,7 @@ import Head from "next/head";
 import { getSession } from "next-auth/react";
 import prisma from "prisma/client";
 
-import { initializeApollo } from "apollo/client";
+import { addApolloState, initializeApollo } from "apollo/client";
 import { ALL_FIXTURES_QUERY } from "apollo/queries";
 import sortFixtures from "utils/sortFixtures";
 import Fixture from "src/types/Fixture";
@@ -78,10 +78,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const apolloClient = initializeApollo();
   const {
     data: {
-      allFixtures: { fixtures, currentGameweek },
+      allFixtures: { fixtures },
+      currentGameweek,
     },
   }: {
-    data: { allFixtures: { fixtures: Fixture[]; currentGameweek: number } };
+    data: { allFixtures: { fixtures: Fixture[] }; currentGameweek: number };
   } = await apolloClient.query({
     query: ALL_FIXTURES_QUERY,
   });
@@ -95,13 +96,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     currentGameweek
   );
 
-  return {
+  return addApolloState(apolloClient, {
     props: {
       weekId: currentGameweek,
       fixtures: sortedFixtures,
       recentFixturesByTeam,
     },
-  };
+  });
 };
 
 export default HomePage;

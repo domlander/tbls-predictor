@@ -45,10 +45,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const apolloClient = initializeApollo();
   const {
     data: {
-      allFixtures: { fixtures, currentGameweek },
+      allFixtures: { fixtures },
+      currentGameweek,
     },
   }: {
-    data: { allFixtures: { fixtures: Fixture[]; currentGameweek: number } };
+    data: { allFixtures: { fixtures: Fixture[] }; currentGameweek: number };
   } = await apolloClient.query({
     query: ALL_FIXTURES_QUERY,
   });

@@ -16,6 +16,7 @@ const typeDefs = gql`
       weekId: Int!
     ): FixturesWithPredictionPayload
     premierLeagueTable: [PremierLeagueTeam]
+    currentGameweek: Int!
   }
 
   type Mutation {
@@ -35,7 +36,6 @@ const typeDefs = gql`
 
   type AllFixturesPayload {
     fixtures: [Fixture!]
-    currentGameweek: Int
   }
 
   type AllLeaguesPayload {

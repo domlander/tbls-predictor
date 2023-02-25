@@ -39,6 +39,20 @@ const resolvers = {
 
       return fixtures;
     },
+    currentGameweek: async (_, __) => {
+      // Cannot start in a past gameweek
+      const fixtures = await prisma.fixture.findMany({
+        select: {
+          id: true,
+          gameweek: true,
+          kickoff: true,
+        },
+      });
+
+      const currentGameweek = calculateCurrentGameweek(fixtures);
+
+      return currentGameweek;
+    },
     premierLeagueTable: async () => {
       const fixtures = await prisma.fixture.findMany({
         select: {
