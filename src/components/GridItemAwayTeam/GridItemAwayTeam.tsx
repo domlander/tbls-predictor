@@ -10,6 +10,7 @@ export type Props = {
   isBbbLocked?: boolean;
   isBbbSelected?: boolean;
   label: string | React.ReactNode;
+  isLoaded: boolean;
   locked: boolean;
 };
 
@@ -19,12 +20,13 @@ const GridItem = ({
   handleBbbUpdate,
   isBbbLocked = false,
   isBbbSelected = false,
-  label,
+  label = "",
+  isLoaded = false,
   locked,
 }: Props) => (
   <Container isBbbLocked={isBbbLocked} className={className}>
     {label}
-    {!locked && !isBbbLocked && handleBbbUpdate && (
+    {isLoaded && !locked && !isBbbLocked && handleBbbUpdate && (
       <BbbButton
         isBbbSelected={isBbbSelected}
         onClick={(e) => {

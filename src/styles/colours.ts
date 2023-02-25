@@ -28,13 +28,13 @@ export default {
   blackblue500: "#0D151C",
   blackblue600: "#070d12",
 
-  green300: "#15A71B",
+  green300: "hsl(120deg 30% 46%);",
   green500: "#036305",
 
   gold300: "#B8A006",
   gold500: "#625504",
 
-  red300: "#b45858",
+  red300: "hsl(0deg 30% 54%)",
   red500: "#760505",
 };
 

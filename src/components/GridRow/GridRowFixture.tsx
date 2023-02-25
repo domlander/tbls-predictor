@@ -81,13 +81,13 @@ const GridRow = ({
           />
         </>
       )}
-
       <AwayTeam
         fixtureId={fixtureId}
         handleBbbUpdate={handleBbbUpdate}
         isBbbLocked={isBbbLocked}
         isBbbSelected={isBigBoyBonus}
         label={awayTeam}
+        isLoaded={isLoaded}
         locked={locked}
         topRow={topRow}
       />
