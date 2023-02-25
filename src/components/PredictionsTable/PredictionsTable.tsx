@@ -40,7 +40,6 @@ interface Props {
   handleBbbUpdate: (fixtureId: number) => void;
   isAlwaysEditable?: boolean;
   isLoading?: boolean;
-  isLoaded?: boolean;
   isSaving?: boolean;
   isSaved?: boolean;
   isSaveError?: boolean;
@@ -55,7 +54,6 @@ const PredictionsTable = ({
   handleBbbUpdate,
   isAlwaysEditable = false,
   isLoading = false,
-  isLoaded = false,
   isSaving = false,
   isSaved = false,
   isSaveError = false,
@@ -153,8 +151,8 @@ const PredictionsTable = ({
                     isBbbLocked={isBbbLockedForGameweek}
                     predictionScore={predictionScore || undefined}
                     isLoading={state === "LOADING"}
-                    isLoaded={isLoaded}
-                    locked={!isLoaded || isLoading || isLocked}
+                    isLoaded={!!predictions?.length}
+                    locked={!predictions?.length || isLoading || isLocked}
                     topRow={i === 0}
                     handleBbbUpdate={handleBbbUpdate}
                   />
