@@ -40,7 +40,7 @@ const Predictions = ({
 }: Props) => {
   const { data: session } = useSession();
   const userId = session?.user?.id;
-  const [predictions, setPredictions] = useState<Prediction[]>([]);
+  const [predictions, setPredictions] = useState<Prediction[] | null>(null);
 
   const [
     processRequest,
@@ -60,7 +60,7 @@ const Predictions = ({
 
   const handleSubmitPredictions = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!userId) return;
+    if (!userId || !predictions) return;
 
     const updatedPredictions: UpdatePredictionsInputType[] = predictions.map(
       (prediction) => ({
@@ -92,6 +92,8 @@ const Predictions = ({
     isHomeTeam: boolean,
     goals: string
   ): void => {
+    if (!predictions) return;
+
     // Make a copy of current state
     const updatedPredictions: Prediction[] = JSON.parse(
       JSON.stringify(predictions)
@@ -127,6 +129,8 @@ const Predictions = ({
   };
 
   const updateBigBoyBonus = (fixtureId: number) => {
+    if (!predictions) return;
+
     // Make a copy of current state
     const updatedPredictions: Prediction[] = JSON.parse(
       JSON.stringify(predictions)

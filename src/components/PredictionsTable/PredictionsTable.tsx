@@ -29,7 +29,7 @@ const StateFeedback = {
 
 interface Props {
   fixtures: Fixture[];
-  predictions: Prediction[];
+  predictions: Prediction[] | null;
   recentFixturesByTeam: TeamFixtures[];
   updateGoals: (
     fixtureId: number,
@@ -77,7 +77,7 @@ const PredictionsTable = ({
   else state = "IDLE";
 
   const fixturesWithPredictions: FixtureWithPrediction[] =
-    combineFixturesAndPredictions(fixtures, predictions);
+    combineFixturesAndPredictions(fixtures, predictions || []);
 
   const firstFixtureKickoffTiming = whenIsTheFixture(fixtures[0].kickoff);
   const gameweekScore = calculateGameweekScore(fixturesWithPredictions);
@@ -151,8 +151,8 @@ const PredictionsTable = ({
                     isBbbLocked={isBbbLockedForGameweek}
                     predictionScore={predictionScore || undefined}
                     isLoading={state === "LOADING"}
-                    isLoaded={!!predictions?.length}
-                    locked={!predictions?.length || isLoading || isLocked}
+                    isLoaded={!!predictions}
+                    locked={!predictions || isLoading || isLocked}
                     topRow={i === 0}
                     handleBbbUpdate={handleBbbUpdate}
                   />
