@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useSession } from "next-auth/react";
 import { ApolloError, useQuery } from "@apollo/client";
 
@@ -21,6 +20,16 @@ type League = {
   weeksUntilStart?: number | null;
 };
 
+type UserLeagues = {
+  activeLeagues: League[];
+  finishedLeagues: League[];
+};
+
+type Data = {
+  currentGameweek: string;
+  user: UserLeagues;
+};
+
 /**
  * If multiple users have the same score, display the highest position with that score.
  * users are sorted by totalPoints descending in the resolver.
@@ -38,27 +47,18 @@ const useUserLeagues = (): [
   ApolloError | undefined
 ] => {
   const { data: session, status: sessionStatus } = useSession();
-  const [activeLeagues, setActiveLeagues] = useState<League[]>([]);
-  const [finishedLeagues, setFinishedLeagues] = useState<League[]>([]);
-  const [currentGameweek, setCurrentGameweek] = useState<number | null>();
 
-  const { loading, error } = useQuery(USER_LEAGUES_QUERY, {
-    /**
-     We don't want the cache a user that belongs to a league, since the same user
-     can be in different leagues, and each user's totalPoints varies between leagues.
-     An alternative would be to change the users type on UserLeague in typedefs to a
-     new LeagueParticipant type, whose cache keys could be leagueId and userId.
-    */
-    fetchPolicy: "cache-and-network",
-    onCompleted: (data) => {
-      setCurrentGameweek(data?.currentGameweek || null);
-      setActiveLeagues(data?.user?.activeLeagues || []);
-      setFinishedLeagues(data?.user?.finishedLeagues || []);
-    },
+  const { data, loading, error } = useQuery<Data>(USER_LEAGUES_QUERY, {
     skip: !session?.user.id,
   });
 
-  if (sessionStatus === "loading") return [[], [], true, undefined];
+  if (!data || sessionStatus === "loading") return [[], [], true, undefined];
+
+  const {
+    currentGameweek,
+    user: { activeLeagues, finishedLeagues },
+  } = data;
+
   if (!currentGameweek || !session?.user.id) return [[], [], loading, error];
 
   return [

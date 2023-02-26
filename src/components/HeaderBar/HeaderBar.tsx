@@ -15,10 +15,10 @@ const HeaderBar = ({ initial, isLoading, handleClick }: Props) => (
   <Container>
     <nav>
       <ul>
-        <HeaderLink link="/">Home</HeaderLink>
-        <HeaderLink link="/predictions">Predictions</HeaderLink>
-        <HeaderLink link="/leagues">Leagues</HeaderLink>
-        <HeaderLink link="/premierleague">Table</HeaderLink>
+        <HeaderLink text="Home" link="/" />
+        <HeaderLink text="Predictions" link="/predictions" />
+        <HeaderLink text="Leagues" link="/leagues" />
+        <HeaderLink text="Table" link="/premierleague" />
       </ul>
     </nav>
     <div>

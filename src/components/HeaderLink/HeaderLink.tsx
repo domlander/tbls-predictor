@@ -5,14 +5,12 @@ import colours from "src/styles/colours";
 
 export interface Props {
   link: string;
-  children: React.ReactNode;
+  text: string;
 }
 
-const HeaderLink = ({ link, children }: Props) => (
+const HeaderLink = ({ link, text }: Props) => (
   <ListElement>
-    <Link href={link} passHref>
-      {children}
-    </Link>
+    <Link href={link}>{text}</Link>
   </ListElement>
 );
 
