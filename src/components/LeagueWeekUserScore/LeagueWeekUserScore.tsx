@@ -6,6 +6,7 @@ import { Patrick_Hand as PatrickHand } from "@next/font/google";
 const patrickHand = PatrickHand({
   subsets: ["latin"],
   weight: "400",
+  display: "swap",
 });
 
 export type Props = {
