@@ -4,7 +4,7 @@ const typeDefs = gql`
   scalar DateTime
 
   type Query {
-    user: User
+    user(userId: String): User
     fixtures(weekId: Int!): [Fixture!]
     allFixtures: AllFixturesPayload!
     predictions(weekId: Int!): [Prediction!]
@@ -118,6 +118,8 @@ const typeDefs = gql`
     users: [User!]
     weeksUntilStart: Int
     weeksToGo: Int
+    position: Int
+    numParticipants: Int
   }
 
   type Fixture {

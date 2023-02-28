@@ -14,17 +14,19 @@ import UserLeague from "src/types/UserLeague";
 import User from "src/types/User";
 import type { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
 import createPremierLeagueTableFromFixtures from "utils/createPremierLeagueTableFromFixtures";
+import calculateUsersLeaguePosition from "utils/calculateUsersLeaguePosition";
 import calculateWeeksUntilStart from "utils/calculateWeeksUntilStart";
 import calculateWeeksToGo from "utils/calculateWeeksToGo";
 import dateScalar from "./scalars";
 
 const resolvers = {
   Query: {
-    user: async (_, __, { user }) => {
-      if (!user) throw new ApolloError("User not logged in.");
+    user: async (_, { userId }, context) => {
+      const id = userId ?? context?.user?.id;
+      if (!id) throw new ApolloError("User not found.");
 
       const me = await prisma.user.findUnique({
-        where: { id: user.id },
+        where: { id },
       });
 
       return me;
@@ -611,32 +613,16 @@ const resolvers = {
 
       return me?.username || "";
     },
-    leagues: async (_, __, { user }) => {
+    activeLeagues: async (user) => {
       if (!user?.id) return [];
 
       const userLeagues = await prisma.user.findUnique({
         include: {
-          leagues: true,
-        },
-        where: {
-          id: user.id,
-        },
-      });
-      if (!userLeagues?.leagues.length) return [];
-
-      return userLeagues.leagues.map((league) => ({
-        leagueId: league.id,
-        leagueName: league.name,
-        gameweekStart: league.gameweekStart,
-        gameweekEnd: league.gameweekEnd,
-      }));
-    },
-    activeLeagues: async (_, __, { user }) => {
-      if (!user?.id) return [];
-
-      const userLeagues = await prisma.user.findUnique({
-        include: {
-          leagues: true,
+          leagues: {
+            include: {
+              users: true,
+            },
+          },
         },
         where: {
           id: user.id,
@@ -664,11 +650,13 @@ const resolvers = {
             league.gameweekStart
           ),
           weeksToGo: calculateWeeksToGo(currentGameweek, league.gameweekEnd),
+          position: calculateUsersLeaguePosition(league.users, user.id),
+          numParticipants: league.users.length,
         }))
         .filter((league) => league.gameweekEnd >= currentGameweek)
         .sort((a, b) => a.gameweekStart - b.gameweekStart);
     },
-    finishedLeagues: async (_, __, { user }) => {
+    finishedLeagues: async (user) => {
       if (!user?.id) return [];
 
       const userLeagues = await prisma.user.findUnique({
@@ -705,6 +693,8 @@ const resolvers = {
           leagueName: league.name,
           gameweekStart: league.gameweekStart,
           gameweekEnd: league.gameweekEnd,
+          position: calculateUsersLeaguePosition(league.users, user.id),
+          numParticipants: league.users.length,
         }))
         .filter((league) => league.gameweekEnd < currentGameweek)
         .sort((a, b) => b.gameweekEnd - a.gameweekEnd);

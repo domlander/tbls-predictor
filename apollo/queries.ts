@@ -45,8 +45,8 @@ export const CURRENT_GAMEWEEK_QUERY = gql`
 `;
 
 export const USER_LEAGUES_QUERY = gql`
-  query UserLeagues {
-    user {
+  query UserLeagues($userId: String) {
+    user(userId: $userId) {
       activeLeagues {
         leagueId
         leagueName
@@ -54,20 +54,16 @@ export const USER_LEAGUES_QUERY = gql`
         gameweekEnd
         weeksUntilStart
         weeksToGo
-        users {
-          id
-          totalPoints
-        }
+        position
+        numParticipants
       }
       finishedLeagues {
         leagueId
         leagueName
         gameweekStart
         gameweekEnd
-        users {
-          id
-          totalPoints
-        }
+        position
+        numParticipants
       }
     }
     currentGameweek

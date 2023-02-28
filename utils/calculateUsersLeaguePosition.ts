@@ -1,7 +1,9 @@
 import User from "src/types/User";
 
+type PartialUser = Pick<User, "id" | "totalPoints">;
+
 const calculateUsersLeaguePosition = (
-  users: User[],
+  users: PartialUser[],
   thisUserId: string
 ): number | null => {
   const usersScore = users.find(({ id }) => id === thisUserId)?.totalPoints;

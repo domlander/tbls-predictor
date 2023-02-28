@@ -21,12 +21,11 @@ const LeaguesCardsList = ({ leagues }: Props) => {
         ({
           leagueId: id,
           leagueName: name,
-          users,
-          position,
           weeksToGo,
           weeksUntilStart,
+          position,
+          numParticipants,
         }) => {
-          const numUsers = users?.length as number;
           const displayPosition = position ? positionify(position) : null;
           const isPositionRelevant = displayPosition && !weeksUntilStart;
 
@@ -44,12 +43,12 @@ const LeaguesCardsList = ({ leagues }: Props) => {
                   <p>
                     Current position:{" "}
                     <BigBoldText>{displayPosition}</BigBoldText> of{" "}
-                    <BoldText>{numUsers}</BoldText>
+                    <BoldText>{numParticipants}</BoldText>
                   </p>
                 ) : (
                   <p>
                     You finished: <BoldText>{displayPosition}</BoldText> of{" "}
-                    <BoldText>{numUsers}</BoldText>
+                    <BoldText>{numParticipants}</BoldText>
                   </p>
                 ))}
               {weeksUntilStart ? (
