@@ -16,6 +16,7 @@ const typeDefs = gql`
       weekId: Int!
     ): FixturesWithPredictionPayload
     premierLeagueTable: [PremierLeagueTeam]
+    predictedLeagueTable(userId: String): [PremierLeagueTeam]
     currentGameweek: Int!
   }
 
@@ -147,14 +148,18 @@ const typeDefs = gql`
 
   type PremierLeagueTeam {
     team: String!
+    played: Int
     points: Int!
     wins: Int!
     draws: Int!
     losses: Int!
+    goalsScored: Int
     homeGoals: Int!
     awayGoals: Int!
+    goalsConceded: Int
     homeGoalsConceded: Int!
     awayGoalsConceded: Int!
+    goalDifference: Int
   }
 
   enum LeagueApplicantStatus {

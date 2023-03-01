@@ -34,6 +34,23 @@ const addTeamToTable = (
   });
 };
 
+const addTeamToTableWithoutFixture = (
+  teams: PremierLeagueTeam[],
+  team: PremierLeagueTeam["team"]
+) => {
+  teams.push({
+    team,
+    points: 0,
+    wins: 0,
+    draws: 0,
+    losses: 0,
+    homeGoals: 0,
+    awayGoals: 0,
+    homeGoalsConceded: 0,
+    awayGoalsConceded: 0,
+  });
+};
+
 const createPremierLeagueTableFromFixtures = (
   fixtures: FixtureType[]
 ): PremierLeagueTeam[] => {
@@ -41,32 +58,14 @@ const createPremierLeagueTableFromFixtures = (
     (teams, { homeTeam, awayTeam, homeGoals, awayGoals }) => {
       if (homeGoals === null || awayGoals === null) {
         const tableHomeTeam = teams.find(({ team }) => team === homeTeam);
+
         if (!tableHomeTeam) {
-          teams.push({
-            team: homeTeam,
-            points: 0,
-            wins: 0,
-            draws: 0,
-            losses: 0,
-            homeGoals: 0,
-            awayGoals: 0,
-            homeGoalsConceded: 0,
-            awayGoalsConceded: 0,
-          });
+          addTeamToTableWithoutFixture(teams, homeTeam);
         }
+
         const tableAwayTeam = teams.find(({ team }) => team === homeTeam);
         if (!tableAwayTeam) {
-          teams.push({
-            team: awayTeam,
-            points: 0,
-            wins: 0,
-            draws: 0,
-            losses: 0,
-            homeGoals: 0,
-            awayGoals: 0,
-            homeGoalsConceded: 0,
-            awayGoalsConceded: 0,
-          });
+          addTeamToTableWithoutFixture(teams, awayTeam);
         }
 
         return teams;
@@ -107,11 +106,22 @@ const createPremierLeagueTableFromFixtures = (
     [] as PremierLeagueTeam[]
   );
 
-  const sortedTable = table.sort((a, b) => {
+  const enhancedTable = table.map((team) => ({
+    ...team,
+    played: team.wins + team.draws + team.losses,
+    goalsScored: team.homeGoals + team.awayGoals,
+    goalsConceded: team.homeGoalsConceded + team.awayGoalsConceded,
+    goalDifference:
+      team.homeGoals +
+      team.awayGoals -
+      (team.homeGoalsConceded + team.awayGoalsConceded),
+  }));
+
+  const sortedTable = enhancedTable.sort((a, b) => {
     return (
       b.points - a.points ||
-      calculateGoalDifference(b) - calculateGoalDifference(a) ||
-      b.homeGoals + b.awayGoals - (a.homeGoals + a.homeGoals) || // Who's scored the most goals?
+      calculateGoalDifference(b) - calculateGoalDifference(a) || // Goal diff
+      b.homeGoals + b.awayGoals - (a.homeGoals + a.homeGoals) || // Goals scored
       a.team.localeCompare(b.team)
     );
   });

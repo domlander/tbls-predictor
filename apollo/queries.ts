@@ -183,14 +183,53 @@ export const PREMIER_LEAGUE_QUERY = gql`
   query PremierLeagueTable {
     premierLeagueTable {
       team
+      played
       points
       wins
       draws
       losses
+      goalsScored
       homeGoals
       awayGoals
+      goalsConceded
       homeGoalsConceded
       awayGoalsConceded
+      goalDifference
+    }
+  }
+`;
+
+export const PREDICTED_LEAGUE_QUERY = gql`
+  query PredictedLeagueTable($userId: String!) {
+    predictedLeagueTable(userId: $userId) {
+      team
+      played
+      points
+      wins
+      draws
+      losses
+      goalsScored
+      homeGoals
+      awayGoals
+      goalsConceded
+      homeGoalsConceded
+      awayGoalsConceded
+      goalDifference
+    }
+    premierLeagueTable {
+      team
+      played
+      points
+      wins
+      draws
+      losses
+      goalsScored
+      homeGoals
+      awayGoals
+      goalsConceded
+      homeGoalsConceded
+      awayGoalsConceded
+      goalDifference
     }
   }
 `;
