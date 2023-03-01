@@ -52,6 +52,11 @@ const Sidebar = ({ username, isLoggedIn, isLoading, handleClick }: Props) => {
             />
             <SidebarMenuItem
               onClick={handleClick}
+              label="My Predicted League Table"
+              url="/predictedtable"
+            />
+            <SidebarMenuItem
+              onClick={handleClick}
               label="Account"
               url="/account"
             />

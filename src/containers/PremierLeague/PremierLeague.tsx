@@ -1,23 +1,26 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Heading from "src/components/Heading";
 import colours from "src/styles/colours";
 import pageSizes from "src/styles/pageSizes";
 import type { PremierLeagueTeamDisplay } from "src/types/PremierLeagueTeam";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 
 interface Props {
   teams: PremierLeagueTeamDisplay[];
+  heading?: string;
+  loading?: boolean;
 }
 
-const PremierLeague = ({ teams }: Props) => {
+const PremierLeague = ({
+  teams,
+  heading = "Premier League",
+  loading = false,
+}: Props) => {
   return (
     <Container>
-      <HeadingDesktop level="h1" variant="secondary">
-        Premier League Table
-      </HeadingDesktop>
-      <HeadingMobile level="h1" variant="secondary">
-        Premier League
-      </HeadingMobile>
+      <Heading level="h1" variant="secondary">
+        {heading}
+      </Heading>
       <Table>
         <HeaderRow />
         <HeaderRowFirst>Club</HeaderRowFirst>
@@ -29,37 +32,46 @@ const PremierLeague = ({ teams }: Props) => {
         <HeaderRow>GA</HeaderRow>
         <HeaderRow>GD</HeaderRow>
         <HeaderRowLast>PTS</HeaderRowLast>
-        {teams.map(
-          (
-            {
-              team,
-              played,
-              wins,
-              draws,
-              losses,
-              goalsScored,
-              goalsConceded,
-              goalDifference,
-              points,
-            },
-            i
-          ) => {
-            return (
+        {loading
+          ? [...Array(20)].map((_, i) => (
               <>
                 <TableDataPosition position={i + 1}>{i + 1}</TableDataPosition>
-                <TableDataTeam>{team}</TableDataTeam>
-                <TableData>{played}</TableData>
-                <TableData>{wins}</TableData>
-                <TableData>{draws}</TableData>
-                <TableData>{losses}</TableData>
-                <TableData>{goalsScored}</TableData>
-                <TableData>{goalsConceded}</TableData>
-                <TableData>{goalDifference}</TableData>
-                <TableDataLast>{points}</TableDataLast>
+                <LoadingRow />
               </>
-            );
-          }
-        )}
+            ))
+          : teams?.map(
+              (
+                {
+                  team,
+                  played,
+                  wins,
+                  draws,
+                  losses,
+                  goalsScored,
+                  goalsConceded,
+                  goalDifference,
+                  points,
+                },
+                i
+              ) => {
+                return (
+                  <Fragment key={team}>
+                    <TableDataPosition position={i + 1}>
+                      {i + 1}
+                    </TableDataPosition>
+                    <TableDataFirst>{team}</TableDataFirst>
+                    <TableData>{played}</TableData>
+                    <TableData>{wins}</TableData>
+                    <TableData>{draws}</TableData>
+                    <TableData>{losses}</TableData>
+                    <TableData>{goalsScored}</TableData>
+                    <TableData>{goalsConceded}</TableData>
+                    <TableData>{goalDifference}</TableData>
+                    <TableDataLast>{points}</TableDataLast>
+                  </Fragment>
+                );
+              }
+            )}
       </Table>
     </Container>
   );
@@ -81,22 +93,6 @@ const getPositionBackgroundColour = (position: number): string => {
   return "transparent";
 };
 
-const HeadingMobile = styled(Heading)`
-  display: none;
-
-  @media (max-width: ${pageSizes.tablet}) {
-    display: block;
-  }
-`;
-
-const HeadingDesktop = styled(Heading)`
-  display: block;
-
-  @media (max-width: ${pageSizes.tablet}) {
-    display: none;
-  }
-`;
-
 const Container = styled.section`
   display: flex;
   flex-direction: column;
@@ -105,6 +101,22 @@ const Container = styled.section`
 
   @media (max-width: ${pageSizes.tablet}) {
     margin-left: 0;
+  }
+`;
+
+const Table = styled.div`
+  display: grid;
+  grid-template-columns: max-content minmax(max-content, 14em) repeat(8, 2.4em);
+  grid-template-rows: 2em repeat(20, 3em);
+  font-weight: 300;
+  justify-items: center;
+  align-items: center;
+  color: ${colours.grey200};
+  font-size: 1.1rem;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    font-size: 0.9rem;
+    grid-template-columns: max-content minmax(max-content, 14em) repeat(8, 2em);
   }
 `;
 
@@ -133,7 +145,42 @@ const HeaderRowLast = styled(HeaderRow)`
   font-weight: 700;
 `;
 
+const skeletonLoading = keyframes`
+    0% {
+      background-position: -800px 0
+    }
+    100% {
+      background-position: 800px 0;
+    }
+`;
+
+const LoadingRow = styled.div`
+  grid-column: span 9;
+  width: calc(100% - 1em);
+  height: 1.5em;
+  margin-left: 1em;
+  animation: ${skeletonLoading} 1s linear infinite forwards;
+  background: linear-gradient(
+      to right,
+      ${colours.blackblue400} 4%,
+      ${colours.grey700} 25%,
+      ${colours.blackblue400} 36%
+    )
+    0% 0% / 1500px 100%;
+`;
+
 const TableData = styled.div``;
+
+const TableDataFirst = styled(TableData)`
+  justify-self: flex-start;
+  font-size: 1.2rem;
+  font-weight: 400;
+  padding-left: 1em;
+
+  @media (max-width: ${pageSizes.tablet}) {
+    font-size: 1rem;
+  }
+`;
 
 const TableDataLast = styled(TableData)`
   font-weight: 700;
@@ -155,33 +202,6 @@ const TableDataPosition = styled(TableData)<{ position: number }>`
     font-size: 0.9rem;
     width: 18px;
     height: 18px;
-  }
-`;
-
-const TableDataTeam = styled(TableData)`
-  justify-self: flex-start;
-  font-size: 1.2rem;
-  font-weight: 400;
-  padding-left: 1em;
-
-  @media (max-width: ${pageSizes.tablet}) {
-    font-size: 1rem;
-  }
-`;
-
-const Table = styled.div`
-  display: grid;
-  grid-template-columns: max-content minmax(max-content, 14em) repeat(8, 2.4em);
-  grid-template-rows: 2em repeat(20, 3em);
-  font-weight: 300;
-  justify-items: center;
-  align-items: center;
-  color: ${colours.grey200};
-  font-size: 1.1rem;
-
-  @media (max-width: ${pageSizes.tablet}) {
-    font-size: 0.9rem;
-    grid-template-columns: max-content minmax(max-content, 14em) repeat(8, 2em);
   }
 `;
 
