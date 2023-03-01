@@ -81,7 +81,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   );
 
   log += `Current Gameweek: ${currentGameweek}\n`;
-  log += `fixturesFromDb: ${fixturesFromDb}\n`;
+  log += `fixturesFromDb: ${JSON.stringify(fixturesFromDb)}\n`;
 
   const liveFixtures = fixturesFromDb.filter(({ kickoff }) =>
     isGameLiveOrRecentlyFinished(kickoff)
