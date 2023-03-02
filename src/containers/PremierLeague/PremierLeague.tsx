@@ -47,10 +47,11 @@ const PremierLeague = ({
         )}
         {loading
           ? [...Array(20)].map((_, i) => (
-              <>
+              // eslint-disable-next-line react/no-array-index-key
+              <Fragment key={i}>
                 <TableDataPosition position={i + 1}>{i + 1}</TableDataPosition>
-                <LoadingRow />
-              </>
+                <LoadingRow isPredicted={isPredictedLeague} />
+              </Fragment>
             ))
           : teams?.map(
               (
@@ -185,8 +186,8 @@ const skeletonLoading = keyframes`
     }
 `;
 
-const LoadingRow = styled.div`
-  grid-column: span 9;
+const LoadingRow = styled.div<{ isPredicted: boolean }>`
+  grid-column: ${({ isPredicted }) => `span ${isPredicted ? 8 : 9}`};
   width: calc(100% - 1em);
   height: 1.5em;
   margin-left: 1em;
