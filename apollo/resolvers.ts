@@ -302,14 +302,24 @@ const resolvers = {
             select: {
               homeTeam: true,
               awayTeam: true,
+              homeGoals: true,
+              awayGoals: true,
             },
           },
         },
       });
 
+      // Filter out future predictions
+      const predictionsWithResult = predictions.filter(
+        (pred) =>
+          pred.fixture.homeGoals !== null && pred.fixture.awayGoals !== null
+      );
+
       // Use the prediction as the result. If no prediction, use the actual result of the match.
       const trueResults = fixtures.map((fixture) => {
-        const prediction = predictions.find((p) => p.fixtureId === fixture.id);
+        const prediction = predictionsWithResult.find(
+          (p) => p.fixtureId === fixture.id
+        );
         if (!prediction) {
           return fixture;
         }
