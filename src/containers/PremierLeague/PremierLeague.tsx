@@ -2,36 +2,49 @@ import React, { Fragment } from "react";
 import Heading from "src/components/Heading";
 import colours from "src/styles/colours";
 import pageSizes from "src/styles/pageSizes";
-import type { PremierLeagueTeamDisplay } from "src/types/PremierLeagueTeam";
+import type { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
 import styled, { keyframes } from "styled-components";
 
-interface Props {
-  teams: PremierLeagueTeamDisplay[];
+type Props = {
+  teams: PremierLeagueTeam[];
   heading?: string;
   loading?: boolean;
-}
+  isPredictedLeague?: boolean;
+};
 
 const PremierLeague = ({
   teams,
   heading = "Premier League",
   loading = false,
+  isPredictedLeague = false,
 }: Props) => {
   return (
     <Container>
       <Heading level="h1" variant="secondary">
         {heading}
       </Heading>
-      <Table>
+      <Table isPredicted={isPredictedLeague}>
         <HeaderRow />
         <HeaderRowFirst>Club</HeaderRowFirst>
         <HeaderRow>P</HeaderRow>
         <HeaderRow>W</HeaderRow>
         <HeaderRow>D</HeaderRow>
         <HeaderRow>L</HeaderRow>
-        <HeaderRow>GF</HeaderRow>
-        <HeaderRow>GA</HeaderRow>
+        {!isPredictedLeague && (
+          <>
+            <HeaderRow>GF</HeaderRow>
+            <HeaderRow>GA</HeaderRow>
+          </>
+        )}
         <HeaderRow>GD</HeaderRow>
-        <HeaderRowLast>PTS</HeaderRowLast>
+        {isPredictedLeague ? (
+          <>
+            <HeaderRowPoints>PTS</HeaderRowPoints>
+            <HeaderRow>Act.</HeaderRow>
+          </>
+        ) : (
+          <HeaderRowPoints>PTS</HeaderRowPoints>
+        )}
         {loading
           ? [...Array(20)].map((_, i) => (
               <>
@@ -50,6 +63,7 @@ const PremierLeague = ({
                   goalsScored,
                   goalsConceded,
                   goalDifference,
+                  predictedPoints,
                   points,
                 },
                 i
@@ -64,10 +78,21 @@ const PremierLeague = ({
                     <TableData>{wins}</TableData>
                     <TableData>{draws}</TableData>
                     <TableData>{losses}</TableData>
-                    <TableData>{goalsScored}</TableData>
-                    <TableData>{goalsConceded}</TableData>
+                    {!isPredictedLeague && (
+                      <>
+                        <TableData>{goalsScored}</TableData>
+                        <TableData>{goalsConceded}</TableData>
+                      </>
+                    )}
                     <TableData>{goalDifference}</TableData>
-                    <TableDataLast>{points}</TableDataLast>
+                    {isPredictedLeague ? (
+                      <>
+                        <TableDataPoints>{predictedPoints}</TableDataPoints>
+                        <TableData>{points}</TableData>
+                      </>
+                    ) : (
+                      <TableDataPoints>{points}</TableDataPoints>
+                    )}
                   </Fragment>
                 );
               }
@@ -104,9 +129,12 @@ const Container = styled.section`
   }
 `;
 
-const Table = styled.div`
+const Table = styled.div<{ isPredicted: boolean }>`
   display: grid;
-  grid-template-columns: max-content minmax(max-content, 14em) repeat(8, 2.4em);
+  grid-template-columns: ${({ isPredicted }) => {
+    const numColumns = isPredicted ? 7 : 8;
+    return `max-content minmax(max-content, 14em) repeat(${numColumns}, 2.4em)`;
+  }};
   grid-template-rows: 2em repeat(20, 3em);
   font-weight: 300;
   justify-items: center;
@@ -116,7 +144,10 @@ const Table = styled.div`
 
   @media (max-width: ${pageSizes.tablet}) {
     font-size: 0.9rem;
-    grid-template-columns: max-content minmax(max-content, 14em) repeat(8, 2em);
+    grid-template-columns: ${({ isPredicted }) => {
+      const numColumns = isPredicted ? 7 : 8;
+      return `max-content minmax(max-content, 14em) repeat(${numColumns}, 2em)`;
+    }};
   }
 `;
 
@@ -141,7 +172,7 @@ const HeaderRowFirst = styled(HeaderRow)`
   }
 `;
 
-const HeaderRowLast = styled(HeaderRow)`
+const HeaderRowPoints = styled(HeaderRow)`
   font-weight: 700;
 `;
 
@@ -181,8 +212,7 @@ const TableDataFirst = styled(TableData)`
     font-size: 1rem;
   }
 `;
-
-const TableDataLast = styled(TableData)`
+const TableDataPoints = styled(TableData)`
   font-weight: 700;
 `;
 

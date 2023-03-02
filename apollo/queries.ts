@@ -205,6 +205,7 @@ export const PREDICTED_LEAGUE_QUERY = gql`
       team
       played
       points
+      predictedPoints
       wins
       draws
       losses

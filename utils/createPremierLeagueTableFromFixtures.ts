@@ -106,7 +106,7 @@ const createPremierLeagueTableFromFixtures = (
     [] as PremierLeagueTeam[]
   );
 
-  const enhancedTable = table.map((team) => ({
+  const enhancedTable: PremierLeagueTeam[] = table.map((team) => ({
     ...team,
     played: team.wins + team.draws + team.losses,
     goalsScored: team.homeGoals + team.awayGoals,
@@ -117,7 +117,7 @@ const createPremierLeagueTableFromFixtures = (
       (team.homeGoalsConceded + team.awayGoalsConceded),
   }));
 
-  const sortedTable = enhancedTable.sort((a, b) => {
+  const sortedTable: PremierLeagueTeam[] = enhancedTable.sort((a, b) => {
     return (
       b.points - a.points ||
       calculateGoalDifference(b) - calculateGoalDifference(a) || // Goal diff

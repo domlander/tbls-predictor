@@ -1,4 +1,4 @@
-type PremierLeagueTeam = {
+export type PremierLeagueTeam = {
   team: string;
   points: number;
   wins: number;
@@ -8,13 +8,9 @@ type PremierLeagueTeam = {
   homeGoalsConceded: number;
   awayGoals: number;
   awayGoalsConceded: number;
+  played?: number;
+  goalsScored?: number;
+  goalsConceded?: number;
+  goalDifference?: number;
+  predictedPoints?: number;
 };
-
-type PremierLeagueTeamDisplay = PremierLeagueTeam & {
-  played: number;
-  goalsScored: number;
-  goalsConceded: number;
-  goalDifference: number;
-};
-
-export type { PremierLeagueTeam, PremierLeagueTeamDisplay };

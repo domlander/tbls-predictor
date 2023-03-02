@@ -284,6 +284,9 @@ const resolvers = {
         },
       });
 
+      const premierLeagueTable: PremierLeagueTeam[] =
+        createPremierLeagueTableFromFixtures(fixtures);
+
       // Get all of this user's predictions
       const predictions = await prisma.prediction.findMany({
         where: {
@@ -319,7 +322,12 @@ const resolvers = {
       });
 
       const predictedLeagueTable: PremierLeagueTeam[] =
-        createPremierLeagueTableFromFixtures(trueResults);
+        createPremierLeagueTableFromFixtures(trueResults).map((team) => ({
+          ...team,
+          predictedPoints: team.points,
+          points:
+            premierLeagueTable.find((t) => t.team === team.team)?.points || 0,
+        }));
 
       return predictedLeagueTable;
     },

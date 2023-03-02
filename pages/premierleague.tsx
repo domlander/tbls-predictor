@@ -4,10 +4,10 @@ import { initializeApollo } from "apollo/client";
 import { PREMIER_LEAGUE_QUERY } from "apollo/queries";
 
 import PremierLeague from "src/containers/PremierLeague";
-import { PremierLeagueTeamDisplay } from "src/types/PremierLeagueTeam";
+import { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
 
 interface Props {
-  premierLeagueTable: PremierLeagueTeamDisplay[];
+  premierLeagueTable: PremierLeagueTeam[];
 }
 
 type ApolloData = Props;

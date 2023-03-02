@@ -3,11 +3,11 @@ import { useSession } from "next-auth/react";
 import { useQuery } from "@apollo/client";
 import { PREDICTED_LEAGUE_QUERY } from "apollo/queries";
 import PremierLeague from "src/containers/PremierLeague";
-import type { PremierLeagueTeamDisplay } from "src/types/PremierLeagueTeam";
+import type { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
 
 const appendTeamNameWithPositionDiff = (
-  predictedTable: PremierLeagueTeamDisplay[],
-  actualTable: PremierLeagueTeamDisplay[]
+  predictedTable: PremierLeagueTeam[],
+  actualTable: PremierLeagueTeam[]
 ) => {
   return predictedTable.map((team, i) => {
     const position = i + 1;
@@ -35,10 +35,8 @@ const UsersPredictedTable = () => {
   const { data: session } = useSession();
   const userId = session?.user?.id;
 
-  const [predictedTable, setPredictedTable] = useState<
-    PremierLeagueTeamDisplay[]
-  >([]);
-  const [table, setTable] = useState<PremierLeagueTeamDisplay[]>([]);
+  const [predictedTable, setPredictedTable] = useState<PremierLeagueTeam[]>([]);
+  const [table, setTable] = useState<PremierLeagueTeam[]>([]);
 
   const { loading, error } = useQuery(PREDICTED_LEAGUE_QUERY, {
     variables: { userId },
@@ -64,6 +62,7 @@ const UsersPredictedTable = () => {
       teams={predictedPositions}
       heading="My predicted league"
       loading={loading}
+      isPredictedLeague
     />
   );
 };

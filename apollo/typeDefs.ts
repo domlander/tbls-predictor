@@ -150,6 +150,7 @@ const typeDefs = gql`
     team: String!
     played: Int
     points: Int!
+    predictedPoints: Int
     wins: Int!
     draws: Int!
     losses: Int!
