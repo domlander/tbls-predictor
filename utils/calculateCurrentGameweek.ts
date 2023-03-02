@@ -22,7 +22,7 @@ export function calculateCurrentGameweek(fixtures: PartialFixture[]) {
   const firstFixtureTodayOrLater = allFixturesTodayOrLater.reduce(
     (acc: PartialFixture, cur: PartialFixture) => {
       if (!acc?.kickoff || !cur?.kickoff) return acc;
-      if (acc.kickoff < cur.kickoff) return acc;
+      if (dayjs(acc.kickoff).isBefore(cur.kickoff, "day")) return acc;
 
       return cur;
     }
