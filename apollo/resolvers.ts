@@ -8,8 +8,9 @@ import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import calculatePredictionScore from "utils/calculatePredictionScore";
 import isPastDeadline from "utils/isPastDeadline";
 import sortFixtures from "utils/sortFixtures";
-import League from "src/types/League";
 import Fixture from "src/types/Fixture";
+import League from "src/types/League";
+import Prediction from "src/types/Prediction";
 import User from "src/types/User";
 import type { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
 import createPremierLeagueTableFromFixtures from "utils/createPremierLeagueTableFromFixtures";
@@ -559,6 +560,7 @@ const resolvers = {
           kickoff: true,
         },
       });
+
       const currentGameweek = calculateCurrentGameweek(fixtures);
       if (gameweekStart <= currentGameweek)
         throw new UserInputError(
@@ -702,6 +704,7 @@ const resolvers = {
                   id: true,
                   predictions: {
                     select: {
+                      fixtureId: true,
                       homeGoals: true,
                       awayGoals: true,
                       bigBoyBonus: true,
@@ -730,50 +733,65 @@ const resolvers = {
           id: true,
           gameweek: true,
           kickoff: true,
+          homeGoals: true,
+          awayGoals: true,
         },
       });
+
       const currentGameweek = calculateCurrentGameweek(fixtures);
 
       const leagues = userLeagues.leagues
-        .map((league) => ({
-          leagueId: league.id,
-          leagueName: league.name,
-          gameweekStart: league.gameweekStart,
-          gameweekEnd: league.gameweekEnd,
-          weeksUntilStart: calculateWeeksUntilStart(
-            currentGameweek,
-            league.gameweekStart
-          ),
-          weeksToGo: calculateWeeksToGo(currentGameweek, league.gameweekEnd),
-          position: calculateUsersLeaguePosition(league.users, user.id),
-          numParticipants: league.users.length,
-          isActive: league.gameweekEnd >= currentGameweek,
-          users: league.users
-            .map((leagueUser) => ({
-              id: leagueUser.id,
-              totalPoints: leagueUser.predictions
-                .filter(
-                  ({ fixture }) =>
-                    fixture.gameweek >= league.gameweekStart &&
-                    fixture.gameweek <= league.gameweekEnd
-                )
-                .reduce((totalPoints, prediction) => {
-                  const score = calculatePredictionScore(
-                    [
-                      prediction.homeGoals ?? 0,
-                      prediction.awayGoals ?? 0,
-                      prediction.bigBoyBonus ?? false,
-                    ],
-                    [
-                      prediction.fixture.homeGoals || 0,
-                      prediction.fixture.homeGoals || 0,
-                    ]
-                  );
-                  return totalPoints + score;
-                }, 0),
-            }))
-            .sort((a, b) => b.totalPoints - a.totalPoints),
-        }))
+        .map((league) => {
+          const users = league.users.map((u) => ({
+            ...u,
+            totalPoints: getWeeklyPoints(
+              fixtures,
+              u.predictions,
+              league.gameweekStart,
+              league.gameweekEnd
+            ).reduce((acc, cur) => acc + (cur.points || 0), 0),
+          }));
+
+          return {
+            leagueId: league.id,
+            leagueName: league.name,
+            gameweekStart: league.gameweekStart,
+            gameweekEnd: league.gameweekEnd,
+            weeksUntilStart: calculateWeeksUntilStart(
+              currentGameweek,
+              league.gameweekStart
+            ),
+            weeksToGo: calculateWeeksToGo(currentGameweek, league.gameweekEnd),
+            position: calculateUsersLeaguePosition(users, user.id),
+            numParticipants: league.users.length,
+            isActive: league.gameweekEnd >= currentGameweek,
+            users: league.users
+              .map((leagueUser) => ({
+                id: leagueUser.id,
+                totalPoints: leagueUser.predictions
+                  .filter(
+                    ({ fixture }) =>
+                      fixture.gameweek >= league.gameweekStart &&
+                      fixture.gameweek <= league.gameweekEnd
+                  )
+                  .reduce((totalPoints, prediction) => {
+                    const score = calculatePredictionScore(
+                      [
+                        prediction.homeGoals ?? 0,
+                        prediction.awayGoals ?? 0,
+                        prediction.bigBoyBonus ?? false,
+                      ],
+                      [
+                        prediction.fixture.homeGoals || 0,
+                        prediction.fixture.homeGoals || 0,
+                      ]
+                    );
+                    return totalPoints + score;
+                  }, 0),
+              }))
+              .sort((a, b) => b.totalPoints - a.totalPoints),
+          };
+        })
         .sort((a, b) => a.gameweekStart - b.gameweekStart);
 
       return leagues;
@@ -839,38 +857,12 @@ const resolvers = {
            each fixture to obtain the points for that fixture, then adds the points to the 
            correct array index in the accumulator
          */
-        const weeklyPoints = fixtures
-          .filter(
-            (fixture) =>
-              fixture.gameweek >= league.gameweekStart &&
-              fixture.gameweek <= league.gameweekEnd
-          )
-          .reduce(
-            (acc, cur) => {
-              const prediction = predictions.find(
-                (p) => p.fixtureId === cur.id
-              );
-              const score = calculatePredictionScore(
-                [
-                  prediction?.homeGoals ?? 0,
-                  prediction?.awayGoals ?? 0,
-                  prediction?.bigBoyBonus ?? false,
-                ],
-                [cur.homeGoals, cur.awayGoals]
-              );
-
-              const arrayIndex = cur.gameweek - league.gameweekStart;
-              acc[arrayIndex] = {
-                week: cur.gameweek,
-                points: (acc[arrayIndex].points += score),
-              };
-
-              return acc;
-            },
-            new Array(league.gameweekEnd - league.gameweekStart + 1)
-              .fill(0)
-              .map((_, i) => ({ week: i + league.gameweekStart, points: 0 }))
-          );
+        const weeklyPoints = getWeeklyPoints(
+          fixtures,
+          predictions,
+          league.gameweekStart,
+          league.gameweekEnd
+        );
 
         const totalPoints = weeklyPoints.reduce(
           (acc, cur) => acc + (cur.points || 0),
@@ -906,3 +898,44 @@ const resolvers = {
 };
 
 export default resolvers;
+
+const getWeeklyPoints = (
+  fixtures: Pick<Fixture, "gameweek" | "homeGoals" | "awayGoals">[],
+  predictions: Pick<
+    Prediction,
+    "fixtureId" | "homeGoals" | "awayGoals" | "bigBoyBonus"
+  >[],
+  gameweekStart: number,
+  gameweekEnd: number
+) => {
+  return fixtures
+    .filter(
+      ({ gameweek }) => gameweek >= gameweekStart && gameweek <= gameweekEnd
+    )
+    .reduce(
+      (acc, cur) => {
+        const prediction = predictions.find(
+          ({ fixtureId }) => fixtureId === cur.id
+        );
+        const score = calculatePredictionScore(
+          [
+            prediction?.homeGoals ?? 0,
+            prediction?.awayGoals ?? 0,
+            prediction?.bigBoyBonus ?? false,
+          ],
+          [cur.homeGoals, cur.awayGoals]
+        );
+
+        const arrayIndex = cur.gameweek - gameweekStart;
+        acc[arrayIndex] = {
+          week: cur.gameweek,
+          points: (acc[arrayIndex].points += score),
+        };
+
+        return acc;
+      },
+      new Array(gameweekEnd - gameweekStart + 1)
+        .fill(0)
+        .map((_, i) => ({ week: i + gameweekStart, points: 0 }))
+    );
+};
