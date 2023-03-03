@@ -10,7 +10,6 @@ import isPastDeadline from "utils/isPastDeadline";
 import sortFixtures from "utils/sortFixtures";
 import League from "src/types/League";
 import Fixture from "src/types/Fixture";
-import UserLeague from "src/types/UserLeague";
 import User from "src/types/User";
 import type { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
 import createPremierLeagueTableFromFixtures from "utils/createPremierLeagueTableFromFixtures";
@@ -690,14 +689,33 @@ const resolvers = {
 
       return me?.username || "";
     },
-    activeLeagues: async (user) => {
+    leagues: async (user) => {
       if (!user?.id) return [];
 
+      // Get all users leagues and all users that belong to those leagues, including their predictions
       const userLeagues = await prisma.user.findUnique({
         include: {
           leagues: {
             include: {
-              users: true,
+              users: {
+                select: {
+                  id: true,
+                  predictions: {
+                    select: {
+                      homeGoals: true,
+                      awayGoals: true,
+                      bigBoyBonus: true,
+                      fixture: {
+                        select: {
+                          gameweek: true,
+                          homeGoals: true,
+                          awayGoals: true,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
             },
           },
         },
@@ -716,7 +734,7 @@ const resolvers = {
       });
       const currentGameweek = calculateCurrentGameweek(fixtures);
 
-      return userLeagues.leagues
+      const leagues = userLeagues.leagues
         .map((league) => ({
           leagueId: league.id,
           leagueName: league.name,
@@ -729,111 +747,36 @@ const resolvers = {
           weeksToGo: calculateWeeksToGo(currentGameweek, league.gameweekEnd),
           position: calculateUsersLeaguePosition(league.users, user.id),
           numParticipants: league.users.length,
+          isActive: league.gameweekEnd >= currentGameweek,
+          users: league.users
+            .map((leagueUser) => ({
+              id: leagueUser.id,
+              totalPoints: leagueUser.predictions
+                .filter(
+                  ({ fixture }) =>
+                    fixture.gameweek >= league.gameweekStart &&
+                    fixture.gameweek <= league.gameweekEnd
+                )
+                .reduce((totalPoints, prediction) => {
+                  const score = calculatePredictionScore(
+                    [
+                      prediction.homeGoals ?? 0,
+                      prediction.awayGoals ?? 0,
+                      prediction.bigBoyBonus ?? false,
+                    ],
+                    [
+                      prediction.fixture.homeGoals || 0,
+                      prediction.fixture.homeGoals || 0,
+                    ]
+                  );
+                  return totalPoints + score;
+                }, 0),
+            }))
+            .sort((a, b) => b.totalPoints - a.totalPoints),
         }))
-        .filter((league) => league.gameweekEnd >= currentGameweek)
         .sort((a, b) => a.gameweekStart - b.gameweekStart);
-    },
-    finishedLeagues: async (user) => {
-      if (!user?.id) return [];
 
-      const userLeagues = await prisma.user.findUnique({
-        include: {
-          leagues: {
-            select: {
-              id: true,
-              name: true,
-              gameweekStart: true,
-              gameweekEnd: true,
-              users: true,
-            },
-          },
-        },
-        where: {
-          id: user.id,
-        },
-      });
-      if (!userLeagues?.leagues.length) return [];
-
-      // Cannot start in a past gameweek
-      const fixtures = await prisma.fixture.findMany({
-        select: {
-          id: true,
-          gameweek: true,
-          kickoff: true,
-        },
-      });
-      const currentGameweek = calculateCurrentGameweek(fixtures);
-
-      return userLeagues.leagues
-        .map((league) => ({
-          leagueId: league.id,
-          leagueName: league.name,
-          gameweekStart: league.gameweekStart,
-          gameweekEnd: league.gameweekEnd,
-          position: calculateUsersLeaguePosition(league.users, user.id),
-          numParticipants: league.users.length,
-        }))
-        .filter((league) => league.gameweekEnd < currentGameweek)
-        .sort((a, b) => b.gameweekEnd - a.gameweekEnd);
-    },
-  },
-  UserLeague: {
-    users: async ({ leagueId }: UserLeague) => {
-      const league = await prisma.league.findUnique({
-        where: {
-          id: leagueId,
-        },
-        include: {
-          users: {
-            select: {
-              id: true,
-              predictions: {
-                select: {
-                  homeGoals: true,
-                  awayGoals: true,
-                  bigBoyBonus: true,
-                  fixture: {
-                    select: {
-                      gameweek: true,
-                      homeGoals: true,
-                      awayGoals: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      });
-      if (!league) throw new ApolloError("Cannot find league.");
-
-      const users = league.users
-        .map((user) => ({
-          id: user.id,
-          totalPoints: user.predictions
-            .filter(
-              ({ fixture }) =>
-                fixture.gameweek >= league.gameweekStart &&
-                fixture.gameweek <= league.gameweekEnd
-            )
-            .reduce((totalPoints, prediction) => {
-              const score = calculatePredictionScore(
-                [
-                  prediction.homeGoals ?? 0,
-                  prediction.awayGoals ?? 0,
-                  prediction.bigBoyBonus ?? false,
-                ],
-                [
-                  prediction.fixture.homeGoals || 0,
-                  prediction.fixture.homeGoals || 0,
-                ]
-              );
-              return totalPoints + score;
-            }, 0),
-        }))
-        .sort((a, b) => b.totalPoints - a.totalPoints);
-
-      return users;
+      return leagues;
     },
   },
   League: {

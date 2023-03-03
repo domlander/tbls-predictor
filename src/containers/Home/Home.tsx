@@ -22,7 +22,7 @@ export default function Home({
   fixtures,
   recentFixturesByTeam,
 }: Props) {
-  const [activeLeagues, _, leaguesLoading, leaguesError] = useUserLeagues();
+  const [activeLeagues, _, loading, error] = useUserLeagues();
 
   return (
     <Container>
@@ -39,13 +39,13 @@ export default function Home({
           recentFixturesByTeam={recentFixturesByTeam}
         />
       </PredictionsContainer>
-      {leaguesError ? (
+      {error ? (
         <LeagueError>
           Sorry, we could not load leagues at this time. Refresh the page or try
           again later.
         </LeagueError>
       ) : (
-        <MyLeagues leagues={activeLeagues} loading={leaguesLoading} />
+        <MyLeagues leagues={activeLeagues} loading={loading} />
       )}
     </Container>
   );

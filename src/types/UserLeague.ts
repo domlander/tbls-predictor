@@ -10,6 +10,7 @@ type UserLeague = {
   weeksUntilStart?: number | null;
   position?: number | null;
   numParticipants?: number | null;
+  isActive?: boolean;
 };
 
 export default UserLeague;

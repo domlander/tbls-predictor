@@ -21,8 +21,11 @@ const useUserLeagues = (): [
   if (!session?.user.id) return [[], [], loading, error || null];
 
   const {
-    user: { activeLeagues, finishedLeagues },
-  } = data;
+    user: { leagues },
+  }: { user: { leagues: UserLeague[] } } = data;
+
+  const activeLeagues = leagues.filter((league) => league.isActive);
+  const finishedLeagues = leagues.filter((league) => !league.isActive);
 
   return [activeLeagues, finishedLeagues, loading, error || null];
 };
