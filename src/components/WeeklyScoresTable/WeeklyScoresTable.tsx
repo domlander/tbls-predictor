@@ -5,7 +5,6 @@ import Link from "next/link";
 import User from "src/types/User";
 import pageSizes from "src/styles/pageSizes";
 import colours from "src/styles/colours";
-import Heading from "src/components/Heading";
 
 export interface Props {
   leagueName: string;
@@ -16,7 +15,6 @@ export interface Props {
 }
 
 const WeeklyScoresTable = ({
-  leagueName,
   users,
   leagueId,
   gameweekStart,
@@ -24,9 +22,6 @@ const WeeklyScoresTable = ({
 }: Props) => {
   return (
     <Container>
-      <Heading level="h2" as="h1" variant="secondary">
-        {leagueName}
-      </Heading>
       {fixtureWeeksAvailable ? (
         <Table>
           <ParticipantsAndTotalPoints numParticipants={users.length}>
