@@ -4,6 +4,7 @@ import { useQuery } from "@apollo/client";
 import { PREDICTED_LEAGUE_QUERY } from "apollo/queries";
 import PremierLeague from "src/containers/PremierLeague";
 import type { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
+import User from "src/types/User";
 
 const appendTeamNameWithPositionDiff = (
   predictedTable: PremierLeagueTeam[],
@@ -31,10 +32,15 @@ const appendTeamNameWithPositionDiff = (
   });
 };
 
-const UsersPredictedTable = () => {
-  const { data: session } = useSession();
-  const userId = session?.user?.id;
+type Props = {
+  userId: User["id"];
+};
 
+/**
+ * Provides a league table to show the user what the league table would look like
+ * if their own predictions were the true results
+ */
+const UsersPredictedTable = ({ userId }: Props) => {
   const [predictedTable, setPredictedTable] = useState<PremierLeagueTeam[]>([]);
   const [table, setTable] = useState<PremierLeagueTeam[]>([]);
 
