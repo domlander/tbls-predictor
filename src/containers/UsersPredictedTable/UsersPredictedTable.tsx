@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useSession } from "next-auth/react";
 import { useQuery } from "@apollo/client";
 import { PREDICTED_LEAGUE_QUERY } from "apollo/queries";
 import PremierLeague from "src/containers/PremierLeague";
@@ -34,13 +33,14 @@ const appendTeamNameWithPositionDiff = (
 
 type Props = {
   userId: User["id"];
+  username: User["username"];
 };
 
 /**
  * Provides a league table to show the user what the league table would look like
  * if their own predictions were the true results
  */
-const UsersPredictedTable = ({ userId }: Props) => {
+const UsersPredictedTable = ({ userId, username }: Props) => {
   const [predictedTable, setPredictedTable] = useState<PremierLeagueTeam[]>([]);
   const [table, setTable] = useState<PremierLeagueTeam[]>([]);
 
@@ -66,7 +66,7 @@ const UsersPredictedTable = ({ userId }: Props) => {
   return (
     <PremierLeague
       teams={predictedPositions}
-      heading="My predicted league"
+      heading={`${username}'s predicted league`}
       loading={loading}
       isPredictedLeague
     />

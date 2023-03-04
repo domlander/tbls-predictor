@@ -33,7 +33,9 @@ const WeeklyScoresTable = ({
             <BlankHeaderItem />
             {users.map(({ id, username, totalPoints }) => (
               <React.Fragment key={id}>
-                <Participant>{username}</Participant>
+                <Participant>
+                  <a href={`/predictedtable/${id}`}>{username}</a>
+                </Participant>
                 <TotalPoints>{totalPoints}</TotalPoints>
               </React.Fragment>
             ))}
@@ -255,6 +257,14 @@ const Participant = styled.div`
   justify-self: flex-start;
   padding: 0 1em;
   font-size: 1.6rem;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+
+  :hover,
+  :focus {
+    color: ${colours.cyan100};
+  }
 
   @media (max-width: ${pageSizes.tablet}) {
     font-size: 1rem;
