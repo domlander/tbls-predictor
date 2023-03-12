@@ -13,7 +13,7 @@ Sentry.init({
   // A number between 0 and 1, controlling the percentage chance a given transaction will be
   // sent to Sentry. 0 represents 0% while 1 represents 100%.)
   // Adjust this value in production, or use tracesSampler for greater control
-  tracesSampleRate: 0.2,
+  tracesSampleRate: 1,
   environment: process.env.ENVIRONMENT,
   // ...
   // Note: if you want to override the automatic release value, do not set a
