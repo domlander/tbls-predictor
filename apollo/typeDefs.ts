@@ -18,6 +18,7 @@ const typeDefs = gql`
     premierLeagueTable: [PremierLeagueTeam]
     predictedLeagueTable(userId: String): [PremierLeagueTeam]
     currentGameweek: Int!
+    userStats(userId: String): UserStatsPayload!
   }
 
   type Mutation {
@@ -45,6 +46,11 @@ const typeDefs = gql`
 
   type FixturesWithPredictionPayload {
     fixtures: [Fixture!]
+  }
+
+  type UserStatsPayload {
+    perfectPerc: Float
+    correctPerc: Float
   }
 
   input ProcessJoinLeagueRequestInput {

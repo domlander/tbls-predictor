@@ -15,12 +15,16 @@ interface Props {
   weekId: number;
   fixtures: Fixture[];
   recentFixturesByTeam: TeamFixtures[];
+  perfectPerc: number;
+  correctPerc: number;
 }
 
 export default function Home({
   weekId,
   fixtures,
   recentFixturesByTeam,
+  perfectPerc,
+  correctPerc,
 }: Props) {
   const [activeLeagues, _, loading, error] = useUserLeagues();
 
@@ -39,6 +43,24 @@ export default function Home({
           recentFixturesByTeam={recentFixturesByTeam}
         />
       </PredictionsContainer>
+      {perfectPerc &&
+        correctPerc && ( // intentionally do not display if correct % is zero
+          <StatsContainer>
+            <Heading level="h2" as="h1" variant="secondary">
+              My stats
+            </Heading>
+            <Stats>
+              <Stat>
+                <div>Perfect %</div>
+                <StatPerc>{perfectPerc.toFixed(1)}</StatPerc>
+              </Stat>
+              <Stat>
+                <div>Correct %</div>
+                <StatPerc>{correctPerc.toFixed(1)}</StatPerc>
+              </Stat>
+            </Stats>
+          </StatsContainer>
+        )}
       {error ? (
         <LeagueError>
           Sorry, we could not load leagues at this time. Refresh the page or try
@@ -62,6 +84,27 @@ const Container = styled.div`
   @media (max-width: ${pageSizes.tablet}) {
     padding: 4em 0;
   }
+`;
+
+const StatsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4em;
+  margin-bottom: 4em;
+`;
+
+const Stats = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10em;
+`;
+
+const Stat = styled.div`
+  font-size: 1.2rem;
+`;
+
+const StatPerc = styled.div`
+  font-size: 2.6rem;
 `;
 
 const PredictionsContainer = styled.div`

@@ -385,6 +385,49 @@ const resolvers = {
 
       return league;
     },
+    userStats: async (_, { userId }) => {
+      if (!userId) throw new ApolloError("No user ID provided.");
+
+      const predictions = await prisma.prediction.findMany({
+        where: {
+          userId,
+        },
+        include: {
+          user: {
+            select: {
+              id: true,
+            },
+          },
+          fixture: {
+            select: {
+              homeTeam: true,
+              awayTeam: true,
+              homeGoals: true,
+              awayGoals: true,
+            },
+          },
+        },
+      });
+
+      // Filter out future predictions
+      const pastPredictions = predictions.filter(
+        (pred) =>
+          pred.fixture.homeGoals !== null && pred.fixture.awayGoals !== null
+      );
+
+      const correctPredictions = pastPredictions.filter(
+        (p) => p.score !== null && p.score > 0
+      ).length;
+      const perfectPredictions = pastPredictions.filter(
+        (p) => p.score !== null && p.score >= 3
+      ).length;
+      const totalPredictions = pastPredictions.length;
+
+      return {
+        correctPerc: (correctPredictions / totalPredictions) * 100,
+        perfectPerc: (perfectPredictions / totalPredictions) * 100,
+      };
+    },
   },
   Mutation: {
     updateUsername: async (_, { username }, { user: { id } }) => {

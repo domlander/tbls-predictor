@@ -5,7 +5,7 @@ import { getSession } from "next-auth/react";
 import prisma from "prisma/client";
 
 import { addApolloState, initializeApollo } from "apollo/client";
-import { ALL_FIXTURES_QUERY } from "apollo/queries";
+import { HOME_PAGE_QUERY } from "apollo/queries";
 import sortFixtures from "utils/sortFixtures";
 import Fixture from "src/types/Fixture";
 import Home from "src/containers/Home";
@@ -16,9 +16,17 @@ interface Props {
   weekId: number;
   fixtures: Fixture[];
   recentFixturesByTeam: TeamFixtures[];
+  perfectPerc: number;
+  correctPerc: number;
 }
 
-const HomePage = ({ weekId, fixtures, recentFixturesByTeam }: Props) => (
+const HomePage = ({
+  weekId,
+  fixtures,
+  recentFixturesByTeam,
+  perfectPerc,
+  correctPerc,
+}: Props) => (
   <>
     <Head>
       <meta
@@ -34,6 +42,8 @@ const HomePage = ({ weekId, fixtures, recentFixturesByTeam }: Props) => (
       weekId={weekId}
       fixtures={fixtures}
       recentFixturesByTeam={recentFixturesByTeam}
+      perfectPerc={perfectPerc}
+      correctPerc={correctPerc}
     />
   </>
 );
@@ -80,11 +90,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     data: {
       allFixtures: { fixtures },
       currentGameweek,
+      userStats: { perfectPerc, correctPerc },
     },
   }: {
-    data: { allFixtures: { fixtures: Fixture[] }; currentGameweek: number };
+    data: {
+      allFixtures: { fixtures: Fixture[] };
+      currentGameweek: number;
+      userStats: { perfectPerc: number; correctPerc: number };
+    };
   } = await apolloClient.query({
-    query: ALL_FIXTURES_QUERY,
+    variables: { userId: session.user.id },
+    query: HOME_PAGE_QUERY,
   });
 
   const sortedFixtures = sortFixtures(
@@ -101,6 +117,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       weekId: currentGameweek,
       fixtures: sortedFixtures,
       recentFixturesByTeam,
+      perfectPerc,
+      correctPerc,
     },
   });
 };

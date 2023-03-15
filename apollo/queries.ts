@@ -21,6 +21,27 @@ export const FIXTURES_QUERY = gql`
   }
 `;
 
+export const HOME_PAGE_QUERY = gql`
+  query HomePage($userId: String) {
+    allFixtures {
+      fixtures {
+        id
+        gameweek
+        kickoff
+        homeTeam
+        awayTeam
+        homeGoals
+        awayGoals
+      }
+    }
+    currentGameweek
+    userStats(userId: $userId) {
+      perfectPerc
+      correctPerc
+    }
+  }
+`;
+
 export const ALL_FIXTURES_QUERY = gql`
   query AllFixtures {
     allFixtures {

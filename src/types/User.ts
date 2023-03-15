@@ -12,6 +12,8 @@ type User = {
   leagueApplications?: Applicant[];
   totalPoints?: number;
   weeklyPoints?: WeeklyPoints[];
+  perfectPerc?: number;
+  correctPerc?: number;
 };
 
 export default User;
