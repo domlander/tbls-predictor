@@ -410,10 +410,7 @@ const resolvers = {
       });
 
       // Filter out future predictions
-      const pastPredictions = predictions.filter(
-        (pred) =>
-          pred.fixture.homeGoals !== null && pred.fixture.awayGoals !== null
-      );
+      const pastPredictions = predictions.filter((pred) => pred.score !== null);
 
       const correctPredictions = pastPredictions.filter(
         (p) => p.score !== null && p.score > 0
