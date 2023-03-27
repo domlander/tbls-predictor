@@ -1,11 +1,11 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
+import tz from "dayjs/plugin/timezone";
 
 type DateFormat = "past" | "today" | "soon" | "future";
 
 dayjs.extend(utc);
-dayjs.extend(timezone);
+dayjs.extend(tz);
 
 /**
  * 16/04 19:45  past   `${dayOfMonth}/${pad(monthIndex + 1)} ${hours}:${minutes}`;
@@ -24,8 +24,17 @@ const getLocalKickoffTime = (dateInput: Date | string) => {
   const fixture: Date =
     typeof dateInput === "string" ? new Date(dateInput) : dateInput;
 
+  console.log("dayjs(fixture)", dayjs(fixture).toDate());
+  const isKickoffInBST = dayjs(fixture)
+    .toDate()
+    .toString()
+    .includes("British Summer Time");
+
+  const incrementForBST = isKickoffInBST ? 60 : 0;
+
   return dayjs(fixture)
     .subtract(dayjs(fixture).utcOffset(), "minutes")
+    .add(incrementForBST, "minutes")
     .tz(dayjs.tz.guess()) // Guess the user's timezone
     .toDate();
 };

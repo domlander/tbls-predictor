@@ -21,7 +21,7 @@
     "@storybook/react": "^6.5.15",
     "apollo-server-micro": "^2.22.2",
     "axios": "^0.24.0",
-    "dayjs": "^1.10.7",
+    "dayjs": "^1.11.7",
     "deepmerge": "^4.3.0",
     "eslint-config-next": "^13.1.1",
     "graphql": "^15.5.0",
