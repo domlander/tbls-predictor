@@ -24,7 +24,6 @@ const getLocalKickoffTime = (dateInput: Date | string) => {
   const fixture: Date =
     typeof dateInput === "string" ? new Date(dateInput) : dateInput;
 
-  console.log("dayjs(fixture)", dayjs(fixture).toDate());
   const isKickoffInBST = dayjs(fixture)
     .toDate()
     .toString()

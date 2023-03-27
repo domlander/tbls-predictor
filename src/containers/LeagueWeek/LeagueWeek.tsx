@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import styled, { css, keyframes } from "styled-components";
+import React, { useContext, useEffect, useState } from "react";
+import styled from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
 import { useQuery } from "@apollo/client";
@@ -9,6 +9,7 @@ import UserPoints from "src/types/UserPoints";
 import Fixture from "src/types/Fixture";
 import User from "src/types/User";
 import sortFixtures from "utils/sortFixtures";
+import { BannerContext } from "src/containers/Layout/Layout";
 import WeekNavigator from "src/components/WeekNavigator";
 import LeagueWeekUserTotals from "src/components/LeagueWeekUserTotals";
 import LeagueWeekFixtures from "src/components/LeagueWeekFixtures";
@@ -36,7 +37,7 @@ const LeagueWeekContainer = ({
 }: Props) => {
   const [fixtures, setFixtures] = useState(fixturesFromProps);
   const [users, setUsers] = useState(usersFromProps);
-  const [showBanner, setShowBanner] = useState<boolean>(true);
+  const setShowBanner = useContext(BannerContext);
 
   const { loading, refetch } = useQuery(LEAGUE_WEEK_QUERY, {
     variables: {
@@ -57,6 +58,7 @@ const LeagueWeekContainer = ({
 
   // Force a refetch on page load. Get fresh data as soon as we can.
   useEffect(() => {
+    setShowBanner(true);
     refetch().then(() => {
       setShowBanner(false);
     });
@@ -74,9 +76,6 @@ const LeagueWeekContainer = ({
 
   return (
     <Container>
-      <LoadingBanner show={showBanner}>
-        <p>Updating scores...</p>
-      </LoadingBanner>
       <TopBar>
         <Breadcrumbs aria-label="breadcrumbs">
           <ul>
@@ -133,49 +132,6 @@ const Container = styled.div`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-`;
-
-const slidein = keyframes`
-  from { top: -3em; }
-  to   { top: 0; }
-`;
-
-const slideout = keyframes`
-  from { top: 0em; }
-  to   { top: -3em; }
-`;
-
-const pulse = keyframes`
-  from { color: ${colours.grey400} }
-  to { color: ${colours.white} }
-`;
-
-const LoadingBanner = styled.div<{ show: boolean }>`
-  background-color: ${colours.cyan500};
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 3em;
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  animation: ${({ show }) =>
-    show
-      ? css`
-          ${slidein} 0.3s linear forwards
-        `
-      : css`
-          ${slideout} 0.5s 0.5s linear forwards
-        `};
-
-  p {
-    font-size: 1rem;
-    animation: ${pulse} 1s infinite alternate;
-    color: ${colours.white};
-    margin: 0;
-    z-index: 2;
-  }
 `;
 
 const TopBar = styled.div`

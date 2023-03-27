@@ -1,14 +1,25 @@
 import "reflect-metadata";
 
-import React, { ReactNode, useState } from "react";
-import styled from "styled-components";
+import React, {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useState,
+} from "react";
+import styled, { css, keyframes } from "styled-components";
 import { useSession } from "next-auth/react";
 
 import HeaderBar from "src/components/HeaderBar";
 import Sidebar from "src/components/Sidebar";
 import pageSizes from "src/styles/pageSizes";
+import colours from "src/styles/colours";
 
 const DEFAULT_USERNAME = "Me";
+
+export const BannerContext = createContext<Dispatch<SetStateAction<boolean>>>(
+  () => {}
+);
 
 interface Props {
   children: ReactNode;
@@ -19,16 +30,22 @@ const Layout = ({ children }: Props) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const username =
     (status === "authenticated" && session?.user?.username) || DEFAULT_USERNAME;
+  const [showBanner, setShowBanner] = useState(false);
 
   return (
     <Container>
+      <LoadingBanner show={showBanner}>
+        <p>Updating scores...</p>
+      </LoadingBanner>
       <MainContent isSidebarOpen={isSidebarOpen}>
         <HeaderBar
           initial={username[0].toUpperCase()}
           isLoading={status === "loading"}
           handleClick={() => setIsSidebarOpen((isOpen) => !isOpen)}
         />
-        <InnerContainer>{children}</InnerContainer>
+        <BannerContext.Provider value={setShowBanner}>
+          <InnerContainer>{children}</InnerContainer>
+        </BannerContext.Provider>
       </MainContent>
       <SidebarContainer isSidebarOpen={isSidebarOpen}>
         <Sidebar
@@ -71,4 +88,48 @@ const SidebarContainer = styled.div<{ isSidebarOpen: boolean }>`
   will-change: transform;
   transition: transform 0.6s cubic-bezier(0.16, 0.1, 0.3, 1),
     visibility 0s linear 0.6s; */
+`;
+
+const slidein = keyframes`
+  from { top: -3em; }
+  to   { top: 0; }
+`;
+
+const slideout = keyframes`
+  from { top: 0em; }
+  to   { top: -3em; }
+`;
+
+const pulse = keyframes`
+  from { color: ${colours.grey400} }
+  to { color: ${colours.white} }
+`;
+
+const LoadingBanner = styled.div<{ show: boolean }>`
+  background-color: ${colours.cyan500};
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  height: 3em;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: ${({ show }) =>
+    show
+      ? css`
+          ${slidein} 0s linear forwards
+        `
+      : css`
+          ${slideout} 0.5s 0.5s linear forwards
+        `};
+
+  p {
+    font-size: 1rem;
+    animation: ${pulse} 1s infinite alternate;
+    color: ${colours.white};
+    margin: 0;
+    z-index: 2;
+  }
 `;
