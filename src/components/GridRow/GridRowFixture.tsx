@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import Fixture from "src/types/Fixture";
 import colours from "src/styles/colours";

@@ -1,6 +1,6 @@
 import "reflect-metadata";
 
-import React, {
+import {
   createContext,
   Dispatch,
   ReactNode,

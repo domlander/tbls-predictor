@@ -1,4 +1,3 @@
-import React from "react";
 import { GetServerSideProps } from "next";
 import redirectInternal from "utils/redirects";
 import { getSession } from "next-auth/react";

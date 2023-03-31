@@ -1,4 +1,3 @@
-import React from "react";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { getSession } from "next-auth/react";

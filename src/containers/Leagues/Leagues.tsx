@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 
 import useUserLeagues from "src/hooks/useUserLeagues";

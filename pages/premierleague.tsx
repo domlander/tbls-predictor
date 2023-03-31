@@ -1,4 +1,3 @@
-import React from "react";
 import { GetStaticProps } from "next";
 import { initializeApollo } from "apollo/client";
 import { PREMIER_LEAGUE_QUERY } from "apollo/queries";

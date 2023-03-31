@@ -1,4 +1,3 @@
-import React from "react";
 import { GetServerSideProps } from "next";
 import UsersPredictedTable from "src/containers/UsersPredictedTable";
 import User from "src/types/User";

@@ -1,4 +1,3 @@
-import React from "react";
 import { signOut } from "next-auth/react";
 import styled from "styled-components";
 

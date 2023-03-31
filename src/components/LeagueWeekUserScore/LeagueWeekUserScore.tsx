@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import React from "react";
+
 import pageSizes from "src/styles/pageSizes";
 import { Patrick_Hand as PatrickHand } from "@next/font/google";
 

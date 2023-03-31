@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useQuery } from "@apollo/client";
 import { PREDICTED_LEAGUE_QUERY } from "apollo/queries";
 import PremierLeague from "src/containers/PremierLeague";

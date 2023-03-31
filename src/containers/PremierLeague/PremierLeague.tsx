@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import Heading from "src/components/Heading";
 import colours from "src/styles/colours";
 import pageSizes from "src/styles/pageSizes";

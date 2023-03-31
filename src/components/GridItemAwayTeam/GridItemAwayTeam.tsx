@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import colours from "src/styles/colours";
 import pageSizes from "src/styles/pageSizes";

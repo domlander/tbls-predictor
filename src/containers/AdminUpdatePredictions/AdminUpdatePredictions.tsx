@@ -1,4 +1,3 @@
-import React from "react";
 import Heading from "src/components/Heading";
 
 const AdminUpdatePredictions = () => (

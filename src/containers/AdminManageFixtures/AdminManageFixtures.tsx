@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import Image from "next/image";
 import styled from "styled-components";
 import { useMutation, useQuery } from "@apollo/client";

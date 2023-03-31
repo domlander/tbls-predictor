@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import styled from "styled-components";
 import { useSession } from "next-auth/react";
 import Link from "next/link";

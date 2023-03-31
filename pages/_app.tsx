@@ -1,7 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import "reflect-metadata";
 
-import React from "react";
 import Head from "next/head";
 import { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";

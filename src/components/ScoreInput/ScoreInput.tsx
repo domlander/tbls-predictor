@@ -1,4 +1,4 @@
-import React, { KeyboardEvent } from "react";
+import { KeyboardEvent } from "react";
 import Fixture from "src/types/Fixture";
 import styled from "styled-components";
 import colours from "src/styles/colours";

@@ -1,4 +1,3 @@
-import React from "react";
 import type FixtureType from "src/types/Fixture";
 import GridRowFormTeam from "../GridRowFormTeam";
 

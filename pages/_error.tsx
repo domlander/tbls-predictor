@@ -7,7 +7,7 @@
  *  - on the client, when a React lifecycle method throws or rejects, and it's
  *    caught by the built-in Nextjs error boundary
  */
-import React from "react";
+
 import * as Sentry from "@sentry/nextjs";
 import type { NextPage } from "next";
 import type { ErrorProps } from "next/error";

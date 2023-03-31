@@ -1,4 +1,3 @@
-import React from "react";
 import { getSession } from "next-auth/react";
 import { GetServerSideProps } from "next";
 import SignInContainer from "src/containers/SignIn";

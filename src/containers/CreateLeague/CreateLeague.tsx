@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import styled from "styled-components";
 import { useMutation } from "@apollo/client";
 

@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from "react";
+import { FormEvent, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 
 import { USER_QUERY } from "apollo/queries";
