@@ -17,9 +17,15 @@ import colours from "src/styles/colours";
 
 const DEFAULT_USERNAME = "Me";
 
-export const BannerContext = createContext<Dispatch<SetStateAction<boolean>>>(
-  () => {}
-);
+export type BannerContextType = {
+  setShowBanner: Dispatch<SetStateAction<boolean>>;
+  setBannerText: Dispatch<SetStateAction<string>>;
+};
+
+export const BannerContext = createContext<BannerContextType>({
+  setShowBanner: () => {},
+  setBannerText: () => {},
+});
 
 interface Props {
   children: ReactNode;
@@ -31,19 +37,22 @@ const Layout = ({ children }: Props) => {
   const username =
     (status === "authenticated" && session?.user?.username) || DEFAULT_USERNAME;
   const [showBanner, setShowBanner] = useState(false);
+  const [bannerText, setBannerText] = useState("");
 
   return (
     <Container>
-      <LoadingBanner show={showBanner}>
-        <p>Updating scores...</p>
-      </LoadingBanner>
+      {bannerText ? (
+        <LoadingBanner show={showBanner}>
+          <p>{bannerText}</p>
+        </LoadingBanner>
+      ) : null}
       <MainContent isSidebarOpen={isSidebarOpen}>
         <HeaderBar
           initial={username[0].toUpperCase()}
           isLoading={status === "loading"}
           handleClick={() => setIsSidebarOpen((isOpen) => !isOpen)}
         />
-        <BannerContext.Provider value={setShowBanner}>
+        <BannerContext.Provider value={{ setShowBanner, setBannerText }}>
           <InnerContainer>{children}</InnerContainer>
         </BannerContext.Provider>
       </MainContent>

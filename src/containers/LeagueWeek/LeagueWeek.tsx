@@ -37,7 +37,8 @@ const LeagueWeekContainer = ({
 }: Props) => {
   const [fixtures, setFixtures] = useState(fixturesFromProps);
   const [users, setUsers] = useState(usersFromProps);
-  const setShowBanner = useContext(BannerContext);
+  const { setShowBanner } = useContext(BannerContext);
+  const { setBannerText } = useContext(BannerContext);
 
   const { loading, refetch } = useQuery(LEAGUE_WEEK_QUERY, {
     variables: {
@@ -59,6 +60,7 @@ const LeagueWeekContainer = ({
   // Force a refetch on page load. Get fresh data as soon as we can.
   useEffect(() => {
     setShowBanner(true);
+    setBannerText("Updating scores...");
     refetch().then(() => {
       setShowBanner(false);
     });
