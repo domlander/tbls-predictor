@@ -50,6 +50,8 @@ This project was initialised using one of the Next.js example projects:
 ### Preparation for new season
 
 - Create database (Currently using Render.com)
-- Update env variables: `DATABASE_URL`, `RAW_DATABASE_URL`
-- Update `teamsDictionary` in `fplApi.ts` with updated teams for new season
+- Update env variables in `.env`: `DATABASE_URL`, `RAW_DATABASE_URL`
+- Update env variables in Vercel
 - Sign in to `cloud.prisma.io` and create a new environment with new db connection
+- Update `teamsDictionary` in `fplApi.ts` with updated teams for new season
+- Add trigger to database for prediction audit
