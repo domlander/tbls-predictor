@@ -46,3 +46,10 @@ This project was initialised using one of the Next.js example projects:
 
 1. Initially wanted to use Mongo, but data is highly relational which meant SQL was a better fit.
 1. Prisma's documentation isn't clear with regards to explicit many-to-many relationships. Followed the answer provided here as an implementation guide: https://github.com/prisma/prisma/issues/2162
+
+### Preparation for new season
+
+- Create database (Currently using Render.com)
+- Update env variables: `DATABASE_URL`, `RAW_DATABASE_URL`
+- Update `teamsDictionary` in `fplApi.ts` with updated teams for new season
+- Sign in to `cloud.prisma.io` and create a new environment with new db connection

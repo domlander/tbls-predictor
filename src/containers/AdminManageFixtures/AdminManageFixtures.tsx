@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, Fragment, useState } from "react";
 import Image from "next/image";
 import styled from "styled-components";
 import { useMutation, useQuery } from "@apollo/client";
@@ -165,7 +165,7 @@ const AdminManageFixtures = ({
               <span>Home team</span>
               <span>Away team</span>
               {sortedDbFixtures.map(({ id, kickoff, homeTeam, awayTeam }) => (
-                <React.Fragment key={id}>
+                <Fragment key={id}>
                   <div>{dayjs(kickoff).format("DD/MM/YYYY HH:mm")}</div>
                   <input
                     type="text"
@@ -185,7 +185,7 @@ const AdminManageFixtures = ({
                       updateFixtures(id!, false, e.target.value);
                     }}
                   />
-                </React.Fragment>
+                </Fragment>
               ))}
             </FixturesTable>
           )}
@@ -205,11 +205,11 @@ const AdminManageFixtures = ({
             <span>Home team</span>
             <span>Away team</span>
             {sortedApiFixtures.map(({ kickoff, homeTeam, awayTeam }) => (
-              <React.Fragment key={`${homeTeam}-${awayTeam}`}>
+              <Fragment key={`${homeTeam}-${awayTeam}`}>
                 <div>{dayjs(kickoff).format("DD/MM/YYYY HH:mm")}</div>
                 <div>{homeTeam}</div>
                 <div>{awayTeam}</div>
-              </React.Fragment>
+              </Fragment>
             ))}
           </FixturesTable>
         ) : (

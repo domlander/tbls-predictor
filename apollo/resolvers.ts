@@ -410,13 +410,19 @@ const resolvers = {
       });
 
       // Filter out future predictions
-      const pastPredictions = predictions.filter((pred) => pred.score !== null);
+      const pastPredictions = predictions.filter(({ score }) => score !== null);
+
+      if (!pastPredictions.length)
+        return {
+          correctPerc: null,
+          perfectPerc: null,
+        };
 
       const correctPredictions = pastPredictions.filter(
-        (p) => p.score !== null && p.score > 0
+        ({ score }) => score !== null && score > 0
       ).length;
       const perfectPredictions = pastPredictions.filter(
-        (p) => p.score !== null && p.score >= 3
+        ({ score }) => score !== null && score >= 3
       ).length;
       const totalPredictions = pastPredictions.length;
 

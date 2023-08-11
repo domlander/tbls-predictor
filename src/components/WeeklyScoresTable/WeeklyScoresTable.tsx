@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 
@@ -31,12 +32,12 @@ const WeeklyScoresTable = ({
           <ParticipantsAndTotalPoints numParticipants={users.length}>
             <BlankHeaderItem />
             {users.map(({ id, username, totalPoints }) => (
-              <React.Fragment key={id}>
+              <Fragment key={id}>
                 <Participant>
                   <a href={`/predictedtable/${id}`}>{username}</a>
                 </Participant>
                 <TotalPoints>{totalPoints}</TotalPoints>
-              </React.Fragment>
+              </Fragment>
             ))}
           </ParticipantsAndTotalPoints>
           <AllPointsWrapper>
@@ -61,17 +62,17 @@ const WeeklyScoresTable = ({
               ))}
               <BlankTableHeaderItem />
               {users.map(({ id, weeklyPoints }) => (
-                <React.Fragment key={id}>
+                <Fragment key={id}>
                   <BlankTableItem />
                   {weeklyPoints?.map(({ week, points }, i) => (
-                    <React.Fragment key={`${id}${week}`}>
+                    <Fragment key={`${id}${week}`}>
                       <WeeklyPoints rowIndex={i} key={week}>
                         {points}
                       </WeeklyPoints>
-                    </React.Fragment>
+                    </Fragment>
                   ))}
                   <BlankTableItem />
-                </React.Fragment>
+                </Fragment>
               ))}
             </AllPoints>
           </AllPointsWrapper>
