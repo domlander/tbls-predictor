@@ -1,11 +1,12 @@
 import { ApolloServer } from "apollo-server-micro";
+import { getServerSession } from "next-auth/next";
 import { schema } from "apollo/schema";
-import { getSession } from "next-auth/react";
+import { authOptions } from "./auth/[...nextauth]";
 
 const apolloServer = new ApolloServer({
   schema,
-  context: async ({ req }) => {
-    const session = await getSession({ req });
+  context: async ({ req, res }) => {
+    const session = await getServerSession(req, res, authOptions);
     const user = session?.user || null;
     return { user };
   },

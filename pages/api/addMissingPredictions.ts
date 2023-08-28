@@ -1,8 +1,9 @@
 /* eslint-disable camelcase */
 import { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth";
 import { withSentry } from "@sentry/nextjs";
 import { Prediction, Prisma, PrismaClient } from "@prisma/client";
+import { authOptions } from "./auth/[...nextauth]";
 
 const prisma = new PrismaClient({
   datasources: {
@@ -35,7 +36,7 @@ const isGameLive = (kickoff: Date) => {
  */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const secret = req.query.secret as string;
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions);
 
   if (!process.env.ADMIN_EMAIL)
     return res

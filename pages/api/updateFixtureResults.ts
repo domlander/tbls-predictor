@@ -1,9 +1,10 @@
 /* eslint-disable camelcase */
 import { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth/next";
 import { withSentry } from "@sentry/nextjs";
 import { Fixture, Prediction, Prisma, PrismaClient } from "@prisma/client";
 import calculatePredictionScore from "../../utils/calculatePredictionScore";
+import { authOptions } from "./auth/[...nextauth]";
 
 const prisma = new PrismaClient({
   datasources: {
@@ -21,7 +22,7 @@ const prisma = new PrismaClient({
  */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const secret = req.query.secret as string;
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions);
 
   if (!process.env.ADMIN_EMAIL)
     return res

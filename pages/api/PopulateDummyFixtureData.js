@@ -1,12 +1,13 @@
 // import prisma from "prisma/client";
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "./next-auth";
 
 /*
   Populates the Fixture table in the DB with dummy fixtures.
   Clears the entire table first before repopulating with data.
 */
 export default async (req, res) => {
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions);
 
   if (!process.env.ADMIN_EMAIL)
     return res
@@ -16,6 +17,8 @@ export default async (req, res) => {
   if (session.user.email !== process.env.ADMIN_EMAIL) {
     res.status(401).send("You are not authorised to perform this action.");
   }
+
+  return res.status(200).send();
 
   // await prisma.fixture.deleteMany({});
 
