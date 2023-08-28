@@ -15,7 +15,6 @@ const typeDefs = gql`
       leagueId: Int!
       weekId: Int!
     ): FixturesWithPredictionPayload
-    premierLeagueTable: [PremierLeagueTeam]
     predictedLeagueTable(userId: String): [PremierLeagueTeam]
     currentGameweek: Int!
     userStats(userId: String): UserStatsPayload!

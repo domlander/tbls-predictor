@@ -12,8 +12,6 @@ import Fixture from "src/types/Fixture";
 import League from "src/types/League";
 import Prediction from "src/types/Prediction";
 import User from "src/types/User";
-import type { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
-import createPremierLeagueTableFromFixtures from "utils/createPremierLeagueTableFromFixtures";
 import calculateUsersLeaguePosition from "utils/calculateUsersLeaguePosition";
 import calculateWeeksUntilStart from "utils/calculateWeeksUntilStart";
 import calculateWeeksToGo from "utils/calculateWeeksToGo";
@@ -248,98 +246,6 @@ const resolvers = {
       });
 
       return predictions;
-    },
-    premierLeagueTable: async () => {
-      const fixtures = await prisma.fixture.findMany({
-        select: {
-          homeTeam: true,
-          awayTeam: true,
-          homeGoals: true,
-          awayGoals: true,
-        },
-      });
-
-      const premierLeagueTable: PremierLeagueTeam[] =
-        createPremierLeagueTableFromFixtures(fixtures);
-
-      return premierLeagueTable;
-    },
-    /**
-     * Get all fixtures and users predictions
-     *
-     * Create an array of "true" results:
-     *  - if prediction: the prediction
-     *  - no prediction: the result
-     *
-     * Create a league table from those "true" results
-     */
-    predictedLeagueTable: async (_, { userId }) => {
-      const fixtures = await prisma.fixture.findMany({
-        select: {
-          id: true,
-          homeTeam: true,
-          awayTeam: true,
-          homeGoals: true,
-          awayGoals: true,
-        },
-      });
-
-      const premierLeagueTable: PremierLeagueTeam[] =
-        createPremierLeagueTableFromFixtures(fixtures);
-
-      // Get all of this user's predictions
-      const predictions = await prisma.prediction.findMany({
-        where: {
-          userId,
-        },
-        include: {
-          user: {
-            select: {
-              id: true,
-            },
-          },
-          fixture: {
-            select: {
-              homeTeam: true,
-              awayTeam: true,
-              homeGoals: true,
-              awayGoals: true,
-            },
-          },
-        },
-      });
-
-      // Filter out future predictions
-      const predictionsWithResult = predictions.filter(
-        (pred) =>
-          pred.fixture.homeGoals !== null && pred.fixture.awayGoals !== null
-      );
-
-      // Use the prediction as the result. If no prediction, use the actual result of the match.
-      const trueResults = fixtures.map((fixture) => {
-        const prediction = predictionsWithResult.find(
-          (p) => p.fixtureId === fixture.id
-        );
-        if (!prediction) {
-          return fixture;
-        }
-
-        return {
-          ...fixture,
-          homeGoals: prediction.homeGoals,
-          awayGoals: prediction.awayGoals,
-        };
-      });
-
-      const predictedLeagueTable: PremierLeagueTeam[] =
-        createPremierLeagueTableFromFixtures(trueResults).map((team) => ({
-          ...team,
-          predictedPoints: team.points,
-          points:
-            premierLeagueTable.find((t) => t.team === team.team)?.points || 0,
-        }));
-
-      return predictedLeagueTable;
     },
     allLeagues: async () => {
       const leagues = await prisma.league.findMany({
