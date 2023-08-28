@@ -1,31 +1,40 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Link from "next/link";
 
 import type Fixture from "src/types/Fixture";
 import type TeamFixtures from "src/types/TeamFixtures";
-import useUserLeagues from "src/hooks/useUserLeagues";
 import MyLeagues from "src/components/MyLeagues";
 import pageSizes from "src/styles/pageSizes";
 import colours from "src/styles/colours";
 import Heading from "src/components/Heading";
+import UserLeague from "src/types/UserLeague";
 import Predictions from "../Predictions";
 
 interface Props {
   weekId: number;
   fixtures: Fixture[];
   recentFixturesByTeam: TeamFixtures[];
-  perfectPerc: number;
-  correctPerc: number;
+  activeLeagues: UserLeague[];
 }
 
 export default function Home({
   weekId,
   fixtures,
   recentFixturesByTeam,
-  perfectPerc,
-  correctPerc,
+  activeLeagues,
 }: Props) {
-  const [activeLeagues, _, loading, error] = useUserLeagues();
+  const [perfectPerc, setPerfectPerc] = useState<number | null>(null);
+  const [correctPerc, setCorrectPerc] = useState<number | null>(null);
+
+  useEffect(() => {
+    fetch("/api/userStats")
+      .then((res) => res.json())
+      .then((data) => {
+        setPerfectPerc(data.perfectPerc);
+        setCorrectPerc(data.correctPerc);
+      });
+  }, []);
 
   return (
     <Container>
@@ -60,14 +69,7 @@ export default function Home({
             </Stats>
           </StatsContainer>
         )}
-      {error ? (
-        <LeagueError>
-          Sorry, we could not load leagues at this time. Refresh the page or try
-          again later.
-        </LeagueError>
-      ) : (
-        <MyLeagues leagues={activeLeagues} loading={loading} />
-      )}
+      <MyLeagues leagues={activeLeagues} loading={false} />
     </Container>
   );
 }
@@ -133,8 +135,4 @@ const PredictionsHeader = styled.div`
       font-size: 0.8rem;
     }
   }
-`;
-
-const LeagueError = styled.p`
-  font-size: 1rem;
 `;

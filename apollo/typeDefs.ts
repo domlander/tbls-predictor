@@ -14,7 +14,6 @@ const typeDefs = gql`
       weekId: Int!
     ): FixturesWithPredictionPayload
     currentGameweek: Int!
-    userStats(userId: String): UserStatsPayload!
   }
 
   type Mutation {
@@ -34,11 +33,6 @@ const typeDefs = gql`
 
   type FixturesWithPredictionPayload {
     fixtures: [Fixture!]
-  }
-
-  type UserStatsPayload {
-    perfectPerc: Float
-    correctPerc: Float
   }
 
   input ProcessJoinLeagueRequestInput {

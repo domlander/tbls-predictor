@@ -10,11 +10,11 @@ import isPastDeadline from "utils/isPastDeadline";
 import sortFixtures from "utils/sortFixtures";
 import Fixture from "src/types/Fixture";
 import League from "src/types/League";
-import Prediction from "src/types/Prediction";
 import User from "src/types/User";
 import calculateUsersLeaguePosition from "utils/calculateUsersLeaguePosition";
 import calculateWeeksUntilStart from "utils/calculateWeeksUntilStart";
 import calculateWeeksToGo from "utils/calculateWeeksToGo";
+import getWeeklyPoints from "utils/getWeeklyPoints";
 import dateScalar from "./scalars";
 
 const resolvers = {
@@ -65,7 +65,6 @@ const resolvers = {
         throw new UserInputError("Gameweek start week is not valid", {
           argumentName: "gameweekStart",
         });
-
       /**
        * TODO
        * Change from:
@@ -256,52 +255,6 @@ const resolvers = {
       if (!league) throw new ApolloError("Cannot find league.");
 
       return league;
-    },
-    userStats: async (_, { userId }) => {
-      if (!userId) throw new ApolloError("No user ID provided.");
-
-      const predictions = await prisma.prediction.findMany({
-        where: {
-          userId,
-        },
-        include: {
-          user: {
-            select: {
-              id: true,
-            },
-          },
-          fixture: {
-            select: {
-              homeTeam: true,
-              awayTeam: true,
-              homeGoals: true,
-              awayGoals: true,
-            },
-          },
-        },
-      });
-
-      // Filter out future predictions
-      const pastPredictions = predictions.filter(({ score }) => score !== null);
-
-      if (!pastPredictions.length)
-        return {
-          correctPerc: null,
-          perfectPerc: null,
-        };
-
-      const correctPredictions = pastPredictions.filter(
-        ({ score }) => score !== null && score > 0
-      ).length;
-      const perfectPredictions = pastPredictions.filter(
-        ({ score }) => score !== null && score >= 3
-      ).length;
-      const totalPredictions = pastPredictions.length;
-
-      return {
-        correctPerc: (correctPredictions / totalPredictions) * 100,
-        perfectPerc: (perfectPredictions / totalPredictions) * 100,
-      };
     },
   },
   Mutation: {
@@ -816,44 +769,3 @@ const resolvers = {
 };
 
 export default resolvers;
-
-const getWeeklyPoints = (
-  fixtures: Pick<Fixture, "gameweek" | "homeGoals" | "awayGoals">[],
-  predictions: Pick<
-    Prediction,
-    "fixtureId" | "homeGoals" | "awayGoals" | "bigBoyBonus"
-  >[],
-  gameweekStart: number,
-  gameweekEnd: number
-) => {
-  return fixtures
-    .filter(
-      ({ gameweek }) => gameweek >= gameweekStart && gameweek <= gameweekEnd
-    )
-    .reduce(
-      (acc, cur) => {
-        const prediction = predictions.find(
-          ({ fixtureId }) => fixtureId === cur.id
-        );
-        const score = calculatePredictionScore(
-          [
-            prediction?.homeGoals ?? 0,
-            prediction?.awayGoals ?? 0,
-            prediction?.bigBoyBonus ?? false,
-          ],
-          [cur.homeGoals, cur.awayGoals]
-        );
-
-        const arrayIndex = cur.gameweek - gameweekStart;
-        acc[arrayIndex] = {
-          week: cur.gameweek,
-          points: (acc[arrayIndex].points += score),
-        };
-
-        return acc;
-      },
-      new Array(gameweekEnd - gameweekStart + 1)
-        .fill(0)
-        .map((_, i) => ({ week: i + gameweekStart, points: 0 }))
-    );
-};
