@@ -35,25 +35,6 @@ export const CURRENT_GAMEWEEK_QUERY = gql`
   }
 `;
 
-export const USER_LEAGUES_QUERY = gql`
-  query UserLeagues($userId: String) {
-    user(userId: $userId) {
-      leagues {
-        leagueId
-        leagueName
-        gameweekStart
-        gameweekEnd
-        weeksUntilStart
-        weeksToGo
-        position
-        numParticipants
-        isActive
-      }
-    }
-    currentGameweek
-  }
-`;
-
 export const PREDICTIONS_QUERY = gql`
   query Predictions($weekId: Int!) {
     predictions(weekId: $weekId) {
