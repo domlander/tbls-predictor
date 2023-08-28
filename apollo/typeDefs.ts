@@ -8,14 +8,11 @@ const typeDefs = gql`
     fixtures(weekId: Int!): [Fixture!]
     allFixtures: AllFixturesPayload!
     predictions(weekId: Int!): [Prediction!]
-    allLeagues: AllLeaguesPayload!
-    leagueAdmin(leagueId: Int!): LeagueAdminPayload!
     league(leagueId: Int!): League!
     fixturesWithPredictions(
       leagueId: Int!
       weekId: Int!
     ): FixturesWithPredictionPayload
-    predictedLeagueTable(userId: String): [PremierLeagueTeam]
     currentGameweek: Int!
     userStats(userId: String): UserStatsPayload!
   }
@@ -31,16 +28,8 @@ const typeDefs = gql`
     ): UpdatePredictionsPayload!
   }
 
-  type LeagueAdminPayload {
-    league: League!
-  }
-
   type AllFixturesPayload {
     fixtures: [Fixture!]
-  }
-
-  type AllLeaguesPayload {
-    leagues: [League!]
   }
 
   type FixturesWithPredictionPayload {
@@ -148,23 +137,6 @@ const typeDefs = gql`
   type WeeklyPoints {
     week: Int!
     points: Int!
-  }
-
-  type PremierLeagueTeam {
-    team: String!
-    played: Int
-    points: Int!
-    predictedPoints: Int
-    wins: Int!
-    draws: Int!
-    losses: Int!
-    goalsScored: Int
-    homeGoals: Int!
-    awayGoals: Int!
-    goalsConceded: Int
-    homeGoalsConceded: Int!
-    awayGoalsConceded: Int!
-    goalDifference: Int
   }
 
   enum LeagueApplicantStatus {

@@ -247,40 +247,6 @@ const resolvers = {
 
       return predictions;
     },
-    allLeagues: async () => {
-      const leagues = await prisma.league.findMany({
-        select: {
-          id: true,
-          name: true,
-        },
-        take: 10, // TODO: introduce pagination
-      });
-
-      return { leagues };
-    },
-    leagueAdmin: async (_, { leagueId }, { user }) => {
-      const league = await prisma.league.findUnique({
-        where: {
-          id: leagueId,
-        },
-        include: {
-          users: true,
-          applicants: {
-            include: {
-              user: true,
-            },
-          },
-        },
-      });
-      if (!league) throw new ApolloError("Cannot find league.");
-
-      if (league.administratorId !== user?.id)
-        throw new ApolloError(
-          "Cannot process request. User is not an administrator of the league."
-        );
-
-      return { league };
-    },
     league: async (_, { leagueId }) => {
       const league = await prisma.league.findUnique({
         where: {

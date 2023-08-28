@@ -84,39 +84,6 @@ export const USER_LEAGUES_QUERY = gql`
   }
 `;
 
-export const ALL_LEAGUES_QUERY = gql`
-  query AllLeagues {
-    allLeagues {
-      leagues {
-        id
-        name
-      }
-    }
-  }
-`;
-
-export const LEAGUE_ADMIN_QUERY = gql`
-  query LeagueAdmin($leagueId: Int!) {
-    leagueAdmin(leagueId: $leagueId) {
-      league {
-        id
-        name
-        applicants {
-          user {
-            id
-            username
-          }
-          status
-        }
-        users {
-          id
-          username
-        }
-      }
-    }
-  }
-`;
-
 export const PREDICTIONS_QUERY = gql`
   query Predictions($weekId: Int!) {
     predictions(weekId: $weekId) {

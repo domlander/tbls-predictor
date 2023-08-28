@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import styled from "styled-components";
 import { useMutation } from "@apollo/client";
 
@@ -9,7 +9,7 @@ import Heading from "../Heading";
 
 interface Props {
   applicants: Applicant[];
-  setApplicants: any;
+  setApplicants: Dispatch<SetStateAction<Applicant[]>>;
   leagueId: number;
 }
 
