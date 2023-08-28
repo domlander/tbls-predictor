@@ -10,10 +10,7 @@ import generateRecentFixturesByTeam from "utils/generateRecentFixturesByTeam";
 import TeamFixtures from "src/types/TeamFixtures";
 import UserLeague from "src/types/UserLeague";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
-import getWeeklyPoints from "utils/getWeeklyPoints";
-import calculateWeeksUntilStart from "utils/calculateWeeksUntilStart";
-import calculateWeeksToGo from "utils/calculateWeeksToGo";
-import calculateUsersLeaguePosition from "utils/calculateUsersLeaguePosition";
+import getUsersActiveLeagues from "utils/getUsersActiveLeagues";
 
 interface Props {
   weekId: number;
@@ -113,77 +110,11 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     currentGameweek
   );
 
-  // Get all users leagues and all users that belong to those leagues, including their predictions
-  const userLeagues = await prisma.user.findUnique({
-    include: {
-      leagues: {
-        include: {
-          users: {
-            select: {
-              id: true,
-              predictions: {
-                select: {
-                  fixtureId: true,
-                  homeGoals: true,
-                  awayGoals: true,
-                  bigBoyBonus: true,
-                  fixture: {
-                    select: {
-                      gameweek: true,
-                      homeGoals: true,
-                      awayGoals: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-      predictions: {
-        include: {
-          fixture: {
-            select: {
-              homeTeam: true,
-              awayTeam: true,
-              homeGoals: true,
-              awayGoals: true,
-            },
-          },
-        },
-      },
-    },
-    where: {
-      id: user.id,
-    },
-  });
-
-  const activeLeagues = userLeagues?.leagues
-    .filter(({ gameweekEnd }) => gameweekEnd >= currentGameweek)
-    .sort((a, b) => a.gameweekStart - b.gameweekStart)
-    .map((league) => {
-      const users = league.users.map((u) => ({
-        ...u,
-        totalPoints: getWeeklyPoints(
-          fixtures,
-          u.predictions,
-          league.gameweekStart,
-          league.gameweekEnd
-        ).reduce((acc, cur) => acc + (cur.points || 0), 0),
-      }));
-
-      return {
-        leagueId: league.id,
-        leagueName: league.name,
-        weeksUntilStart: calculateWeeksUntilStart(
-          currentGameweek,
-          league.gameweekStart
-        ),
-        weeksToGo: calculateWeeksToGo(currentGameweek, league.gameweekEnd),
-        position: calculateUsersLeaguePosition(users, user.id),
-        numParticipants: league.users.length,
-      };
-    });
+  const activeLeagues = await getUsersActiveLeagues(
+    user.id,
+    fixtures,
+    currentGameweek
+  );
 
   return {
     props: {
