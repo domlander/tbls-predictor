@@ -1,17 +1,5 @@
 import { gql } from "@apollo/client";
 
-export const FIXTURES_QUERY = gql`
-  query Fixtures($weekId: Int!) {
-    fixtures(weekId: $weekId) {
-      id
-      gameweek
-      kickoff
-      homeTeam
-      awayTeam
-    }
-  }
-`;
-
 export const PREDICTIONS_QUERY = gql`
   query Predictions($weekId: Int!) {
     predictions(weekId: $weekId) {

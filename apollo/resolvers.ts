@@ -29,16 +29,6 @@ const resolvers = {
 
       return me;
     },
-    fixtures: async (_, { weekId }) => {
-      const unsortedFixtures = await prisma.fixture.findMany({
-        where: {
-          gameweek: weekId,
-        },
-      });
-      const fixtures = sortFixtures(unsortedFixtures);
-
-      return fixtures;
-    },
     currentGameweek: async (_, __) => {
       // Cannot start in a past gameweek
       const fixtures = await prisma.fixture.findMany({

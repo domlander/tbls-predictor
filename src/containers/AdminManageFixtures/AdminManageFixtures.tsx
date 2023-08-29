@@ -1,14 +1,13 @@
 import { FormEvent, Fragment, useState } from "react";
 import Image from "next/image";
 import styled from "styled-components";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import dayjs from "dayjs";
 
 import arrowLeft from "public/images/ArrowLeft.svg";
 import arrowRight from "public/images/ArrowRight.svg";
 import arrowLeftDisabled from "public/images/ArrowLeftDisabled.svg";
 import arrowRightDisabled from "public/images/ArrowRightDisabled.svg";
-import { FIXTURES_QUERY } from "apollo/queries";
 import { UPDATE_FIXTURES_MUTATION } from "apollo/mutations";
 import sortFixtures from "utils/sortFixtures";
 import Heading from "src/components/Heading";
@@ -31,15 +30,6 @@ const AdminManageFixtures = ({
   const [savingApiDataToDB, setSavingApiDataToDB] = useState(false);
   const [fixtures, setFixtures] = useState(initialFixtures);
   const [fixturesAPI, setFixturesAPI] = useState([]);
-
-  // Query for getting fixtures from the database
-  const { loading, error } = useQuery(FIXTURES_QUERY, {
-    variables: { weekId: gameweek },
-    onCompleted: (data) => {
-      setFixtures(data?.fixtures || []);
-    },
-    fetchPolicy: "network-only",
-  });
 
   // Mutation to update fixtures
   const [
@@ -153,11 +143,7 @@ const AdminManageFixtures = ({
           <Heading level="h2" variant="secondary">
             DB Fixtures
           </Heading>
-          {loading ? (
-            <div>Loading fixtures...</div>
-          ) : error ? (
-            <div>An error occured: {error.message}</div>
-          ) : !fixtures?.length ? (
+          {!fixtures?.length ? (
             <div>No fixtures found.</div>
           ) : (
             <FixturesTable>

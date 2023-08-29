@@ -5,7 +5,6 @@ const typeDefs = gql`
 
   type Query {
     user(userId: String): User
-    fixtures(weekId: Int!): [Fixture!]
     predictions(weekId: Int!): [Prediction!]
     league(leagueId: Int!): League!
     fixturesWithPredictions(
