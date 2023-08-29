@@ -53,13 +53,6 @@ const resolvers = {
 
       return currentGameweek;
     },
-    allFixtures: async () => {
-      const fixtures = await prisma.fixture.findMany();
-
-      const currentGameweek = calculateCurrentGameweek(fixtures);
-
-      return { fixtures, currentGameweek };
-    },
     fixturesWithPredictions: async (_, { leagueId, weekId }) => {
       if (weekId < 1 || weekId > 38)
         throw new UserInputError("Gameweek start week is not valid", {

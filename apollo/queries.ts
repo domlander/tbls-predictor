@@ -12,23 +12,6 @@ export const FIXTURES_QUERY = gql`
   }
 `;
 
-export const ALL_FIXTURES_QUERY = gql`
-  query AllFixtures {
-    allFixtures {
-      fixtures {
-        id
-        gameweek
-        kickoff
-        homeTeam
-        awayTeam
-        homeGoals
-        awayGoals
-      }
-    }
-    currentGameweek
-  }
-`;
-
 export const PREDICTIONS_QUERY = gql`
   query Predictions($weekId: Int!) {
     predictions(weekId: $weekId) {

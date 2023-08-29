@@ -6,7 +6,6 @@ const typeDefs = gql`
   type Query {
     user(userId: String): User
     fixtures(weekId: Int!): [Fixture!]
-    allFixtures: AllFixturesPayload!
     predictions(weekId: Int!): [Prediction!]
     league(leagueId: Int!): League!
     fixturesWithPredictions(
@@ -25,10 +24,6 @@ const typeDefs = gql`
     updatePredictions(
       input: [UpdatePredictionsInput!]!
     ): UpdatePredictionsPayload!
-  }
-
-  type AllFixturesPayload {
-    fixtures: [Fixture!]
   }
 
   type FixturesWithPredictionPayload {
