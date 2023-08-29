@@ -44,26 +44,6 @@ export const PREDICTIONS_QUERY = gql`
   }
 `;
 
-export const LEAGUE_QUERY = gql`
-  query League($leagueId: Int!) {
-    league(leagueId: $leagueId) {
-      name
-      gameweekStart
-      gameweekEnd
-      administratorId
-      users {
-        id
-        username
-        weeklyPoints {
-          week
-          points
-        }
-        totalPoints
-      }
-    }
-  }
-`;
-
 export const LEAGUE_WEEK_QUERY = gql`
   query LeagueWeek($leagueId: Int!, $weekId: Int!) {
     league(leagueId: $leagueId) {
