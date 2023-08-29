@@ -1,21 +1,21 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
-import { initializeApollo } from "apollo/client";
-import { CURRENT_GAMEWEEK_QUERY } from "apollo/queries";
 import redirectInternal from "utils/redirects";
+import prisma from "prisma/client";
+import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 
 const RedirectURL = () => null;
 
 const getCurrentGameweekFromFixtures = async () => {
-  const apolloClient = initializeApollo();
-
-  const {
-    data: { currentGameweek },
-  }: {
-    data: { currentGameweek: number };
-  } = await apolloClient.query({
-    query: CURRENT_GAMEWEEK_QUERY,
+  const fixtures = await prisma.fixture.findMany({
+    select: {
+      id: true,
+      gameweek: true,
+      kickoff: true,
+    },
   });
+
+  const currentGameweek = calculateCurrentGameweek(fixtures);
 
   return currentGameweek;
 };

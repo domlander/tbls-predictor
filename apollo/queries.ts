@@ -29,12 +29,6 @@ export const ALL_FIXTURES_QUERY = gql`
   }
 `;
 
-export const CURRENT_GAMEWEEK_QUERY = gql`
-  query CurrentGameweek {
-    currentGameweek
-  }
-`;
-
 export const PREDICTIONS_QUERY = gql`
   query Predictions($weekId: Int!) {
     predictions(weekId: $weekId) {

@@ -1,9 +1,8 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
-
-import { CURRENT_GAMEWEEK_QUERY } from "apollo/queries";
-import { initializeApollo } from "apollo/client";
+import prisma from "prisma/client";
 import CreateLeague from "src/containers/CreateLeague";
+import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 
 interface Props {
   currentGameweek: number;
@@ -25,14 +24,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const apolloClient = initializeApollo();
-  const {
-    data: { currentGameweek },
-  }: {
-    data: { currentGameweek: number };
-  } = await apolloClient.query({
-    query: CURRENT_GAMEWEEK_QUERY,
+  const fixtures = await prisma.fixture.findMany({
+    select: {
+      id: true,
+      gameweek: true,
+      kickoff: true,
+    },
   });
+
+  const currentGameweek = calculateCurrentGameweek(fixtures);
 
   return {
     props: {

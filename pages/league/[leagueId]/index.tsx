@@ -2,11 +2,12 @@ import { GetStaticProps, GetStaticPaths } from "next";
 import prisma from "prisma/client";
 
 import { initializeApollo } from "apollo/client";
-import { CURRENT_GAMEWEEK_QUERY, LEAGUE_QUERY } from "apollo/queries";
+import { LEAGUE_QUERY } from "apollo/queries";
 import LeagueHome from "src/containers/League";
 import User from "src/types/User";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import redirectInternal from "utils/redirects";
+import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 
 interface Props {
   id: number;
@@ -56,13 +57,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     league: { gameweekStart, gameweekEnd, users },
   } = data;
 
-  const {
-    data: { currentGameweek },
-  }: {
-    data: { currentGameweek: number };
-  } = await apolloClient.query({
-    query: CURRENT_GAMEWEEK_QUERY,
+  const fixtures = await prisma.fixture.findMany({
+    select: {
+      id: true,
+      gameweek: true,
+      kickoff: true,
+    },
   });
+
+  const currentGameweek = calculateCurrentGameweek(fixtures);
 
   const gameweeksPlayed =
     Math.min(currentGameweek, gameweekEnd) - gameweekStart + 1;
