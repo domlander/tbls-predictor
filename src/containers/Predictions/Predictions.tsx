@@ -1,11 +1,10 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 import { UPDATE_PREDICTIONS_MUTATION } from "apollo/mutations";
-import { useMutation, useQuery } from "@apollo/client";
-import { PREDICTIONS_QUERY } from "apollo/queries";
+import { useMutation } from "@apollo/client";
 import WeekNavigator from "src/components/WeekNavigator";
 import PredictionsTable from "src/components/PredictionsTable";
 import colours from "src/styles/colours";
@@ -40,6 +39,8 @@ const Predictions = ({
 }: Props) => {
   const { data: session } = useSession();
   const userId = session?.user?.id;
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [predictions, setPredictions] = useState<Prediction[] | null>(null);
 
   const [
@@ -47,16 +48,25 @@ const Predictions = ({
     { data: mutationData, loading: mutationLoading, error: mutationError },
   ] = useMutation(UPDATE_PREDICTIONS_MUTATION);
 
-  const { loading: isQueryLoading, error: isQueryError } = useQuery(
-    PREDICTIONS_QUERY,
-    {
-      variables: { weekId: gameweek },
-      onCompleted: (data) => {
+  useEffect(() => {
+    setIsLoading(true);
+    setIsError(false);
+    fetch(`/api/userPredictions?weekId=${gameweek}`)
+      .then((res) => {
+        if (res.status !== 200) {
+          throw new Error();
+        }
+        return res.json();
+      })
+      .then((data) => {
         setPredictions(data.predictions);
-      },
-      skip: !userId,
-    }
-  );
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setIsLoading(false);
+        setIsError(true);
+      });
+  }, [gameweek]);
 
   const handleSubmitPredictions = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -75,15 +85,6 @@ const Predictions = ({
 
     await processRequest({
       variables: { input: updatedPredictions },
-      update: (cache, { data }) => {
-        cache.writeQuery({
-          query: PREDICTIONS_QUERY,
-          variables: { weekId: gameweek },
-          data: {
-            predictions: [...data.updatePredictions.predictions],
-          },
-        });
-      },
     });
   };
 
@@ -152,8 +153,7 @@ const Predictions = ({
     setPredictions(updatedPredictions);
   };
 
-  if (isQueryError)
-    return <p>An error has occurred. Please try again later.</p>;
+  if (isError) return <p>An error has occurred. Please try again later.</p>;
 
   if (!fixtures?.length)
     return (
@@ -189,7 +189,7 @@ const Predictions = ({
         updateGoals={updateGoals}
         handleSubmit={handleSubmitPredictions}
         handleBbbUpdate={updateBigBoyBonus}
-        isLoading={isQueryLoading}
+        isLoading={isLoading}
         isSaved={!!mutationData?.updatePredictions}
         isSaving={mutationLoading}
         isSaveError={!!mutationError}

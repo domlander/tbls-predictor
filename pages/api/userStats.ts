@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { NextApiRequest, NextApiResponse } from "next";
 import { withSentry } from "@sentry/nextjs";
 import { PrismaClient } from "@prisma/client";
@@ -18,7 +17,7 @@ const prisma = new PrismaClient({
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession({ req });
   if (!session) {
-    return res.status(500);
+    return res.status(500).end();
   }
 
   const user = await prisma.user.findUnique({
