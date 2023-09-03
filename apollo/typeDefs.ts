@@ -3,17 +3,6 @@ import { gql } from "@apollo/client";
 const typeDefs = gql`
   scalar DateTime
 
-  type Query {
-    user(userId: String): User
-    predictions(weekId: Int!): [Prediction!]
-    league(leagueId: Int!): League!
-    fixturesWithPredictions(
-      leagueId: Int!
-      weekId: Int!
-    ): FixturesWithPredictionPayload
-    currentGameweek: Int!
-  }
-
   type Mutation {
     updateUsername(username: String!): User
     requestToJoinLeague(leagueId: Int!): Applicant
