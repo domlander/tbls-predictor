@@ -4,6 +4,7 @@ import colours from "src/styles/colours";
 
 type Props = {
   placeholder?: string;
+  name?: string;
   value?: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   maxLength?: number;
@@ -13,6 +14,7 @@ type Props = {
 
 const FormInput = ({
   placeholder,
+  name,
   value,
   onChange,
   maxLength,
@@ -21,6 +23,7 @@ const FormInput = ({
 }: Props) => (
   <Input
     type={type}
+    name={name}
     value={value}
     placeholder={placeholder}
     onChange={onChange}

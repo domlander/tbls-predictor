@@ -65,6 +65,7 @@ const CreateLeague = ({ currentGameweek }: Props) => {
         <Label>
           <LabelText>Name:</LabelText>
           <FormInput
+            name="name"
             value={leagueName}
             onChange={(e) => setLeagueName(e.target.value)}
           />

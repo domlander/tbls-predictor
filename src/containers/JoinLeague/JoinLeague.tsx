@@ -44,6 +44,7 @@ const JoinLeague = () => {
           <LabelText>League ID:</LabelText>
           <FormInput
             type="string"
+            name="id"
             pattern="[0-9]*"
             onChange={(e) => setLeagueId(e.target.value.replace(/\D/, ""))}
             value={leagueId}

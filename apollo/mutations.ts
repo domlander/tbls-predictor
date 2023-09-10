@@ -1,14 +1,5 @@
 import { gql } from "@apollo/client";
 
-export const UPDATE_USERNAME_MUTATION = gql`
-  mutation UpdateUsername($username: String!) {
-    updateUsername(username: $username) {
-      id
-      username
-    }
-  }
-`;
-
 export const REQUEST_TO_JOIN_LEAGUE_MUTATION = gql`
   mutation requestToJoinLeague($leagueId: Int!) {
     requestToJoinLeague(leagueId: $leagueId) {

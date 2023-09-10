@@ -1,35 +1,36 @@
 import { FormEvent, useState } from "react";
-import { useMutation } from "@apollo/client";
 
-import { UPDATE_USERNAME_MUTATION } from "apollo/mutations";
 import Heading from "src/components/Heading";
 import ChangeUsernameForm from "src/components/ChangeUsernameForm";
 
 type Props = {
-  username: string;
+  initialUsername: string;
 };
 
-const AccountContainer = ({ username }: Props) => {
-  const [currentUsername, setCurrentUsername] = useState(username);
-  const [formUsername, setFormUsername] = useState(username);
+const AccountContainer = ({ initialUsername }: Props) => {
+  const [currentUsername, setCurrentUsername] = useState(initialUsername);
+  const [username, setFormUsername] = useState(initialUsername);
   const [userFeedback, setUserFeedback] = useState("");
-  const [processRequest] = useMutation(UPDATE_USERNAME_MUTATION);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (formUsername.length < 3)
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (username.length < 3) {
       setUserFeedback("Username must be at least 3 characters");
-    else
-      processRequest({
-        variables: {
-          username: formUsername,
-        },
-      }).then(({ data: { updateUsername } }) => {
-        setUserFeedback(
-          `Success! Username changed to ${updateUsername.username}`
-        );
-        setCurrentUsername(updateUsername.username);
-      });
+      return;
+    }
+
+    const formData = new URLSearchParams();
+    formData.append("username", username);
+
+    fetch("/api/updateUsername", {
+      method: "POST",
+      body: formData,
+    }).then(async (result) => {
+      const data = await result.json();
+      setCurrentUsername(data.username);
+      setUserFeedback(`Success! Username changed to ${data.username}`);
+    });
   };
 
   return (
@@ -38,9 +39,9 @@ const AccountContainer = ({ username }: Props) => {
         Account
       </Heading>
       <ChangeUsernameForm
-        username={formUsername}
+        username={username}
         setUsername={setFormUsername}
-        isFormDisabled={currentUsername === formUsername}
+        isDisabled={currentUsername === username}
         userFeedback={userFeedback}
         handleSubmit={handleSubmit}
       />

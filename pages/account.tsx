@@ -9,7 +9,9 @@ type Props = {
   username: string;
 };
 
-const AccountPage = ({ username }: Props) => <Account username={username} />;
+const AccountPage = ({ username }: Props) => (
+  <Account initialUsername={username} />
+);
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);

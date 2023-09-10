@@ -4,7 +4,6 @@ const typeDefs = gql`
   scalar DateTime
 
   type Mutation {
-    updateUsername(username: String!): User
     requestToJoinLeague(leagueId: Int!): Applicant
     processJoinLeagueRequest(input: ProcessJoinLeagueRequestInput!): Boolean!
     createLeague(input: CreateLeagueInput!): League

@@ -10,28 +10,6 @@ import dateScalar from "./scalars";
 
 const resolvers = {
   Mutation: {
-    updateUsername: async (_, { username }, { user: { id } }) => {
-      if (username.length < 3 || username.length > 20)
-        throw new UserInputError(
-          "Select a username between 3 and 20 characters",
-          {
-            argumentName: "username",
-          }
-        );
-
-      const user = await prisma.user.update({
-        where: {
-          id,
-        },
-        data: {
-          username,
-        },
-      });
-
-      if (user) {
-        return user;
-      }
-    },
     requestToJoinLeague: async (_, { leagueId }, { user }) => {
       if (leagueId < 1)
         throw new UserInputError("League ID not valid", {
