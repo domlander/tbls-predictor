@@ -6,29 +6,6 @@ import dateScalar from "./scalars";
 
 const resolvers = {
   Mutation: {
-    updateFixtures: async (_, { input: fixtures }) => {
-      try {
-        const fixtureUpdates = fixtures.map(({ id, homeTeam, awayTeam }) => {
-          // eslint-disable-next-line consistent-return
-          return prisma.fixture.update({
-            where: {
-              id,
-            },
-            data: {
-              homeTeam,
-              awayTeam,
-            },
-          });
-        });
-
-        await Promise.all(fixtureUpdates);
-      } catch (e) {
-        Sentry.captureException(e);
-        return false;
-      }
-
-      return true;
-    },
     updatePredictions: async (_, { input: predictions }) => {
       const fixtures = await prisma.fixture.findMany({
         select: {

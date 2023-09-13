@@ -4,7 +4,6 @@ const typeDefs = gql`
   scalar DateTime
 
   type Mutation {
-    updateFixtures(input: [UpdateFixturesInput!]!): Boolean
     updatePredictions(
       input: [UpdatePredictionsInput!]!
     ): UpdatePredictionsPayload!
@@ -12,12 +11,6 @@ const typeDefs = gql`
 
   type FixturesWithPredictionPayload {
     fixtures: [Fixture!]
-  }
-
-  input UpdateFixturesInput {
-    id: Int!
-    homeTeam: String!
-    awayTeam: String!
   }
 
   input UpdatePredictionsInput {
