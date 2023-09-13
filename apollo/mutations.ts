@@ -1,35 +1,5 @@
 import { gql } from "@apollo/client";
 
-export const REQUEST_TO_JOIN_LEAGUE_MUTATION = gql`
-  mutation requestToJoinLeague($leagueId: Int!) {
-    requestToJoinLeague(leagueId: $leagueId) {
-      user {
-        id
-      }
-      league {
-        id
-      }
-      status
-      createdAt
-    }
-  }
-`;
-
-export const PROCESS_JOIN_LEAGUE_REQUEST_MUTATION = gql`
-  mutation processJoinLeagueRequest($input: ProcessJoinLeagueRequestInput!) {
-    processJoinLeagueRequest(input: $input)
-  }
-`;
-
-export const CREATE_LEAGUE_MUTATION = gql`
-  mutation CreateLeague($input: CreateLeagueInput!) {
-    createLeague(input: $input) {
-      id
-      name
-    }
-  }
-`;
-
 export const UPDATE_FIXTURES_MUTATION = gql`
   mutation UpdateFixtures($input: [UpdateFixturesInput!]!) {
     updateFixtures(input: $input)

@@ -4,9 +4,6 @@ const typeDefs = gql`
   scalar DateTime
 
   type Mutation {
-    requestToJoinLeague(leagueId: Int!): Applicant
-    processJoinLeagueRequest(input: ProcessJoinLeagueRequestInput!): Boolean!
-    createLeague(input: CreateLeagueInput!): League
     updateFixtures(input: [UpdateFixturesInput!]!): Boolean
     updatePredictions(
       input: [UpdatePredictionsInput!]!
@@ -15,18 +12,6 @@ const typeDefs = gql`
 
   type FixturesWithPredictionPayload {
     fixtures: [Fixture!]
-  }
-
-  input ProcessJoinLeagueRequestInput {
-    leagueId: Int!
-    applicantId: String!
-    isAccepted: Boolean!
-  }
-
-  input CreateLeagueInput {
-    name: String!
-    gameweekStart: Int!
-    gameweekEnd: Int!
   }
 
   input UpdateFixturesInput {
