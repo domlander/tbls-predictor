@@ -4,6 +4,10 @@ import { withSentry } from "@sentry/nextjs";
 import { PrismaClient } from "@prisma/client";
 import { authOptions } from "./auth/[...nextauth]";
 
+type RequestBody = {
+  username: string;
+};
+
 const prisma = new PrismaClient({
   datasources: {
     db: {
@@ -22,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(500).end();
   }
 
-  const { username } = req.body;
+  const { username }: RequestBody = req.body;
 
   if (username.length < 3 || username.length > 20)
     return res

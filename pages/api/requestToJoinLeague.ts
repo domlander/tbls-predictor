@@ -7,6 +7,10 @@ import { isUserAlreadyBelongToLeague } from "utils/isUserAlreadyBelongToLeague";
 import isUserAppliedToLeague from "utils/isUserAppliedToLeague";
 import { authOptions } from "./auth/[...nextauth]";
 
+type RequestBody = {
+  leagueId: string;
+};
+
 const prisma = new PrismaClient({
   datasources: {
     db: {
@@ -26,7 +30,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const userId = session.user.id;
-  const leagueId = parseInt(req.body.leagueId);
+  const { leagueId: leagueIdFromRequest }: RequestBody = req.body;
+  const leagueId = parseInt(leagueIdFromRequest);
 
   if (leagueId < 1) {
     return res.status(500).json("League ID not valid.");

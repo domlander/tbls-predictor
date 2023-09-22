@@ -6,6 +6,10 @@ import Fixture from "src/types/Fixture";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "./auth/[...nextauth]";
 
+type RequestBody = {
+  fixtures: Fixture[];
+};
+
 const prisma = new PrismaClient({
   datasources: {
     db: {
@@ -26,23 +30,21 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .json("You are not authorized to perform this action.");
   }
 
-  const { fixtures } = JSON.parse(req.body);
+  const { fixtures }: RequestBody = JSON.parse(req.body);
   if (!fixtures?.length) return res.status(200).end();
 
-  const fixtureUpdates = (fixtures as Fixture[]).map(
-    ({ id, homeTeam, awayTeam }) => {
-      // eslint-disable-next-line consistent-return
-      return prisma.fixture.update({
-        where: {
-          id,
-        },
-        data: {
-          homeTeam,
-          awayTeam,
-        },
-      });
-    }
-  );
+  const fixtureUpdates = fixtures.map(({ id, homeTeam, awayTeam }) => {
+    // eslint-disable-next-line consistent-return
+    return prisma.fixture.update({
+      where: {
+        id,
+      },
+      data: {
+        homeTeam,
+        awayTeam,
+      },
+    });
+  });
 
   await Promise.all(fixtureUpdates);
 

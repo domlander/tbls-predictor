@@ -6,6 +6,12 @@ import { PrismaClient } from "@prisma/client";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import { authOptions } from "./auth/[...nextauth]";
 
+type RequestBody = {
+  name: string;
+  gameweekStart: string;
+  gameweekEnd: string;
+};
+
 const prisma = new PrismaClient({
   datasources: {
     db: {
@@ -26,9 +32,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const userId = session.user.id;
 
-  const { name } = req.body;
-  const gameweekStart = parseInt(req.body.gameweekStart);
-  const gameweekEnd = parseInt(req.body.gameweekEnd);
+  const {
+    name,
+    gameweekStart: gameweekStartStr,
+    gameweekEnd: gameweekEndStr,
+  }: RequestBody = req.body;
+
+  const gameweekStart = parseInt(gameweekStartStr);
+  const gameweekEnd = parseInt(gameweekEndStr);
 
   if (gameweekStart < 1 || gameweekStart > 38)
     return res.status(500).json("Gameweek start week is not valid");

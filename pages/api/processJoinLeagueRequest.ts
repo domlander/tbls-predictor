@@ -5,6 +5,12 @@ import { PrismaClient } from "@prisma/client";
 
 import { authOptions } from "./auth/[...nextauth]";
 
+type RequestBody = {
+  applicantId: string;
+  leagueId: string;
+  isAccepted: string;
+};
+
 const prisma = new PrismaClient({
   datasources: {
     db: {
@@ -23,9 +29,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(500).end();
   }
 
-  const { applicantId } = req.body;
-  const leagueId = parseInt(req.body.leagueId);
-  const isAccepted = req.body.isAccepted === "true";
+  const {
+    applicantId,
+    leagueId: leagueIdStr,
+    isAccepted: isAcceptedStr,
+  }: RequestBody = req.body;
+
+  const leagueId = parseInt(leagueIdStr);
+  const isAccepted = isAcceptedStr === "true";
 
   const league = await prisma.league.findUnique({
     where: {
