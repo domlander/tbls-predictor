@@ -1,12 +1,10 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { withSentry } from "@sentry/nextjs";
 import { PrismaClient } from "@prisma/client";
-import { getServerSession } from "next-auth/next";
 import * as Sentry from "@sentry/nextjs";
 
 import { UpdatePredictionsInputType } from "src/containers/Predictions/Predictions";
 import isPastDeadline from "utils/isPastDeadline";
-import { authOptions } from "./auth/[...nextauth]";
 
 type RequestBody = {
   predictions: UpdatePredictionsInputType[];
@@ -23,13 +21,6 @@ const prisma = new PrismaClient({
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "POST") {
     return res.status(405).send("Method not allowed.");
-  }
-
-  const session = await getServerSession(req, res, authOptions);
-  if (session?.user.email !== process.env.ADMIN_EMAIL) {
-    return res
-      .status(401)
-      .json("You are not authorized to perform this action.");
   }
 
   const { predictions }: RequestBody = JSON.parse(req.body);
