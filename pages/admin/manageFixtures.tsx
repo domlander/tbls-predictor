@@ -1,10 +1,11 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 
+import prisma from "prisma/client";
 import Fixture from "src/types/Fixture";
-import ManageFixtures from "src/containers/AdminManageFixtures";
-import { initializeApollo } from "apollo/client";
-import { ALL_FIXTURES_QUERY } from "apollo/queries";
+import AdminManageFixtures from "src/containers/AdminManageFixtures";
+import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
+import sortFixtures from "utils/sortFixtures";
 
 interface Props {
   currentGameweek: number;
@@ -12,7 +13,7 @@ interface Props {
 }
 
 const ManageFixturesPage = ({ currentGameweek, fixtures }: Props) => (
-  <ManageFixtures gameweek={currentGameweek} fixtures={fixtures} />
+  <AdminManageFixtures gameweek={currentGameweek} fixtures={fixtures} />
 );
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -38,29 +39,22 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  const apolloClient = initializeApollo();
-  const {
-    data: {
-      allFixtures: { fixtures: allFixtures },
-      currentGameweek,
-    },
-  }: {
-    data: { allFixtures: { fixtures: Fixture[] }; currentGameweek: number };
-  } = await apolloClient.query({
-    query: ALL_FIXTURES_QUERY,
-  });
+  const allFixtures: Fixture[] = await prisma.fixture.findMany();
+  const currentGameweek = calculateCurrentGameweek(allFixtures);
 
-  const fixtures = allFixtures
-    .filter((fixture) => fixture.gameweek === currentGameweek)
-    .map((fixture) => ({
-      ...fixture,
-      kickoff: fixture.kickoff.toString(),
-    }));
+  const fixtures = allFixtures.filter(
+    (fixture) => fixture.gameweek === currentGameweek
+  );
+
+  const sortedFixtures = sortFixtures(fixtures).map((fixture) => ({
+    ...fixture,
+    kickoff: fixture.kickoff.toString(),
+  }));
 
   return {
     props: {
       currentGameweek,
-      fixtures,
+      fixtures: sortedFixtures,
     },
   };
 };

@@ -1,8 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from "next";
-import prisma from "prisma/client";
 
-import { ALL_FIXTURES_QUERY } from "apollo/queries";
-import { initializeApollo } from "apollo/client";
+import prisma from "prisma/client";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import redirectInternal from "utils/redirects";
 import sortFixtures from "utils/sortFixtures";
@@ -10,6 +8,7 @@ import Fixture from "src/types/Fixture";
 import Predictions from "src/containers/Predictions";
 import TeamFixtures from "src/types/TeamFixtures";
 import generateRecentFixturesByTeam from "utils/generateRecentFixturesByTeam";
+import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 
 interface Props {
   fixtures: Fixture[];
@@ -41,17 +40,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const weekId = convertUrlParamToNumber(params?.weekId);
   if (!weekId || weekId <= 0) return redirectInternal("/");
 
-  const apolloClient = initializeApollo();
-  const {
-    data: {
-      allFixtures: { fixtures },
-      currentGameweek,
-    },
-  }: {
-    data: { allFixtures: { fixtures: Fixture[] }; currentGameweek: number };
-  } = await apolloClient.query({
-    query: ALL_FIXTURES_QUERY,
-  });
+  const fixtures: Fixture[] = await prisma.fixture.findMany();
 
   const firstGameweek = fixtures.reduce(
     (acc, fixture) => (fixture.gameweek < acc ? fixture.gameweek : acc),
@@ -66,6 +55,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     fixtures.filter((fixture) => fixture.gameweek === weekId)
   );
 
+  const currentGameweek = calculateCurrentGameweek(fixtures);
   const recentFixturesByTeam = generateRecentFixturesByTeam(
     fixtures,
     currentGameweek
@@ -73,9 +63,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   return {
     props: {
-      fixtures: sortedFixtures,
+      fixtures: JSON.parse(JSON.stringify(sortedFixtures)),
       weekId,
-      recentFixturesByTeam,
+      recentFixturesByTeam: JSON.parse(JSON.stringify(recentFixturesByTeam)),
       firstGameweek,
       lastGameweek,
     },

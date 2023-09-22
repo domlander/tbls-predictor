@@ -7,7 +7,7 @@ import Heading from "../Heading";
 export interface Props {
   username: string;
   setUsername: any;
-  isFormDisabled: boolean;
+  isDisabled: boolean;
   userFeedback?: string;
   handleSubmit: any;
 }
@@ -15,27 +15,28 @@ export interface Props {
 const ChangeUsernameForm = ({
   username,
   setUsername,
-  isFormDisabled,
+  isDisabled,
   userFeedback,
   handleSubmit,
 }: Props) => (
   <Container>
     <Heading level="h2" variant="secondary">
-      Change username
+      Update username
     </Heading>
     <form onSubmit={handleSubmit}>
       <Label>
-        <LabelText>Username:</LabelText>
+        Username:
         <FormInput
           type="text"
+          name="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           maxLength={20}
         />
       </Label>
       <ButtonContainer>
-        <Button type="submit" disabled={isFormDisabled} variant="primary">
-          Change
+        <Button type="submit" disabled={isDisabled} variant="primary">
+          Update
         </Button>
       </ButtonContainer>
       {userFeedback && <Feedback>{userFeedback}</Feedback>}
@@ -48,18 +49,18 @@ const Container = styled.section`
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 2em;
+  gap: 4em;
 `;
 
 const Label = styled.label`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`;
-
-const LabelText = styled.p`
   font-size: 1.6em;
-  margin-right: 1em;
+
+  input {
+    font-size: 1.2em;
+  }
 `;
 
 const ButtonContainer = styled.div`

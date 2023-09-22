@@ -1,15 +1,13 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import styled from "styled-components";
-import { useMutation } from "@apollo/client";
 
-import { PROCESS_JOIN_LEAGUE_REQUEST_MUTATION } from "apollo/mutations";
 import Applicant from "src/types/Applicant";
 import Button from "../Button";
 import Heading from "../Heading";
 
 interface Props {
   applicants: Applicant[];
-  setApplicants: any;
+  setApplicants: Dispatch<SetStateAction<Applicant[]>>;
   leagueId: number;
 }
 
@@ -19,24 +17,22 @@ const LeagueApplicantsRequests = ({
   leagueId,
 }: Props) => {
   const [userFeedback, setUserFeedback] = useState<string>("");
-  const [processRequest] = useMutation(PROCESS_JOIN_LEAGUE_REQUEST_MUTATION);
 
   const handleAcceptOrReject = (applicantId: string, accept: boolean) => {
-    processRequest({
-      variables: {
-        input: {
-          leagueId,
-          applicantId,
-          isAccepted: accept,
-        },
-      },
-    }).then((data) => {
+    const formData = new URLSearchParams();
+    formData.append("leagueId", leagueId.toString());
+    formData.append("applicantId", applicantId);
+    formData.append("isAccepted", accept.toString());
+
+    fetch("/api/processJoinLeagueRequest", {
+      method: "POST",
+      body: formData,
+    }).then(async (resp) => {
+      const message = await resp.json();
+
       setApplicants(
         applicants.filter((applicant) => applicant.user.id !== applicantId)
       );
-      const message = data?.data?.processJoinLeagueRequest
-        ? "Successfully added user to the league!"
-        : "Rejected user's application";
 
       setUserFeedback(message);
     });

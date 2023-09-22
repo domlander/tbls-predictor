@@ -3,28 +3,27 @@ import Head from "next/head";
 import { getSession } from "next-auth/react";
 import prisma from "prisma/client";
 
-import { addApolloState, initializeApollo } from "apollo/client";
-import { HOME_PAGE_QUERY } from "apollo/queries";
 import sortFixtures from "utils/sortFixtures";
 import Fixture from "src/types/Fixture";
 import Home from "src/containers/Home";
 import generateRecentFixturesByTeam from "utils/generateRecentFixturesByTeam";
 import TeamFixtures from "src/types/TeamFixtures";
+import UserLeague from "src/types/UserLeague";
+import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
+import getUsersActiveLeagues from "utils/getUsersActiveLeagues";
 
 interface Props {
   weekId: number;
   fixtures: Fixture[];
   recentFixturesByTeam: TeamFixtures[];
-  perfectPerc: number;
-  correctPerc: number;
+  activeLeagues: UserLeague[];
 }
 
 const HomePage = ({
   weekId,
   fixtures,
   recentFixturesByTeam,
-  perfectPerc,
-  correctPerc,
+  activeLeagues,
 }: Props) => (
   <>
     <Head>
@@ -41,15 +40,15 @@ const HomePage = ({
       weekId={weekId}
       fixtures={fixtures}
       recentFixturesByTeam={recentFixturesByTeam}
-      perfectPerc={perfectPerc}
-      correctPerc={correctPerc}
+      activeLeagues={activeLeagues}
     />
   </>
 );
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
-  if (!session) {
+  if (!session?.user?.email) {
+    // TODO: Log this error
     return {
       props: {},
       redirect: {
@@ -59,17 +58,21 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     };
   }
 
-  if (!session?.user?.email) {
-    // TODO: Log this strange behaviour: Session is found but no email address
-    return { props: {} };
+  const user = await prisma.user.findUnique({
+    where: { email: session.user.email },
+  });
+  if (!user?.id) {
+    return {
+      props: {},
+      redirect: {
+        destination: "/signIn",
+        permanent: false,
+      },
+    };
   }
 
   // TODO: Can we move this to account creation?
   // Give user a username if they do not have one.
-  const user = await prisma.user.findUnique({
-    where: { email: session.user.email },
-  });
-
   if (!user?.username) {
     let username = session.user.email.split("@")[0];
 
@@ -84,23 +87,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     });
   }
 
-  const apolloClient = initializeApollo();
-  const {
-    data: {
-      allFixtures: { fixtures },
-      currentGameweek,
-      userStats: { perfectPerc, correctPerc },
+  const fixtures = await prisma.fixture.findMany({
+    select: {
+      id: true,
+      gameweek: true,
+      kickoff: true,
+      homeTeam: true,
+      awayTeam: true,
+      homeGoals: true,
+      awayGoals: true,
     },
-  }: {
-    data: {
-      allFixtures: { fixtures: Fixture[] };
-      currentGameweek: number;
-      userStats: { perfectPerc: number; correctPerc: number };
-    };
-  } = await apolloClient.query({
-    variables: { userId: session.user.id },
-    query: HOME_PAGE_QUERY,
   });
+
+  const currentGameweek = calculateCurrentGameweek(fixtures);
 
   const sortedFixtures = sortFixtures(
     fixtures.filter(({ gameweek }) => gameweek === currentGameweek)
@@ -111,15 +110,20 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     currentGameweek
   );
 
-  return addApolloState(apolloClient, {
+  const activeLeagues = await getUsersActiveLeagues(
+    user.id,
+    fixtures,
+    currentGameweek
+  );
+
+  return {
     props: {
       weekId: currentGameweek,
-      fixtures: sortedFixtures,
-      recentFixturesByTeam,
-      perfectPerc,
-      correctPerc,
+      fixtures: JSON.parse(JSON.stringify(sortedFixtures)),
+      recentFixturesByTeam: JSON.parse(JSON.stringify(recentFixturesByTeam)),
+      activeLeagues: JSON.parse(JSON.stringify(activeLeagues)),
     },
-  });
+  };
 };
 
 export default HomePage;

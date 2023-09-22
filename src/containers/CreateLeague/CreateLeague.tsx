@@ -1,8 +1,6 @@
 import { FormEvent, useState } from "react";
 import styled from "styled-components";
-import { useMutation } from "@apollo/client";
 
-import { CREATE_LEAGUE_MUTATION } from "apollo/mutations";
 import Button from "src/components/Button";
 import colours from "src/styles/colours";
 import Heading from "src/components/Heading";
@@ -20,10 +18,7 @@ const CreateLeague = ({ currentGameweek }: Props) => {
     (currentGameweek + 1).toString()
   );
   const [weeksToRun, setWeeksToRun] = useState("10");
-
-  const [createLeague, { loading }] = useMutation(CREATE_LEAGUE_MUTATION, {
-    onError: (error) => setUserFeedback(error.message),
-  });
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,29 +26,33 @@ const CreateLeague = ({ currentGameweek }: Props) => {
     const startWeek = parseInt(gameweekStart);
     const endWeek = startWeek + parseInt(weeksToRun) - 1;
 
-    if (!leagueName) setUserFeedback("Please enter a league name");
-    else if (startWeek < 1 || startWeek > 38)
-      setUserFeedback("Please enter a valid start week");
-    else {
-      createLeague({
-        variables: {
-          input: {
-            name: leagueName,
-            gameweekStart: startWeek,
-            gameweekEnd: endWeek,
-          },
-        },
-      }).then(({ data, errors }) => {
-        if (errors?.length) {
-          setUserFeedback(errors[0].message);
-        } else if (data?.createLeague) {
-          setUserFeedback(
-            `Success! League "${data.createLeague.name}" was created! Ask friends to join using ID: ${data.createLeague.id}`
-          );
-          setLeagueName("");
-        }
-      });
+    if (!leagueName) {
+      setUserFeedback("Please enter a league name");
+      return;
     }
+
+    if (startWeek < 1 || startWeek > 38) {
+      setUserFeedback("Please enter a valid start week");
+      return;
+    }
+
+    const formData = new URLSearchParams();
+    formData.append("name", leagueName);
+    formData.append("gameweekStart", startWeek.toString());
+    formData.append("gameweekEnd", endWeek.toString());
+
+    setLoading(true);
+
+    fetch("/api/createLeague", {
+      method: "POST",
+      body: formData,
+    }).then(async (res) => {
+      const message = await res.json();
+
+      setLoading(false);
+      setUserFeedback(message);
+      setLeagueName("");
+    });
   };
 
   return (
@@ -65,6 +64,7 @@ const CreateLeague = ({ currentGameweek }: Props) => {
         <Label>
           <LabelText>Name:</LabelText>
           <FormInput
+            name="name"
             value={leagueName}
             onChange={(e) => setLeagueName(e.target.value)}
           />

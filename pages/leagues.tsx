@@ -1,35 +1,50 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
-import { addApolloState, initializeApollo } from "apollo/client";
-import { USER_LEAGUES_QUERY } from "apollo/queries";
 import Leagues from "src/containers/Leagues";
 import redirectInternal from "utils/redirects";
+import UserLeague from "src/types/UserLeague";
+import prisma from "prisma/client";
+import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
+import getUsersActiveLeagues from "utils/getUsersActiveLeagues";
 
-const LeaguesPage = () => {
-  return <Leagues />;
+type Props = {
+  activeLeagues: UserLeague[];
+};
+
+const LeaguesPage = ({ activeLeagues }: Props) => {
+  return <Leagues activeLeagues={activeLeagues} />;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const session = await getSession(context);
-  if (!session?.user?.id) {
+  const userId = session?.user?.id;
+  if (!userId) {
     return redirectInternal("/signIn");
   }
 
-  const apolloClient = initializeApollo();
-  const { data } = await apolloClient.query({
-    query: USER_LEAGUES_QUERY,
-    variables: { userId: session.user.id },
+  const fixtures = await prisma.fixture.findMany({
+    select: {
+      id: true,
+      gameweek: true,
+      kickoff: true,
+      homeGoals: true,
+      awayGoals: true,
+    },
   });
 
-  if (!data) return { notFound: true };
+  const currentGameweek = calculateCurrentGameweek(fixtures);
 
-  /**
-   * The GraphQL query has been run on the server.
-   * Populate the cache on the client with the results.
-   */
-  return addApolloState(apolloClient, {
-    props: {},
-  });
+  const activeLeagues = await getUsersActiveLeagues(
+    userId,
+    fixtures,
+    currentGameweek
+  );
+
+  return {
+    props: {
+      activeLeagues,
+    },
+  };
 };
 
 export default LeaguesPage;

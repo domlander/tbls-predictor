@@ -1,12 +1,13 @@
 /* eslint-disable camelcase */
 import { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth/next";
 import prisma from "prisma/client";
 import * as Sentry from "@sentry/nextjs";
 
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
-import { getSession } from "next-auth/react";
 import Fixture from "src/types/Fixture";
 import { getFixturesFromApiForGameweek } from "utils/fplApi";
+import { authOptions } from "./auth/[...nextauth]";
 
 /*
   Adds or updates fixtures in the database using the FPL fixtures API.
@@ -33,7 +34,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .status(500)
       .send("Please ensure the ACTIONS_SECRET environment variable is set.");
 
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions);
   if (
     session?.user?.email !== process.env.ADMIN_EMAIL &&
     secret !== process.env.ACTIONS_SECRET

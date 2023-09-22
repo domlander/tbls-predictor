@@ -14,6 +14,7 @@ const calculateUsersLeaguePosition = (
   const position = users
     .sort((a, b) => b.totalPoints - a.totalPoints)
     .findIndex((user) => user.totalPoints === usersScore);
+
   if (position === -1) {
     return null;
   }

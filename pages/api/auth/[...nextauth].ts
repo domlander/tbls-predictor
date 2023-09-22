@@ -1,10 +1,11 @@
 import NextAuth from "next-auth";
+import type { NextAuthOptions } from "next-auth";
 import EmailProvider from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "prisma/client";
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     EmailProvider({
@@ -19,19 +20,16 @@ export default NextAuth({
       from: process.env.EMAIL_FROM,
     }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_AUTH_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET,
+      clientId: process.env.GOOGLE_AUTH_CLIENT_ID ?? "",
+      clientSecret: process.env.GOOGLE_AUTH_CLIENT_SECRET ?? "",
       profile(profile) {
-        if (profile)
-          return {
-            id: profile.sub,
-            email: profile.email,
-            emailVerified: profile.email_verified,
-            username: profile.name,
-            image: profile.picture,
-          };
-
-        return null;
+        return {
+          id: profile?.sub ?? "",
+          email: profile?.email ?? "",
+          emailVerified: profile?.email_verified ?? "",
+          username: profile?.name ?? "",
+          image: profile?.picture ?? "",
+        };
       },
     }),
   ],
@@ -55,4 +53,6 @@ export default NextAuth({
   theme: {
     colorScheme: "dark",
   },
-});
+};
+
+export default NextAuth(authOptions);

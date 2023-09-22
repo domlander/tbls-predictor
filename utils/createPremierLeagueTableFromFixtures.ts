@@ -51,9 +51,7 @@ const addTeamToTableWithoutFixture = (
   });
 };
 
-const createPremierLeagueTableFromFixtures = (
-  fixtures: FixtureType[]
-): PremierLeagueTeam[] => {
+const generatePremTable = (fixtures: FixtureType[]): PremierLeagueTeam[] => {
   const table = fixtures.reduce(
     (teams, { homeTeam, awayTeam, homeGoals, awayGoals }) => {
       if (homeGoals === null || awayGoals === null) {
@@ -129,4 +127,4 @@ const createPremierLeagueTableFromFixtures = (
   return sortedTable;
 };
 
-export default createPremierLeagueTableFromFixtures;
+export default generatePremTable;

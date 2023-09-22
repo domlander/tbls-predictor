@@ -1,24 +1,19 @@
 import styled from "styled-components";
-
-import useUserLeagues from "src/hooks/useUserLeagues";
 import Heading from "src/components/Heading";
 import MyLeagues from "src/components/MyLeagues";
-import MyFinishedLeagues from "src/components/MyFinishedLeagues";
+import UserLeague from "src/types/UserLeague";
 
-const Leagues = () => {
-  const [activeLeagues, finishedLeagues, loading, error] = useUserLeagues();
+type Props = {
+  activeLeagues: UserLeague[];
+};
 
-  if (error) return <div>An error has occurred. Please try again later.</div>;
-
+const Leagues = ({ activeLeagues }: Props) => {
   return (
     <Container>
       <LeaguesHeading level="h1" variant="secondary">
         Leagues
       </LeaguesHeading>
-      <MyLeagues leagues={activeLeagues} loading={loading} />
-      {!loading && finishedLeagues?.length ? (
-        <MyFinishedLeagues leagues={finishedLeagues} />
-      ) : null}
+      <MyLeagues leagues={activeLeagues} loading={false} />
     </Container>
   );
 };

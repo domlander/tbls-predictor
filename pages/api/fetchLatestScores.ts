@@ -1,12 +1,13 @@
 /* eslint-disable camelcase */
 import { NextApiRequest, NextApiResponse } from "next";
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth/next";
 import { withSentry } from "@sentry/nextjs";
 import dayjs from "dayjs";
 import { PrismaClient } from "@prisma/client";
 import { getFixturesFromApiForGameweek } from "utils/fplApi";
 import Fixture from "src/types/Fixture";
 import { calculateCurrentGameweek } from "../../utils/calculateCurrentGameweek";
+import { authOptions } from "./auth/[...nextauth]";
 
 const prisma = new PrismaClient({
   datasources: {
@@ -42,7 +43,7 @@ export const isGameLiveOrRecentlyFinished = (kickoff: Date): boolean => {
 */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const secret = req.query.secret as string;
-  const session = await getSession({ req });
+  const session = await getServerSession(req, res, authOptions);
 
   const startTime = new Date();
 

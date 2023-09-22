@@ -1,9 +1,5 @@
-import { useState } from "react";
-import { useQuery } from "@apollo/client";
-import { PREDICTED_LEAGUE_QUERY } from "apollo/queries";
 import PremierLeague from "src/containers/PremierLeague";
 import type { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
-import User from "src/types/User";
 
 const appendTeamNameWithPositionDiff = (
   predictedTable: PremierLeagueTeam[],
@@ -32,31 +28,16 @@ const appendTeamNameWithPositionDiff = (
 };
 
 type Props = {
-  userId: User["id"];
-  username: User["username"];
+  username: string;
+  table: PremierLeagueTeam[];
+  predictedTable: PremierLeagueTeam[];
 };
 
 /**
  * Provides a league table to show the user what the league table would look like
  * if their own predictions were the true results
  */
-const UsersPredictedTable = ({ userId, username }: Props) => {
-  const [predictedTable, setPredictedTable] = useState<PremierLeagueTeam[]>([]);
-  const [table, setTable] = useState<PremierLeagueTeam[]>([]);
-
-  const { loading, error } = useQuery(PREDICTED_LEAGUE_QUERY, {
-    variables: { userId },
-    onCompleted: ({ predictedLeagueTable, premierLeagueTable }) => {
-      setPredictedTable(predictedLeagueTable);
-      setTable(premierLeagueTable);
-    },
-    skip: !userId,
-  });
-
-  if (error) {
-    return <p>An error has occurred. Please try again later.</p>;
-  }
-
+const UsersPredictedTable = ({ username, table, predictedTable }: Props) => {
   // Adjust the name of the team to include position difference
   const predictedPositions = appendTeamNameWithPositionDiff(
     predictedTable,
@@ -67,7 +48,7 @@ const UsersPredictedTable = ({ userId, username }: Props) => {
     <PremierLeague
       teams={predictedPositions}
       heading={`${username}'s predicted league`}
-      loading={loading}
+      loading={false}
       isPredictedLeague
     />
   );

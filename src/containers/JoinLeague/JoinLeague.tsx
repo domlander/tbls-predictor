@@ -1,8 +1,6 @@
 import { FormEvent, useState } from "react";
 import styled from "styled-components";
-import { useMutation } from "@apollo/client";
 
-import { REQUEST_TO_JOIN_LEAGUE_MUTATION } from "apollo/mutations";
 import Heading from "src/components/Heading";
 import Button from "src/components/Button";
 import FormInput from "src/components/FormInput";
@@ -11,27 +9,31 @@ import colours from "src/styles/colours";
 const JoinLeague = () => {
   const [leagueId, setLeagueId] = useState<string>("");
   const [userFeedback, setUserFeedback] = useState<string>("");
-  const [requestToJoinLeague, { loading }] = useMutation(
-    REQUEST_TO_JOIN_LEAGUE_MUTATION,
-    {
-      onError: (error) => setUserFeedback(error.message),
-    }
-  );
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!leagueId) {
       setUserFeedback("Please enter a league code");
-    } else {
-      requestToJoinLeague({
-        variables: { leagueId: parseInt(leagueId) },
-      });
-      setLeagueId("");
-      setUserFeedback(
-        "Success! Ask the league admin to accept your application"
-      );
+      return;
     }
+
+    const formData = new URLSearchParams();
+    formData.append("leagueId", leagueId);
+
+    setLoading(true);
+
+    fetch("/api/requestToJoinLeague", {
+      method: "POST",
+      body: formData,
+    }).then(async (res) => {
+      const message = await res.json();
+
+      setLeagueId("");
+      setLoading(false);
+      setUserFeedback(message);
+    });
   };
 
   return (
@@ -44,6 +46,7 @@ const JoinLeague = () => {
           <LabelText>League ID:</LabelText>
           <FormInput
             type="string"
+            name="id"
             pattern="[0-9]*"
             onChange={(e) => setLeagueId(e.target.value.replace(/\D/, ""))}
             value={leagueId}

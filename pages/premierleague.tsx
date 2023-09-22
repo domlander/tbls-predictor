@@ -1,27 +1,28 @@
 import { GetStaticProps } from "next";
-import { initializeApollo } from "apollo/client";
-import { PREMIER_LEAGUE_QUERY } from "apollo/queries";
-
+import prisma from "prisma/client";
 import PremierLeague from "src/containers/PremierLeague";
 import { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
+import generatePremTable from "utils/createPremierLeagueTableFromFixtures";
 
 interface Props {
   premierLeagueTable: PremierLeagueTeam[];
 }
-
-type ApolloData = Props;
 
 const PremierLeaguePage = ({ premierLeagueTable }: Props) => {
   return <PremierLeague teams={premierLeagueTable} />;
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const apolloClient = initializeApollo();
-  const {
-    data: { premierLeagueTable },
-  }: { data: ApolloData } = await apolloClient.query({
-    query: PREMIER_LEAGUE_QUERY,
+  const fixtures = await prisma.fixture.findMany({
+    select: {
+      homeTeam: true,
+      awayTeam: true,
+      homeGoals: true,
+      awayGoals: true,
+    },
   });
+
+  const premierLeagueTable: PremierLeagueTeam[] = generatePremTable(fixtures);
 
   return {
     props: {

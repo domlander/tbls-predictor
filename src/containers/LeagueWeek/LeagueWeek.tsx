@@ -1,15 +1,11 @@
-import { useContext, useEffect, useState } from "react";
-import styled from "styled-components";
 import Link from "next/link";
 import Image from "next/image";
-import { useQuery } from "@apollo/client";
+import styled from "styled-components";
 
-import { LEAGUE_WEEK_QUERY } from "apollo/queries";
 import UserPoints from "src/types/UserPoints";
 import Fixture from "src/types/Fixture";
 import User from "src/types/User";
 import sortFixtures from "utils/sortFixtures";
-import { BannerContext } from "src/containers/Layout/Layout";
 import WeekNavigator from "src/components/WeekNavigator";
 import LeagueWeekUserTotals from "src/components/LeagueWeekUserTotals";
 import LeagueWeekFixtures from "src/components/LeagueWeekFixtures";
@@ -30,42 +26,11 @@ const LeagueWeekContainer = ({
   leagueId,
   leagueName,
   weekId: gameweek,
-  users: usersFromProps,
-  fixtures: fixturesFromProps,
+  users,
+  fixtures,
   firstGameweek,
   lastGameweek,
 }: Props) => {
-  const [fixtures, setFixtures] = useState(fixturesFromProps);
-  const [users, setUsers] = useState(usersFromProps);
-  const { setShowBanner } = useContext(BannerContext);
-  const { setBannerText } = useContext(BannerContext);
-
-  const { loading, refetch } = useQuery(LEAGUE_WEEK_QUERY, {
-    variables: {
-      leagueId,
-      weekId: gameweek,
-    },
-    notifyOnNetworkStatusChange: true,
-    pollInterval: 8000, // 8 seconds
-    onCompleted: (data) => {
-      if (data?.fixturesWithPredictions?.fixtures) {
-        setFixtures(data.fixturesWithPredictions.fixtures);
-      }
-      if (data?.league?.users) {
-        setUsers(data?.league?.users);
-      }
-    },
-  });
-
-  // Force a refetch on page load. Get fresh data as soon as we can.
-  useEffect(() => {
-    setShowBanner(true);
-    setBannerText("Updating scores...");
-    refetch().then(() => {
-      setShowBanner(false);
-    });
-  }, []);
-
   const usersGameweekPoints: UserPoints[] = users
     .map(({ id: userId, username, weeklyPoints }: User) => ({
       userId,
@@ -108,7 +73,7 @@ const LeagueWeekContainer = ({
         />
         <section>
           <LeagueWeekUserTotals users={usersGameweekPoints} />
-          {loading && !fixtures?.length ? (
+          {!fixtures?.length ? (
             <Loading>
               <p>Loading...</p>
               <div>
