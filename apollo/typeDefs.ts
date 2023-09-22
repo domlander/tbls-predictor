@@ -3,27 +3,8 @@ import { gql } from "@apollo/client";
 const typeDefs = gql`
   scalar DateTime
 
-  type Mutation {
-    updatePredictions(
-      input: [UpdatePredictionsInput!]!
-    ): UpdatePredictionsPayload!
-  }
-
   type FixturesWithPredictionPayload {
     fixtures: [Fixture!]
-  }
-
-  input UpdatePredictionsInput {
-    userId: String!
-    fixtureId: Int!
-    homeGoals: Int
-    awayGoals: Int
-    bigBoyBonus: Boolean
-    score: Int
-  }
-
-  type UpdatePredictionsPayload {
-    predictions: [Prediction!]
   }
 
   type User {

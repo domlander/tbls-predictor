@@ -3,8 +3,6 @@ import styled from "styled-components";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 
-import { UPDATE_PREDICTIONS_MUTATION } from "apollo/mutations";
-import { useMutation } from "@apollo/client";
 import WeekNavigator from "src/components/WeekNavigator";
 import PredictionsTable from "src/components/PredictionsTable";
 import colours from "src/styles/colours";
@@ -13,7 +11,7 @@ import type Prediction from "src/types/Prediction";
 import type TeamFixtures from "src/types/TeamFixtures";
 import type User from "src/types/User";
 
-type UpdatePredictionsInputType = {
+export type UpdatePredictionsInputType = {
   userId: User["id"];
   fixtureId: Fixture["id"];
   homeGoals: Prediction["homeGoals"];
@@ -41,12 +39,9 @@ const Predictions = ({
   const userId = session?.user?.id;
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+  const [isSaveError, setIsSaveError] = useState(false);
   const [predictions, setPredictions] = useState<Prediction[] | null>(null);
-
-  const [
-    processRequest,
-    { data: mutationData, loading: mutationLoading, error: mutationError },
-  ] = useMutation(UPDATE_PREDICTIONS_MUTATION);
 
   useEffect(() => {
     setIsLoading(true);
@@ -83,8 +78,18 @@ const Predictions = ({
       })
     );
 
-    await processRequest({
-      variables: { input: updatedPredictions },
+    setIsLoading(true);
+    setIsSaved(false);
+    fetch("/api/updatePredictions", {
+      method: "POST",
+      body: JSON.stringify({ predictions: updatedPredictions }),
+    }).then((res) => {
+      setIsLoading(false);
+      if (!res.ok) {
+        setIsSaveError(true);
+      } else {
+        setIsSaved(true);
+      }
     });
   };
 
@@ -190,9 +195,9 @@ const Predictions = ({
         handleSubmit={handleSubmitPredictions}
         handleBbbUpdate={updateBigBoyBonus}
         isLoading={isLoading}
-        isSaved={!!mutationData?.updatePredictions}
-        isSaving={mutationLoading}
-        isSaveError={!!mutationError}
+        isSaved={isSaved}
+        isSaving={isLoading}
+        isSaveError={isSaveError}
       />
     </Container>
   );
