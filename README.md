@@ -26,7 +26,6 @@ Fixtures are usually added two gameweeks in advance. Predictions for a match loc
 
 - [Next.js](https://nextjs.org/)
 - [NextAuth.js](https://github.com/nextauthjs/next-auth)
-- [Apollo GraphQL](https://www.apollographql.com/)
 - [PostgreSQL](https://www.postgresql.org/)
 - [Prisma](https://www.prisma.io/)
 - [Prisma data proxy](https://www.prisma.io/docs/concepts/components/prisma-data-platform)
