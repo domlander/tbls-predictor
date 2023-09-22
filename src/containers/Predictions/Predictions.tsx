@@ -40,6 +40,7 @@ const Predictions = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [isSaveError, setIsSaveError] = useState(false);
   const [predictions, setPredictions] = useState<Prediction[] | null>(null);
 
@@ -78,13 +79,13 @@ const Predictions = ({
       })
     );
 
-    setIsLoading(true);
+    setIsSaving(true);
     setIsSaved(false);
     fetch("/api/updatePredictions", {
       method: "POST",
       body: JSON.stringify({ predictions: updatedPredictions }),
     }).then((res) => {
-      setIsLoading(false);
+      setIsSaving(false);
       if (!res.ok) {
         setIsSaveError(true);
       } else {
@@ -196,7 +197,7 @@ const Predictions = ({
         handleBbbUpdate={updateBigBoyBonus}
         isLoading={isLoading}
         isSaved={isSaved}
-        isSaving={isLoading}
+        isSaving={isSaving}
         isSaveError={isSaveError}
       />
     </Container>
