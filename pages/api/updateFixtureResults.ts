@@ -47,7 +47,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .send("You are not authorised to perform this action.");
   }
 
-  const { scores }: RequestBody = req.body.scores || [];
+  const { scores }: RequestBody = req.body || [];
 
   if (!scores?.length) {
     return res.status(400).send("No scores found.");
