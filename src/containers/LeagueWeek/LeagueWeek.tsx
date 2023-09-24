@@ -31,13 +31,13 @@ const LeagueWeekContainer = ({
   firstGameweek,
   lastGameweek,
 }: Props) => {
-  const usersGameweekPoints: UserPoints[] = users
-    .map(({ id: userId, username, weeklyPoints }: User) => ({
-      userId,
-      username,
-      points: weeklyPoints?.find(({ week }) => week === gameweek)?.points || 0,
-    }))
-    .sort((a, b) => b.points - a.points || (b.userId > a.userId ? 1 : -1));
+  const usersGameweekPoints: UserPoints[] = users.map(
+    ({ id, username, weekPoints }: User) => ({
+      id,
+      username: username || "unknown",
+      points: weekPoints || 0,
+    })
+  );
 
   const sortedFixtures = sortFixtures(fixtures);
 

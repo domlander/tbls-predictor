@@ -12,6 +12,7 @@ type User = {
   leagueApplications?: Applicant[];
   totalPoints?: number;
   weeklyPoints?: WeeklyPoints[];
+  weekPoints?: number;
   perfectPerc?: number;
   correctPerc?: number;
 };

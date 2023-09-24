@@ -9,6 +9,7 @@ import User from "src/types/User";
 import LeagueWeek from "src/containers/LeagueWeek";
 import calculatePredictionScore from "utils/calculatePredictionScore";
 import Prediction from "src/types/Prediction";
+import getWeekPoints from "utils/getWeekPoints";
 
 type MissingPrediction = Pick<
   Prediction,
@@ -58,13 +59,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const weekId = convertUrlParamToNumber(params?.weekId);
   if (!weekId || weekId <= 0) return redirectInternal(`/league/${leagueId}`);
 
-  /**
-   * TODO
-   * Change from:
-   * - Fetch users, their predictions and the fixtures those predictions belong to
-   * To:
-   * - Fetch fixtures, fetch users predictions, then match up.
-   */
   const league = await prisma.league.findUnique({
     where: {
       id: leagueId,
@@ -108,56 +102,41 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     },
   });
 
-  // Add missed predictions as 0-0
-  const usersWithAppendedPredictions = league.users.map((user) => {
-    const missingPredictions: MissingPrediction[] = [];
-    fixtures.forEach((fixture) => {
-      const isMissingPrediction =
-        user.predictions.findIndex((p) => p.fixtureId === fixture.id) === -1;
+  const users = league.users
+    .map((user) => {
+      const missingPredictions: MissingPrediction[] = [];
+      fixtures.forEach((fixture) => {
+        const isMissingPrediction =
+          user.predictions.findIndex((p) => p.fixtureId === fixture.id) === -1;
 
-      if (isMissingPrediction) {
-        missingPredictions.push({
-          fixtureId: fixture.id,
-          homeGoals: 0,
-          awayGoals: 0,
-          bigBoyBonus: false,
-          fixture: {
-            gameweek: weekId,
-            homeGoals: fixture.homeGoals,
-            awayGoals: fixture.awayGoals,
-          },
-        });
-      }
+        // Add missed predictions as 0-0
+        if (isMissingPrediction) {
+          missingPredictions.push({
+            fixtureId: fixture.id,
+            homeGoals: 0,
+            awayGoals: 0,
+            bigBoyBonus: false,
+            fixture: {
+              gameweek: weekId,
+              homeGoals: fixture.homeGoals,
+              awayGoals: fixture.awayGoals,
+            },
+          });
+        }
+      });
+
+      const predictions = [...user.predictions, ...missingPredictions];
+      const points = getWeekPoints(fixtures, predictions);
+
+      return {
+        ...user,
+        predictions,
+        weekPoints: points,
+      };
+    })
+    .sort((a, b) => {
+      return b.weekPoints - a.weekPoints || (b.id > a.id ? 1 : -1);
     });
-
-    return {
-      ...user,
-      predictions: [...user.predictions, ...missingPredictions],
-    };
-  });
-
-  // Sort users
-  const users = usersWithAppendedPredictions.sort((a, b) => {
-    const totalPointsA = a.predictions.reduce((acc, cur) => {
-      const score = calculatePredictionScore(
-        [cur.homeGoals ?? 0, cur.awayGoals ?? 0, cur.bigBoyBonus ?? false],
-        [cur.fixture.homeGoals, cur.fixture.awayGoals]
-      );
-
-      return acc + score;
-    }, 0);
-
-    const totalPointsB = b.predictions.reduce((acc, cur) => {
-      const score = calculatePredictionScore(
-        [cur.homeGoals ?? 0, cur.awayGoals ?? 0, cur.bigBoyBonus ?? false],
-        [cur.fixture.homeGoals, cur.fixture.awayGoals]
-      );
-
-      return acc + score;
-    }, 0);
-
-    return totalPointsB - totalPointsA || (b.id > a.id ? 1 : -1);
-  });
 
   const fixturesWithPredictions: Fixture[] = fixtures.map((fixture) => ({
     ...fixture,
@@ -212,7 +191,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       leagueId,
       leagueName: league.name,
       weekId,
-      users: league.users,
+      users,
       fixtures: JSON.parse(JSON.stringify(fixturesWithPredictions)),
       firstGameweek: league.gameweekStart,
       lastGameweek: league.gameweekEnd,

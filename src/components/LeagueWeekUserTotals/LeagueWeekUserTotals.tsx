@@ -12,11 +12,11 @@ export type Props = {
 const LeagueWeekUserTotals = ({ users }: Props) => {
   return (
     <Container numUsers={users.length}>
-      {users.map(({ userId, username }) => (
-        <Username key={userId}>{username}</Username>
+      {users.map(({ id, username }) => (
+        <Username key={id}>{username}</Username>
       ))}
-      {users.map(({ userId, points }) => (
-        <LeagueWeekUserScore key={userId} score={points} />
+      {users.map(({ id, points }) => (
+        <LeagueWeekUserScore key={id} score={points} />
       ))}
     </Container>
   );

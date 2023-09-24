@@ -1,6 +1,6 @@
 type UserPoints = {
-  userId: string;
-  username?: string;
+  id: string;
+  username: string;
   points: number;
 };
 
