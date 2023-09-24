@@ -17,6 +17,7 @@
 
 # VS Code
 /.vscode/*
+!/.vscode/settings.recommended.json
 
 # misc
 .DS_Store
