@@ -4,7 +4,7 @@
     "es2021": true,
     "jest": true
   },
-  "extends": ["airbnb", "prettier", "plugin:cypress/recommended"],
+  "extends": ["airbnb", "prettier"],
   "ignorePatterns": ["tsconfig.json"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -14,7 +14,7 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint", "cypress"],
+  "plugins": ["react", "@typescript-eslint"],
   "rules": {
     "react/jsx-filename-extension": [
       1,
