@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { withSentry } from "@sentry/nextjs";
 import { PrismaClient } from "@prisma/client";
 import { getSession } from "next-auth/react";
 
@@ -52,4 +51,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   return res.status(200).json({ predictions });
 };
 
-export default withSentry(handler);
+export default handler;

@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
-import prisma from "prisma/client";
 import * as Sentry from "@sentry/nextjs";
 
+import prisma from "prisma/client";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import Fixture from "src/types/Fixture";
 import { getFixturesFromApiForGameweek } from "utils/fplApi";
@@ -220,4 +220,4 @@ const populateFixtures = async (
   }
 };
 
-export default Sentry.withSentry(handler);
+export default handler;

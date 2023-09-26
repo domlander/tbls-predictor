@@ -34,9 +34,6 @@ yarn-error.log*
 # vercel
 .vercel
 
-# Sentry
-.sentryclirc
-
 # Playwright
 /test-results/
 /playwright-report/

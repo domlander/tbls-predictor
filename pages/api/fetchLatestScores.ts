@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
-import { withSentry } from "@sentry/nextjs";
 import dayjs from "dayjs";
 import { PrismaClient } from "@prisma/client";
 import { getFixturesFromApiForGameweek } from "utils/fplApi";
@@ -152,4 +151,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   return res.status(200).json({ fixtures: fixturesToUpdate, log });
 };
 
-export default withSentry(handler);
+export default handler;

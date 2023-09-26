@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
-import { withSentry } from "@sentry/nextjs";
 import { PrismaClient } from "@prisma/client";
 
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
@@ -90,4 +89,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     );
 };
 
-export default withSentry(handler);
+export default handler;

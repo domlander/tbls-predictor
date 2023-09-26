@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
-import { withSentry } from "@sentry/nextjs";
 import { PrismaClient } from "@prisma/client";
 
 import { isUserAlreadyBelongToLeague } from "utils/isUserAlreadyBelongToLeague";
@@ -81,4 +80,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     .json("Success! Ask the league admin to accept your application!");
 };
 
-export default withSentry(handler);
+export default handler;

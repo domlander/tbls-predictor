@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
-import { withSentry } from "@sentry/nextjs";
 import { Fixture, Prediction, Prisma, PrismaClient } from "@prisma/client";
 import calculatePredictionScore from "../../utils/calculatePredictionScore";
 import { authOptions } from "./auth/[...nextauth]";
@@ -141,4 +140,4 @@ const findAllPredictionsAndUpdateScore = async (
   await Promise.all(results);
 };
 
-export default withSentry(handler);
+export default handler;

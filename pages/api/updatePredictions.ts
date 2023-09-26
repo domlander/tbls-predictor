@@ -1,5 +1,4 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { withSentry } from "@sentry/nextjs";
 import { PrismaClient } from "@prisma/client";
 import * as Sentry from "@sentry/nextjs";
 
@@ -75,4 +74,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   return res.status(200).end();
 };
 
-export default withSentry(handler);
+export default handler;
