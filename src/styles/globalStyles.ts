@@ -1,4 +1,4 @@
-import { Work_Sans as WorkSans } from "@next/font/google";
+import { Work_Sans as WorkSans } from "next/font/google";
 import { createGlobalStyle } from "styled-components";
 import colours from "./colours";
 import pageSizes from "./pageSizes";

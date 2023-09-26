@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import pageSizes from "src/styles/pageSizes";
-import { Patrick_Hand as PatrickHand } from "@next/font/google";
+import { Patrick_Hand as PatrickHand } from "next/font/google";
 
 const patrickHand = PatrickHand({
   subsets: ["latin"],
