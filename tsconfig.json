@@ -23,7 +23,7 @@
     "incremental": true,
     "types": ["node", "jest"]
   },
-  "exclude": ["node_modules", "**/*.stories.tsx"],
+  "exclude": ["node_modules"],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
