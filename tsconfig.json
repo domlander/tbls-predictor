@@ -21,7 +21,7 @@
     "isolatedModules": true,
     "baseUrl": ".",
     "incremental": true,
-    "types": ["node", "jest", "@testing-library/jest-dom"]
+    "types": ["node", "jest"]
   },
   "exclude": ["node_modules", "**/*.stories.tsx"],
   "include": [
