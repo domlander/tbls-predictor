@@ -2,12 +2,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import * as Sentry from "@sentry/nextjs";
+import dayjs from "dayjs";
 
 import prisma from "prisma/client";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import Fixture from "src/types/Fixture";
 import { getFixturesFromApiForGameweek } from "utils/fplApi";
+import LogMessage, { LOG_MESSAGE_TYPE } from "src/types/LogMessage";
 import { authOptions } from "./auth/[...nextauth]";
+import clientPromise from "../../lib/mongodb";
 
 /*
   Adds or updates fixtures in the database using the FPL fixtures API.
@@ -136,14 +139,16 @@ const populateFixtures = async (
   let deletePromises: Promise<any>[] = [];
 
   // Create the prisma promises for add, update and delete DB updates
-  const logMessages: string[] = [];
+  const logMessages: LogMessage[] = [];
   if (fixturesToAdd.length) {
     addPromises = fixturesToAdd
       .map(
         ({ gameweek, homeTeam, awayTeam, homeGoals, awayGoals, kickoff }) => {
-          logMessages.push(
-            `\nFixture added: ${homeTeam} hosting ${awayTeam} at ${kickoff.toLocaleDateString()} in week ${gameweek}.`
-          );
+          logMessages.push({
+            type: "fixture_added",
+            week: gameweek,
+            message: `${homeTeam} hosting ${awayTeam} on ${kickoff.toLocaleDateString()}`,
+          });
           return prisma.fixture.create({
             data: {
               gameweek,
@@ -170,9 +175,12 @@ const populateFixtures = async (
           awayGoals,
           kickoff,
         }) => {
-          logMessages.push(
-            `\nFixture amended: ID: ${id}. ${homeTeam} hosting ${awayTeam} at ${kickoff.toLocaleDateString()} in week ${gameweek}.`
-          );
+          logMessages.push({
+            type: "fixture_amended",
+            fixtureId: id,
+            week: gameweek,
+            message: `${homeTeam} hosting ${awayTeam} on ${kickoff.toLocaleDateString()}`,
+          });
           return prisma.fixture.update({
             where: {
               id,
@@ -193,9 +201,12 @@ const populateFixtures = async (
   if (fixturesToDelete.length) {
     deletePromises = fixturesToDelete
       .map(({ id, gameweek, homeTeam, awayTeam, kickoff }) => {
-        logMessages.push(
-          `\nFixture deleted: ID: ${id}. ${homeTeam} hosting ${awayTeam} at ${kickoff} in week ${gameweek}.`
-        );
+        logMessages.push({
+          type: "fixture_deleted",
+          fixtureId: id,
+          week: gameweek,
+          message: `${homeTeam} hosting ${awayTeam} on ${kickoff}`,
+        });
         return prisma.fixture.delete({
           where: {
             id,
@@ -208,15 +219,33 @@ const populateFixtures = async (
   const promises = [...addPromises, ...updatePromises, ...deletePromises];
 
   if (promises?.length) {
-    await Promise.all(promises).then(() => {
-      logMessages.forEach((message) => {
-        Sentry.captureMessage(message);
-      });
+    await Promise.all(promises).then(async () => {
+      const logs = logMessages.map((log) => ({
+        code: LOG_MESSAGE_TYPE[log.type],
+        ...log,
+      }));
+
+      try {
+        const client = await clientPromise;
+        const db = client.db("tbls_db");
+        await db.collection("logs").insertMany(logs);
+      } catch (error) {
+        Sentry.captureException(`Logging failed. ${error}`);
+      }
     });
   } else {
-    Sentry.captureMessage(
-      `The populateFixtures serverless function has been run and found no differences between the FPL API and the DB for gameweek ${theGameweek}`
-    );
+    const now = dayjs();
+    const message = `The populateFixtures serverless function has been run on ${now.format()} and found no differences between the FPL API and the DB for gameweek ${theGameweek}`;
+
+    try {
+      const client = await clientPromise;
+      const db = client.db("tbls_db");
+      await db
+        .collection("logs")
+        .insertOne({ type: "populate_fixtures_no_change", message });
+    } catch (error) {
+      Sentry.captureException(`Logging failed. ${error}`);
+    }
   }
 };
 
