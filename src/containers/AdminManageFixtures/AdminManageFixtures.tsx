@@ -1,4 +1,4 @@
-import { FormEvent, Fragment, useState } from "react";
+import { FormEvent, Fragment, useEffect, useState } from "react";
 import Image from "next/image";
 import styled from "styled-components";
 import dayjs from "dayjs";
@@ -13,21 +13,29 @@ import Button from "src/components/Button";
 import Fixture from "src/types/Fixture";
 import colours from "src/styles/colours";
 import pageSizes from "src/styles/pageSizes";
+import ManageFixturesDb from "src/components/ManageFixturesDb/ManageFixturesDb";
 
 interface Props {
-  fixtures: Fixture[];
   gameweek: number;
 }
 
-const AdminManageFixtures = ({
-  gameweek: initialGameweek,
-  fixtures: initialFixtures = [],
-}: Props) => {
+const AdminManageFixtures = ({ gameweek: initialGameweek }: Props) => {
   const [gameweek, setGameweek] = useState(initialGameweek);
   const [fetchingData, setFetchingData] = useState(false);
   const [savingApiDataToDB, setSavingApiDataToDB] = useState(false);
-  const [fixtures, setFixtures] = useState(initialFixtures);
-  const [fixturesAPI, setFixturesAPI] = useState([]);
+  const [fixtures, setFixtures] = useState<Fixture[]>([]);
+  const [fixturesFromApi, setFixturesFromApi] = useState<Fixture[]>([]);
+
+  useEffect(() => {
+    fetch("/api/fetchGameweekFixtures", {
+      method: "POST",
+      body: JSON.stringify({ gameweek }),
+    })
+      .then((res) => res.json())
+      .then(({ fixtures: f }) => {
+        setFixtures([...f]);
+      });
+  }, [gameweek]);
 
   // Updates fixtures in local state when a field is edited.
   const updateFixtures = (
@@ -36,9 +44,7 @@ const AdminManageFixtures = ({
     text: string
   ): void => {
     // Make a copy of current state
-    const fixturesCopy: Props["fixtures"] = JSON.parse(
-      JSON.stringify(fixtures)
-    );
+    const fixturesCopy: Fixture[] = [...fixtures];
 
     // Find the fixture we've changed
     const editedFixture = fixturesCopy.find(
@@ -56,18 +62,23 @@ const AdminManageFixtures = ({
   };
 
   // Takes all fixtures from the API for this gameweek and saves them to the database.
-  // TODO: Save existing fixtures in state, rather than refetching data.
   const saveApiFixturesToDatabase = async () => {
     setSavingApiDataToDB(true);
-    const data = await fetch(
-      `/api/populateFixtures?gameweek=${gameweek}&persist=true`
-    ).then((res) => res.json());
+    await fetch(`/api/populateFixtures?gameweek=${gameweek}&persist=true`);
     setSavingApiDataToDB(false);
 
-    setFixtures(data.fixtures);
+    // Fetch the updated fixtures from DB. An extra round trip, but it does not matter for admin.
+    fetch("/api/fetchGameweekFixtures", {
+      method: "POST",
+      body: JSON.stringify({ gameweek }),
+    })
+      .then((res) => res.json())
+      .then(({ fixtures: f }) => {
+        setFixtures([...f]);
+      });
   };
 
-  // Saves fixtures to database via mutation
+  // Saves fixtures to database
   const submitFixtures = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -93,11 +104,12 @@ const AdminManageFixtures = ({
     ).then((res) => res.json());
     setFetchingData(false);
 
-    setFixturesAPI(response.fixtures);
+    const apiFixtures: Fixture[] = response.fixtures;
+
+    setFixturesFromApi(apiFixtures);
   };
 
-  const sortedDbFixtures = sortFixtures(fixtures);
-  const sortedApiFixtures = sortFixtures(fixturesAPI);
+  const sortedApiFixtures = sortFixtures(fixturesFromApi);
 
   return (
     <Container>
@@ -105,7 +117,7 @@ const AdminManageFixtures = ({
         {gameweek !== 1 ? (
           <Image
             onClick={() => {
-              setFixturesAPI([]);
+              setFixturesFromApi([]);
               setGameweek((x) => x - 1);
             }}
             src={arrowLeft}
@@ -120,7 +132,7 @@ const AdminManageFixtures = ({
         {gameweek !== 38 ? (
           <Image
             onClick={() => {
-              setFixturesAPI([]);
+              setFixturesFromApi([]);
               setGameweek((x) => x + 1);
             }}
             src={arrowRight}
@@ -132,53 +144,18 @@ const AdminManageFixtures = ({
       </StyledWeekNavigator>
 
       <DbFixturesPanel>
-        <Form onSubmit={submitFixtures}>
-          <Heading level="h2" variant="secondary">
-            DB Fixtures
-          </Heading>
-          {!fixtures?.length ? (
-            <div>No fixtures found.</div>
-          ) : (
-            <FixturesTable>
-              <span>Kickoff</span>
-              <span>Home team</span>
-              <span>Away team</span>
-              {sortedDbFixtures.map(({ id, kickoff, homeTeam, awayTeam }) => (
-                <Fragment key={id}>
-                  <div>{dayjs(kickoff).format("DD/MM/YYYY HH:mm")}</div>
-                  <input
-                    type="text"
-                    id="homeTeam"
-                    name="homeTeam"
-                    value={homeTeam}
-                    onChange={(e) => {
-                      updateFixtures(id!, true, e.target.value);
-                    }}
-                  />
-                  <input
-                    type="text"
-                    id="awayTeam"
-                    name="awayTeam"
-                    value={awayTeam}
-                    onChange={(e) => {
-                      updateFixtures(id!, false, e.target.value);
-                    }}
-                  />
-                </Fragment>
-              ))}
-            </FixturesTable>
-          )}
-          <Button type="submit" variant="primary">
-            Save Fixtures
-          </Button>
-        </Form>
+        <ManageFixturesDb
+          fixtures={fixtures}
+          updateFixtures={updateFixtures}
+          submitFixtures={submitFixtures}
+        />
       </DbFixturesPanel>
 
       <FplFixturesPanel>
         <Heading level="h2" variant="secondary">
           API Fixtures
         </Heading>
-        {fixturesAPI?.length ? (
+        {fixturesFromApi?.length ? (
           <FixturesTable>
             <span>Kickoff</span>
             <span>Home team</span>
@@ -205,7 +182,7 @@ const AdminManageFixtures = ({
         >
           {fetchingData ? "Fetching fixtures..." : "Fetch fixtures from FPL"}
         </Button>
-        {fixturesAPI?.length ? (
+        {fixturesFromApi?.length ? (
           <Button
             type="button"
             variant="primary"
@@ -279,12 +256,6 @@ const FixturesTable = styled.div`
     font-size: 1rem;
     width: 9em;
   }
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 2em;
 `;
 
 export default AdminManageFixtures;

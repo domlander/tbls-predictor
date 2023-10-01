@@ -47,8 +47,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   const allDbFixtures = await prisma.fixture.findMany();
 
-  const defaultGameweek = calculateCurrentGameweek(allDbFixtures);
-  const gameweek = queryGameweek || defaultGameweek;
+  const gameweek = queryGameweek || calculateCurrentGameweek(allDbFixtures);
 
   const allApiFixtures = await fetchApiData(gameweek, numGameweeks);
   const apiFixturesFlat = allApiFixtures.flat(1);

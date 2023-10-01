@@ -1,19 +1,16 @@
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
-
+import { Fixture } from "@prisma/client";
 import prisma from "prisma/client";
-import Fixture from "src/types/Fixture";
 import AdminManageFixtures from "src/containers/AdminManageFixtures";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
-import sortFixtures from "utils/sortFixtures";
 
 interface Props {
   currentGameweek: number;
-  fixtures: Fixture[];
 }
 
-const ManageFixturesPage = ({ currentGameweek, fixtures }: Props) => (
-  <AdminManageFixtures gameweek={currentGameweek} fixtures={fixtures} />
+const ManageFixturesPage = ({ currentGameweek }: Props) => (
+  <AdminManageFixtures gameweek={currentGameweek} />
 );
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
@@ -42,19 +39,9 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const allFixtures: Fixture[] = await prisma.fixture.findMany();
   const currentGameweek = calculateCurrentGameweek(allFixtures);
 
-  const fixtures = allFixtures.filter(
-    (fixture) => fixture.gameweek === currentGameweek
-  );
-
-  const sortedFixtures = sortFixtures(fixtures).map((fixture) => ({
-    ...fixture,
-    kickoff: fixture.kickoff.toString(),
-  }));
-
   return {
     props: {
       currentGameweek,
-      fixtures: sortedFixtures,
     },
   };
 };
