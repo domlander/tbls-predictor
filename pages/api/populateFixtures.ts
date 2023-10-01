@@ -6,11 +6,11 @@ import dayjs from "dayjs";
 
 import prisma from "prisma/client";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
-import Fixture from "src/types/Fixture";
 import { getFixturesFromApiForGameweek } from "utils/fplApi";
+import Fixture from "src/types/Fixture";
 import LogMessage, { LOG_MESSAGE_TYPE } from "src/types/LogMessage";
-import { authOptions } from "./auth/[...nextauth]";
 import clientPromise from "../../lib/mongodb";
+import { authOptions } from "./auth/[...nextauth]";
 
 /*
   Adds or updates fixtures in the database using the FPL fixtures API.
@@ -137,6 +137,8 @@ const populateFixtures = async (
   let updatePromises: Promise<any>[] = [];
   let deletePromises: Promise<any>[] = [];
 
+  const now = dayjs();
+
   // Create the prisma promises for add, update and delete DB updates
   const logMessages: LogMessage[] = [];
   if (fixturesToAdd.length) {
@@ -146,6 +148,7 @@ const populateFixtures = async (
           logMessages.push({
             type: "fixture_added",
             week: gameweek,
+            createdAt: now.format(),
             message: `${homeTeam} hosting ${awayTeam} on ${kickoff.toLocaleDateString()}`,
           });
           return prisma.fixture.create({
@@ -178,6 +181,7 @@ const populateFixtures = async (
             type: "fixture_amended",
             fixtureId: id,
             week: gameweek,
+            createdAt: now.format(),
             message: `${homeTeam} hosting ${awayTeam} on ${kickoff.toLocaleDateString()}`,
           });
           return prisma.fixture.update({
@@ -204,6 +208,7 @@ const populateFixtures = async (
           type: "fixture_deleted",
           fixtureId: id,
           week: gameweek,
+          createdAt: now.format(),
           message: `${homeTeam} hosting ${awayTeam} on ${kickoff}`,
         });
         return prisma.fixture.delete({
@@ -233,8 +238,7 @@ const populateFixtures = async (
       }
     });
   } else {
-    const now = dayjs();
-    const message = `The populateFixtures serverless function has been run on ${now.format()} and found no differences between the FPL API and the DB for gameweek ${theGameweek}`;
+    const message = `The populateFixtures serverless function has been run and found no differences between the FPL API and the DB for gameweek ${theGameweek}`;
 
     try {
       const client = await clientPromise;

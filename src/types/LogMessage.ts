@@ -11,6 +11,10 @@ const LOG_MESSAGE_TYPE = {
 type LogMessage = {
   type: keyof typeof LOG_MESSAGE_TYPE;
   message: string;
+  /**
+   * The time the log message was created
+   */
+  createdAt: string;
   [key: string]: string | number;
 };
 
