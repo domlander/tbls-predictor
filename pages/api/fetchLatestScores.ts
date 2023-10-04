@@ -92,8 +92,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   log += `liveFixtures\n: 
-  ${liveFixtures.forEach((x) => {
-    log += `fixture: ${x.homeTeam} - ${x.awayTeam}\n`;
+  ${liveFixtures.forEach(({ homeTeam, awayTeam }) => {
+    log += `fixture: ${homeTeam} - ${awayTeam}\n`;
   })}`;
 
   const fixturesFromApi = await getFixturesFromApiForGameweek(currentGameweek);
@@ -101,7 +101,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const fixturesToUpdate = liveFixtures.reduce((acc, fixture) => {
     const matchingFixtureFromApi = fixturesFromApi.find(
       // If two teams playing against each other twice in a gameweek becomes a thing, we can compare on the day as well
-      (x) => x.homeTeam === fixture.homeTeam && x.awayTeam === fixture.awayTeam
+      ({ homeTeam, awayTeam }) =>
+        homeTeam === fixture.homeTeam && awayTeam === fixture.awayTeam
     );
     if (!matchingFixtureFromApi) return acc;
 
@@ -130,8 +131,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(200).json(log);
   }
 
-  fixturesToUpdate.forEach((x) => {
-    log += `Fixture ID: ${x.id}. Score update! Updating score to ${x.homeGoals} - ${x.awayGoals}\n`;
+  fixturesToUpdate.forEach(({ id, homeGoals, awayGoals }) => {
+    log += `Fixture ID: ${id}. Score update! Updating score to ${homeGoals} - ${awayGoals}\n`;
   });
 
   fetch(
@@ -147,6 +148,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   ).catch((e) => {
     log += `An error occurred: ${e}\n`;
   });
+
+  // Rebuild league week pages for the current gameweek
+  fetch(
+    `${process.env.NEXTAUTH_URL}/api/revalidateLeagueWeekPage?secret=${process.env.ACTIONS_SECRET}`
+  );
 
   return res.status(200).json({ fixtures: fixturesToUpdate, log });
 };

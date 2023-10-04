@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "next -p 3001",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3001",
     "test": "jest --watch",
     "prisma:generate": "prisma generate --data-proxy",
     "vercel-build": "yarn prisma:generate && next build"
