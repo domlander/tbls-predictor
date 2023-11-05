@@ -31,6 +31,9 @@ const nextConfig = {
     //   'Configure Tunneling to avoid Ad-Blockers':
     //     - tunnelRoute
   },
+  experimental: {
+    appDir: true,
+  },
 };
 
 const sentryWebpackPluginOptions = {

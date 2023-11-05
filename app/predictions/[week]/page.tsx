@@ -1,5 +1,3 @@
-import { GetStaticPaths, GetStaticProps } from "next";
-
 import prisma from "prisma/client";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import redirectInternal from "utils/redirects";
@@ -36,8 +34,8 @@ const PredictionsPage = ({
   </>
 );
 
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const weekId = convertUrlParamToNumber(params?.weekId);
+const Page = async ({ params }: Props) => {
+  const weekId = convertUrlParamToNumber(params?.week);
   if (!weekId || weekId <= 0) return redirectInternal("/");
 
   const fixtures: Fixture[] = await prisma.fixture.findMany();
@@ -72,7 +70,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   };
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
+/**
+ * To find out: What about paths that are created after build time?
+ * e.g. A new league is created. Can this new path be statically generated?
+ * Does it need to be? Once there's a visit to that page, will the page be cached?
+ */
+export const generateStaticParams = async (): Promise<Params[]> => {
   const fixtures = await prisma.fixture.findMany();
   const weeks = fixtures.reduce((acc: number[], fixture) => {
     if (acc.indexOf(fixture.gameweek) === -1) {
@@ -81,14 +84,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
     return acc;
   }, []);
 
-  const paths = weeks.map((x) => ({
-    params: { weekId: x.toString() },
+  return weeks.map((week) => ({
+    week: week.toString(),
   }));
-
-  return {
-    paths,
-    fallback: true,
-  };
 };
 
-export default PredictionsPage;
+export default Page;

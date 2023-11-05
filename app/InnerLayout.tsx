@@ -1,3 +1,5 @@
+"use client";
+
 import React, { Dispatch, ReactNode, SetStateAction, createContext, useState } from "react";
 import styled, { css, keyframes } from "styled-components";
 import { useSession } from "next-auth/react";

@@ -1,4 +1,6 @@
-import { ReactNode } from "react";
+"use client";
+
+import { MouseEvent, ReactNode } from "react";
 import styled from "styled-components";
 import colours from "src/styles/colours";
 
@@ -29,7 +31,7 @@ interface StyleProps {
 export type Props = StyleProps & {
   children: ReactNode;
   className?: string;
-  handleClick?: (e: React.MouseEvent<HTMLElement>) => void;
+  handleClick?: (e: MouseEvent<HTMLElement>) => void;
   id?: string;
   type?: "button" | "submit";
 };

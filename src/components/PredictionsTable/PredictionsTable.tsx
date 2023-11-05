@@ -1,3 +1,5 @@
+"use client";
+
 import { FormEvent, Fragment, useEffect, useState } from "react";
 import styled from "styled-components";
 import { calculateGameweekScore } from "utils/calculateGameweekScore";

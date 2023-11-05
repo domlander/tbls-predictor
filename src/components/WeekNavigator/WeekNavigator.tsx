@@ -1,11 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
+import styled from "styled-components";
+
+import Heading from "src/components/Heading";
 import arrowLeft from "public/images/ArrowLeft.svg";
 import arrowRight from "public/images/ArrowRight.svg";
 import arrowLeftDisabled from "public/images/ArrowLeftDisabled.svg";
 import arrowRightDisabled from "public/images/ArrowRightDisabled.svg";
-import styled from "styled-components";
-import Heading from "src/components/Heading";
 
 export type Props = {
   prevGameweekUrl?: string;

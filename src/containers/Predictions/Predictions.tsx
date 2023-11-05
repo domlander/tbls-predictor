@@ -1,3 +1,5 @@
+"use client";
+
 import { FormEvent, useEffect, useState } from "react";
 import styled from "styled-components";
 import { useSession } from "next-auth/react";
@@ -5,9 +7,10 @@ import Link from "next/link";
 
 import WeekNavigator from "src/components/WeekNavigator";
 import PredictionsTable from "src/components/PredictionsTable";
+
 import colours from "src/styles/colours";
-import type Fixture from "src/types/Fixture";
 import type Prediction from "src/types/Prediction";
+import type Fixture from "src/types/Fixture";
 import type TeamFixtures from "src/types/TeamFixtures";
 import type User from "src/types/User";
 
