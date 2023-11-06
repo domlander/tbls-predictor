@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { MouseEvent, ReactNode } from "react";
 import styled from "styled-components";
 import colours from "src/styles/colours";
 
@@ -21,17 +21,14 @@ const variants = {
   },
 };
 
-interface StyleProps {
-  disabled?: boolean;
-  variant: "primary" | "secondary";
-}
-
-export type Props = StyleProps & {
+export type Props = {
   children: ReactNode;
   className?: string;
-  handleClick?: (e: React.MouseEvent<HTMLElement>) => void;
+  disabled?: boolean;
+  handleClick?: (e: MouseEvent<HTMLElement>) => void;
   id?: string;
   type?: "button" | "submit";
+  variant: "primary" | "secondary";
 };
 
 const Button = ({
@@ -45,39 +42,42 @@ const Button = ({
 }: Props) => (
   <ButtonStyles
     className={className}
-    disabled={disabled}
+    $disabled={disabled}
     id={id}
     onClick={handleClick}
     type={type}
-    variant={variant}
+    $variant={variant}
   >
     {children}
   </ButtonStyles>
 );
 
-const ButtonStyles = styled.button<StyleProps>`
-  background-color: ${({ variant }) => variants[variant].backgroundColour};
-  border-radius: ${({ variant }) => variants[variant].borderRadius};
-  border: ${({ variant }) => variants[variant].border};
-  color: ${({ disabled, variant }) =>
-    disabled ? variants[variant].disabledColour : variants[variant].colour};
+const ButtonStyles = styled.button<{
+  $disabled: boolean;
+  $variant: "primary" | "secondary";
+}>`
+  background-color: ${({ $variant }) => variants[$variant].backgroundColour};
+  border-radius: ${({ $variant }) => variants[$variant].borderRadius};
+  border: ${({ $variant }) => variants[$variant].border};
+  color: ${({ $disabled, $variant }) =>
+    $disabled ? variants[$variant].disabledColour : variants[$variant].colour};
   cursor: pointer;
   font-size: 1.6rem;
   height: 1.8em;
-  opacity: ${({ disabled }) => (disabled ? "50%" : "100%")};
+  opacity: ${({ $disabled }) => ($disabled ? "50%" : "100%")};
   padding: 0 1em;
   width: 100%;
-  :hover {
+  &:hover {
     outline: none;
-    background-color: ${({ disabled, variant }) =>
+    background-color: ${({ disabled, $variant }) =>
       disabled
-        ? variants[variant].backgroundColour
-        : variants[variant].hoverBackgroundColour};
+        ? variants[$variant].backgroundColour
+        : variants[$variant].hoverBackgroundColour};
   }
 
-  :focus {
-    background-color: ${({ variant }) =>
-      variants[variant].hoverBackgroundColour};
+  &:focus {
+    background-color: ${({ $variant }) =>
+      variants[$variant].hoverBackgroundColour};
   }
 `;
 

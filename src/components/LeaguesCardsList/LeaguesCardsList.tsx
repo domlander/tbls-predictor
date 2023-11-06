@@ -84,8 +84,8 @@ const LeagueCard = styled.div`
   padding: 3em 3em 2em;
   cursor: pointer;
 
-  :hover,
-  :focus {
+  &:hover,
+  &:focus {
     background-color: #ffffff10;
   }
 

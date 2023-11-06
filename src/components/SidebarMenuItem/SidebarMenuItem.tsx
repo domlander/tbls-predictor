@@ -27,8 +27,9 @@ const Container = styled.li`
     color: ${colours.grey300};
     font-size: 1.8rem;
     cursor: pointer;
-    :hover,
-    :focus {
+
+    &:hover,
+    &:focus {
       color: ${colours.cyan100};
     }
 

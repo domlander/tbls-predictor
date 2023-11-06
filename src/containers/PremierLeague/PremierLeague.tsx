@@ -23,7 +23,7 @@ const PremierLeague = ({
       <Heading level="h1" variant="secondary">
         {heading}
       </Heading>
-      <Table isPredicted={isPredictedLeague}>
+      <Table $isPredicted={isPredictedLeague}>
         <HeaderRow />
         <HeaderRowFirst>Club</HeaderRowFirst>
         <HeaderRow>P</HeaderRow>
@@ -49,8 +49,8 @@ const PremierLeague = ({
           ? [...Array(20)].map((_, i) => (
               // eslint-disable-next-line react/no-array-index-key
               <Fragment key={i}>
-                <TableDataPosition position={i + 1}>{i + 1}</TableDataPosition>
-                <LoadingRow isPredicted={isPredictedLeague} />
+                <TableDataPosition $position={i + 1}>{i + 1}</TableDataPosition>
+                <LoadingRow $isPredicted={isPredictedLeague} />
               </Fragment>
             ))
           : teams?.map(
@@ -71,7 +71,7 @@ const PremierLeague = ({
               ) => {
                 return (
                   <Fragment key={team}>
-                    <TableDataPosition position={i + 1}>
+                    <TableDataPosition $position={i + 1}>
                       {i + 1}
                     </TableDataPosition>
                     <TableDataFirst>{team}</TableDataFirst>
@@ -104,19 +104,23 @@ const PremierLeague = ({
 };
 
 const getPositionBackgroundColour = (position: number): string => {
-  if (position === 1) {
-    return colours.gold500;
-  }
+  switch (position) {
+    case 1:
+      return colours.gold500;
 
-  if (position > 1 && position <= 4) {
-    return colours.green500;
-  }
+    case 2:
+    case 3:
+    case 4:
+      return colours.green500;
 
-  if (position >= 18) {
-    return colours.red500;
-  }
+    case 18:
+    case 19:
+    case 20:
+      return colours.red500;
 
-  return "transparent";
+    default:
+      return "transparent";
+  }
 };
 
 const Container = styled.section`
@@ -130,10 +134,10 @@ const Container = styled.section`
   }
 `;
 
-const Table = styled.div<{ isPredicted: boolean }>`
+const Table = styled.div<{ $isPredicted: boolean }>`
   display: grid;
-  grid-template-columns: ${({ isPredicted }) => {
-    const numColumns = isPredicted ? 7 : 8;
+  grid-template-columns: ${({ $isPredicted }) => {
+    const numColumns = $isPredicted ? 7 : 8;
     return `max-content minmax(max-content, 14em) repeat(${numColumns}, 2.4em)`;
   }};
   grid-template-rows: 2em repeat(20, 3em);
@@ -145,8 +149,8 @@ const Table = styled.div<{ isPredicted: boolean }>`
 
   @media (max-width: ${pageSizes.tablet}) {
     font-size: 0.9rem;
-    grid-template-columns: ${({ isPredicted }) => {
-      const numColumns = isPredicted ? 7 : 8;
+    grid-template-columns: ${({ $isPredicted }) => {
+      const numColumns = $isPredicted ? 7 : 8;
       return `max-content minmax(max-content, 14em) repeat(${numColumns}, 2em)`;
     }};
   }
@@ -186,8 +190,8 @@ const skeletonLoading = keyframes`
     }
 `;
 
-const LoadingRow = styled.div<{ isPredicted: boolean }>`
-  grid-column: ${({ isPredicted }) => `span ${isPredicted ? 8 : 9}`};
+const LoadingRow = styled.div<{ $isPredicted: boolean }>`
+  grid-column: ${({ $isPredicted }) => `span ${$isPredicted ? 8 : 9}`};
   width: calc(100% - 1em);
   height: 1.5em;
   margin-left: 1em;
@@ -217,7 +221,7 @@ const TableDataPoints = styled(TableData)`
   font-weight: 700;
 `;
 
-const TableDataPosition = styled(TableData)<{ position: number }>`
+const TableDataPosition = styled(TableData)<{ $position: number }>`
   font-size: 1rem;
   padding: 3px;
   font-weight: 700;
@@ -225,7 +229,7 @@ const TableDataPosition = styled(TableData)<{ position: number }>`
   color: ${colours.grey400};
   width: 20px;
   height: 20px;
-  background: ${({ position }) => getPositionBackgroundColour(position)};
+  background: ${({ $position }) => getPositionBackgroundColour($position)};
   border-radius: 20px;
   text-align: center;
 

@@ -34,7 +34,8 @@ const ClickableCircle = styled.button`
   cursor: pointer;
   ${sharedCircleStyles}
 
-  :focus, :hover {
+  &:focus, 
+  &:hover {
     color: ${colours.blackblue500};
     background-color: ${colours.cyan500};
   }

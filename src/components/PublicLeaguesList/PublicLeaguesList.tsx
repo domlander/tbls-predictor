@@ -47,8 +47,8 @@ const Container = styled.section`
     text-underline-offset: 2px;
     width: fit-content;
 
-    :hover,
-    :focus {
+    &:hover,
+    &:focus {
       color: ${colours.cyan100};
       text-decoration: none;
     }

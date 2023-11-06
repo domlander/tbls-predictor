@@ -58,8 +58,8 @@ const NoLeagues = styled.section`
     text-decoration: underline;
     text-underline-offset: 2px;
 
-    :hover,
-    :focus {
+    &:hover,
+    &:focus {
       color: ${colours.cyan100};
     }
   }

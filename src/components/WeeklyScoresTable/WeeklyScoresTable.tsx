@@ -29,7 +29,7 @@ const WeeklyScoresTable = ({
       </Heading>
       {fixtureWeeksAvailable ? (
         <Table>
-          <ParticipantsAndTotalPoints numParticipants={users.length}>
+          <ParticipantsAndTotalPoints $numParticipants={users.length}>
             <BlankHeaderItem />
             {users.map(({ id, username, totalPoints }) => (
               <Fragment key={id}>
@@ -42,8 +42,8 @@ const WeeklyScoresTable = ({
           </ParticipantsAndTotalPoints>
           <AllPointsWrapper>
             <AllPoints
-              numWeeks={fixtureWeeksAvailable.length}
-              numParticipants={users.length}
+              $numWeeks={fixtureWeeksAvailable.length}
+              $numParticipants={users.length}
             >
               <BlankTableHeaderItem />
               {fixtureWeeksAvailable.map((week) => (
@@ -66,7 +66,7 @@ const WeeklyScoresTable = ({
                   <BlankTableItem />
                   {weeklyPoints?.map(({ week, points }, i) => (
                     <Fragment key={`${id}${week}`}>
-                      <WeeklyPoints rowIndex={i} key={week}>
+                      <WeeklyPoints $rowIndex={i} key={week}>
                         {points}
                       </WeeklyPoints>
                     </Fragment>
@@ -107,18 +107,18 @@ const Table = styled.div`
   }
 `;
 
-const ParticipantsAndTotalPoints = styled.div<{ numParticipants: number }>`
+const ParticipantsAndTotalPoints = styled.div<{ $numParticipants: number }>`
   display: grid;
   grid-template-columns: 1fr 4em;
-  grid-template-rows: ${({ numParticipants }) =>
-    `82px repeat(${numParticipants}, 72px)`};
+  grid-template-rows: ${({ $numParticipants }) =>
+    `82px repeat(${$numParticipants}, 72px)`};
   color: ${colours.grey200};
   border-bottom: 1px solid ${colours.grey500opacity50};
 
   @media (max-width: ${pageSizes.tablet}) {
     grid-template-columns: 1fr 3.4em;
-    grid-template-rows: ${({ numParticipants }) =>
-      `52px repeat(${numParticipants}, 50px)`};
+    grid-template-rows: ${({ $numParticipants }) =>
+      `52px repeat(${$numParticipants}, 50px)`};
   }
 
   > div {
@@ -139,7 +139,7 @@ const AllPointsWrapper = styled.div`
     padding-bottom: 6px; /* equiv to padding-top without the transform */
   }
 
-  ::-webkit-scrollbar {
+  &::-webkit-scrollbar {
     height: 12px;
 
     @media (max-width: ${pageSizes.tablet}) {
@@ -147,35 +147,36 @@ const AllPointsWrapper = styled.div`
     }
   }
 
-  ::-webkit-scrollbar-thumb {
+  &::-webkit-scrollbar-thumb {
     /* Foreground */
     background: ${colours.cyan600};
   }
-  ::-webkit-scrollbar-track {
+
+  &::-webkit-scrollbar-track {
     /* Background */
     background: none;
   }
 
-  ::-webkit-scrollbar-thumb {
+  &::-webkit-scrollbar-thumb {
     border-radius: 1em;
   }
 `;
 
-const AllPoints = styled.div<{ numWeeks: number; numParticipants: number }>`
+const AllPoints = styled.div<{ $numWeeks: number; $numParticipants: number }>`
   display: grid;
-  grid-template-columns: ${({ numWeeks }) =>
-    `20px repeat(${numWeeks}, 70px) 20px`};
-  grid-template-rows: ${({ numParticipants }) =>
-    `58px repeat(${numParticipants}, 72px)`};
+  grid-template-columns: ${({ $numWeeks }) =>
+    `20px repeat(${$numWeeks}, 70px) 20px`};
+  grid-template-rows: ${({ $numParticipants }) =>
+    `58px repeat(${$numParticipants}, 72px)`};
   color: ${colours.grey200};
   transform: rotateX(180deg);
   -webkit-transform: rotateX(180deg);
 
   @media (max-width: ${pageSizes.tablet}) {
-    grid-template-columns: ${({ numWeeks }) =>
-      `12px repeat(${numWeeks}, 44px) 12px`};
-    grid-template-rows: ${({ numParticipants }) =>
-      `37px repeat(${numParticipants}, 50px)`};
+    grid-template-columns: ${({ $numWeeks }) =>
+      `12px repeat(${$numWeeks}, 44px) 12px`};
+    grid-template-rows: ${({ $numParticipants }) =>
+      `37px repeat(${$numParticipants}, 50px)`};
   }
 
   > div {
@@ -218,8 +219,8 @@ const ClickableRowHeading = styled(Link)`
     text-align: center;
   }
 
-  :hover,
-  :focus {
+  &:hover,
+  &:focus {
     color: ${colours.cyan100};
   }
 `;
@@ -241,8 +242,8 @@ const WeekNumber = styled.p`
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
 
-  :hover,
-  :focus {
+  &:hover,
+  &:focus {
     color: ${colours.cyan100};
   }
 
@@ -261,8 +262,8 @@ const Participant = styled.div`
   text-underline-offset: 4px;
   text-decoration-thickness: 1px;
 
-  :hover,
-  :focus {
+  &:hover,
+  &:focus {
     color: ${colours.cyan100};
   }
 
@@ -281,7 +282,7 @@ const TotalPoints = styled.div`
   }
 `;
 
-const WeeklyPoints = styled.div<{ rowIndex: number }>``;
+const WeeklyPoints = styled.div<{ $rowIndex: number }>``;
 
 const LeagueNotStarted = styled.section`
   p {
@@ -292,8 +293,8 @@ const LeagueNotStarted = styled.section`
     text-decoration: underline;
     text-underline-offset: 2px;
 
-    :hover,
-    :focus {
+    &:hover,
+    &:focus {
       color: ${colours.cyan100};
     }
   }

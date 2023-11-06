@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import Fixture from "src/types/Fixture";
 import colours from "src/styles/colours";
+import { ReactNode } from "react";
 import GridItemHomeTeam from "../GridItemHomeTeam";
 import GridItemAwayTeam from "../GridItemAwayTeam";
 import GridItemKickoff from "../GridItemKickoff";
@@ -10,7 +11,7 @@ export type Props = {
   fixtureId: Fixture["id"];
   kickoff: string;
   homeTeam: Fixture["homeTeam"];
-  awayTeam: Fixture["awayTeam"] | React.ReactNode;
+  awayTeam: Fixture["awayTeam"] | ReactNode;
   homeGoals: string;
   awayGoals: string;
   isBigBoyBonus?: boolean;
@@ -47,16 +48,16 @@ const GridRow = ({
 }: Props) => {
   return (
     <>
-      <Kickoff locked={locked} label={kickoff} topRow={topRow} />
+      <Kickoff $locked={locked} label={kickoff} $topRow={topRow} />
       <HomeTeam
         isBbb={isBbbLocked && isBigBoyBonus}
         label={homeTeam}
-        locked={locked}
+        $locked={locked}
         predictionScore={predictionScore}
-        topRow={topRow}
+        $topRow={topRow}
       />
       {!isLoaded || isLoading ? (
-        <EmptySpace topRow={topRow} />
+        <EmptySpace $topRow={topRow} />
       ) : (
         <>
           <Score
@@ -64,10 +65,10 @@ const GridRow = ({
             goals={homeGoals}
             isHome
             isScoreEditable={!locked}
-            topRow={topRow}
+            $topRow={topRow}
             updateGoals={updateGoals}
           />
-          <Divider locked={locked} topRow={topRow}>
+          <Divider $locked={locked} $topRow={topRow}>
             -
           </Divider>
           <Score
@@ -75,7 +76,7 @@ const GridRow = ({
             goals={awayGoals}
             isHome={false}
             isScoreEditable={!locked}
-            topRow={topRow}
+            $topRow={topRow}
             updateGoals={updateGoals}
           />
         </>
@@ -87,52 +88,59 @@ const GridRow = ({
         isBbbSelected={isBigBoyBonus}
         label={awayTeam}
         isLoaded={isLoaded}
-        locked={locked}
-        topRow={topRow}
+        $locked={locked}
+        $topRow={topRow}
       />
     </>
   );
 };
 
-const EmptySpace = styled.div<{ topRow: boolean }>`
+const EmptySpace = styled.div<{ $topRow: boolean }>`
   grid-column: span 3;
   width: calc(4em + 13px);
-  border-top: ${({ topRow }) =>
-    !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
+  border-top: ${({ $topRow }) =>
+    !$topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
 `;
 
-const Kickoff = styled(GridItemKickoff)<{ locked: boolean; topRow: boolean }>`
-  color: ${({ locked }) => (locked ? colours.grey500 : colours.grey200)};
-  border-top: ${({ topRow }) =>
-    !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
+const Kickoff = styled(GridItemKickoff)<{ $locked: boolean; $topRow: boolean }>`
+  color: ${({ $locked }) => ($locked ? colours.grey500 : colours.grey200)};
+  border-top: ${({ $topRow }) =>
+    !$topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
 `;
 
-const HomeTeam = styled(GridItemHomeTeam)<{ locked: boolean; topRow: boolean }>`
-  /* font-size: 1.4rem; */
-  color: ${({ locked }) => (locked ? colours.grey500 : colours.grey200)};
-  border-top: ${({ topRow }) =>
-    !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
+const HomeTeam = styled(GridItemHomeTeam)<{
+  $locked: boolean;
+  $topRow: boolean;
+}>`
+  color: ${({ $locked }) => ($locked ? colours.grey500 : colours.grey200)};
+  border-top: ${({ $topRow }) =>
+    !$topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
 `;
 
-const AwayTeam = styled(GridItemAwayTeam)<{ locked: boolean; topRow: boolean }>`
-  /* font-size: 1.4rem; */
-  color: ${({ locked }) => (locked ? colours.grey500 : colours.grey200)};
-  border-top: ${({ topRow }) =>
-    !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
+const AwayTeam = styled(GridItemAwayTeam)<{
+  $locked: boolean;
+  $topRow: boolean;
+}>`
+  color: ${({ $locked }) => ($locked ? colours.grey500 : colours.grey200)};
+  border-top: ${({ $topRow }) =>
+    !$topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
 `;
 
-const Score = styled(ScoreInput)<{ isScoreEditable: boolean; topRow: boolean }>`
+const Score = styled(ScoreInput)<{
+  isScoreEditable: boolean;
+  $topRow: boolean;
+}>`
   color: ${({ isScoreEditable }) =>
     !isScoreEditable ? colours.grey500 : colours.grey200};
   border: 0;
-  border-top: ${({ topRow }) =>
-    !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
+  border-top: ${({ $topRow }) =>
+    !$topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
 `;
 
-const Divider = styled.span<{ locked: boolean; topRow: boolean }>`
-  border-top: ${({ topRow }) =>
-    !topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
-  color: ${({ locked }) => (locked ? colours.grey500 : colours.grey200)};
+const Divider = styled.span<{ $locked: boolean; $topRow: boolean }>`
+  border-top: ${({ $topRow }) =>
+    !$topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
+  color: ${({ $locked }) => ($locked ? colours.grey500 : colours.grey200)};
   align-self: stretch;
   display: flex;
   flex-direction: column;
