@@ -111,17 +111,17 @@ const Input = styled.input<StyleProps>`
   width: 2em;
   background-color: inherit;
   text-align: center;
-  :focus {
+  &:focus {
     outline: none;
   }
-  ::placeholder {
+  &::placeholder {
     color: ${colours.grey500opacity50};
   }
 
   // Hide arrows
   /* Chrome, Safari, Edge, Opera */
-  ::-webkit-outer-spin-button,
-  ::-webkit-inner-spin-button {
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
   }

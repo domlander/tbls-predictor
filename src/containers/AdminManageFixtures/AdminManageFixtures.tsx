@@ -233,7 +233,7 @@ const StyledWeekNavigator = styled.div`
   justify-content: space-evenly;
   align-items: center;
 
-  img:hover {
+  img&:hover {
     cursor: pointer;
   }
 `;

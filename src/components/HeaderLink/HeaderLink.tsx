@@ -24,8 +24,8 @@ const ListElement = styled.li`
   a {
     cursor: pointer;
 
-    :hover,
-    :focus {
+    &:hover,
+    &:focus {
       color: ${colours.cyan100};
     }
   }

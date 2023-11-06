@@ -126,8 +126,8 @@ const PredictionsHeader = styled.div`
     text-decoration: underline;
     text-underline-offset: 1px;
 
-    :hover,
-    :focus {
+    &:hover,
+    &:focus {
       color: ${colours.cyan100};
     }
 

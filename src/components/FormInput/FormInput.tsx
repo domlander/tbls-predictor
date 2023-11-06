@@ -44,8 +44,8 @@ const Input = styled.input`
   :placeholder {
     color: ${colours.grey500};
   }
-  :hover,
-  :focus {
+  &:hover,
+  &:focus {
     height: 2.2em;
     width: 11.9em;
     outline: none;

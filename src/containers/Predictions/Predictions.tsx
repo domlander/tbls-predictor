@@ -220,8 +220,8 @@ const NoFixtures = styled.section`
     text-decoration: underline;
     text-underline-offset: 3px;
 
-    :hover,
-    :focus {
+    &:hover,
+    &:focus {
       color: ${colours.cyan100};
     }
   }

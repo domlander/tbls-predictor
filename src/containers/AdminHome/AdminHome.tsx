@@ -29,7 +29,7 @@ const Li = styled.li`
   text-underline-offset: 3px;
 
   a {
-    :hover {
+    &:hover {
       color: ${colours.cyan300};
     }
   }

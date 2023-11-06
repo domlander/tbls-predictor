@@ -139,7 +139,7 @@ const AllPointsWrapper = styled.div`
     padding-bottom: 6px; /* equiv to padding-top without the transform */
   }
 
-  ::-webkit-scrollbar {
+  &::-webkit-scrollbar {
     height: 12px;
 
     @media (max-width: ${pageSizes.tablet}) {
@@ -147,16 +147,17 @@ const AllPointsWrapper = styled.div`
     }
   }
 
-  ::-webkit-scrollbar-thumb {
+  &::-webkit-scrollbar-thumb {
     /* Foreground */
     background: ${colours.cyan600};
   }
-  ::-webkit-scrollbar-track {
+
+  &::-webkit-scrollbar-track {
     /* Background */
     background: none;
   }
 
-  ::-webkit-scrollbar-thumb {
+  &::-webkit-scrollbar-thumb {
     border-radius: 1em;
   }
 `;
@@ -218,8 +219,8 @@ const ClickableRowHeading = styled(Link)`
     text-align: center;
   }
 
-  :hover,
-  :focus {
+  &:hover,
+  &:focus {
     color: ${colours.cyan100};
   }
 `;
@@ -241,8 +242,8 @@ const WeekNumber = styled.p`
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
 
-  :hover,
-  :focus {
+  &:hover,
+  &:focus {
     color: ${colours.cyan100};
   }
 
@@ -261,8 +262,8 @@ const Participant = styled.div`
   text-underline-offset: 4px;
   text-decoration-thickness: 1px;
 
-  :hover,
-  :focus {
+  &:hover,
+  &:focus {
     color: ${colours.cyan100};
   }
 
@@ -292,8 +293,8 @@ const LeagueNotStarted = styled.section`
     text-decoration: underline;
     text-underline-offset: 2px;
 
-    :hover,
-    :focus {
+    &:hover,
+    &:focus {
       color: ${colours.cyan100};
     }
   }

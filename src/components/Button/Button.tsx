@@ -67,7 +67,7 @@ const ButtonStyles = styled.button<StyleProps>`
   opacity: ${({ disabled }) => (disabled ? "50%" : "100%")};
   padding: 0 1em;
   width: 100%;
-  :hover {
+  &:hover {
     outline: none;
     background-color: ${({ disabled, variant }) =>
       disabled
@@ -75,7 +75,7 @@ const ButtonStyles = styled.button<StyleProps>`
         : variants[variant].hoverBackgroundColour};
   }
 
-  :focus {
+  &:focus {
     background-color: ${({ variant }) =>
       variants[variant].hoverBackgroundColour};
   }

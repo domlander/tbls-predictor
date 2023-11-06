@@ -72,8 +72,8 @@ const BbbButton = styled.button<{
     padding: 0 0.3em;
   }
 
-  :hover,
-  :focus {
+  &:hover,
+  &:focus {
     background-color: ${colours.cyan300};
     color: ${colours.blackblue500};
     border: 1px solid ${colours.cyan300};

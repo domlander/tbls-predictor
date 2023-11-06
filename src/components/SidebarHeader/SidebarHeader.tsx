@@ -61,8 +61,8 @@ const ImageContainer = styled.div`
   align-items: center;
   cursor: pointer;
 
-  :focus,
-  :hover {
+  &:focus,
+  &:hover {
     outline: 1px solid ${colours.grey100};
   }
 `;

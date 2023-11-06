@@ -69,8 +69,8 @@ const AdminLink = styled(Link)`
   text-underline-offset: 2px;
   margin-top: 1em;
 
-  :hover,
-  :focus {
+  &:hover,
+  &:focus {
     color: ${colours.cyan100};
   }
 

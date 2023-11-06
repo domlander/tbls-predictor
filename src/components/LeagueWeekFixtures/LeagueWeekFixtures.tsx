@@ -122,8 +122,8 @@ const ClickableFixture = styled(StyledFixture)`
   text-decoration: underline;
   text-underline-offset: 2px;
 
-  :hover,
-  :focus {
+  &:hover,
+  &:focus {
     color: ${colours.cyan100};
   }
 `;
