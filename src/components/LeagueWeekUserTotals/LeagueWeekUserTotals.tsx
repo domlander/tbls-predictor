@@ -11,7 +11,7 @@ export type Props = {
 
 const LeagueWeekUserTotals = ({ users }: Props) => {
   return (
-    <Container numUsers={users.length}>
+    <Container $numUsers={users.length}>
       {users.map(({ id, username }) => (
         <Username key={id}>{username}</Username>
       ))}
@@ -22,11 +22,11 @@ const LeagueWeekUserTotals = ({ users }: Props) => {
   );
 };
 
-const Container = styled.div<{ numUsers: number }>`
+const Container = styled.div<{ $numUsers: number }>`
   width: 100%;
   margin-bottom: 1.5em;
   display: grid;
-  grid-template-columns: ${({ numUsers }) => `repeat(${numUsers}, 1fr)`};
+  grid-template-columns: ${({ $numUsers }) => `repeat(${$numUsers}, 1fr)`};
   justify-items: center;
   position: sticky;
   top: 0;

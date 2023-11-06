@@ -14,11 +14,11 @@ export type Props = {
 
 const GridRowFormTeam = ({ team, recentFixtures, isHome = false }: Props) => {
   if (!recentFixtures.length) {
-    return <NoForm isHome={isHome}>No previous matches</NoForm>;
+    return <NoForm $isHome={isHome}>No previous matches</NoForm>;
   }
 
   return (
-    <Form isHome={isHome}>
+    <Form $isHome={isHome}>
       {recentFixtures.map(
         ({ id, homeTeam, awayTeam, homeGoals, awayGoals, kickoff }) => {
           const teamGoals = team === homeTeam ? homeGoals : awayGoals;
@@ -28,11 +28,11 @@ const GridRowFormTeam = ({ team, recentFixtures, isHome = false }: Props) => {
           const oppo = homeTeam === team ? `vs ${awayTeam}` : `at ${homeTeam}`;
 
           return (
-            <Match key={id} isHome={isHome}>
+            <Match key={id} $isHome={isHome}>
               <Result result={result}>
                 {result} {homeGoals}-{awayGoals} {oppo}
               </Result>
-              <KickoffDate isHome={isHome}>
+              <KickoffDate $isHome={isHome}>
                 {getShortDateKickoffTime(kickoff)}
               </KickoffDate>
             </Match>
@@ -43,21 +43,21 @@ const GridRowFormTeam = ({ team, recentFixtures, isHome = false }: Props) => {
   );
 };
 
-const Form = styled.div<{ isHome: boolean }>`
+const Form = styled.div<{ $isHome: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 0.1em;
   padding-top: 0.4em;
   padding-bottom: 1em;
-  align-items: ${({ isHome }) => (isHome ? "flex-end" : "flex-start")};
-  padding-left: ${({ isHome }) => (isHome ? "0" : "1em")};
-  padding-right: ${({ isHome }) => (isHome ? "1em" : "0")};
+  align-items: ${({ $isHome }) => ($isHome ? "flex-end" : "flex-start")};
+  padding-left: ${({ $isHome }) => ($isHome ? "0" : "1em")};
+  padding-right: ${({ $isHome }) => ($isHome ? "1em" : "0")};
 `;
 
-const Match = styled.div<{ isHome: boolean }>`
+const Match = styled.div<{ $isHome: boolean }>`
   width: 100%;
   display: flex;
-  flex-direction: ${({ isHome }) => (isHome ? "row" : "row-reverse")};
+  flex-direction: ${({ $isHome }) => ($isHome ? "row" : "row-reverse")};
   justify-content: flex-end;
   color: ${colours.grey300};
   font-size: 0.9rem;
@@ -74,18 +74,18 @@ const Result = styled.div<{ result: MatchResult }>`
   color: ${({ result }) => getResultColour(result)};
 `;
 
-const KickoffDate = styled.div<{ isHome: boolean }>`
+const KickoffDate = styled.div<{ $isHome: boolean }>`
   flex-basis: 4em;
-  text-align: ${({ isHome }) => (isHome ? "end" : "start")};
+  text-align: ${({ $isHome }) => ($isHome ? "end" : "start")};
   color: ${colours.grey500};
 `;
 
-const NoForm = styled.div<{ isHome: boolean }>`
+const NoForm = styled.div<{ $isHome: boolean }>`
   padding-top: 0.4em;
   padding-bottom: 1em;
-  padding-left: ${({ isHome }) => (isHome ? "0" : "1.6em")};
-  padding-right: ${({ isHome }) => (isHome ? "1.6em" : "0")};
-  text-align: ${({ isHome }) => (isHome ? "end" : "start")};
+  padding-left: ${({ $isHome }) => ($isHome ? "0" : "1.6em")};
+  padding-right: ${({ $isHome }) => ($isHome ? "1.6em" : "0")};
+  text-align: ${({ $isHome }) => ($isHome ? "end" : "start")};
   color: ${colours.grey300};
   font-size: 0.8rem !important;
   font-weight: 300;

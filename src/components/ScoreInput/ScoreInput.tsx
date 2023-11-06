@@ -19,6 +19,8 @@ export type Props = StyleProps & {
   ) => void;
 };
 
+const matchSingleDigitOrEmptyStringRegex = /^$|^[0-9]$/;
+
 const preventNonNumericInputs = (event: KeyboardEvent<HTMLInputElement>) => {
   if (
     // Number keys
@@ -85,11 +87,9 @@ const ScoreInput = ({
       autoComplete="off"
       placeholder={isScoreEditable ? "?" : ""}
       disabled={!isScoreEditable}
-      isScoreEditable={isScoreEditable}
       maxLength={1}
       name={name}
       onChange={(event) => {
-        const matchSingleDigitOrEmptyStringRegex = /^$|^[0-9]$/;
         if (matchSingleDigitOrEmptyStringRegex.test(event.target.value)) {
           updateGoals(fixtureId, isHome, event.target.value);
         }
@@ -107,7 +107,7 @@ const ScoreInput = ({
   );
 };
 
-const Input = styled.input<StyleProps>`
+const Input = styled.input`
   width: 2em;
   background-color: inherit;
   text-align: center;
@@ -118,7 +118,7 @@ const Input = styled.input<StyleProps>`
     color: ${colours.grey500opacity50};
   }
 
-  // Hide arrows
+  /* Hide arrows */
   /* Chrome, Safari, Edge, Opera */
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import colours from "src/styles/colours";
 import pageSizes from "src/styles/pageSizes";
+import { ReactNode } from "react";
 
 export type Props = {
   className?: string;
@@ -8,9 +9,9 @@ export type Props = {
   handleBbbUpdate?: (fixtureId: number) => void;
   isBbbLocked?: boolean;
   isBbbSelected?: boolean;
-  label: string | React.ReactNode;
+  label: string | ReactNode;
   isLoaded: boolean;
-  locked: boolean;
+  $locked: boolean;
 };
 
 const GridItem = ({
@@ -21,13 +22,13 @@ const GridItem = ({
   isBbbSelected = false,
   label = "",
   isLoaded = false,
-  locked,
+  $locked,
 }: Props) => (
-  <Container isBbbLocked={isBbbLocked} className={className}>
+  <Container $isBbbLocked={isBbbLocked} className={className}>
     {label}
-    {isLoaded && !locked && !isBbbLocked && handleBbbUpdate && (
+    {isLoaded && !$locked && !isBbbLocked && handleBbbUpdate && (
       <BbbButton
-        isBbbSelected={isBbbSelected}
+        $isBbbSelected={isBbbSelected}
         onClick={(e) => {
           e.preventDefault();
           handleBbbUpdate(fixtureId);
@@ -40,11 +41,11 @@ const GridItem = ({
 );
 
 const Container = styled.div<{
-  isBbbLocked: Props["isBbbLocked"];
+  $isBbbLocked: Props["isBbbLocked"];
 }>`
   display: flex;
-  justify-content: ${({ isBbbLocked }) =>
-    !isBbbLocked ? "space-between" : "flex-start"};
+  justify-content: ${({ $isBbbLocked }) =>
+    !$isBbbLocked ? "space-between" : "flex-start"};
   align-items: center;
   padding-left: 1em;
   padding-right: 0.4em;
@@ -55,14 +56,14 @@ const Container = styled.div<{
 `;
 
 const BbbButton = styled.button<{
-  isBbbSelected: Props["isBbbSelected"];
+  $isBbbSelected: Props["isBbbSelected"];
 }>`
-  color: ${({ isBbbSelected }) =>
-    isBbbSelected ? colours.blackblue500 : colours.cyan300};
-  background-color: ${({ isBbbSelected }) =>
-    isBbbSelected ? colours.cyan300 : colours.blackblue500};
-  border: ${({ isBbbSelected }) =>
-    `1px solid ${isBbbSelected ? colours.cyan300 : colours.cyan500}`};
+  color: ${({ $isBbbSelected }) =>
+    $isBbbSelected ? colours.blackblue500 : colours.cyan300};
+  background-color: ${({ $isBbbSelected }) =>
+    $isBbbSelected ? colours.cyan300 : colours.blackblue500};
+  border: ${({ $isBbbSelected }) =>
+    `1px solid ${$isBbbSelected ? colours.cyan300 : colours.cyan500}`};
   border-radius: 0.2em;
   cursor: pointer;
   line-height: 1.3em;

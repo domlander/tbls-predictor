@@ -116,7 +116,8 @@ const Label = styled.label`
   justify-content: space-between;
   align-items: center;
   margin-top: 4em;
-  :first-child {
+
+  &:first-child {
     margin-top: 0;
   }
 

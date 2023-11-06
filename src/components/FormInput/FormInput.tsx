@@ -41,9 +41,11 @@ const Input = styled.input`
   font-size: 1.6em;
   border: 0;
   padding-left: 1em;
-  :placeholder {
+
+  &:placeholder {
     color: ${colours.grey500};
   }
+
   &:hover,
   &:focus {
     height: 2.2em;

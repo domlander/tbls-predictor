@@ -13,16 +13,13 @@ const variants = {
   },
 };
 
-interface StyleProps {
-  level: HeadingLevel;
-  variant: "primary" | "secondary";
-}
-
-export type Props = StyleProps & {
-  id?: string;
+export type Props = {
   as?: HeadingLevel;
   children: ReactNode;
   className?: string;
+  id?: string;
+  level: HeadingLevel;
+  variant: "primary" | "secondary";
 };
 
 const Heading = ({
@@ -34,20 +31,23 @@ const Heading = ({
   variant = "secondary",
 }: Props) => (
   <StyledHeading
-    level={level}
+    $level={level}
     as={as || level}
     id={id}
-    variant={variant}
+    $variant={variant}
     className={className}
   >
     {children}
   </StyledHeading>
 );
 
-const StyledHeading = styled.div<StyleProps>`
-  color: ${({ variant }) => variants[variant].colour};
-  text-align: ${({ level }) => (level === "h1" ? "center" : "left")};
-  margin: ${({ level }) => (level === "h1" ? "1em 0" : "0")};
+const StyledHeading = styled.div<{
+  $level: HeadingLevel;
+  $variant: "primary" | "secondary";
+}>`
+  color: ${({ $variant }) => variants[$variant].colour};
+  text-align: ${({ $level }) => ($level === "h1" ? "center" : "left")};
+  margin: ${({ $level }) => ($level === "h1" ? "1em 0" : "0")};
 `;
 
 export default Heading;

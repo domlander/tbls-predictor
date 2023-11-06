@@ -96,7 +96,7 @@ const PredictionsTable = ({
         </StatsToggle>
       </StatsToggleContainer>
       <form onSubmit={handleSubmit}>
-        <Table displayStats={displayStats}>
+        <Table $displayStats={displayStats}>
           {fixturesWithPredictions.map(
             (
               {
@@ -215,11 +215,11 @@ const StatsToggle = styled(Button)`
   }
 `;
 
-const Table = styled.div<{ displayStats: boolean }>`
+const Table = styled.div<{ $displayStats: boolean }>`
   display: grid;
   grid-template-columns: 11em 0.8fr auto 5px auto 1fr;
-  grid-auto-rows: ${({ displayStats }) =>
-    displayStats ? "4.8em 1fr" : "4.8em"};
+  grid-auto-rows: ${({ $displayStats }) =>
+    $displayStats ? "4.8em 1fr" : "4.8em"};
 
   @media (max-width: ${pageSizes.tablet}) {
     grid-template-columns: 7em 0.8fr auto 5px auto 1fr;
