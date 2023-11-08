@@ -1,18 +1,9 @@
-import { GetStaticProps } from "next";
 import prisma from "prisma/client";
 import PremierLeague from "src/containers/PremierLeague";
 import { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
 import generatePremTable from "utils/createPremierLeagueTableFromFixtures";
 
-interface Props {
-  premierLeagueTable: PremierLeagueTeam[];
-}
-
-const PremierLeaguePage = ({ premierLeagueTable }: Props) => {
-  return <PremierLeague teams={premierLeagueTable} />;
-};
-
-export const getStaticProps: GetStaticProps = async () => {
+export const Page = async () => {
   const fixtures = await prisma.fixture.findMany({
     select: {
       homeTeam: true,
@@ -24,12 +15,5 @@ export const getStaticProps: GetStaticProps = async () => {
 
   const premierLeagueTable: PremierLeagueTeam[] = generatePremTable(fixtures);
 
-  return {
-    props: {
-      premierLeagueTable,
-    },
-    revalidate: 1, // Revalidate at quickly as allowed
-  };
+  return <PremierLeague teams={premierLeagueTable} />;
 };
-
-export default PremierLeaguePage;
