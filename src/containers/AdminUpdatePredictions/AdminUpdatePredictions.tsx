@@ -1,3 +1,5 @@
+"use client";
+
 import Heading from "src/components/Heading";
 
 const AdminUpdatePredictions = () => (

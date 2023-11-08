@@ -1,3 +1,5 @@
+"use client";
+
 import { FormEvent, Fragment, useEffect, useState } from "react";
 import Image from "next/image";
 import styled from "styled-components";

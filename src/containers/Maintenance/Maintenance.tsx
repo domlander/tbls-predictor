@@ -1,3 +1,5 @@
+"use client";
+
 import styled from "styled-components";
 import Heading from "src/components/Heading";
 

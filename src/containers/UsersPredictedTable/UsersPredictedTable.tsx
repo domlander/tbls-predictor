@@ -1,3 +1,5 @@
+"use client";
+
 import PremierLeague from "src/containers/PremierLeague";
 import type { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
 

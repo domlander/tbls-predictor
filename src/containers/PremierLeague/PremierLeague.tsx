@@ -1,9 +1,12 @@
+"use client";
+
 import { Fragment } from "react";
+import styled, { keyframes } from "styled-components";
+
 import Heading from "src/components/Heading";
 import colours from "src/styles/colours";
 import pageSizes from "src/styles/pageSizes";
 import type { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
-import styled, { keyframes } from "styled-components";
 
 type Props = {
   teams: PremierLeagueTeam[];

@@ -1,3 +1,5 @@
+"use client";
+
 import styled, { css } from "styled-components";
 import colours from "src/styles/colours";
 

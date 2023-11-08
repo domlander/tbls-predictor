@@ -1,3 +1,5 @@
+"use client";
+
 import { KeyboardEvent } from "react";
 import Fixture from "src/types/Fixture";
 import styled from "styled-components";
