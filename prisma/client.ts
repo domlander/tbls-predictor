@@ -9,6 +9,7 @@
  */
 
 import { PrismaClient } from "@prisma/client";
+import { withAccelerate } from "@prisma/extension-accelerate";
 
 declare global {
   namespace NodeJS {
@@ -22,7 +23,7 @@ declare global {
 let prisma: PrismaClient;
 
 if (process.env.ENVIRONMENT === "production") {
-  prisma = new PrismaClient();
+  prisma = new PrismaClient().$extends(withAccelerate());
 } else {
   if (!global.prisma) {
     global.prisma = new PrismaClient();
