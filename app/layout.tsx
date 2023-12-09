@@ -1,9 +1,10 @@
 import React, { ReactNode } from "react";
-import GlobalStyle from "src/styles/globalStyles";
 import Maintenance from "src/containers/Maintenance";
 import StyledComponentsRegistry from "lib/registry";
 import AuthProvider from "./AuthProvider";
 import InnerLayout from "./InnerLayout";
+import { workSans } from "./fonts";
+import "./globals.css";
 
 interface Props {
   children: ReactNode;
@@ -14,11 +15,10 @@ const RootLayout = ({ children }: Props) => {
 
   return (
     <AuthProvider>
-      <GlobalStyle />
       {isMaintenanceMode ? (
         <Maintenance />
       ) : (
-        <html lang="en">
+        <html lang="en" className={workSans.className}>
           <body>
             <StyledComponentsRegistry>
               <InnerLayout>{children}</InnerLayout>

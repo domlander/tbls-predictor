@@ -46,7 +46,7 @@ const Layout = ({ children }: Props) => {
           <p>{bannerText}</p>
         </LoadingBanner>
       ) : null}
-      <MainContent isSidebarOpen={isSidebarOpen}>
+      <MainContent $isSidebarOpen={isSidebarOpen}>
         <HeaderBar
           initial={username[0].toUpperCase()}
           isLoading={status === "loading"}
@@ -56,7 +56,7 @@ const Layout = ({ children }: Props) => {
           <InnerContainer>{children}</InnerContainer>
         </BannerContext.Provider>
       </MainContent>
-      <SidebarContainer isSidebarOpen={isSidebarOpen}>
+      <SidebarContainer $isSidebarOpen={isSidebarOpen}>
         <Sidebar
           username={username}
           isLoggedIn={status === "authenticated"}
@@ -85,14 +85,15 @@ const InnerContainer = styled.main`
   }
 `;
 
-const MainContent = styled.div<{ isSidebarOpen: boolean }>`
+const MainContent = styled.div<{ $isSidebarOpen: boolean }>`
   grid-area: stack;
-  opacity: ${({ isSidebarOpen }) => (isSidebarOpen ? "25%" : "100%")};
+  opacity: ${({ $isSidebarOpen }) => ($isSidebarOpen ? "25%" : "100%")};
 `;
 
-const SidebarContainer = styled.div<{ isSidebarOpen: boolean }>`
+const SidebarContainer = styled.div<{ $isSidebarOpen: boolean }>`
   grid-area: stack;
-  visibility: ${({ isSidebarOpen }) => (isSidebarOpen ? "visible" : "hidden")};
+  visibility: ${({ $isSidebarOpen }) =>
+    $isSidebarOpen ? "visible" : "hidden"};
   /* transform: translateY(-110vw);
   will-change: transform;
   transition: transform 0.6s cubic-bezier(0.16, 0.1, 0.3, 1),

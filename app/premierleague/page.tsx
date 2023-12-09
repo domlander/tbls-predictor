@@ -3,7 +3,7 @@ import PremierLeague from "src/containers/PremierLeague";
 import { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
 import generatePremTable from "utils/createPremierLeagueTableFromFixtures";
 
-export const Page = async () => {
+const Page = async () => {
   const fixtures = await prisma.fixture.findMany({
     select: {
       homeTeam: true,
@@ -17,3 +17,5 @@ export const Page = async () => {
 
   return <PremierLeague teams={premierLeagueTable} />;
 };
+
+export default Page;
