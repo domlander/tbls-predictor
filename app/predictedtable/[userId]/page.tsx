@@ -1,38 +1,42 @@
-import { GetServerSideProps } from "next";
-import UsersPredictedTable from "src/containers/UsersPredictedTable";
-import redirectInternal from "utils/redirects";
+import { redirect } from "next/navigation";
 import prisma from "prisma/client";
+import PremierLeague from "src/containers/PremierLeague";
 import { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
 import generatePremTable from "utils/createPremierLeagueTableFromFixtures";
 
-type Props = {
-  username: string;
-  table: PremierLeagueTeam[];
-  predictedTable: PremierLeagueTeam[];
-};
+const appendTeamNameWithPositionDiff = (
+  predictedTable: PremierLeagueTeam[],
+  actualTable: PremierLeagueTeam[]
+) => {
+  return predictedTable.map((team, i) => {
+    const position = i + 1;
+    const actualPosition =
+      actualTable.findIndex((t) => t.team === team.team) + 1;
+    const difference = actualPosition - position;
 
-const Page = ({ username, table, predictedTable }: Props) => {
-  return (
-    <UsersPredictedTable
-      username={username}
-      table={table}
-      predictedTable={predictedTable}
-    />
-  );
+    let text = "";
+    if (difference === 0) {
+      text = "(=)";
+    } else if (difference > 0) {
+      text = `(+${difference})`;
+    } else {
+      text = `(${difference})`;
+    }
+
+    return {
+      ...team,
+      team: `${team.team} ${text}`,
+    };
+  });
 };
 
 /**
- * Get all fixtures and users predictions
- *
- * Create an array of "true" results:
- *  - if prediction: the prediction
- *  - no prediction: the result
- *
- * Create a league table from those "true" results
+ * Provides a league table to show the user what the league table would
+ * look like if their own predictions were the true results.
  */
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+const Page = async ({ params }: { params: { userId: string } }) => {
   const userId = params?.userId;
-  if (typeof userId !== "string") return redirectInternal("");
+  if (typeof userId !== "string") return redirect("/");
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -40,7 +44,8 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       username: true,
     },
   });
-  if (!user) return redirectInternal("");
+  if (!user?.username) return redirect("/");
+
   const fixtures = await prisma.fixture.findMany({
     select: {
       id: true,
@@ -96,6 +101,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     };
   });
 
+  // Generate a league table from the predicted results
   const table = generatePremTable(fixtures);
 
   const predictedTable: PremierLeagueTeam[] = generatePremTable(
@@ -106,13 +112,20 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     points: premierLeagueTable.find((t) => t.team === team.team)?.points || 0,
   }));
 
-  return {
-    props: {
-      username: user.username,
-      table,
-      predictedTable,
-    },
-  };
+  // Adjust the name of the team to include position difference
+  const predictedPositions = appendTeamNameWithPositionDiff(
+    predictedTable,
+    table
+  );
+
+  return (
+    <PremierLeague
+      teams={predictedPositions}
+      heading={`${user.username}'s predicted league`}
+      loading={false}
+      isPredictedLeague
+    />
+  );
 };
 
 export default Page;

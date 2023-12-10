@@ -1,3 +1,5 @@
+"use client";
+
 import styled from "styled-components";
 
 import User from "src/types/User";

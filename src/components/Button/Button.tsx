@@ -1,3 +1,5 @@
+"use client";
+
 import { MouseEvent, ReactNode } from "react";
 import styled from "styled-components";
 import colours from "src/styles/colours";

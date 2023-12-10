@@ -1,3 +1,5 @@
+"use client";
+
 import styled from "styled-components";
 
 import UserLeague from "src/types/UserLeague";

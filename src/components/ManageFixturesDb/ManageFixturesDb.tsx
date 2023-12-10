@@ -1,3 +1,5 @@
+"use client";
+
 import { FormEventHandler, Fragment } from "react";
 import dayjs from "dayjs";
 import styled from "styled-components";

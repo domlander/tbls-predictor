@@ -1,15 +1,34 @@
 import { Fragment } from "react";
+import cx from "classnames";
 import Heading from "src/components/Heading";
-import colours from "src/styles/colours";
-import pageSizes from "src/styles/pageSizes";
 import type { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
-import styled, { keyframes } from "styled-components";
+import styles from "./PremierLeague.module.css";
 
 type Props = {
   teams: PremierLeagueTeam[];
   heading?: string;
   loading?: boolean;
   isPredictedLeague?: boolean;
+};
+
+const getPositionColour = (position: number): string => {
+  switch (position) {
+    case 1:
+      return "winner";
+
+    case 2:
+    case 3:
+    case 4:
+      return "championsLeague";
+
+    case 18:
+    case 19:
+    case 20:
+      return "relegation";
+
+    default:
+      return "none";
+  }
 };
 
 const PremierLeague = ({
@@ -19,38 +38,40 @@ const PremierLeague = ({
   isPredictedLeague = false,
 }: Props) => {
   return (
-    <Container>
+    <div className={styles.container}>
       <Heading level="h1" variant="secondary">
         {heading}
       </Heading>
-      <Table $isPredicted={isPredictedLeague}>
-        <HeaderRow />
-        <HeaderRowFirst>Club</HeaderRowFirst>
-        <HeaderRow>P</HeaderRow>
-        <HeaderRow>W</HeaderRow>
-        <HeaderRow>D</HeaderRow>
-        <HeaderRow>L</HeaderRow>
-        {!isPredictedLeague && (
-          <>
-            <HeaderRow>GF</HeaderRow>
-            <HeaderRow>GA</HeaderRow>
-          </>
-        )}
-        <HeaderRow>GD</HeaderRow>
-        {isPredictedLeague ? (
-          <>
-            <HeaderRowPoints>PTS</HeaderRowPoints>
-            <HeaderRow>Act.</HeaderRow>
-          </>
-        ) : (
-          <HeaderRowPoints>PTS</HeaderRowPoints>
-        )}
+      <div className={isPredictedLeague ? styles.predictedTable : styles.table}>
+        <div className={styles.headerRow}>
+          <div className={styles.headerData} />
+          <div className={styles.headerData}>Club</div>
+          <div className={styles.headerData}>P</div>
+          <div className={styles.headerData}>W</div>
+          <div className={styles.headerData}>D</div>
+          <div className={styles.headerData}>L</div>
+          {!isPredictedLeague && (
+            <>
+              <div className={styles.headerData}>GF</div>
+              <div className={styles.headerData}>GA</div>
+            </>
+          )}
+          <div className={styles.headerData}>GD</div>
+          {isPredictedLeague ? (
+            <>
+              <div className={styles.headerData}>PTS</div>
+              <div className={styles.headerData}>Act.</div>
+            </>
+          ) : (
+            <div className={styles.headerDataPoints}>PTS</div>
+          )}
+        </div>
         {loading
           ? [...Array(20)].map((_, i) => (
               // eslint-disable-next-line react/no-array-index-key
               <Fragment key={i}>
-                <TableDataPosition $position={i + 1}>{i + 1}</TableDataPosition>
-                <LoadingRow $isPredicted={isPredictedLeague} />
+                <div className={styles.position}>{i + 1}</div>
+                <div className={styles.loadingRow} />
               </Fragment>
             ))
           : teams?.map(
@@ -69,175 +90,39 @@ const PremierLeague = ({
                 },
                 i
               ) => {
+                const positionClass = getPositionColour(i + 1);
                 return (
-                  <Fragment key={team}>
-                    <TableDataPosition $position={i + 1}>
+                  <div className={styles.row} key={team}>
+                    <div className={cx(styles.position, styles[positionClass])}>
                       {i + 1}
-                    </TableDataPosition>
-                    <TableDataFirst>{team}</TableDataFirst>
-                    <TableData>{played}</TableData>
-                    <TableData>{wins}</TableData>
-                    <TableData>{draws}</TableData>
-                    <TableData>{losses}</TableData>
+                    </div>
+                    <div className={styles.team}>{team}</div>
+                    <div>{played}</div>
+                    <div>{wins}</div>
+                    <div>{draws}</div>
+                    <div>{losses}</div>
                     {!isPredictedLeague && (
                       <>
-                        <TableData>{goalsScored}</TableData>
-                        <TableData>{goalsConceded}</TableData>
+                        <div>{goalsScored}</div>
+                        <div>{goalsConceded}</div>
                       </>
                     )}
-                    <TableData>{goalDifference}</TableData>
+                    <div>{goalDifference}</div>
                     {isPredictedLeague ? (
                       <>
-                        <TableDataPoints>{predictedPoints}</TableDataPoints>
-                        <TableData>{points}</TableData>
+                        <div className={styles.points}>{predictedPoints}</div>
+                        <div>{points}</div>
                       </>
                     ) : (
-                      <TableDataPoints>{points}</TableDataPoints>
+                      <div className={styles.points}>{points}</div>
                     )}
-                  </Fragment>
+                  </div>
                 );
               }
             )}
-      </Table>
-    </Container>
+      </div>
+    </div>
   );
 };
-
-const getPositionBackgroundColour = (position: number): string => {
-  switch (position) {
-    case 1:
-      return colours.gold500;
-
-    case 2:
-    case 3:
-    case 4:
-      return colours.green500;
-
-    case 18:
-    case 19:
-    case 20:
-      return colours.red500;
-
-    default:
-      return "transparent";
-  }
-};
-
-const Container = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-left: 2em;
-
-  @media (max-width: ${pageSizes.tablet}) {
-    margin-left: 0;
-  }
-`;
-
-const Table = styled.div<{ $isPredicted: boolean }>`
-  display: grid;
-  grid-template-columns: ${({ $isPredicted }) => {
-    const numColumns = $isPredicted ? 7 : 8;
-    return `max-content minmax(max-content, 14em) repeat(${numColumns}, 2.4em)`;
-  }};
-  grid-template-rows: 2em repeat(20, 3em);
-  font-weight: 300;
-  justify-items: center;
-  align-items: center;
-  color: ${colours.grey200};
-  font-size: 1.1rem;
-
-  @media (max-width: ${pageSizes.tablet}) {
-    font-size: 0.9rem;
-    grid-template-columns: ${({ $isPredicted }) => {
-      const numColumns = $isPredicted ? 7 : 8;
-      return `max-content minmax(max-content, 14em) repeat(${numColumns}, 2em)`;
-    }};
-  }
-`;
-
-const HeaderRow = styled.div`
-  color: ${colours.grey400};
-  justify-items: flex-end;
-  align-items: flex-end;
-  font-size: 0.9rem;
-
-  @media (max-width: ${pageSizes.tablet}) {
-    font-size: 0.8rem;
-  }
-`;
-
-const HeaderRowFirst = styled(HeaderRow)`
-  justify-self: flex-start;
-  padding-left: 1.25em;
-  font-size: 0.9rem;
-
-  @media (max-width: ${pageSizes.tablet}) {
-    font-size: 0.8rem;
-  }
-`;
-
-const HeaderRowPoints = styled(HeaderRow)`
-  font-weight: 700;
-`;
-
-const skeletonLoading = keyframes`
-    0% {
-      background-position: -800px 0
-    }
-    100% {
-      background-position: 800px 0;
-    }
-`;
-
-const LoadingRow = styled.div<{ $isPredicted: boolean }>`
-  grid-column: ${({ $isPredicted }) => `span ${$isPredicted ? 8 : 9}`};
-  width: calc(100% - 1em);
-  height: 1.5em;
-  margin-left: 1em;
-  animation: ${skeletonLoading} 1s linear infinite forwards;
-  background: linear-gradient(
-      to right,
-      ${colours.blackblue400} 4%,
-      ${colours.grey700} 25%,
-      ${colours.blackblue400} 36%
-    )
-    0% 0% / 1500px 100%;
-`;
-
-const TableData = styled.div``;
-
-const TableDataFirst = styled(TableData)`
-  justify-self: flex-start;
-  font-size: 1.2rem;
-  font-weight: 400;
-  padding-left: 1em;
-
-  @media (max-width: ${pageSizes.tablet}) {
-    font-size: 1rem;
-  }
-`;
-const TableDataPoints = styled(TableData)`
-  font-weight: 700;
-`;
-
-const TableDataPosition = styled(TableData)<{ $position: number }>`
-  font-size: 1rem;
-  padding: 3px;
-  font-weight: 700;
-  justify-self: flex-end;
-  color: ${colours.grey400};
-  width: 20px;
-  height: 20px;
-  background: ${({ $position }) => getPositionBackgroundColour($position)};
-  border-radius: 20px;
-  text-align: center;
-
-  @media (max-width: ${pageSizes.tablet}) {
-    font-size: 0.9rem;
-    width: 18px;
-    height: 18px;
-  }
-`;
 
 export default PremierLeague;
