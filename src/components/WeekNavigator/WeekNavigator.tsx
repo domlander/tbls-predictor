@@ -1,13 +1,13 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
+
 import arrowLeft from "public/images/ArrowLeft.svg";
 import arrowRight from "public/images/ArrowRight.svg";
 import arrowLeftDisabled from "public/images/ArrowLeftDisabled.svg";
 import arrowRightDisabled from "public/images/ArrowRightDisabled.svg";
-import styled from "styled-components";
+
 import Heading from "src/components/Heading";
+import styles from "./WeekNavigator.module.css";
 
 export type Props = {
   prevGameweekUrl?: string;
@@ -16,7 +16,7 @@ export type Props = {
 };
 
 const WeekNavigator = ({ prevGameweekUrl, nextGameweekUrl, week }: Props) => (
-  <Container>
+  <div className={styles.container}>
     {prevGameweekUrl ? (
       <Link href={prevGameweekUrl}>
         <Image src={arrowLeft} alt="Go to previous week" />
@@ -34,13 +34,7 @@ const WeekNavigator = ({ prevGameweekUrl, nextGameweekUrl, week }: Props) => (
     ) : (
       <Image src={arrowRightDisabled} alt="disabled navigation" />
     )}
-  </Container>
+  </div>
 );
-
-const Container = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-`;
 
 export default WeekNavigator;
