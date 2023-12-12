@@ -1,12 +1,7 @@
-"use client";
-
-import styled from "styled-components";
-import Link from "next/link";
-import { useSession } from "next-auth/react";
-
 import User from "src/types/User";
 import WeeklyScoresTable from "src/components/WeeklyScoresTable";
-import colours from "src/styles/colours";
+import LeagueAdminLink from "src/components/LeagueAdminLink";
+import styles from "./League.module.css";
 
 interface Props {
   id: number;
@@ -14,7 +9,7 @@ interface Props {
   gameweekStart: number;
   gameweekEnd: number;
   administratorId: string;
-  users: User[];
+  users: Pick<User, "id" | "username" | "totalPoints" | "weeklyPoints">[];
   fixtureWeeksAvailable: number[] | null;
 }
 
@@ -27,14 +22,10 @@ const LeagueContainer = ({
   users,
   fixtureWeeksAvailable,
 }: Props) => {
-  const { data: session } = useSession();
-
   return (
     <>
-      <Container>
-        {session?.user?.id === administratorId && (
-          <AdminLink href={`/league/${id}/admin`}>Admin</AdminLink>
-        )}
+      <div className={styles.container}>
+        <LeagueAdminLink administratorId={administratorId} leagueId={id} />
         <WeeklyScoresTable
           leagueName={name}
           users={users}
@@ -42,43 +33,12 @@ const LeagueContainer = ({
           gameweekStart={gameweekStart}
           fixtureWeeksAvailable={fixtureWeeksAvailable}
         />
-        <FinalWeekText>
+        <p className={styles.finalWeekText}>
           The league runs until gameweek {gameweekEnd}
-        </FinalWeekText>
-      </Container>
+        </p>
+      </div>
     </>
   );
 };
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  @media (max-width: 600px) {
-    margin: 0;
-  }
-`;
-
-const FinalWeekText = styled.p`
-  font-size: 0.9rem;
-  margin-top: 2em;
-`;
-
-const AdminLink = styled(Link)`
-  font-size: 1rem;
-  text-decoration: underline;
-  cursor: pointer;
-  text-underline-offset: 2px;
-  margin-top: 1em;
-
-  &:hover,
-  &:focus {
-    color: ${colours.cyan100};
-  }
-
-  @media (max-width: 600px) {
-    font-size: 0.8rem;
-  }
-`;
 
 export default LeagueContainer;

@@ -8,10 +8,11 @@ import User from "src/types/User";
 import pageSizes from "src/styles/pageSizes";
 import colours from "src/styles/colours";
 import Heading from "src/components/Heading";
+import styles from "./WeeklyScoresTable.module.css";
 
 export interface Props {
   leagueName: string;
-  users: User[];
+  users: Pick<User, "id" | "username" | "totalPoints" | "weeklyPoints">[];
   leagueId: number;
   gameweekStart: number;
   fixtureWeeksAvailable: number[] | null;
@@ -25,89 +26,74 @@ const WeeklyScoresTable = ({
   fixtureWeeksAvailable,
 }: Props) => {
   return (
-    <Container>
+    <section className={styles.container}>
       <Heading level="h2" as="h1" variant="secondary">
         {leagueName}
       </Heading>
       {fixtureWeeksAvailable ? (
-        <Table>
+        <div className={styles.table}>
           <ParticipantsAndTotalPoints $numParticipants={users.length}>
-            <BlankHeaderItem />
+            <div className={styles.headerItemBlank} />
             {users.map(({ id, username, totalPoints }) => (
               <Fragment key={id}>
-                <Participant>
+                <div className={styles.participant}>
                   <a href={`/predictedtable/${id}`}>{username}</a>
-                </Participant>
-                <TotalPoints>{totalPoints}</TotalPoints>
+                </div>
+                <div className={styles.totalPoints}>{totalPoints}</div>
               </Fragment>
             ))}
           </ParticipantsAndTotalPoints>
-          <AllPointsWrapper>
+          <div className={styles.allPointsWrapper}>
             <AllPoints
               $numWeeks={fixtureWeeksAvailable.length}
               $numParticipants={users.length}
             >
-              <BlankTableHeaderItem />
+              <div className={styles.blankTableHeaderItem} />
               {fixtureWeeksAvailable.map((week) => (
-                <HeaderItem key={week}>
+                <div className={styles.headerItem} key={week}>
                   {fixtureWeeksAvailable.indexOf(week) !== -1 ? (
-                    <ClickableRowHeading
+                    <Link
+                      className={styles.clickableRowHeading}
                       href={`/league/${leagueId}/week/${week}`}
                     >
-                      <WeekText>Week</WeekText>
-                      <WeekNumber>{week}</WeekNumber>
-                    </ClickableRowHeading>
+                      <p className={styles.weekText}>Week</p>
+                      <p className={styles.weekNumber}>{week}</p>
+                    </Link>
                   ) : (
-                    <RowHeading>{`Week ${week}`}</RowHeading>
+                    <div>{`Week ${week}`}</div>
                   )}
-                </HeaderItem>
+                </div>
               ))}
-              <BlankTableHeaderItem />
+              <div />
               {users.map(({ id, weeklyPoints }) => (
                 <Fragment key={id}>
-                  <BlankTableItem />
-                  {weeklyPoints?.map(({ week, points }, i) => (
-                    <Fragment key={`${id}${week}`}>
-                      <WeeklyPoints $rowIndex={i} key={week}>
-                        {points}
-                      </WeeklyPoints>
-                    </Fragment>
+                  <div />
+                  {weeklyPoints?.map(({ week, points }) => (
+                    <div key={`${id}${week}`}>{points}</div>
                   ))}
-                  <BlankTableItem />
+                  <div />
                 </Fragment>
               ))}
             </AllPoints>
-          </AllPointsWrapper>
-        </Table>
+          </div>
+        </div>
       ) : (
-        <LeagueNotStarted>
-          <p>
+        <section>
+          <p className={styles.notStartedText}>
             This league does not start until gameweek{" "}
-            <Link href={`/predictions/${gameweekStart}`}>{gameweekStart}</Link>
+            <Link
+              className={styles.notStartedLink}
+              href={`/predictions/${gameweekStart}`}
+            >
+              {gameweekStart}
+            </Link>
           </p>
-          <p>Come back later.</p>
-        </LeagueNotStarted>
+          <p className={styles.notStartedText}>Come back later.</p>
+        </section>
       )}
-    </Container>
+    </section>
   );
 };
-
-const Container = styled.section`
-  display: flex;
-  flex-direction: column;
-  gap: 4em;
-  margin-top: 4em;
-`;
-
-const Table = styled.div`
-  display: flex;
-  font-size: 1.5rem;
-  max-width: calc(100vw - 2em);
-
-  @media (max-width: ${pageSizes.tablet}) {
-    font-size: 1rem;
-  }
-`;
 
 const ParticipantsAndTotalPoints = styled.div<{ $numParticipants: number }>`
   display: grid;
@@ -127,40 +113,6 @@ const ParticipantsAndTotalPoints = styled.div<{ $numParticipants: number }>`
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-`;
-
-const AllPointsWrapper = styled.div`
-  transform: rotateX(180deg);
-  -webkit-transform: rotateX(180deg); /* Safari and Chrome */
-  overflow-x: scroll;
-  border: 1px solid ${colours.grey500opacity50};
-  padding-bottom: 11px; /* equiv to padding-top without the transform */
-
-  @media (max-width: ${pageSizes.tablet}) {
-    padding-bottom: 6px; /* equiv to padding-top without the transform */
-  }
-
-  &::-webkit-scrollbar {
-    height: 12px;
-
-    @media (max-width: ${pageSizes.tablet}) {
-      height: 8px;
-    }
-  }
-
-  &::-webkit-scrollbar-thumb {
-    /* Foreground */
-    background: ${colours.cyan600};
-  }
-
-  &::-webkit-scrollbar-track {
-    /* Background */
-    background: none;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    border-radius: 1em;
   }
 `;
 
@@ -185,120 +137,6 @@ const AllPoints = styled.div<{ $numWeeks: number; $numParticipants: number }>`
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-`;
-
-const HeaderItem = styled.div`
-  max-width: 100%;
-  border-bottom: 1px solid ${colours.grey500opacity50};
-  align-items: flex-start !important;
-`;
-
-const BlankHeaderItem = styled(HeaderItem)`
-  grid-column: span 2 / span 2;
-  border: none;
-  border-bottom: 1px solid ${colours.grey500opacity50};
-`;
-
-const BlankTableItem = styled.div``;
-
-const BlankTableHeaderItem = styled.div`
-  border-bottom: 1px solid ${colours.grey500opacity50};
-`;
-
-const RowHeading = styled.div``;
-
-const ClickableRowHeading = styled(Link)`
-  cursor: pointer;
-  font-size: 1.2rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  color: ${colours.grey300};
-
-  p {
-    margin: 0;
-    text-align: center;
-  }
-
-  &:hover,
-  &:focus {
-    color: ${colours.cyan100};
-  }
-`;
-
-const WeekText = styled.p`
-  font-size: 0.8rem;
-  line-height: 0.8rem;
-
-  @media (max-width: ${pageSizes.tablet}) {
-    font-size: 0.5rem;
-    line-height: 0.5rem;
-  }
-`;
-
-const WeekNumber = styled.p`
-  font-size: 1.4rem;
-  line-height: 1.6rem;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
-
-  &:hover,
-  &:focus {
-    color: ${colours.cyan100};
-  }
-
-  @media (max-width: ${pageSizes.tablet}) {
-    font-size: 0.9rem;
-    line-height: 1.1rem;
-    text-underline-offset: 2px;
-  }
-`;
-
-const Participant = styled.div`
-  justify-self: flex-start;
-  padding: 0 1em;
-  font-size: 1.6rem;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  text-decoration-thickness: 1px;
-
-  &:hover,
-  &:focus {
-    color: ${colours.cyan100};
-  }
-
-  @media (max-width: ${pageSizes.tablet}) {
-    font-size: 1rem;
-    padding: 0 0.8em;
-  }
-`;
-
-const TotalPoints = styled.div`
-  border-left: 1px solid ${colours.grey500opacity50};
-  font-size: 2rem;
-
-  @media (max-width: ${pageSizes.tablet}) {
-    font-size: 1.5rem;
-  }
-`;
-
-const WeeklyPoints = styled.div<{ $rowIndex: number }>``;
-
-const LeagueNotStarted = styled.section`
-  p {
-    font-size: 1rem;
-  }
-
-  a {
-    text-decoration: underline;
-    text-underline-offset: 2px;
-
-    &:hover,
-    &:focus {
-      color: ${colours.cyan100};
-    }
   }
 `;
 

@@ -1,44 +1,15 @@
-import { GetStaticProps, GetStaticPaths } from "next";
 import prisma from "prisma/client";
+import { redirect } from "next/navigation";
 
-import LeagueHome from "src/containers/League";
-import User from "src/types/User";
+import LeagueContainer from "src/containers/League";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import redirectInternal from "utils/redirects";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import getWeeklyPoints from "utils/getWeeklyPoints";
 
-interface Props {
-  id: number;
-  name: string;
-  gameweekStart: number;
-  gameweekEnd: number;
-  users: User[];
-  administratorId: string;
-  fixtureWeeksAvailable: number[];
-}
+type Params = { leagueId: string };
 
-const LeaguePage = ({
-  id,
-  name,
-  gameweekStart,
-  gameweekEnd,
-  administratorId,
-  users,
-  fixtureWeeksAvailable,
-}: Props) => (
-  <LeagueHome
-    id={id}
-    name={name}
-    gameweekStart={gameweekStart}
-    gameweekEnd={gameweekEnd}
-    administratorId={administratorId}
-    users={users}
-    fixtureWeeksAvailable={fixtureWeeksAvailable}
-  />
-);
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+const Page = async ({ params }: { params: Params }) => {
   const leagueId = convertUrlParamToNumber(params?.leagueId);
   if (!leagueId || leagueId <= 0) return redirectInternal("/leagues");
 
@@ -70,14 +41,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   });
 
   // TODO Show league not found message
-  if (!league)
-    return {
-      props: {},
-      redirect: {
-        destination: "/leagues",
-        permanent: false,
-      },
-    };
+  if (!league) {
+    return redirect("/leagues");
+  }
 
   const fixtures = await prisma.fixture.findMany({
     select: {
@@ -126,13 +92,15 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const currentGameweek = calculateCurrentGameweek(fixtures);
   const sortedUsers = users
     .sort((a, b) => b.totalPoints - a.totalPoints || (b.id > a.id ? 1 : -1))
-    .map((user) => ({
-      ...user,
+    .map(({ id, username, totalPoints, weeklyPoints }) => ({
+      id,
+      username,
+      totalPoints,
       weeklyPoints: [
-        ...user.weeklyPoints.filter(
-          (weeklyPoints) =>
-            weeklyPoints.week >= league.gameweekStart &&
-            weeklyPoints.week <= Math.min(league.gameweekEnd, currentGameweek)
+        ...weeklyPoints.filter(
+          ({ week }) =>
+            week >= league.gameweekStart &&
+            week <= Math.min(league.gameweekEnd, currentGameweek)
         ),
       ].reverse(),
     }));
@@ -147,30 +115,17 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
           .reverse()
       : null;
 
-  return {
-    props: {
-      id: leagueId,
-      name: league.name,
-      gameweekStart: league.gameweekStart,
-      gameweekEnd: league.gameweekEnd,
-      users: sortedUsers,
-      administratorId: league.administratorId,
-      fixtureWeeksAvailable,
-    },
-    revalidate: 1,
-  };
+  return (
+    <LeagueContainer
+      id={leagueId}
+      name={league.name}
+      gameweekStart={league.gameweekStart}
+      gameweekEnd={league.gameweekEnd}
+      administratorId={league.administratorId}
+      users={sortedUsers}
+      fixtureWeeksAvailable={fixtureWeeksAvailable}
+    />
+  );
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const leagues = await prisma.league.findMany();
-  const paths = leagues.map((x) => ({
-    params: { leagueId: x.id.toString() },
-  }));
-
-  return {
-    paths,
-    fallback: "blocking",
-  };
-};
-
-export default LeaguePage;
+export default Page;

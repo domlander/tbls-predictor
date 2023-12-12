@@ -2,7 +2,9 @@
 
 import { ReactNode } from "react";
 import styled from "styled-components";
+import cx from "classnames";
 import colours from "src/styles/colours";
+import styles from "./Heading.module.css";
 
 type HeadingLevel = "h1" | "h2" | "h3" | "p";
 
@@ -37,7 +39,7 @@ const Heading = ({
     as={as || level}
     id={id}
     $variant={variant}
-    className={className}
+    className={cx(styles.heading, styles[variant], styles[level], className)}
   >
     {children}
   </StyledHeading>
