@@ -1,0 +1,64 @@
+.container {
+  max-width: 768px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.topBar {
+  display: flex;
+  justify-content: space-between;
+  height: 3em;
+  margin: 0.8em 0;
+}
+
+.breadcrumbs {
+  color: var(--grey300);
+}
+
+.breadcrumbsList {
+  padding: 0;
+  display: flex;
+  height: 3em;
+  gap: 0.8em;
+}
+
+.breadcrumbsItem {
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.breadcrumbsItem:not(:first-child)::before {
+  content: "|";
+  width: 0.8em;
+}
+
+.breadcrumbsText {
+  margin: 0;
+}
+
+.breadcrumbsLink {
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.breadcrumbsLink:hover,
+.breadcrumbsLink:focus {
+  color: var(--cyan100);
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  gap: 2em;
+}
+
+.loadingText {
+  font-size: 2rem;
+}
+
+.spinner {
+  height: 40px;
+  width: 40px;
+}

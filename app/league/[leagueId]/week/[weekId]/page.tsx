@@ -1,15 +1,13 @@
-import { GetStaticPaths, GetStaticProps } from "next";
 import prisma from "prisma/client";
 
+import LeagueWeek from "src/containers/LeagueWeek";
+import Fixture from "src/types/Fixture";
+import Prediction from "src/types/Prediction";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import redirectInternal from "utils/redirects";
-import League from "src/types/League";
-import Fixture from "src/types/Fixture";
-import User from "src/types/User";
-import LeagueWeek from "src/containers/LeagueWeek";
 import calculatePredictionScore from "utils/calculatePredictionScore";
-import Prediction from "src/types/Prediction";
 import getWeekPoints from "utils/getWeekPoints";
+import UserPoints from "src/types/UserPoints";
 
 type MissingPrediction = Pick<
   Prediction,
@@ -18,39 +16,9 @@ type MissingPrediction = Pick<
   fixture: Pick<Fixture, "gameweek" | "homeGoals" | "awayGoals">;
 };
 
-interface Props {
-  leagueId: number;
-  leagueName: string;
-  weekId: number;
-  users: User[];
-  fixtures: Fixture[];
-  firstGameweek: number;
-  lastGameweek: number;
-}
+type Params = { leagueId: string; weekId: string };
 
-const LeagueWeekPage = ({
-  leagueId,
-  leagueName,
-  weekId,
-  users,
-  fixtures,
-  firstGameweek,
-  lastGameweek,
-}: Props) => {
-  return (
-    <LeagueWeek
-      leagueId={leagueId}
-      leagueName={leagueName}
-      weekId={weekId}
-      users={users}
-      fixtures={fixtures}
-      firstGameweek={firstGameweek}
-      lastGameweek={lastGameweek}
-    />
-  );
-};
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
+const Page = async ({ params }: { params: Params }) => {
   // Get the league ID from the URL
   const leagueId = convertUrlParamToNumber(params?.leagueId);
   if (!leagueId || leagueId <= 0) return redirectInternal("/leagues");
@@ -146,7 +114,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   fixturesWithPredictions.forEach((fixture) => {
     users.forEach((user) => {
       const userPrediction = user.predictions.find(
-        (p) => p.fixtureId === fixture.id
+        ({ fixtureId }) => fixtureId === fixture.id
       );
 
       const prediction = {
@@ -185,56 +153,25 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     });
   });
 
-  return {
-    props: {
-      key: `${leagueId}-${weekId}`,
-      leagueId,
-      leagueName: league.name,
-      weekId,
-      users,
-      fixtures: JSON.parse(JSON.stringify(fixturesWithPredictions)),
-      firstGameweek: league.gameweekStart,
-      lastGameweek: league.gameweekEnd,
-    },
-    revalidate: 1,
-  };
+  const usersGameweekPoints: UserPoints[] = users.map(
+    ({ id, username, weekPoints }) => ({
+      id,
+      username: username || "unknown",
+      points: weekPoints || 0,
+    })
+  );
+
+  return (
+    <LeagueWeek
+      leagueId={leagueId}
+      leagueName={league.name}
+      weekId={weekId}
+      usersGameweekPoints={usersGameweekPoints}
+      fixtures={fixtures}
+      firstGameweek={league.gameweekStart}
+      lastGameweek={league.gameweekEnd}
+    />
+  );
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  const leagues: League[] = await prisma.league.findMany();
-  const fixtures: Fixture[] = await prisma.fixture.findMany();
-
-  const paths: any = [];
-  leagues.forEach((league) => {
-    const fixtureWeeksAvailable = fixtures
-      .filter(
-        (fixture) =>
-          league.gameweekStart &&
-          league.gameweekEnd &&
-          fixture.gameweek <= league.gameweekEnd &&
-          fixture.gameweek >= league.gameweekStart
-      )
-      .reduce((acc: number[], fixture) => {
-        if (acc.indexOf(fixture.gameweek) === -1) {
-          acc.push(fixture.gameweek);
-        }
-        return acc;
-      }, []);
-
-    paths.push(
-      ...fixtureWeeksAvailable.map((week) => ({
-        params: {
-          leagueId: league.id.toString(),
-          weekId: week.toString(),
-        },
-      }))
-    );
-  });
-
-  return {
-    paths,
-    fallback: "blocking",
-  };
-};
-
-export default LeagueWeekPage;
+export default Page;
