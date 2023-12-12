@@ -5,7 +5,7 @@ import UserLeague from "src/types/UserLeague";
 
 type User = {
   id: string;
-  username?: string;
+  username?: string | null;
   email?: string;
   predictions?: Prediction[];
   leagues?: UserLeague[];

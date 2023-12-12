@@ -1,13 +1,13 @@
 import prisma from "prisma/client";
+import { redirect } from "next/navigation";
 
 import LeagueWeek from "src/containers/LeagueWeek";
 import Fixture from "src/types/Fixture";
 import Prediction from "src/types/Prediction";
+import UserPoints from "src/types/UserPoints";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
-import redirectInternal from "utils/redirects";
 import calculatePredictionScore from "utils/calculatePredictionScore";
 import getWeekPoints from "utils/getWeekPoints";
-import UserPoints from "src/types/UserPoints";
 
 type MissingPrediction = Pick<
   Prediction,
@@ -21,11 +21,11 @@ type Params = { leagueId: string; weekId: string };
 const Page = async ({ params }: { params: Params }) => {
   // Get the league ID from the URL
   const leagueId = convertUrlParamToNumber(params?.leagueId);
-  if (!leagueId || leagueId <= 0) return redirectInternal("/leagues");
+  if (!leagueId || leagueId <= 0) return redirect("/leagues");
 
   // Get the week from the URL
   const weekId = convertUrlParamToNumber(params?.weekId);
-  if (!weekId || weekId <= 0) return redirectInternal(`/league/${leagueId}`);
+  if (!weekId || weekId <= 0) return redirect(`/league/${leagueId}`);
 
   const league = await prisma.league.findUnique({
     where: {
@@ -61,7 +61,7 @@ const Page = async ({ params }: { params: Params }) => {
     },
   });
   if (!league) {
-    return redirectInternal(`/league/${leagueId}`);
+    return redirect(`/league/${leagueId}`);
   }
 
   const fixtures = await prisma.fixture.findMany({

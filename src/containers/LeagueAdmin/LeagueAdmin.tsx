@@ -12,7 +12,7 @@ interface Props {
   leagueId: number;
   leagueName: string;
   applicants: Applicant[];
-  participants: User[];
+  participants: Pick<User, "id" | "username">[];
 }
 
 const LeagueAdminContainer = ({

@@ -4,7 +4,7 @@ import User from "./User";
 
 type Applicant = {
   user: Pick<User, "id" | "username">;
-  league: Pick<League, "id">;
+  league?: Pick<League, "id">;
   status?: LeagueApplicantStatus;
   createdAt?: Date;
 };
