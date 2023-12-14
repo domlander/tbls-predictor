@@ -167,7 +167,7 @@ const Page = async ({ params }: { params: Params }) => {
       leagueName={league.name}
       weekId={weekId}
       usersGameweekPoints={usersGameweekPoints}
-      fixtures={fixtures}
+      fixtures={JSON.parse(JSON.stringify(fixturesWithPredictions))}
       firstGameweek={league.gameweekStart}
       lastGameweek={league.gameweekEnd}
     />
