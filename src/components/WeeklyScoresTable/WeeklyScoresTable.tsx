@@ -5,8 +5,6 @@ import styled from "styled-components";
 import Link from "next/link";
 
 import User from "src/types/User";
-import pageSizes from "src/styles/pageSizes";
-import colours from "src/styles/colours";
 import Heading from "src/components/Heading";
 import styles from "./WeeklyScoresTable.module.css";
 
@@ -32,7 +30,7 @@ const WeeklyScoresTable = ({
       </Heading>
       {fixtureWeeksAvailable ? (
         <div className={styles.table}>
-          <ParticipantsAndTotalPoints $numParticipants={users.length}>
+          <div className={styles.participantsAndTotalPoints}>
             <div className={styles.headerItemBlank} />
             {users.map(({ id, username, totalPoints }) => (
               <Fragment key={id}>
@@ -42,7 +40,7 @@ const WeeklyScoresTable = ({
                 <div className={styles.totalPoints}>{totalPoints}</div>
               </Fragment>
             ))}
-          </ParticipantsAndTotalPoints>
+          </div>
           <div className={styles.allPointsWrapper}>
             <AllPoints
               $numWeeks={fixtureWeeksAvailable.length}
@@ -69,7 +67,9 @@ const WeeklyScoresTable = ({
                 <Fragment key={id}>
                   <div />
                   {weeklyPoints?.map(({ week, points }) => (
-                    <div key={`${id}${week}`}>{points}</div>
+                    <div className={styles.tableData} key={`${id}${week}`}>
+                      {points}
+                    </div>
                   ))}
                   <div />
                 </Fragment>
@@ -95,38 +95,17 @@ const WeeklyScoresTable = ({
   );
 };
 
-const ParticipantsAndTotalPoints = styled.div<{ $numParticipants: number }>`
-  display: grid;
-  grid-template-columns: 1fr 4em;
-  grid-template-rows: ${({ $numParticipants }) =>
-    `82px repeat(${$numParticipants}, 72px)`};
-  color: ${colours.grey200};
-  border-bottom: 1px solid ${colours.grey500opacity50};
-
-  @media (max-width: ${pageSizes.tablet}) {
-    grid-template-columns: 1fr 3.4em;
-    grid-template-rows: ${({ $numParticipants }) =>
-      `52px repeat(${$numParticipants}, 50px)`};
-  }
-
-  > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-`;
-
 const AllPoints = styled.div<{ $numWeeks: number; $numParticipants: number }>`
   display: grid;
   grid-template-columns: ${({ $numWeeks }) =>
     `20px repeat(${$numWeeks}, 70px) 20px`};
   grid-template-rows: ${({ $numParticipants }) =>
     `58px repeat(${$numParticipants}, 72px)`};
-  color: ${colours.grey200};
+  color: var(--grey200);
   transform: rotateX(180deg);
   -webkit-transform: rotateX(180deg);
 
-  @media (max-width: ${pageSizes.tablet}) {
+  @media (max-width: 728px) {
     grid-template-columns: ${({ $numWeeks }) =>
       `12px repeat(${$numWeeks}, 44px) 12px`};
     grid-template-rows: ${({ $numParticipants }) =>

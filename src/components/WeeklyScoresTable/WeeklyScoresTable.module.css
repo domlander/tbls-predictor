@@ -15,6 +15,59 @@
     }
 }
 
+.participantsAndTotalPoints {
+    display: grid;
+    grid-template-columns: 1fr 4em;
+    grid-template-rows: 82px repeat(auto-fill, 72px);
+    color: var(--grey200);
+    border-bottom: 1px solid var(--grey500opacity50);
+    
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr 3.4em;
+        grid-template-rows: 52px repeat(auto-fill, 50px);
+    }
+}
+
+.headerItemBlank {
+    grid-column: span 2 / span 2;
+    border: none;
+    border-bottom: 1px solid var(--grey500opacity50);
+}
+
+.participant {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-self: flex-start;
+    padding: 0 1em;
+    font-size: 1.6rem;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-thickness: 1px;
+
+    @media (max-width: 768px) {
+        font-size: 1rem;
+        padding: 0 0.8em;
+    }
+}
+
+.participant:hover,
+.participant:focus {
+    color: var(--cyan100);
+}
+
+.totalPoints {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 1px solid var(--grey500opacity50);
+    font-size: 2rem;
+
+    @media (max-width: 768px) {
+        font-size: 1.5rem;
+    }
+}
+
 .allPointsWrapper {
     transform: rotateX(180deg);
     -webkit-transform: rotateX(180deg);
@@ -52,22 +105,24 @@
     border-radius: 1em;
 }
 
+.blankTableHeaderItem {
+    border-bottom: 1px solid var(--grey500opacity50);
+}
+
 .headerItem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     max-width: 100%;
     border-bottom: 1px solid var(--grey500opacity50);
     align-items: flex-start !important;
 }
 
-.headerItemBlank {
-    grid-column: span 2 / span 2;
-    border: none;
-    border-bottom: 1px solid var(--grey500opacity50);
+.tableData {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-
-.blankTableHeaderItem {
-    border-bottom: 1px solid var(--grey500opacity50);
-}
-
 
 .clickableRowHeading {
     cursor: pointer;
@@ -116,15 +171,6 @@
     color: var(--cyan100);
 }
 
-.totalPoints {
-    border-left: 1px solid var(--grey500opacity50);
-    font-size: 2rem;
-
-    @media (max-width: 768px) {
-        font-size: 1.5rem;
-    }
-}
-
 .notStartedText {
     font-size: 1rem;
 }
@@ -136,24 +182,5 @@
 
 .notStartedLink:hover,
 .notStartedLink:focus {
-    color: var(--cyan100);
-}
-
-.participant {
-    justify-self: flex-start;
-    padding: 0 1em;
-    font-size: 1.6rem;
-    text-decoration: underline;
-    text-underline-offset: 4px;
-    text-decoration-thickness: 1px;
-
-    @media (max-width: 768px) {
-        font-size: 1rem;
-        padding: 0 0.8em;
-    }
-}
-
-.participant:hover,
-.participant:focus {
     color: var(--cyan100);
 }
