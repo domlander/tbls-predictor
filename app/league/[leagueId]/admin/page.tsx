@@ -58,8 +58,8 @@ const Page = async ({ params }: { params: Params }) => {
     <LeagueAdmin
       leagueId={leagueId}
       leagueName={league.name}
-      applicants={league.applicants}
-      participants={participants}
+      applicants={JSON.parse(JSON.stringify(league.applicants))}
+      participants={JSON.parse(JSON.stringify(participants))}
     />
   );
 };
