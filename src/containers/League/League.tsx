@@ -1,6 +1,8 @@
 import User from "src/types/User";
 import WeeklyScoresTable from "src/components/WeeklyScoresTable";
 import LeagueAdminLink from "src/components/LeagueAdminLink";
+import Heading from "src/components/Heading";
+import Link from "next/link";
 import styles from "./League.module.css";
 
 interface Props {
@@ -15,7 +17,7 @@ interface Props {
 
 const LeagueContainer = ({
   id,
-  name,
+  name: leagueName,
   gameweekStart,
   gameweekEnd,
   administratorId,
@@ -26,13 +28,33 @@ const LeagueContainer = ({
     <>
       <div className={styles.container}>
         <LeagueAdminLink administratorId={administratorId} leagueId={id} />
-        <WeeklyScoresTable
-          leagueName={name}
-          users={users}
-          leagueId={id}
-          gameweekStart={gameweekStart}
-          fixtureWeeksAvailable={fixtureWeeksAvailable}
-        />
+
+        <section className={styles.table}>
+          <Heading level="h2" as="h1" variant="secondary">
+            {leagueName}
+          </Heading>
+          {!fixtureWeeksAvailable?.length ? (
+            <section>
+              <p className={styles.notStartedText}>
+                This league does not start until gameweek{" "}
+                <Link
+                  className={styles.notStartedLink}
+                  href={`/predictions/${gameweekStart}`}
+                >
+                  {gameweekStart}
+                </Link>
+              </p>
+              <p className={styles.notStartedText}>Come back later.</p>
+            </section>
+          ) : (
+            <WeeklyScoresTable
+              users={users}
+              leagueId={id}
+              fixtureWeeksAvailable={fixtureWeeksAvailable}
+            />
+          )}
+        </section>
+
         <p className={styles.finalWeekText}>
           The league runs until gameweek {gameweekEnd}
         </p>
