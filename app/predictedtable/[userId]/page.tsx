@@ -2,33 +2,8 @@ import { redirect } from "next/navigation";
 import prisma from "prisma/client";
 import PremierLeague from "src/containers/PremierLeague";
 import { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
+import { appendTeamNameWithPositionDiff } from "utils/appendTeamNameWithPositionDiff";
 import generatePremTable from "utils/createPremierLeagueTableFromFixtures";
-
-const appendTeamNameWithPositionDiff = (
-  predictedTable: PremierLeagueTeam[],
-  actualTable: PremierLeagueTeam[]
-) => {
-  return predictedTable.map((team, i) => {
-    const position = i + 1;
-    const actualPosition =
-      actualTable.findIndex((t) => t.team === team.team) + 1;
-    const difference = actualPosition - position;
-
-    let text = "";
-    if (difference === 0) {
-      text = "(=)";
-    } else if (difference > 0) {
-      text = `(+${difference})`;
-    } else {
-      text = `(${difference})`;
-    }
-
-    return {
-      ...team,
-      team: `${team.team} ${text}`,
-    };
-  });
-};
 
 /**
  * Provides a league table to show the user what the league table would
