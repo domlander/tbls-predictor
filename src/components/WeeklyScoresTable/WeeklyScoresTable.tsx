@@ -1,7 +1,4 @@
-"use client";
-
 import { Fragment } from "react";
-import styled from "styled-components";
 import Link from "next/link";
 
 import User from "src/types/User";
@@ -32,66 +29,41 @@ const WeeklyScoresTable = ({
         ))}
       </div>
       <div className={styles.allPointsWrapper}>
-        <AllPoints
-          $numWeeks={fixtureWeeksAvailable.length}
-          $numParticipants={users.length}
-        >
-          <div className={styles.blankTableHeaderItem} />
-          {fixtureWeeksAvailable.map((week) => (
-            <div className={styles.headerItem} key={week}>
-              {fixtureWeeksAvailable.indexOf(week) !== -1 ? (
-                <Link
-                  className={styles.clickableRowHeading}
-                  href={`/league/${leagueId}/week/${week}`}
-                >
-                  <p className={styles.weekText}>Week</p>
-                  <p className={styles.weekNumber}>{week}</p>
-                </Link>
-              ) : (
-                <div>{`Week ${week}`}</div>
-              )}
-            </div>
-          ))}
-          <div />
+        <div className={styles.allPoints}>
+          <div className={styles.allPointsHeader}>
+            <div className={styles.headerDataBlank} />
+            {fixtureWeeksAvailable.map((week) => (
+              <div className={styles.headerData} key={week}>
+                {fixtureWeeksAvailable.indexOf(week) !== -1 ? (
+                  <Link
+                    className={styles.clickableRowHeading}
+                    href={`/league/${leagueId}/week/${week}`}
+                  >
+                    <p className={styles.weekText}>Week</p>
+                    <p className={styles.weekNumber}>{week}</p>
+                  </Link>
+                ) : (
+                  <div>{`Week ${week}`}</div>
+                )}
+              </div>
+            ))}
+            <div className={styles.headerDataBlank} />
+          </div>
           {users.map(({ id, weeklyPoints }) => (
-            <Fragment key={id}>
-              <div />
+            <div key={id} className={styles.allPointsData}>
+              <div className={styles.tableDataBlank} />
               {weeklyPoints?.map(({ week, points }) => (
                 <div className={styles.tableData} key={`${id}${week}`}>
                   {points}
                 </div>
               ))}
-              <div />
-            </Fragment>
+              <div className={styles.tableDataBlank} />
+            </div>
           ))}
-        </AllPoints>
+        </div>
       </div>
     </div>
   );
 };
-
-const AllPoints = styled.div<{ $numWeeks: number; $numParticipants: number }>`
-  display: grid;
-  grid-template-columns: ${({ $numWeeks }) =>
-    `20px repeat(${$numWeeks}, 70px) 20px`};
-  grid-template-rows: ${({ $numParticipants }) =>
-    `58px repeat(${$numParticipants}, 72px)`};
-  color: var(--grey200);
-  transform: rotateX(180deg);
-  -webkit-transform: rotateX(180deg);
-
-  @media (max-width: 728px) {
-    grid-template-columns: ${({ $numWeeks }) =>
-      `12px repeat(${$numWeeks}, 44px) 12px`};
-    grid-template-rows: ${({ $numParticipants }) =>
-      `37px repeat(${$numParticipants}, 50px)`};
-  }
-
-  > div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-`;
 
 export default WeeklyScoresTable;

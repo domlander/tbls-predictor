@@ -14,10 +14,37 @@
     grid-template-rows: 82px repeat(auto-fill, 72px);
     color: var(--grey200);
     border-bottom: 1px solid var(--grey500opacity50);
-    
+
     @media (max-width: 768px) {
         grid-template-columns: 1fr 3.4em;
-        grid-template-rows: 52px repeat(auto-fill, 50px);
+        grid-template-rows: 56px repeat(auto-fill, 50px);
+    }
+}
+
+.allPoints {
+    color: var(--grey200);
+    transform: rotateX(180deg);
+    -webkit-transform: rotateX(180deg);
+    width: 100%;
+}
+
+.allPointsHeader {
+    grid-column: 1 / -1;
+    display: flex;
+    height: 59px;
+
+    @media (max-width: 768px) {
+        height: 38px;
+    }
+}
+
+.allPointsData {
+    grid-column: 1 / -1;
+    display: flex;
+    height: 70px;
+
+    @media (max-width: 768px) {
+        height: 50px;
     }
 }
 
@@ -62,17 +89,18 @@
 }
 
 .allPointsWrapper {
+    flex-grow: 1;
     transform: rotateX(180deg);
-    -webkit-transform: rotateX(180deg);
     /* Safari and Chrome */
+    -webkit-transform: rotateX(180deg);
     overflow-x: scroll;
     border: 1px solid var(--grey500opacity50);
-    padding-bottom: 11px;
     /* equiv to padding-top without the transform */
+    padding-bottom: 11px;
 
     @media (max-width: 768px) {
-        padding-bottom: 6px;
         /* equiv to padding-top without the transform */
+        padding-bottom: 6px;
     }
 }
 
@@ -102,19 +130,46 @@
     border-bottom: 1px solid var(--grey500opacity50);
 }
 
-.headerItem {
+.headerData {
     display: flex;
     justify-content: center;
     align-items: center;
     max-width: 100%;
     border-bottom: 1px solid var(--grey500opacity50);
     align-items: flex-start !important;
+    flex: 0 0 70px;
+
+    @media (max-width: 768px) {
+        flex: 0 0 44px;
+    }
+}
+
+.headerDataBlank {
+    border-bottom: 1px solid var(--grey500opacity50);
+    flex: 0 0 20px;
+
+    @media (max-width: 768px) {
+        flex: 0 0 12px;
+    }
 }
 
 .tableData {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex: 0 0 70px;
+
+    @media (max-width: 768px) {
+        flex: 0 0 44px;
+    }
+}
+
+.tableDataBlank {
+    flex: 0 0 20px;
+
+    @media (max-width: 768px) {
+        flex: 0 0 12px;
+    }
 }
 
 .clickableRowHeading {
