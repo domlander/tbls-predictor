@@ -7,6 +7,8 @@ import redirectInternal from "utils/redirects";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import getWeeklyPoints from "utils/getWeeklyPoints";
 
+export const revalidate = 30; // Revalidate at most every 30 secs
+
 type Params = { leagueId: string };
 
 const Page = async ({ params }: { params: Params }) => {

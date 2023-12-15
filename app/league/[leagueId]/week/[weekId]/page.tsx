@@ -3,18 +3,13 @@ import { redirect } from "next/navigation";
 
 import LeagueWeek from "src/containers/LeagueWeek";
 import Fixture from "src/types/Fixture";
-import Prediction from "src/types/Prediction";
 import UserPoints from "src/types/UserPoints";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import calculatePredictionScore from "utils/calculatePredictionScore";
 import getWeekPoints from "utils/getWeekPoints";
+import MissingPrediction from "src/types/MissingPrediction";
 
-type MissingPrediction = Pick<
-  Prediction,
-  "fixtureId" | "homeGoals" | "awayGoals" | "bigBoyBonus"
-> & {
-  fixture: Pick<Fixture, "gameweek" | "homeGoals" | "awayGoals">;
-};
+export const revalidate = 30; // Revalidate at most every 30 secs
 
 type Params = { leagueId: string; weekId: string };
 

@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { redirect } from "next/navigation";
 
-// We get the users session, so the page isn't allowed to use caching
+// We get the users session, so don't use caching
 export const dynamic = "force-dynamic";
 
 const Page = async () => {
