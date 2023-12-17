@@ -9,7 +9,10 @@ import calculatePredictionScore from "utils/calculatePredictionScore";
 import getWeekPoints from "utils/getWeekPoints";
 import MissingPrediction from "src/types/MissingPrediction";
 
-export const revalidate = 30; // Revalidate at most every 30 secs
+// TODO: investigate how caching with revalidate works in serverless environments.
+// Caching results for 30 secs/longer with revalidate on data update would work better
+// here, but I'm not convinced this works with serverless well
+export const dynamic = "force-dynamic";
 
 type Params = { leagueId: string; weekId: string };
 

@@ -7,7 +7,10 @@ import redirectInternal from "utils/redirects";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import getWeeklyPoints from "utils/getWeeklyPoints";
 
-export const revalidate = 30; // Revalidate at most every 30 secs
+// TODO: investigate how caching with revalidate works in serverless environments.
+// Caching results for 30 secs/longer with revalidate on data update would work better
+// here, but I'm not convinced this works with serverless well
+export const dynamic = "force-dynamic";
 
 type Params = { leagueId: string };
 

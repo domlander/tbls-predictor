@@ -5,7 +5,7 @@ import { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
 import { appendTeamNameWithPositionDiff } from "utils/appendTeamNameWithPositionDiff";
 import generatePremTable from "utils/createPremierLeagueTableFromFixtures";
 
-export const revalidate = 300; // Revalidate at most every 5 minutes
+export const revalidate = 30; // Revalidate at most every 30 secs
 
 /**
  * Provides a league table to show the user what the league table would
