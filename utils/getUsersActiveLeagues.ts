@@ -43,34 +43,36 @@ const getUsersActiveLeagues = async (
     },
   });
 
-  return userLeagues?.leagues
-    .filter(({ gameweekEnd }) => gameweekEnd >= currentGameweek)
-    .sort((a, b) => a.gameweekStart - b.gameweekStart)
-    .map((league) => {
-      if (!league.users) return null;
+  return (
+    userLeagues?.leagues
+      // .filter(({ gameweekEnd }) => gameweekEnd >= currentGameweek)
+      .sort((a, b) => a.gameweekStart - b.gameweekStart)
+      .map((league) => {
+        if (!league.users) return null;
 
-      const users = league.users.map((user) => ({
-        ...user,
-        totalPoints: getWeeklyPoints(
-          fixtures,
-          user.predictions || [],
-          league.gameweekStart,
-          league.gameweekEnd
-        ).reduce((acc, cur) => acc + (cur.points || 0), 0),
-      }));
+        const users = league.users.map((user) => ({
+          ...user,
+          totalPoints: getWeeklyPoints(
+            fixtures,
+            user.predictions || [],
+            league.gameweekStart,
+            league.gameweekEnd
+          ).reduce((acc, cur) => acc + (cur.points || 0), 0),
+        }));
 
-      return {
-        leagueId: league.id,
-        leagueName: league.name,
-        weeksUntilStart: calculateWeeksUntilStart(
-          currentGameweek,
-          league.gameweekStart
-        ),
-        weeksToGo: calculateWeeksToGo(currentGameweek, league.gameweekEnd),
-        position: calculateUsersLeaguePosition(users, userId),
-        numParticipants: league.users.length,
-      };
-    });
+        return {
+          leagueId: league.id,
+          leagueName: league.name,
+          weeksUntilStart: calculateWeeksUntilStart(
+            currentGameweek,
+            league.gameweekStart
+          ),
+          weeksToGo: calculateWeeksToGo(currentGameweek, league.gameweekEnd),
+          position: calculateUsersLeaguePosition(users, userId),
+          numParticipants: league.users.length,
+        };
+      })
+  );
 };
 
 export default getUsersActiveLeagues;
