@@ -32,7 +32,7 @@ interface Props {
 
 const Predictions = ({
   fixtures,
-  weekId: gameweek,
+  weekId,
   recentFixturesByTeam,
   firstGameweek,
   lastGameweek,
@@ -49,7 +49,7 @@ const Predictions = ({
   useEffect(() => {
     setIsLoading(true);
     setIsError(false);
-    fetch(`/api/userPredictions?weekId=${gameweek}`)
+    fetch(`/api/userPredictions?weekId=${weekId}`)
       .then((res) => {
         if (res.status !== 200) {
           throw new Error();
@@ -64,7 +64,7 @@ const Predictions = ({
         setIsLoading(false);
         setIsError(true);
       });
-  }, [gameweek]);
+  }, [weekId]);
 
   const handleSubmitPredictions = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -166,7 +166,7 @@ const Predictions = ({
   if (!fixtures?.length)
     return (
       <NoFixtures>
-        <p>No fixtures found for gameweek {gameweek}</p>
+        <p>No fixtures found for gameweek {weekId}</p>
         <p>
           Go to <Link href="/predictions">this weeks predictions</Link>
         </p>
@@ -175,17 +175,15 @@ const Predictions = ({
 
   return (
     <Container>
-      {gameweek && firstGameweek && lastGameweek && (
+      {weekId && firstGameweek && lastGameweek && (
         <WeekNavigator
-          week={gameweek}
+          week={weekId}
           prevGameweekUrl={
-            gameweek === firstGameweek
-              ? undefined
-              : `/predictions/${gameweek - 1}`
+            weekId === firstGameweek ? undefined : `/predictions/${weekId - 1}`
           }
           nextGameweekUrl={
-            gameweek < lastGameweek - firstGameweek + 1
-              ? `/predictions/${gameweek + 1}`
+            weekId < lastGameweek - firstGameweek + 1
+              ? `/predictions/${weekId + 1}`
               : undefined
           }
         />
