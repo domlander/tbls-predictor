@@ -1,5 +1,6 @@
 import prisma from "prisma/client";
 import Fixture from "src/types/Fixture";
+import UserLeague from "src/types/UserLeague";
 import getWeeklyPoints from "./getWeeklyPoints";
 import calculateWeeksUntilStart from "./calculateWeeksUntilStart";
 import calculateWeeksToGo from "./calculateWeeksToGo";
@@ -9,7 +10,7 @@ const getUsersActiveLeagues = async (
   userId: string,
   fixtures: Pick<Fixture, "id" | "gameweek" | "homeGoals" | "awayGoals">[],
   currentGameweek: number
-) => {
+): Promise<UserLeague[]> => {
   // Get all users leagues and all users that belong to those leagues, including their predictions
   const userLeagues = await prisma.user.findUnique({
     include: {
@@ -43,13 +44,15 @@ const getUsersActiveLeagues = async (
     },
   });
 
+  if (!userLeagues?.leagues.length) {
+    return [];
+  }
+
   return (
-    userLeagues?.leagues
+    userLeagues.leagues
       // .filter(({ gameweekEnd }) => gameweekEnd >= currentGameweek)
       .sort((a, b) => a.gameweekStart - b.gameweekStart)
       .map((league) => {
-        if (!league.users) return null;
-
         const users = league.users.map((user) => ({
           ...user,
           totalPoints: getWeeklyPoints(

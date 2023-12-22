@@ -1,0 +1,55 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+}
+
+.noLeagues {
+    display: flex;
+    flex-direction: column;
+    font-size: 2.5em;
+    margin-bottom: 2em;
+}
+
+.join {
+    margin-left: 0.1em;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.join:hover,
+.join:focus {
+    color: var(--cyan100)
+}
+
+@keyframes skeletonLoading {
+    0% {
+        background-position: -800px 0
+    }
+    100% {
+        background-position: 800px 0;
+    }
+}
+
+.skeleton {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 400px);
+    grid-gap: 3em;
+    
+    @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+    }
+}
+
+.skeletonInner {
+    height: 200px;
+    border: 1px solid var(--grey500);
+    animation: skeletonLoading 1s linear infinite forwards;
+    background: linear-gradient(
+        to right,
+        var(--blackblue400) 4%,
+        var(--grey700) 25%,
+        var(--blackblue400) 36%
+      )
+      0% 0% / 1500px 100%;
+  }

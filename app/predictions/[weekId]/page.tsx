@@ -7,7 +7,7 @@ import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import sortFixtures from "utils/sortFixtures";
 import generateRecentFixturesByTeam from "utils/generateRecentFixturesByTeam";
 
-export const revalidate = 30; // Revalidate at most every 30 seconds
+export const dynamic = "force-dynamic";
 
 type Params = { weekId: string };
 

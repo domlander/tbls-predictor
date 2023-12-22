@@ -1,9 +1,7 @@
-"use client";
-
-import styled from "styled-components";
 import Heading from "src/components/Heading";
 import MyLeagues from "src/components/MyLeagues";
 import UserLeague from "src/types/UserLeague";
+import styles from "./Leagues.module.css";
 
 type Props = {
   activeLeagues: UserLeague[];
@@ -11,23 +9,13 @@ type Props = {
 
 const Leagues = ({ activeLeagues }: Props) => {
   return (
-    <Container>
-      <LeaguesHeading level="h1" variant="secondary">
+    <section className={styles.section}>
+      <Heading level="h1" variant="secondary">
         Leagues
-      </LeaguesHeading>
+      </Heading>
       <MyLeagues leagues={activeLeagues} loading={false} />
-    </Container>
+    </section>
   );
 };
-
-const Container = styled.section`
-  display: flex;
-  flex-direction: column;
-  gap: 4em;
-`;
-
-const LeaguesHeading = styled(Heading)`
-  margin: 1em 0 0 0;
-`;
 
 export default Leagues;

@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import { useRouter } from "next/router";
+import Link from "next/link";
 
 import UserLeague from "src/types/UserLeague";
 import pageSizes from "src/styles/pageSizes";
@@ -14,8 +14,6 @@ export interface Props {
 }
 
 const LeaguesCardsList = ({ leagues }: Props) => {
-  const router = useRouter();
-
   return (
     <Container>
       {leagues.map(
@@ -31,37 +29,35 @@ const LeaguesCardsList = ({ leagues }: Props) => {
           const isPositionRelevant = displayPosition && !weeksUntilStart;
 
           return (
-            <LeagueCard
-              tabIndex={0}
-              key={id}
-              onClick={() => router.push(`/league/${id}`)}
-            >
-              <LeagueCardHeading level="h2" variant="secondary">
-                {name}
-              </LeagueCardHeading>
-              {isPositionRelevant &&
-                (weeksToGo ? (
+            <LeagueCard key={id} tabIndex={0}>
+              <Link href={`/league/${id}`} tabIndex={-1}>
+                <LeagueCardHeading level="h2" variant="secondary">
+                  {name}
+                </LeagueCardHeading>
+                {isPositionRelevant &&
+                  (weeksToGo ? (
+                    <p>
+                      Current position:{" "}
+                      <BigBoldText>{displayPosition}</BigBoldText> of{" "}
+                      <BoldText>{numParticipants}</BoldText>
+                    </p>
+                  ) : (
+                    <p>
+                      You finished: <BoldText>{displayPosition}</BoldText> of{" "}
+                      <BoldText>{numParticipants}</BoldText>
+                    </p>
+                  ))}
+                {weeksUntilStart ? (
                   <p>
-                    Current position:{" "}
-                    <BigBoldText>{displayPosition}</BigBoldText> of{" "}
-                    <BoldText>{numParticipants}</BoldText>
+                    League starts in <BoldText>{weeksUntilStart}</BoldText>{" "}
+                    gameweek{weeksUntilStart === 1 ? "" : "s"}!
                   </p>
-                ) : (
+                ) : weeksToGo ? (
                   <p>
-                    You finished: <BoldText>{displayPosition}</BoldText> of{" "}
-                    <BoldText>{numParticipants}</BoldText>
+                    Weeks remaining: <BoldText>{weeksToGo}</BoldText>
                   </p>
-                ))}
-              {weeksUntilStart ? (
-                <p>
-                  League starts in <BoldText>{weeksUntilStart}</BoldText>{" "}
-                  gameweek{weeksUntilStart === 1 ? "" : "s"}!
-                </p>
-              ) : weeksToGo ? (
-                <p>
-                  Weeks remaining: <BoldText>{weeksToGo}</BoldText>
-                </p>
-              ) : null}
+                ) : null}
+              </Link>
             </LeagueCard>
           );
         }

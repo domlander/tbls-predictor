@@ -1,0 +1,38 @@
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
+
+import prisma from "prisma/client";
+import { authOptions } from "pages/api/auth/[...nextauth]";
+import Leagues from "src/containers/Leagues";
+import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
+import getUsersActiveLeagues from "utils/getUsersActiveLeagues";
+
+const Page = async () => {
+  const session = await getServerSession(authOptions);
+
+  const userId = session?.user?.id;
+  if (!userId) {
+    return redirect("/signIn");
+  }
+
+  const fixtures = await prisma.fixture.findMany({
+    select: {
+      id: true,
+      gameweek: true,
+      kickoff: true,
+      homeGoals: true,
+      awayGoals: true,
+    },
+  });
+  const currentGameweek = calculateCurrentGameweek(fixtures);
+
+  const activeLeagues = await getUsersActiveLeagues(
+    userId,
+    fixtures,
+    currentGameweek
+  );
+
+  return <Leagues activeLeagues={activeLeagues} />;
+};
+
+export default Page;
