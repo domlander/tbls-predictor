@@ -1,68 +1,38 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import { useFormState, useFormStatus } from "react-dom";
+import { useSession } from "next-auth/react";
 import styled from "styled-components";
 
 import Button from "src/components/Button";
-import colours from "src/styles/colours";
 import Heading from "src/components/Heading";
 import FormInput from "src/components/FormInput";
+import createLeague from "src/actions/createLeague";
 
 interface Props {
   currentGameweek: number;
 }
 
 const CreateLeague = ({ currentGameweek }: Props) => {
+  const { data: session } = useSession();
   const [leagueName, setLeagueName] = useState("");
-  const [userFeedback, setUserFeedback] = useState("");
   const [gameweekStart, setGameweekStart] = useState(
     // TODO. If season hasn't started, impossible to start in GW 1
     (currentGameweek + 1).toString()
   );
   const [weeksToRun, setWeeksToRun] = useState("10");
-  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const startWeek = parseInt(gameweekStart);
-    const endWeek = startWeek + parseInt(weeksToRun) - 1;
-
-    if (!leagueName) {
-      setUserFeedback("Please enter a league name");
-      return;
-    }
-
-    if (startWeek < 1 || startWeek > 38) {
-      setUserFeedback("Please enter a valid start week");
-      return;
-    }
-
-    const formData = new URLSearchParams();
-    formData.append("name", leagueName);
-    formData.append("gameweekStart", startWeek.toString());
-    formData.append("gameweekEnd", endWeek.toString());
-
-    setLoading(true);
-
-    fetch("/api/createLeague", {
-      method: "POST",
-      body: formData,
-    }).then(async (res) => {
-      const message = await res.json();
-
-      setLoading(false);
-      setUserFeedback(message);
-      setLeagueName("");
-    });
-  };
+  const initialState = { message: "" };
+  const [state, formAction] = useFormState(createLeague, initialState);
+  const { pending } = useFormStatus();
 
   return (
     <Container>
       <Heading level="h1" variant="secondary">
         Create League
       </Heading>
-      <form onSubmit={handleSubmit}>
+      <form action={formAction}>
         <Label>
           <LabelText>Name:</LabelText>
           <FormInput
@@ -74,6 +44,7 @@ const CreateLeague = ({ currentGameweek }: Props) => {
         <Label>
           <LabelText>Gameweek start:</LabelText>
           <input
+            name="start"
             type="number"
             value={gameweekStart}
             onChange={(e) => setGameweekStart(e.target.value.replace(/\D/, ""))}
@@ -83,15 +54,17 @@ const CreateLeague = ({ currentGameweek }: Props) => {
         <Label>
           <LabelText>Weeks to run:</LabelText>
           <input
+            name="weeksToRun"
             type="number"
             value={weeksToRun}
             onChange={(e) => setWeeksToRun(e.target.value.replace(/\D/, ""))}
           />
         </Label>
-        {userFeedback && !loading && <Feedback>{userFeedback}</Feedback>}
+        <input type="hidden" name="userId" value={session?.user.id || ""} />
+        {state?.message && !pending && <Feedback>{state.message}</Feedback>}
         <ButtonContainer>
-          <Button type="submit" disabled={loading} variant="primary">
-            {loading ? "Loading..." : "Create"}
+          <Button type="submit" disabled={pending} variant="primary">
+            {pending ? "Loading..." : "Create"}
           </Button>
         </ButtonContainer>
       </form>
@@ -127,8 +100,8 @@ const Label = styled.label`
     height: 2.4em;
     padding-left: 1em;
     border: 0;
-    color: ${colours.grey100};
-    background-color: ${colours.blackblue600};
+    color: var(--grey100);
+    background-color: var(--blackblue600);
   }
 `;
 
@@ -143,12 +116,12 @@ const Feedback = styled.p`
   padding: 1em;
   border-radius: 1em;
   margin-top: 2em;
-  background: ${colours.grey700};
+  background: var(--grey700);
 `;
 
 const Info = styled.p`
   margin-top: 0.5em;
   font-size: 0.9rem;
   font-style: italic;
-  color: ${colours.grey300};
+  color: var(--grey300);
 `;
