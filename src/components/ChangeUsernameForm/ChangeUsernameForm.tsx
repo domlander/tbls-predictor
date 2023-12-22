@@ -1,50 +1,51 @@
 "use client";
 
 import styled from "styled-components";
+import { useFormState, useFormStatus } from "react-dom";
 
+import updateUsername from "src/actions/updateUsername";
+import { useState } from "react";
 import Button from "../Button";
 import FormInput from "../FormInput";
 import Heading from "../Heading";
 
 export interface Props {
-  username: string;
-  setUsername: any;
-  isDisabled: boolean;
-  userFeedback?: string;
-  handleSubmit: any;
+  initialUsername: string;
 }
 
-const ChangeUsernameForm = ({
-  username,
-  setUsername,
-  isDisabled,
-  userFeedback,
-  handleSubmit,
-}: Props) => (
-  <Container>
-    <Heading level="h2" variant="secondary">
-      Update username
-    </Heading>
-    <form onSubmit={handleSubmit}>
-      <Label>
-        Username:
-        <FormInput
-          type="text"
-          name="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          maxLength={20}
-        />
-      </Label>
-      <ButtonContainer>
-        <Button type="submit" disabled={isDisabled} variant="primary">
-          Update
-        </Button>
-      </ButtonContainer>
-      {userFeedback && <Feedback>{userFeedback}</Feedback>}
-    </form>
-  </Container>
-);
+const initialState = { message: "" };
+
+const ChangeUsernameForm = ({ initialUsername }: Props) => {
+  const [username, setUsername] = useState(initialUsername);
+  const [state, formAction] = useFormState(updateUsername, initialState);
+  const { pending } = useFormStatus();
+
+  return (
+    <Container>
+      <Heading level="h2" variant="secondary">
+        Update username
+      </Heading>
+      <form action={formAction}>
+        <Label>
+          Username:
+          <FormInput
+            type="text"
+            name="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            maxLength={20}
+          />
+        </Label>
+        <ButtonContainer>
+          <Button type="submit" disabled={pending} variant="primary">
+            Update
+          </Button>
+        </ButtonContainer>
+        {state && <Feedback>{state?.message}</Feedback>}
+      </form>
+    </Container>
+  );
+};
 
 const Container = styled.section`
   max-width: 450px;
