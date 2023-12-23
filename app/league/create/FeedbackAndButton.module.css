@@ -1,0 +1,12 @@
+.feedback {
+  font-size: 1rem;
+  font-style: italic;
+  padding: 1em;
+  border-radius: 1em;
+  margin-top: 2em;
+  background: var(--grey700);
+}
+
+.buttonContainer {
+  margin: 4em 0;
+}

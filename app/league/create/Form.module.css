@@ -1,0 +1,46 @@
+.container {
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  gap: 4em;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+
+.label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.label:first-child {
+  margin-top: 0;
+}
+
+.input {
+  height: 2.4em;
+  width: 12em;
+  padding-left: 1em;
+  border: 0;
+  color: var(--grey100);
+  background-color: var(--blackblue600);
+}
+
+.labelText{
+  font-size: 1.2rem;
+  margin: 0 0 0.2em;
+}
+
+.info {
+  margin-top: 0;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--grey300);
+}

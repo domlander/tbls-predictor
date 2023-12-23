@@ -1,17 +1,19 @@
 "use server";
 
 import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import prisma from "prisma/client";
 
 const createLeague = async (
-  _: { message: string },
+  _: { message: string } | null,
   formData: FormData
 ): Promise<{ message: string }> => {
   const name = formData.get("name") as string;
   const start = parseInt(formData.get("start") as string);
   const weeksToRun = parseInt(formData.get("weeksToRun") as string);
   const userId = formData.get("userId") as string;
+  const currentGameweek = parseInt(formData.get("currentGameweek") as string);
 
   if (!name.length) {
     return {
@@ -19,7 +21,7 @@ const createLeague = async (
     };
   }
 
-  if (start < 1 || start > 38) {
+  if (start <= currentGameweek || start > 38) {
     return {
       message: "Enter a future gameweek in which to begin the league",
     };
@@ -35,8 +37,9 @@ const createLeague = async (
     return { message: "An error has occured" };
   }
 
+  let league;
   try {
-    const league = await prisma.league.create({
+    league = await prisma.league.create({
       data: {
         name,
         status: "open",
@@ -51,12 +54,11 @@ const createLeague = async (
         },
       },
     });
-    return {
-      message: `Success! League "${name}" was created! Ask friends to join using ID: ${league.id}`,
-    };
   } catch (e) {
     return { message: "Failed to create league. Please try again later" };
   }
+
+  return redirect(`/league/${league.id}/admin`);
 };
 
 export default createLeague;

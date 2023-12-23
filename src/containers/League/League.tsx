@@ -36,7 +36,7 @@ const LeagueContainer = ({
           {!fixtureWeeksAvailable?.length ? (
             <section>
               <p className={styles.notStartedText}>
-                This league does not start until gameweek{" "}
+                This league starts in gameweek{" "}
                 <Link
                   className={styles.notStartedLink}
                   href={`/predictions/${gameweekStart}`}
@@ -44,7 +44,6 @@ const LeagueContainer = ({
                   {gameweekStart}
                 </Link>
               </p>
-              <p className={styles.notStartedText}>Come back later.</p>
             </section>
           ) : (
             <WeeklyScoresTable

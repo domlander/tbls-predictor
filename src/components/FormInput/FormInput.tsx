@@ -9,6 +9,7 @@ type Props = {
   name?: string;
   value?: string;
   onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+  minLength?: number;
   maxLength?: number;
   type?: string;
   pattern?: string;
@@ -19,6 +20,7 @@ const FormInput = ({
   name,
   value,
   onChange,
+  minLength,
   maxLength,
   type = "text",
   pattern,
@@ -29,6 +31,7 @@ const FormInput = ({
     value={value}
     placeholder={placeholder}
     onChange={onChange}
+    minLength={minLength}
     maxLength={maxLength}
     pattern={pattern}
   />
