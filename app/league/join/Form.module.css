@@ -11,10 +11,6 @@
   font-size: 1.2rem;
 }
 
-.label:first-child {
-  margin-top: 0;
-}
-
 .input {
   height: 2.4em;
   width: 12em;
@@ -24,12 +20,7 @@
   background-color: var(--blackblue600);
 }
 
-.labelText{
-  font-size: 1.2rem;
-  margin: 0 0 0.2em;
-}
-
-.info {
+.message {
   margin-top: 0;
   font-size: 0.9rem;
   font-style: italic;

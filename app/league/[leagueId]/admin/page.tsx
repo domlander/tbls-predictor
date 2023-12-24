@@ -46,7 +46,7 @@ const Page = async ({ params }: { params: Params }) => {
   });
 
   if (league?.administratorId !== userId) {
-    return redirect("/signIng");
+    return redirect("/signIn");
   }
 
   const participants = league.users.map(({ id, username }) => ({

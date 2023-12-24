@@ -1,7 +1,10 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+
 import { authOptions } from "pages/api/auth/[...nextauth]";
-import JoinLeague from "src/containers/JoinLeague";
+import Heading from "src/components/Heading";
+import Form from "./Form";
+import styles from "./page.module.css";
 
 export const dynamic = "force-dynamic";
 
@@ -11,7 +14,14 @@ const Page = async () => {
     return redirect("/signIn");
   }
 
-  return <JoinLeague />;
+  return (
+    <section className={styles.container}>
+      <Heading level="h1" variant="secondary">
+        Join League
+      </Heading>
+      <Form />
+    </section>
+  );
 };
 
 export default Page;

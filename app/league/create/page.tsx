@@ -26,14 +26,12 @@ const Page = async () => {
   const currentGameweek = calculateCurrentGameweek(fixtures);
 
   return (
-    <>
-      <section className={styles.container}>
-        <Heading level="h1" variant="secondary">
-          Create League
-        </Heading>
-        <Form currentGameweek={currentGameweek} userId={session.user.id} />
-      </section>
-    </>
+    <section className={styles.container}>
+      <Heading level="h1" variant="secondary">
+        Create League
+      </Heading>
+      <Form currentGameweek={currentGameweek} userId={session.user.id} />
+    </section>
   );
 };
 
