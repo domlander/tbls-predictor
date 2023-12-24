@@ -7,6 +7,8 @@ import AdminManageFixtures from "src/containers/AdminManageFixtures";
 import Fixture from "src/types/Fixture";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 
+export const dynamic = "force-dynamic";
+
 const Page = async () => {
   const session = await getServerSession(authOptions);
   if (!session) {

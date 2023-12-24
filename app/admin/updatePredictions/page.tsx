@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import AdminUpdatePredictions from "src/containers/AdminUpdatePredictions";
 
+export const dynamic = "force-dynamic";
+
 const Page = async () => {
   const session = await getServerSession(authOptions);
   if (!session) {

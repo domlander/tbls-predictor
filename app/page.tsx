@@ -10,6 +10,8 @@ import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import getUsersActiveLeagues from "utils/getUsersActiveLeagues";
 import { authOptions } from "app/api/auth/[...nextauth]/route";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Predictor | Desmond Two Two",
   description:

@@ -7,6 +7,8 @@ import Leagues from "src/containers/Leagues";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import getUsersActiveLeagues from "utils/getUsersActiveLeagues";
 
+export const dynamic = "force-dynamic";
+
 const Page = async () => {
   const session = await getServerSession(authOptions);
 

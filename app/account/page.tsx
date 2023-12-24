@@ -6,6 +6,8 @@ import prisma from "prisma/client";
 import Account from "src/containers/Account/Account";
 import { generateDefaultUsername } from "utils/generateDefaultUsername";
 
+export const dynamic = "force-dynamic";
+
 const Page = async () => {
   const session = await getServerSession(authOptions);
   if (!session?.user?.id) {

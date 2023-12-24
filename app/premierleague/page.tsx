@@ -3,6 +3,8 @@ import PremierLeague from "src/containers/PremierLeague";
 import { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
 import generatePremTable from "utils/createPremierLeagueTableFromFixtures";
 
+export const dynamic = "force-dynamic";
+
 const Page = async () => {
   const fixtures = await prisma.fixture.findMany({
     select: {
