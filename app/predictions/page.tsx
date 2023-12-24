@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 
-import { authOptions } from "pages/api/auth/[...nextauth]";
+import { authOptions } from "app/api/auth/[...nextauth]/route";
 import prisma from "prisma/client";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 

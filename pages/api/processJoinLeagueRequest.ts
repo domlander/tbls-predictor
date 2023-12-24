@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { PrismaClient } from "@prisma/client";
 
-import { authOptions } from "./auth/[...nextauth]";
+import { authOptions } from "../../app/api/auth/[...nextauth]/route";
 
 type RequestBody = {
   applicantId: string;

@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 
 import sortFixtures from "utils/sortFixtures";
 import Fixture from "src/types/Fixture";
-import { authOptions } from "./auth/[...nextauth]";
+import { authOptions } from "../../app/api/auth/[...nextauth]/route";
 
 const prisma = new PrismaClient({
   datasources: {

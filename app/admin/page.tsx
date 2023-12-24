@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
-import { authOptions } from "pages/api/auth/[...nextauth]";
+import { authOptions } from "app/api/auth/[...nextauth]/route";
 import AdminHome from "src/containers/AdminHome/AdminHome";
 
 const Page = async () => {

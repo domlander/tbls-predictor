@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 
 import { isUserAlreadyBelongToLeague } from "utils/isUserAlreadyBelongToLeague";
 import isUserAppliedToLeague from "utils/isUserAppliedToLeague";
-import { authOptions } from "./auth/[...nextauth]";
+import { authOptions } from "../../app/api/auth/[...nextauth]/route";
 
 type RequestBody = {
   leagueId: string;

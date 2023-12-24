@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 
 import Fixture from "src/types/Fixture";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "./auth/[...nextauth]";
+import { authOptions } from "../../app/api/auth/[...nextauth]/route";
 
 type RequestBody = {
   fixtures: Fixture[];

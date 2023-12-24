@@ -101,7 +101,7 @@ const Predictions = ({
     isHomeTeam: boolean,
     goals: string
   ): void => {
-    if (!predictions) return;
+    if (!predictions || !userId) return;
 
     // Make a copy of current state
     const updatedPredictions: Prediction[] = JSON.parse(
@@ -119,7 +119,7 @@ const Predictions = ({
     if (!editedPrediction) {
       updatedPredictions.push({
         fixtureId,
-        user: { id: session!.user.id },
+        user: { id: userId },
         homeGoals: isHomeTeam ? predictedGoals : null,
         awayGoals: !isHomeTeam ? predictedGoals : null,
         bigBoyBonus: false,
