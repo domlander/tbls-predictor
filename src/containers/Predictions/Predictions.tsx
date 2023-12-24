@@ -12,6 +12,7 @@ import type Fixture from "src/types/Fixture";
 import type Prediction from "src/types/Prediction";
 import type TeamFixtures from "src/types/TeamFixtures";
 import type User from "src/types/User";
+import userPredictions from "src/actions/userPredictions";
 
 export type UpdatePredictionsInputType = {
   userId: User["id"];
@@ -49,21 +50,22 @@ const Predictions = ({
   useEffect(() => {
     setIsLoading(true);
     setIsError(false);
-    fetch(`/api/userPredictions?weekId=${weekId}`)
-      .then((res) => {
-        if (res.status !== 200) {
-          throw new Error();
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setPredictions(data.predictions);
-        setIsLoading(false);
-      })
-      .catch(() => {
-        setIsLoading(false);
+
+    const fetchPredictions = async (id: number) => {
+      return userPredictions(id);
+    };
+
+    fetchPredictions(weekId).then((preds: Prediction[] | null) => {
+      if (preds === null) {
         setIsError(true);
-      });
+        setIsLoading(false);
+        setPredictions(null);
+      }
+
+      setIsError(false);
+      setIsLoading(false);
+      setPredictions(preds);
+    });
   }, [weekId]);
 
   const handleSubmitPredictions = async (e: FormEvent<HTMLFormElement>) => {
