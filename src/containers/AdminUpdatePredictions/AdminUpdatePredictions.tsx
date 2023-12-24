@@ -7,6 +7,7 @@ const AdminUpdatePredictions = () => (
     <Heading level="h1" variant="secondary">
       Update Predictions
     </Heading>
+    <p>No functionality yet</p>
   </section>
 );
 

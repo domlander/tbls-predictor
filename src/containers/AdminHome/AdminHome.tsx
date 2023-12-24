@@ -18,7 +18,9 @@ const AdminHome = () => (
         <Link href="admin/manageFixtures">Manage Fixtures</Link>
       </Li>
       <Li>
-        <Link href="admin/mangePredictions">Add/edit predictions</Link>
+        <Link href="admin/updatePredictions">
+          Add/edit predictions (in development)
+        </Link>
       </Li>
     </ul>
   </section>
