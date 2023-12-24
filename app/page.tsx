@@ -81,10 +81,31 @@ const Page = async () => {
     currentGameweek
   );
 
+  const predictions = await prisma.prediction.findMany({
+    where: {
+      AND: [
+        { userId: session.user.id },
+        {
+          fixture: {
+            gameweek: currentGameweek,
+          },
+        },
+      ],
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+        },
+      },
+    },
+  });
+
   return (
     <Home
       weekId={currentGameweek}
       fixtures={sortedFixtures}
+      predictions={predictions}
       recentFixturesByTeam={recentFixturesByTeam}
       activeLeagues={activeLeagues}
     />

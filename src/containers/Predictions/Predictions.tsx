@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import styled from "styled-components";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -12,7 +12,6 @@ import type Fixture from "src/types/Fixture";
 import type Prediction from "src/types/Prediction";
 import type TeamFixtures from "src/types/TeamFixtures";
 import type User from "src/types/User";
-import userPredictions from "src/actions/userPredictions";
 
 export type UpdatePredictionsInputType = {
   userId: User["id"];
@@ -25,6 +24,7 @@ export type UpdatePredictionsInputType = {
 
 interface Props {
   fixtures: Fixture[];
+  predictions: Prediction[];
   weekId: number;
   recentFixturesByTeam: TeamFixtures[];
   firstGameweek?: number;
@@ -33,6 +33,7 @@ interface Props {
 
 const Predictions = ({
   fixtures,
+  predictions: initialPredictions,
   weekId,
   recentFixturesByTeam,
   firstGameweek,
@@ -40,33 +41,11 @@ const Predictions = ({
 }: Props) => {
   const { data: session } = useSession();
   const userId = session?.user?.id;
-  const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isSaveError, setIsSaveError] = useState(false);
-  const [predictions, setPredictions] = useState<Prediction[] | null>(null);
-
-  useEffect(() => {
-    setIsLoading(true);
-    setIsError(false);
-
-    const fetchPredictions = async (id: number) => {
-      return userPredictions(id);
-    };
-
-    fetchPredictions(weekId).then((preds: Prediction[] | null) => {
-      if (preds === null) {
-        setIsError(true);
-        setIsLoading(false);
-        setPredictions(null);
-      }
-
-      setIsError(false);
-      setIsLoading(false);
-      setPredictions(preds);
-    });
-  }, [weekId]);
+  const [predictions, setPredictions] =
+    useState<Prediction[]>(initialPredictions);
 
   const handleSubmitPredictions = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -163,8 +142,6 @@ const Predictions = ({
     setPredictions(updatedPredictions);
   };
 
-  if (isError) return <p>An error has occurred. Please try again later.</p>;
-
   if (!fixtures?.length)
     return (
       <NoFixtures>
@@ -197,7 +174,6 @@ const Predictions = ({
         updateGoals={updateGoals}
         handleSubmit={handleSubmitPredictions}
         handleBbbUpdate={updateBigBoyBonus}
-        isLoading={isLoading}
         isSaved={isSaved}
         isSaving={isSaving}
         isSaveError={isSaveError}

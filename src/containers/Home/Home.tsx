@@ -11,11 +11,13 @@ import colours from "src/styles/colours";
 import Heading from "src/components/Heading";
 import UserLeague from "src/types/UserLeague";
 import UserStats from "src/components/UserStats";
+import Prediction from "src/types/Prediction";
 import Predictions from "../Predictions";
 
 interface Props {
   weekId: number;
   fixtures: Fixture[];
+  predictions: Prediction[];
   recentFixturesByTeam: TeamFixtures[];
   activeLeagues: UserLeague[];
 }
@@ -23,6 +25,7 @@ interface Props {
 const Home = ({
   weekId,
   fixtures,
+  predictions,
   recentFixturesByTeam,
   activeLeagues,
 }: Props) => {
@@ -37,6 +40,7 @@ const Home = ({
         </PredictionsHeader>
         <Predictions
           fixtures={fixtures}
+          predictions={predictions}
           weekId={weekId}
           recentFixturesByTeam={recentFixturesByTeam}
         />
