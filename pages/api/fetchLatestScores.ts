@@ -6,7 +6,7 @@ import { PrismaClient } from "@prisma/client";
 import { getFixturesFromApiForGameweek } from "utils/fplApi";
 import Fixture from "src/types/Fixture";
 import { calculateCurrentGameweek } from "../../utils/calculateCurrentGameweek";
-import { authOptions } from "../../app/api/auth/[...nextauth]/route";
+import { authOptions } from "./auth/[...nextauth]";
 
 const prisma = new PrismaClient({
   datasources: {

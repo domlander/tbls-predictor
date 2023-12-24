@@ -8,7 +8,7 @@ import sortFixtures from "utils/sortFixtures";
 import generateRecentFixturesByTeam from "utils/generateRecentFixturesByTeam";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import getUsersActiveLeagues from "utils/getUsersActiveLeagues";
-import { authOptions } from "app/api/auth/[...nextauth]/route";
+import { authOptions } from "pages/api/auth/[...nextauth]";
 
 export const dynamic = "force-dynamic";
 

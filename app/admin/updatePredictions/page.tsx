@@ -1,4 +1,4 @@
-import { authOptions } from "app/api/auth/[...nextauth]/route";
+import { authOptions } from "pages/api/auth/[...nextauth]";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth/next";
 import AdminUpdatePredictions from "src/containers/AdminUpdatePredictions";

@@ -10,7 +10,7 @@ import { getFixturesFromApiForGameweek } from "utils/fplApi";
 import Fixture from "src/types/Fixture";
 import LogMessage, { LOG_MESSAGE_TYPE } from "src/types/LogMessage";
 import clientPromise from "../../lib/mongodb";
-import { authOptions } from "../../app/api/auth/[...nextauth]/route";
+import { authOptions } from "./auth/[...nextauth]";
 
 /*
   Adds or updates fixtures in the database using the FPL fixtures API.

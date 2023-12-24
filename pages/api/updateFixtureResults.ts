@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { Fixture, Prediction, Prisma, PrismaClient } from "@prisma/client";
 import calculatePredictionScore from "../../utils/calculatePredictionScore";
-import { authOptions } from "../../app/api/auth/[...nextauth]/route";
+import { authOptions } from "./auth/[...nextauth]";
 
 type RequestBody = {
   scores: Fixture[];

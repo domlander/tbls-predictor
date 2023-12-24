@@ -1,7 +1,7 @@
 // import prisma from "prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../../app/api/auth/[...nextauth]/route";
+import { authOptions } from "./auth/[...nextauth]";
 
 /*
   Populates the Fixture table in the DB with dummy fixtures.

@@ -2,7 +2,7 @@
 
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
-import { authOptions } from "app/api/auth/[...nextauth]/route";
+import { authOptions } from "pages/api/auth/[...nextauth]";
 import prisma from "prisma/client";
 import { isUserAlreadyBelongToLeague } from "utils/isUserAlreadyBelongToLeague";
 import isUserAppliedToLeague from "utils/isUserAppliedToLeague";
