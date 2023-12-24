@@ -4,7 +4,7 @@ import sortFixtures from "utils/sortFixtures";
 import UpdateResults from "src/containers/AdminUpdateResults";
 import { authOptions } from "app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth/next";
 
 export const dynamic = "force-dynamic";
 

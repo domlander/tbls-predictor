@@ -1,5 +1,5 @@
 import * as Sentry from "@sentry/nextjs";
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 import { authOptions } from "app/api/auth/[...nextauth]/route";
 import prisma from "prisma/client";

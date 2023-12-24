@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
 
 import prisma from "prisma/client";

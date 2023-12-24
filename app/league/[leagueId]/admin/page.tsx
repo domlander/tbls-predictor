@@ -1,4 +1,4 @@
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth/next";
 import prisma from "prisma/client";
 
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
