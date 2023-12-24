@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 import Link from "next/link";
+import { Suspense } from "react";
 
 import type Fixture from "src/types/Fixture";
 import type TeamFixtures from "src/types/TeamFixtures";
@@ -45,7 +46,9 @@ const Home = ({
           recentFixturesByTeam={recentFixturesByTeam}
         />
       </PredictionsContainer>
-      <UserStats />
+      <Suspense fallback={<p>Loading your stats...</p>}>
+        <UserStats />
+      </Suspense>
       <MyLeagues leagues={activeLeagues} loading={false} />
     </Container>
   );

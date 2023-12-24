@@ -152,7 +152,7 @@ const PredictionsTable = ({
                     updateGoals={updateGoals}
                     isBigBoyBonus={bigBoyBonus}
                     isBbbLocked={isBbbLockedForGameweek}
-                    predictionScore={predictionScore || undefined}
+                    predictionScore={predictionScore ?? undefined}
                     isLoading={state === "LOADING"}
                     isLoaded={!!predictions}
                     locked={!predictions || isLoading || isLocked}
