@@ -25,7 +25,7 @@ const UserStats = () => {
   if (perfectPerc === null || correctPerc === null) return null;
 
   return (
-    <div className={styles.container}>
+    <article className={styles.container}>
       <Heading level="h2" as="h1" variant="secondary">
         My stats
       </Heading>
@@ -39,7 +39,7 @@ const UserStats = () => {
           <div className={styles.statPerc}>{correctPerc.toFixed(1)}</div>
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 

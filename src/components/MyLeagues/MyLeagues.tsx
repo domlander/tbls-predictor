@@ -13,16 +13,16 @@ export interface Props {
 const MyLeagues = ({ leagues, loading }: Props) => {
   if (!loading && !leagues?.length) {
     return (
-      <section className={styles.noLeagues}>
+      <div className={styles.noLeagues}>
         <Link className={styles.join} href="/league/join">
           Join a league
         </Link>
-      </section>
+      </div>
     );
   }
 
   return (
-    <section className={styles.container}>
+    <article className={styles.container}>
       <Heading level="h2" as="h1" variant="secondary">
         My leagues
       </Heading>
@@ -33,7 +33,7 @@ const MyLeagues = ({ leagues, loading }: Props) => {
       ) : (
         <LeaguesCardsList leagues={leagues} />
       )}
-    </section>
+    </article>
   );
 };
 
