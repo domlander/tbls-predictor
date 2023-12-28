@@ -10,17 +10,22 @@ const FIRST_GAMEWEEK = 1;
 export function calculateCurrentGameweek(fixtures: PartialFixture[]): number {
   if (!fixtures?.length) return FIRST_GAMEWEEK;
 
-  const lastFixture = fixtures[fixtures.length - 1];
+  const closestFixture = fixtures.reduce<PartialFixture | null>((acc, cur) => {
+    if (!acc) return cur;
+    if (!cur?.kickoff) return acc;
 
-  return fixtures.reduce((acc, cur) => {
+    const winningKickoff = dayjs(acc.kickoff);
+    const currentKickoff = dayjs(cur.kickoff);
+
     if (
-      !cur?.kickoff ||
-      dayjs(cur.kickoff).isBefore(new Date(), "day") ||
-      !dayjs(cur.kickoff, "day").isBefore(dayjs(acc.kickoff, "day"))
+      !currentKickoff.isAfter(new Date(), "day") ||
+      !winningKickoff.isAfter(new Date(), "day")
     ) {
-      return acc;
+      return currentKickoff.isAfter(new Date(), "day") ? cur : acc;
     }
 
-    return cur;
-  }, lastFixture).gameweek;
+    return currentKickoff.isAfter(new Date(), "day") ? acc : cur;
+  }, null);
+
+  return closestFixture?.gameweek || FIRST_GAMEWEEK;
 }
