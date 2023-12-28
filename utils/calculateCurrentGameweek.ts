@@ -1,5 +1,8 @@
 import dayjs from "dayjs";
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore";
 import Fixture from "src/types/Fixture";
+
+dayjs.extend(isSameOrBefore);
 
 type PartialFixture = Pick<Fixture, "id" | "gameweek" | "kickoff">;
 
@@ -16,15 +19,16 @@ export function calculateCurrentGameweek(fixtures: PartialFixture[]): number {
 
     const winningKickoff = dayjs(acc.kickoff);
     const currentKickoff = dayjs(cur.kickoff);
+    const today = dayjs();
 
     if (
-      !currentKickoff.isAfter(new Date(), "day") ||
-      !winningKickoff.isAfter(new Date(), "day")
+      currentKickoff.isSameOrBefore(today, "day") &&
+      winningKickoff.isSameOrBefore(today, "day")
     ) {
-      return currentKickoff.isAfter(new Date(), "day") ? cur : acc;
+      return currentKickoff.isAfter(winningKickoff, "day") ? cur : acc;
     }
 
-    return currentKickoff.isAfter(new Date(), "day") ? acc : cur;
+    return currentKickoff.isAfter(winningKickoff, "day") ? acc : cur;
   }, null);
 
   return closestFixture?.gameweek || FIRST_GAMEWEEK;
