@@ -33,6 +33,10 @@ export const isGameLiveOrRecentlyFinished = (kickoff: Date): boolean => {
   return now > dayjs(kickoff) && now < kickoffPlus150Minutes;
 };
 
+const isInvokedByGithubAction = (secret: string, gaSecret: string) => {
+  return secret === gaSecret;
+};
+
 /*
   Fetches the up-to-date results of a live or recently finished fixture in
   the current gameweek using the FPL API.
@@ -42,8 +46,6 @@ export const isGameLiveOrRecentlyFinished = (kickoff: Date): boolean => {
 */
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const secret = req.query.secret as string;
-  const session = await getServerSession(req, res, authOptions);
-
   const startTime = new Date();
 
   if (!process.env.NEXTAUTH_URL)
@@ -61,13 +63,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       .status(500)
       .send("Please ensure the ACTIONS_SECRET environment variable is set.");
 
-  if (
-    session?.user?.email !== process.env.ADMIN_EMAIL &&
-    secret !== process.env.ACTIONS_SECRET
-  ) {
-    return res
-      .status(401)
-      .send("You are not authorised to perform this action.");
+  if (!isInvokedByGithubAction(secret, process.env.ACTIONS_SECRET)) {
+    const session = await getServerSession(req, res, authOptions);
+    if (session?.user?.email !== process.env.ADMIN_EMAIL) {
+      return res
+        .status(401)
+        .send("You are not authorised to perform this action.");
+    }
   }
 
   let log = `Running fetchLatestScores function. User authenticated. Time: ${
@@ -153,6 +155,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   fetch(
     `${process.env.NEXTAUTH_URL}/api/revalidateLeagueWeekPage?secret=${process.env.ACTIONS_SECRET}`
   );
+
+  // Don't think this will work in the pages router. Will need this in the app router
+  // revalidatePath("/");
+  // revalidatePath(`/predictions/${currentGameweek}`);
 
   return res.status(200).json({ fixtures: fixturesToUpdate, log });
 };
