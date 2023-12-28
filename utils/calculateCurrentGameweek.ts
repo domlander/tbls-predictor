@@ -9,7 +9,9 @@ type PartialFixture = Pick<Fixture, "id" | "gameweek" | "kickoff">;
 const FIRST_GAMEWEEK = 1;
 
 // Returns the current gameweek given a list of fixtures
-// Current gameweek: The fixture with the earliest kickoff that is today or in the future
+//
+// Definition:
+//  - current gameweek: The fixture with the earliest kickoff that is today or in the future
 export function calculateCurrentGameweek(fixtures: PartialFixture[]): number {
   if (!fixtures?.length) return FIRST_GAMEWEEK;
 
