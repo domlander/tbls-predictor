@@ -12,6 +12,7 @@ import type Fixture from "src/types/Fixture";
 import type Prediction from "src/types/Prediction";
 import type TeamFixtures from "src/types/TeamFixtures";
 import type User from "src/types/User";
+import updatePredictions from "src/actions/updatePredictions";
 
 export type UpdatePredictionsInputType = {
   userId: User["id"];
@@ -64,12 +65,10 @@ const Predictions = ({
 
     setIsSaving(true);
     setIsSaved(false);
-    fetch("/api/updatePredictions", {
-      method: "POST",
-      body: JSON.stringify({ predictions: updatedPredictions }),
-    }).then((res) => {
+
+    updatePredictions(updatedPredictions).then(({ success }) => {
       setIsSaving(false);
-      if (!res.ok) {
+      if (!success) {
         setIsSaveError(true);
       } else {
         setIsSaved(true);

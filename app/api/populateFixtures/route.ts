@@ -1,5 +1,3 @@
-/* eslint-disable camelcase */
-import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import * as Sentry from "@sentry/nextjs";
 import dayjs from "dayjs";
@@ -9,67 +7,37 @@ import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import { getFixturesFromApiForGameweek } from "utils/fplApi";
 import Fixture from "src/types/Fixture";
 import LogMessage, { LOG_MESSAGE_TYPE } from "src/types/LogMessage";
-import clientPromise from "../../lib/mongodb";
-import { authOptions } from "./auth/[...nextauth]";
+import clientPromise from "../../../lib/mongodb";
+import { authOptions } from "../auth/[...nextauth]/route";
+import { NextRequest } from "next/server";
+import sortFixtures from "utils/sortFixtures";
 
-/*
-  Adds or updates fixtures in the database using the FPL fixtures API.
-
-  Params:
-   - gameweek: The gameweek in which to update fixtures. Defaults to the current gameweek
-   - (optional) numGameweeks: number of gameweeks to update, starting from provided gameweek. Defaults to 1
-   - (optional) secret: authenticates caller
-   - (optional) persist: Whether to save the fixtures to the DB. Defaults to false
-*/
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const secret = req.query.secret as string;
-  const queryGameweek = parseInt(req.query.gameweek as string);
-  const numGameweeks = parseInt(req.query.numGameweeks as string) || 1;
-  const shouldSaveToDatabase = (req.query.persist as string) === "true";
-
-  if (!process.env.ADMIN_EMAIL)
-    return res
-      .status(500)
-      .send("Please ensure the ADMIN_EMAIL environment variable is set.");
-
-  if (!process.env.ACTIONS_SECRET)
-    return res
-      .status(500)
-      .send("Please ensure the ACTIONS_SECRET environment variable is set.");
-
-  const session = await getServerSession(req, res, authOptions);
-  if (
-    session?.user?.email !== process.env.ADMIN_EMAIL &&
-    secret !== process.env.ACTIONS_SECRET
-  ) {
-    return res.status(401).send("Unauthorised");
+const getGameweekFromParam = (param: string | null) => {
+  if (param === null) {
+    return null;
   }
 
-  const allDbFixtures = await prisma.fixture.findMany();
-
-  const gameweek = queryGameweek || calculateCurrentGameweek(allDbFixtures);
-
-  const allApiFixtures = await fetchApiData(gameweek, numGameweeks);
-  const apiFixturesFlat = allApiFixtures.flat(1);
-
-  if (!shouldSaveToDatabase) {
-    return res.status(200).json({ fixtures: apiFixturesFlat });
+  const gameweek = parseInt(param);
+  if (gameweek >= 1 && gameweek <= 38) {
+    return gameweek;
   }
 
-  // Synchronously update the fixtures in the requested gameweeks.
-  for (let i = gameweek; i <= Math.min(gameweek + numGameweeks - 1, 38); i++) {
-    const dbFixtures = allDbFixtures.filter(({ gameweek: week }) => week === i);
-    const apiFixtures = allApiFixtures[i - gameweek];
-
-    populateFixtures(i, apiFixtures, dbFixtures);
-  }
-
-  return res.status(200).json({ fixtures: apiFixturesFlat });
+  return null;
 };
 
-/*
- * Fetches all the api data we need to process this serverless function
- */
+const getNumGameweeksFromParam = (param: string | null) => {
+  if (param === null) {
+    return 1;
+  }
+
+  const numGameweeks = parseInt(param);
+  if (numGameweeks >= 1 && numGameweeks <= 38) {
+    return numGameweeks;
+  }
+
+  return 1;
+};
+
 const fetchApiData = async (gameweek: number, numGameweeks: number) => {
   const results = [];
   for (let i = gameweek; i <= Math.min(gameweek + numGameweeks - 1, 38); i++) {
@@ -252,4 +220,69 @@ const populateFixtures = async (
   }
 };
 
-export default handler;
+/*
+  Adds or updates fixtures in the database using the FPL fixtures API.
+
+  Params:
+   - gameweek: The gameweek in which to update fixtures. Defaults to the current gameweek
+   - (optional) numGameweeks: number of gameweeks to update, starting from provided gameweek. Defaults to 1
+   - (optional) secret: authenticates caller
+   - (optional) persist: Whether to save the fixtures to the DB. Defaults to false
+*/
+export async function POST(request: NextRequest) {
+  const { searchParams } = request.nextUrl;
+  const secret = searchParams.get("secret");
+  const gameweekParam = searchParams.get("gameweek");
+  const numGameweeksParam = searchParams.get("numGameweeks");
+  const shouldSaveToDatabase = searchParams.get("persist") === "true";
+
+  if (!process.env.ADMIN_EMAIL) {
+    return Response.json(
+      { message: "Please ensure the ADMIN_EMAIL environment variable is set" },
+      { status: 500 }
+    );
+  }
+
+  if (!process.env.ACTIONS_SECRET)
+    return Response.json(
+      {
+        message: "Please ensure the ACTIONS_SECRET environment variable is set",
+      },
+      { status: 500 }
+    );
+
+  if (secret !== process.env.ACTIONS_SECRET) {
+    const session = await getServerSession(authOptions);
+    if (session?.user?.email !== process.env.ADMIN_EMAIL) {
+      return Response.json(
+        { message: "You are not authorised to perform this action" },
+        { status: 401 }
+      );
+    }
+  }
+
+  const allDbFixtures = await prisma.fixture.findMany();
+
+  const gameweek =
+    getGameweekFromParam(gameweekParam) ||
+    calculateCurrentGameweek(allDbFixtures);
+
+  const numGameweeks = getNumGameweeksFromParam(numGameweeksParam);
+
+  const allApiFixtures = await fetchApiData(gameweek, numGameweeks);
+  const apiFixturesFlat = sortFixtures(allApiFixtures.flat(1));
+
+  if (!shouldSaveToDatabase) {
+    return Response.json({ fixtures: apiFixturesFlat });
+  }
+
+  // Synchronously update the fixtures in the requested gameweeks.
+  for (let i = gameweek; i <= Math.min(gameweek + numGameweeks - 1, 38); i++) {
+    const dbFixtures = allDbFixtures.filter(({ gameweek: week }) => week === i);
+    const apiFixtures = allApiFixtures[i - gameweek];
+
+    populateFixtures(i, apiFixtures, dbFixtures);
+  }
+
+  return Response.json({ fixtures: apiFixturesFlat });
+}

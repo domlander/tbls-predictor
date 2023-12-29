@@ -7,7 +7,7 @@ import Fixture from "src/types/Fixture";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import sortFixtures from "utils/sortFixtures";
 import generateRecentFixturesByTeam from "utils/generateRecentFixturesByTeam";
-import { authOptions } from "pages/api/auth/[...nextauth]";
+import { authOptions } from "app/api/auth/[...nextauth]/route";
 
 export const dynamic = "force-dynamic";
 

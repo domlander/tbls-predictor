@@ -1,12 +1,12 @@
 "use client";
 
 import { useFormState } from "react-dom";
-import joinLeague from "src/actions/joinLeague";
+import requestToJoinLeague from "src/actions/requestToJoinLeague";
 import FeedbackAndButton from "./FeedbackAndButton";
 import styles from "./Form.module.css";
 
 const Form = () => {
-  const [state, action] = useFormState(joinLeague, null);
+  const [state, action] = useFormState(requestToJoinLeague, null);
 
   return (
     <form action={action} className={styles.form}>

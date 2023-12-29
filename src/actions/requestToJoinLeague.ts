@@ -2,12 +2,12 @@
 
 import { getServerSession } from "next-auth/next";
 import { redirect } from "next/navigation";
-import { authOptions } from "pages/api/auth/[...nextauth]";
+import { authOptions } from "app/api/auth/[...nextauth]/route";
 import prisma from "prisma/client";
 import { isUserAlreadyBelongToLeague } from "utils/isUserAlreadyBelongToLeague";
 import isUserAppliedToLeague from "utils/isUserAppliedToLeague";
 
-const joinLeague = async (
+const requestToJoinLeague = async (
   _: { message: string } | null,
   formData: FormData
 ): Promise<{ message: string }> => {
@@ -67,4 +67,4 @@ const joinLeague = async (
   return redirect(`/league/${league.id}`);
 };
 
-export default joinLeague;
+export default requestToJoinLeague;

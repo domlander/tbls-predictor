@@ -1,13 +1,8 @@
-/* eslint-disable camelcase */
-import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { Fixture, Prediction, Prisma, PrismaClient } from "@prisma/client";
-import calculatePredictionScore from "../../utils/calculatePredictionScore";
-import { authOptions } from "./auth/[...nextauth]";
-
-type RequestBody = {
-  scores: Fixture[];
-};
+import calculatePredictionScore from "../../../utils/calculatePredictionScore";
+import { authOptions } from "../auth/[...nextauth]/route";
+import { NextRequest } from "next/server";
 
 const prisma = new PrismaClient({
   datasources: {
@@ -23,41 +18,47 @@ const prisma = new PrismaClient({
  * Params:
  *   - req.scores: An array of objects containing the following fields: id, homeGoals, awayGoals
  */
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const secret = req.query.secret as string;
-  const session = await getServerSession(req, res, authOptions);
+export async function POST(request: NextRequest) {
+  const { searchParams } = request.nextUrl;
+  const secret = searchParams.get("secret");
 
-  if (!process.env.ADMIN_EMAIL)
-    return res
-      .status(500)
-      .send("Please ensure the ADMIN_EMAIL environment variable is set.");
-
-  if (!process.env.ACTIONS_SECRET)
-    return res
-      .status(500)
-      .send("Please ensure the ACTIONS_SECRET environment variable is set.");
-
-  if (
-    session?.user?.email !== process.env.ADMIN_EMAIL &&
-    secret !== process.env.ACTIONS_SECRET
-  ) {
-    return res
-      .status(401)
-      .send("You are not authorised to perform this action.");
+  if (!process.env.ADMIN_EMAIL) {
+    return Response.json(
+      { message: "Please ensure the ADMIN_EMAIL environment variable is set" },
+      { status: 500 }
+    );
   }
 
-  const { scores }: RequestBody = req.body || [];
+  if (!process.env.ACTIONS_SECRET)
+    return Response.json(
+      {
+        message: "Please ensure the ACTIONS_SECRET environment variable is set",
+      },
+      { status: 500 }
+    );
+
+  if (secret !== process.env.ACTIONS_SECRET) {
+    const session = await getServerSession(authOptions);
+    if (session?.user?.email !== process.env.ADMIN_EMAIL) {
+      return Response.json(
+        { message: "You are not authorised to perform this action" },
+        { status: 401 }
+      );
+    }
+  }
+
+  const { scores }: { scores: Fixture[] } = await request.json();
 
   if (!scores?.length) {
-    return res.status(400).send("No scores found.");
+    return Response.json({ message: "No scores found" }, { status: 400 });
   }
 
   scores.forEach(({ id, homeGoals, awayGoals }) => {
     updateFixtureScoreAndEvaluatePredictions(id, homeGoals, awayGoals);
   });
 
-  return res.status(200).json({ scores });
-};
+  return Response.json(scores);
+}
 
 const updateFixtureScoreAndEvaluatePredictions = async (
   fixtureId: number,
@@ -139,5 +140,3 @@ const findAllPredictionsAndUpdateScore = async (
 
   await Promise.all(results);
 };
-
-export default handler;

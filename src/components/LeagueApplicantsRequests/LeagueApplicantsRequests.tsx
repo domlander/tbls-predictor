@@ -6,6 +6,7 @@ import styled from "styled-components";
 import Applicant from "src/types/Applicant";
 import Button from "../Button";
 import Heading from "../Heading";
+import processJoinLeagueRequest from "src/actions/processJoinLeagueRequest";
 
 interface Props {
   applicants: Applicant[];
@@ -20,24 +21,15 @@ const LeagueApplicantsRequests = ({
 }: Props) => {
   const [userFeedback, setUserFeedback] = useState<string>("");
 
-  const handleAcceptOrReject = (applicantId: string, accept: boolean) => {
-    const formData = new URLSearchParams();
-    formData.append("leagueId", leagueId.toString());
-    formData.append("applicantId", applicantId);
-    formData.append("isAccepted", accept.toString());
-
-    fetch("/api/processJoinLeagueRequest", {
-      method: "POST",
-      body: formData,
-    }).then(async (resp) => {
-      const message = await resp.json();
-
-      setApplicants(
-        applicants.filter((applicant) => applicant.user.id !== applicantId)
-      );
-
-      setUserFeedback(message);
-    });
+  const handleAcceptOrReject = (applicantId: string, shouldAccept: boolean) => {
+    processJoinLeagueRequest(leagueId, applicantId, shouldAccept).then(
+      ({ message }) => {
+        setUserFeedback(message);
+        setApplicants(
+          applicants.filter((applicant) => applicant.user.id !== applicantId)
+        );
+      }
+    );
   };
 
   const validApplicants = applicants.filter(

@@ -1,12 +1,12 @@
 /* eslint-disable camelcase */
-import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import dayjs from "dayjs";
 import { PrismaClient } from "@prisma/client";
 import { getFixturesFromApiForGameweek } from "utils/fplApi";
 import Fixture from "src/types/Fixture";
-import { calculateCurrentGameweek } from "../../utils/calculateCurrentGameweek";
-import { authOptions } from "./auth/[...nextauth]";
+import { calculateCurrentGameweek } from "../../../utils/calculateCurrentGameweek";
+import { authOptions } from "../auth/[...nextauth]/route";
+import { NextRequest } from "next/server";
 
 const prisma = new PrismaClient({
   datasources: {
@@ -33,42 +33,52 @@ export const isGameLiveOrRecentlyFinished = (kickoff: Date): boolean => {
   return now > dayjs(kickoff) && now < kickoffPlus150Minutes;
 };
 
-const isInvokedByGithubAction = (secret: string, gaSecret: string) => {
+const isInvokedByGithubAction = (secret: string | null, gaSecret: string) => {
   return secret === gaSecret;
 };
 
 /*
-  Fetches the up-to-date results of a live or recently finished fixture in
-  the current gameweek using the FPL API.
-  Makes no changes if there is not a live game (kickoff between now and 150 minutes from now)
+  Fetches the up-to-date results of a live or recently finished 
+  fixture in the current gameweek using the FPL API.
+
+  Makes NO changes if there is not a live game (kickoff between now and 150 minutes from now)
   If a goal has been scored, calls the updateFixtureResults API to update the
   fixture score and subsequent predictions score for all predictions.
 */
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const secret = req.query.secret as string;
+
+export async function POST(request: NextRequest) {
+  const { searchParams } = request.nextUrl;
+  const secret = searchParams.get("secret");
   const startTime = new Date();
 
   if (!process.env.NEXTAUTH_URL)
-    return res
-      .status(500)
-      .send("Please ensure the NEXTAUTH_URL environment variable is set.");
+    return Response.json(
+      { message: "Please ensure the NEXTAUTH_URL environment variable is set" },
+      { status: 500 }
+    );
 
-  if (!process.env.ADMIN_EMAIL)
-    return res
-      .status(500)
-      .send("Please ensure the ADMIN_EMAIL environment variable is set.");
+  if (!process.env.ADMIN_EMAIL) {
+    return Response.json(
+      { message: "Please ensure the ADMIN_EMAIL environment variable is set" },
+      { status: 500 }
+    );
+  }
 
   if (!process.env.ACTIONS_SECRET)
-    return res
-      .status(500)
-      .send("Please ensure the ACTIONS_SECRET environment variable is set.");
+    return Response.json(
+      {
+        message: "Please ensure the ACTIONS_SECRET environment variable is set",
+      },
+      { status: 500 }
+    );
 
   if (!isInvokedByGithubAction(secret, process.env.ACTIONS_SECRET)) {
-    const session = await getServerSession(req, res, authOptions);
+    const session = await getServerSession(authOptions);
     if (session?.user?.email !== process.env.ADMIN_EMAIL) {
-      return res
-        .status(401)
-        .send("You are not authorised to perform this action.");
+      return Response.json(
+        { message: "You are not authorised to perform this action" },
+        { status: 401 }
+      );
     }
   }
 
@@ -90,7 +100,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   );
   if (!liveFixtures?.length) {
     log += "No live games found\n";
-    return res.status(200).send(log);
+    return new Response(log);
   }
 
   log += `liveFixtures\n: 
@@ -130,7 +140,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   if (!fixturesToUpdate?.length) {
     log += "No goals have been scored. No fixtures to update\n";
-    return res.status(200).json(log);
+    return new Response(log);
   }
 
   fixturesToUpdate.forEach(({ id, homeGoals, awayGoals }) => {
@@ -151,16 +161,5 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     log += `An error occurred: ${e}\n`;
   });
 
-  // Rebuild league week pages for the current gameweek
-  fetch(
-    `${process.env.NEXTAUTH_URL}/api/revalidateLeagueWeekPage?secret=${process.env.ACTIONS_SECRET}`
-  );
-
-  // Don't think this will work in the pages router. Will need this in the app router
-  // revalidatePath("/");
-  // revalidatePath(`/predictions/${currentGameweek}`);
-
-  return res.status(200).json({ fixtures: fixturesToUpdate, log });
-};
-
-export default handler;
+  return Response.json({ fixtures: fixturesToUpdate, log });
+}

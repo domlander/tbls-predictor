@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth/next";
 import prisma from "prisma/client";
 
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
-import { authOptions } from "pages/api/auth/[...nextauth]";
+import { authOptions } from "app/api/auth/[...nextauth]/route";
 import LeagueAdmin from "src/containers/LeagueAdmin";
 import { redirect } from "next/navigation";
 

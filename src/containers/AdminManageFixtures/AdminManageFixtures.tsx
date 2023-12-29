@@ -9,13 +9,14 @@ import arrowLeft from "public/images/ArrowLeft.svg";
 import arrowRight from "public/images/ArrowRight.svg";
 import arrowLeftDisabled from "public/images/ArrowLeftDisabled.svg";
 import arrowRightDisabled from "public/images/ArrowRightDisabled.svg";
-import sortFixtures from "utils/sortFixtures";
 import Heading from "src/components/Heading";
 import Button from "src/components/Button";
 import Fixture from "src/types/Fixture";
 import colours from "src/styles/colours";
 import pageSizes from "src/styles/pageSizes";
 import ManageFixturesDb from "src/components/ManageFixturesDb/ManageFixturesDb";
+import fetchGameweekFixtures from "src/actions/fetchGameweekFixtures";
+import updateFixturesDatabase from "src/actions/updateFixtures";
 
 interface Props {
   gameweek: number;
@@ -29,14 +30,9 @@ const AdminManageFixtures = ({ gameweek: initialGameweek }: Props) => {
   const [fixturesFromApi, setFixturesFromApi] = useState<Fixture[]>([]);
 
   useEffect(() => {
-    fetch("/api/fetchGameweekFixtures", {
-      method: "POST",
-      body: JSON.stringify({ gameweek }),
-    })
-      .then((res) => res.json())
-      .then(({ fixtures: f }) => {
-        setFixtures([...f]);
-      });
+    fetchGameweekFixtures(gameweek).then((fixtures) => {
+      setFixtures([...fixtures]);
+    });
   }, [gameweek]);
 
   // Updates fixtures in local state when a field is edited.
@@ -66,18 +62,15 @@ const AdminManageFixtures = ({ gameweek: initialGameweek }: Props) => {
   // Takes all fixtures from the API for this gameweek and saves them to the database.
   const saveApiFixturesToDatabase = async () => {
     setSavingApiDataToDB(true);
-    await fetch(`/api/populateFixtures?gameweek=${gameweek}&persist=true`);
+    await fetch(`/api/populateFixtures?gameweek=${gameweek}&persist=true`, {
+      method: "POST",
+    });
     setSavingApiDataToDB(false);
 
     // Fetch the updated fixtures from DB. An extra round trip, but it does not matter for admin.
-    fetch("/api/fetchGameweekFixtures", {
-      method: "POST",
-      body: JSON.stringify({ gameweek }),
-    })
-      .then((res) => res.json())
-      .then(({ fixtures: f }) => {
-        setFixtures([...f]);
-      });
+    fetchGameweekFixtures(gameweek).then((fixtures) => {
+      setFixtures([...fixtures]);
+    });
   };
 
   // Saves fixtures to database
@@ -92,26 +85,21 @@ const AdminManageFixtures = ({ gameweek: initialGameweek }: Props) => {
       })
     );
 
-    fetch("/api/updateFixtures", {
-      method: "POST",
-      body: JSON.stringify({ fixtures: fixturesWithoutKickoff }),
-    });
+    updateFixturesDatabase(fixturesWithoutKickoff);
   };
 
   // Prompts our serverless function to fetch data from the FPL API
   const fetchFplData = async () => {
     setFetchingData(true);
-    const response = await fetch(
-      `/api/populateFixtures?gameweek=${gameweek}&persist=false`
-    ).then((res) => res.json());
-    setFetchingData(false);
-
-    const apiFixtures: Fixture[] = response.fixtures;
-
-    setFixturesFromApi(apiFixtures);
+    await fetch(`/api/populateFixtures?gameweek=${gameweek}&persist=false`, {
+      method: "POST",
+    })
+      .then((r) => r.json())
+      .then(({ fixtures }) => {
+        setFixturesFromApi(fixtures);
+        setFetchingData(false);
+      });
   };
-
-  const sortedApiFixtures = sortFixtures(fixturesFromApi);
 
   return (
     <Container>
@@ -162,7 +150,7 @@ const AdminManageFixtures = ({ gameweek: initialGameweek }: Props) => {
             <span>Kickoff</span>
             <span>Home team</span>
             <span>Away team</span>
-            {sortedApiFixtures.map(({ kickoff, homeTeam, awayTeam }) => (
+            {fixturesFromApi.map(({ kickoff, homeTeam, awayTeam }) => (
               <Fragment key={`${homeTeam}-${awayTeam}`}>
                 <div>{dayjs(kickoff).format("DD/MM/YYYY HH:mm")}</div>
                 <div>{homeTeam}</div>

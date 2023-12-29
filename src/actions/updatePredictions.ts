@@ -1,28 +1,14 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient } from "@prisma/client";
-import * as Sentry from "@sentry/nextjs";
+"use server";
 
+import * as Sentry from "@sentry/nextjs";
+import prisma from "prisma/client";
 import { UpdatePredictionsInputType } from "src/containers/Predictions/Predictions";
 import isPastDeadline from "utils/isPastDeadline";
 
-type RequestBody = {
-  predictions: UpdatePredictionsInputType[];
-};
-
-const prisma = new PrismaClient({
-  datasources: {
-    db: {
-      url: process.env.DATABASE_URL,
-    },
-  },
-});
-
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  if (req.method !== "POST") {
-    return res.status(405).send("Method not allowed.");
-  }
-
-  const { predictions }: RequestBody = JSON.parse(req.body);
+const updatePredictions = async (
+  predictions: UpdatePredictionsInputType[]
+): Promise<{ success: boolean }> => {
+  if (!predictions?.length) return { success: false };
 
   const fixtures = await prisma.fixture.findMany({
     select: {
@@ -68,10 +54,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     await Promise.all(predictionsUpsert);
   } catch (e) {
     Sentry.captureException(e);
-    return res.status(500).end();
+    return { success: false };
   }
 
-  return res.status(200).end();
+  return { success: true };
 };
 
-export default handler;
+export default updatePredictions;
