@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Suspense } from "react";
 
 import type Fixture from "src/types/Fixture";
 import type TeamFixtures from "src/types/TeamFixtures";
@@ -7,6 +8,7 @@ import Heading from "src/components/Heading";
 import UserLeague from "src/types/UserLeague";
 import Prediction from "src/types/Prediction";
 import UserStats from "src/components/UserStats";
+import UserStatsLoading from "src/components/UserStats/UserStatsLoading";
 import Predictions from "../Predictions";
 import styles from "./Home.module.css";
 
@@ -46,7 +48,10 @@ const Home = ({
           recentFixturesByTeam={recentFixturesByTeam}
         />
       </article>
-      <UserStats />
+      <Suspense fallback={<UserStatsLoading />}>
+        {/* @ts-expect-error Server Component */}
+        <UserStats />
+      </Suspense>
       <MyLeagues leagues={activeLeagues} loading={false} />
     </section>
   );

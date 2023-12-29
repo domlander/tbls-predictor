@@ -13,8 +13,34 @@
 
 .stat {
   font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8em;
 }
 
 .statPerc {
   font-size: 2.6rem;
+  line-height: 2.6rem;
+}
+
+@keyframes skeletonLoading {
+  0% {
+      background-position: -800px 0
+  }
+  100% {
+      background-position: 800px 0;
+  }
+}
+
+.loading {
+  height: 30px;
+  border-radius: 5px;
+  animation: skeletonLoading 1s linear infinite forwards;
+  background: linear-gradient(
+      to right,
+      var(--blackblue400) 4%,
+      var(--grey700) 25%,
+      var(--blackblue400) 36%
+    )
+    0% 0% / 1500px 100%;
 }

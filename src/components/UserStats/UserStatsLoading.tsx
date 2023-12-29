@@ -1,10 +1,7 @@
-import userStats from "src/actions/userStats";
 import styles from "./UserStats.module.css";
 import Heading from "../Heading";
 
-const UserStats = async () => {
-  const { perfectPerc, correctPerc } = await userStats();
-
+const UserStatsLoading = () => {
   return (
     <article className={styles.container}>
       <Heading level="h2" as="h1" variant="secondary">
@@ -13,19 +10,15 @@ const UserStats = async () => {
       <div className={styles.stats}>
         <div className={styles.stat}>
           <div>Perfect %</div>
-          <div className={styles.statPerc}>
-            {perfectPerc?.toFixed(1) ?? "???"}
-          </div>
+          <div className={styles.loading} />
         </div>
         <div className={styles.stat}>
           <div>Correct %</div>
-          <div className={styles.statPerc}>
-            {correctPerc?.toFixed(1) ?? "???"}
-          </div>
+          <div className={styles.loading} />
         </div>
       </div>
     </article>
   );
 };
 
-export default UserStats;
+export default UserStatsLoading;

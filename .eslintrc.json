@@ -38,6 +38,7 @@
     "import/extensions": "off",
     "arrow-body-style": "off",
     "react/jsx-uses-react": "off",
+    "react/function-component-definition": "arrow-function",
     "react/react-in-jsx-scope": "off",
     "react/require-default-props": "off",
     "jsx-a11y/anchor-is-valid": "off", // Next/link requires <a> tag without href attribute
