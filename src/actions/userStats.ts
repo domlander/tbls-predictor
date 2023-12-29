@@ -5,12 +5,13 @@ import { authOptions } from "app/api/auth/[...nextauth]/route";
 import prisma from "prisma/client";
 
 const userStats = async (): Promise<{
-  perfectPerc: number | null;
-  correctPerc: number | null;
-}> => {
+  perfectPerc: number;
+  correctPerc: number;
+  numPredictions: number;
+} | null> => {
   const session = await getServerSession(authOptions);
   if (!session?.user.id) {
-    return { perfectPerc: null, correctPerc: null };
+    return null;
   }
 
   const user = await prisma.user.findUnique({
@@ -38,7 +39,7 @@ const userStats = async (): Promise<{
 
   const predictions = user?.predictions;
   if (!predictions?.length) {
-    return { perfectPerc: null, correctPerc: null };
+    return null;
   }
 
   const correctPredictions = predictions.filter(
@@ -49,10 +50,11 @@ const userStats = async (): Promise<{
   ).length;
   const totalPredictions = predictions.length;
 
+  const numPredictions = predictions.length;
   const perfectPerc = (perfectPredictions / totalPredictions) * 100;
   const correctPerc = (correctPredictions / totalPredictions) * 100;
 
-  return { perfectPerc, correctPerc };
+  return { numPredictions, perfectPerc, correctPerc };
 };
 
 export default userStats;
