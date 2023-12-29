@@ -1,4 +1,5 @@
 import { getServerSession } from "next-auth/next";
+import * as Sentry from "@sentry/nextjs";
 import { Fixture, Prediction, Prisma, PrismaClient } from "@prisma/client";
 import calculatePredictionScore from "../../../utils/calculatePredictionScore";
 import { authOptions } from "../auth/[...nextauth]/route";
@@ -79,15 +80,19 @@ const updateFixtureScore = async (
   homeGoals: number,
   awayGoals: number
 ) => {
-  await prisma.fixture.update({
-    where: {
-      id,
-    },
-    data: {
-      homeGoals,
-      awayGoals,
-    },
-  });
+  try {
+    await prisma.fixture.update({
+      where: {
+        id,
+      },
+      data: {
+        homeGoals,
+        awayGoals,
+      },
+    });
+  } catch (e) {
+    Sentry.captureException(`Failed to update fixture score. ${e}`);
+  }
 };
 
 /**
@@ -138,5 +143,9 @@ const findAllPredictionsAndUpdateScore = async (
     }
   );
 
-  await Promise.all(results);
+  try {
+    await Promise.all(results);
+  } catch (e) {
+    Sentry.captureException(`Failed to update predictions. ${e}`);
+  }
 };
