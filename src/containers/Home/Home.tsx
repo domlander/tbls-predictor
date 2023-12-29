@@ -3,12 +3,13 @@ import { Suspense } from "react";
 
 import type Fixture from "src/types/Fixture";
 import type TeamFixtures from "src/types/TeamFixtures";
-import MyLeagues from "src/components/MyLeagues";
 import Heading from "src/components/Heading";
-import UserLeague from "src/types/UserLeague";
-import Prediction from "src/types/Prediction";
+import MyLeagues from "src/components/MyLeagues";
+import MyLeaguesLoading from "src/components/MyLeagues/MyLeaguesLoading";
 import UserStats from "src/components/UserStats";
 import UserStatsLoading from "src/components/UserStats/UserStatsLoading";
+import Prediction from "src/types/Prediction";
+import User from "src/types/User";
 import Predictions from "../Predictions";
 import styles from "./Home.module.css";
 
@@ -17,7 +18,8 @@ interface Props {
   fixtures: Fixture[];
   predictions: Prediction[];
   recentFixturesByTeam: TeamFixtures[];
-  activeLeagues: UserLeague[];
+  userId: User["id"];
+  currentGameweek: number;
 }
 
 const Home = ({
@@ -25,7 +27,8 @@ const Home = ({
   fixtures,
   predictions,
   recentFixturesByTeam,
-  activeLeagues,
+  userId,
+  currentGameweek,
 }: Props) => {
   return (
     <section className={styles.container}>
@@ -52,7 +55,14 @@ const Home = ({
         {/* @ts-expect-error Server Component */}
         <UserStats />
       </Suspense>
-      <MyLeagues leagues={activeLeagues} loading={false} />
+      <Suspense fallback={<MyLeaguesLoading />}>
+        {/* @ts-expect-error Server Component */}
+        <MyLeagues
+          userId={userId}
+          fixtures={fixtures}
+          currentGameweek={currentGameweek}
+        />
+      </Suspense>
     </section>
   );
 };

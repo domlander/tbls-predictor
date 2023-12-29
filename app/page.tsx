@@ -7,7 +7,6 @@ import Home from "src/containers/Home";
 import sortFixtures from "utils/sortFixtures";
 import generateRecentFixturesByTeam from "utils/generateRecentFixturesByTeam";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
-import getUsersActiveLeagues from "utils/getUsersActiveLeagues";
 import { authOptions } from "pages/api/auth/[...nextauth]";
 
 export const dynamic = "force-dynamic";
@@ -75,12 +74,6 @@ const Page = async () => {
     currentGameweek
   );
 
-  const activeLeagues = await getUsersActiveLeagues(
-    user.id,
-    fixtures,
-    currentGameweek
-  );
-
   const predictions = await prisma.prediction.findMany({
     where: {
       AND: [
@@ -107,7 +100,8 @@ const Page = async () => {
       fixtures={sortedFixtures}
       predictions={predictions}
       recentFixturesByTeam={recentFixturesByTeam}
-      activeLeagues={activeLeagues}
+      userId={session.user.id}
+      currentGameweek={currentGameweek}
     />
   );
 };
