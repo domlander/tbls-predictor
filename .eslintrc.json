@@ -37,6 +37,7 @@
     "import/prefer-default-export": "off",
     "import/extensions": "off",
     "arrow-body-style": "off",
+    "react/function-component-definition": "arrow-function",
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off",
     "react/require-default-props": "off",

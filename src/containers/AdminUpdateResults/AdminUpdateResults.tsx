@@ -52,7 +52,7 @@ const AdminUpdateResults = ({ fixtures }: Props) => {
     setIsSaved(false);
 
     fetch("/api/updateFixtureResults", {
-      method: "post",
+      method: "POST",
       headers: {
         Accept: "application/json, text/plain, */*",
         "Content-Type": "application/json",

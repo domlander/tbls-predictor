@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { Prediction, Prisma, PrismaClient } from "@prisma/client";
-import { authOptions } from "./auth/[...nextauth]";
+import { authOptions } from "../../../pages/api/auth/[...nextauth]";
 
 const prisma = new PrismaClient({
   datasources: {
@@ -26,48 +26,6 @@ const isGameLive = (kickoff: Date) => {
   timeIn110Minutes.setMinutes(timeIn110Minutes.getMinutes() + 110);
 
   return kickoff > now && kickoff < timeIn110Minutes;
-};
-
-/**
- * Adds missing predictions for live matches.
- * When a game starts, if there are any users who haven't entered a prediction,
- * give them the default prediction of 0-0 for the game and add to database.
- */
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const secret = req.query.secret as string;
-  const session = await getServerSession(req, res, authOptions);
-
-  if (!process.env.ADMIN_EMAIL)
-    return res
-      .status(500)
-      .send("Please ensure the ADMIN_EMAIL environment variable is set.");
-
-  if (!process.env.ACTIONS_SECRET)
-    return res
-      .status(500)
-      .send("Please ensure the ACTIONS_SECRET environment variable is set.");
-
-  if (
-    session?.user?.email !== process.env.ADMIN_EMAIL &&
-    secret !== process.env.ACTIONS_SECRET
-  ) {
-    return res
-      .status(401)
-      .send("You are not authorised to perform this action.");
-  }
-
-  const allFixtures = await prisma.fixture.findMany({});
-  const fixtures = allFixtures.filter(({ kickoff }) => isGameLive(kickoff));
-
-  if (!fixtures?.length) {
-    return res.status(200).send("No fixtures found");
-  }
-
-  fixtures.forEach((fixture) => {
-    addMissingPredictionsForFixture(fixture.id);
-  });
-
-  return res.send(200);
 };
 
 const addMissingPredictionsForFixture = async (fixtureId: number) => {
@@ -112,4 +70,50 @@ const addMissingPredictionsForFixture = async (fixtureId: number) => {
   await Promise.all(results);
 };
 
-export default handler;
+/**
+ * Adds missing predictions for live matches.
+ * When a game starts, if there are any users who haven't entered a prediction,
+ * give them the default prediction of 0-0 for the game and add to database.
+ */
+export async function POST(request: NextRequest) {
+  const { searchParams } = request.nextUrl;
+  const secret = searchParams.get("secret");
+
+  if (!process.env.ADMIN_EMAIL) {
+    return Response.json(
+      { message: "Please ensure the ADMIN_EMAIL environment variable is set" },
+      { status: 500 }
+    );
+  }
+
+  if (!process.env.ACTIONS_SECRET)
+    return Response.json(
+      {
+        message: "Please ensure the ACTIONS_SECRET environment variable is set",
+      },
+      { status: 500 }
+    );
+
+  if (secret !== process.env.ACTIONS_SECRET) {
+    const session = await getServerSession(authOptions);
+    if (session?.user?.email !== process.env.ADMIN_EMAIL) {
+      return Response.json(
+        { message: "You are not authorised to perform this action" },
+        { status: 401 }
+      );
+    }
+  }
+
+  const allFixtures = await prisma.fixture.findMany({});
+  const fixtures = allFixtures.filter(({ kickoff }) => isGameLive(kickoff));
+
+  if (!fixtures?.length) {
+    return Response.json({ message: "No fixtures found" }, { status: 500 });
+  }
+
+  fixtures.forEach((fixture) => {
+    addMissingPredictionsForFixture(fixture.id);
+  });
+
+  return new Response("Success!");
+}
