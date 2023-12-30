@@ -62,7 +62,7 @@ const PredictionsTable = ({
   isSaveError = false,
 }: Props) => {
   const [showFeedback, setShowFeedback] = useTransientState(false, 3000);
-  const [displayStats, setDisplayStats] = useState(false);
+  const [displayForm, setDisplayForm] = useState(false);
 
   useEffect(() => {
     if (!isSaving && (isSaved || isSaveError)) {
@@ -93,13 +93,13 @@ const PredictionsTable = ({
       <StatsToggleContainer>
         <StatsToggle
           variant="secondary"
-          handleClick={() => setDisplayStats(!displayStats)}
+          handleClick={() => setDisplayForm(!displayForm)}
         >
-          {displayStats ? "Hide stats" : "Show stats"}
+          {displayForm ? "Hide form" : "Show form"}
         </StatsToggle>
       </StatsToggleContainer>
       <form onSubmit={handleSubmit}>
-        <Table $displayStats={displayStats}>
+        <Table $displayStats={displayForm}>
           {fixturesWithPredictions.map(
             (
               {
@@ -159,7 +159,7 @@ const PredictionsTable = ({
                     topRow={i === 0}
                     handleBbbUpdate={handleBbbUpdate}
                   />
-                  {displayStats && (
+                  {displayForm && (
                     <GridRowForm
                       homeTeam={homeTeam}
                       awayTeam={awayTeam}
