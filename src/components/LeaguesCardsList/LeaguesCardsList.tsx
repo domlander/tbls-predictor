@@ -1,11 +1,9 @@
-"use client";
-
-import styled from "styled-components";
 import Link from "next/link";
 
-import UserLeague from "src/types/UserLeague";
 import Heading from "src/components/Heading";
+import UserLeague from "src/types/UserLeague";
 import { positionify } from "utils/positionify";
+import styles from "./LeaguesCardsList.module.css";
 
 export interface Props {
   leagues: UserLeague[];
@@ -13,7 +11,7 @@ export interface Props {
 
 const LeaguesCardsList = ({ leagues }: Props) => {
   return (
-    <Container>
+    <article className={styles.container}>
       {leagues.map(
         ({
           leagueId: id,
@@ -27,98 +25,48 @@ const LeaguesCardsList = ({ leagues }: Props) => {
           const isPositionRelevant = displayPosition && !weeksUntilStart;
 
           return (
-            <LeagueCard key={id} tabIndex={0}>
+            <section className={styles.leagueCard} key={id} tabIndex={0}>
               <Link href={`/league/${id}`} tabIndex={-1}>
-                <LeagueCardHeading level="h2" variant="secondary">
+                <Heading
+                  level="h2"
+                  variant="secondary"
+                  className={styles.heading}
+                >
                   {name}
-                </LeagueCardHeading>
+                </Heading>
                 {isPositionRelevant &&
                   (weeksToGo ? (
-                    <p>
+                    <p className={styles.leagueCardText}>
                       Current position:{" "}
-                      <BigBoldText>{displayPosition}</BigBoldText> of{" "}
-                      <BoldText>{numParticipants}</BoldText>
+                      <span className={styles.position}>{displayPosition}</span>{" "}
+                      of <span className={styles.bold}>{numParticipants}</span>
                     </p>
                   ) : (
-                    <p>
-                      You finished: <BoldText>{displayPosition}</BoldText> of{" "}
-                      <BoldText>{numParticipants}</BoldText>
+                    <p className={styles.leagueCardText}>
+                      You finished:{" "}
+                      <span className={styles.bold}>{displayPosition}</span> of{" "}
+                      <span className={styles.bold}>{numParticipants}</span>
                     </p>
                   ))}
                 {weeksUntilStart ? (
-                  <p>
-                    League starts in <BoldText>{weeksUntilStart}</BoldText>{" "}
+                  <p className={styles.leagueCardText}>
+                    League starts in{" "}
+                    <span className={styles.bold}>{weeksUntilStart}</span>{" "}
                     gameweek{weeksUntilStart === 1 ? "" : "s"}!
                   </p>
                 ) : weeksToGo ? (
-                  <p>
-                    Weeks remaining: <BoldText>{weeksToGo}</BoldText>
+                  <p className={styles.leagueCardText}>
+                    Weeks remaining:{" "}
+                    <span className={styles.bold}>{weeksToGo}</span>
                   </p>
                 ) : null}
               </Link>
-            </LeagueCard>
+            </section>
           );
         }
       )}
-    </Container>
+    </article>
   );
 };
-
-const Container = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 3em;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    grid-gap: 2em;
-  }
-
-  @media (max-width: 480px) {
-    grid-template-columns: 1fr;
-    grid-gap: 1em;
-  }
-`;
-
-const LeagueCard = styled.div`
-  max-width: 400px;
-  border: 1px solid var(--grey300);
-  background-color: var(--blackblue200);
-  padding: 3em 3em 2em;
-  cursor: pointer;
-
-  &:hover,
-  &:focus {
-    background-color: #ffffff20;
-    outline: 2px solid var(--grey300);
-  }
-
-  p {
-    font-size: 1rem;
-    margin-top: 1em;
-
-    &:first-child {
-      font-size: 1.2rem;
-    }
-
-    &:first-of-type {
-      margin-top: 2em;
-    }
-  }
-`;
-
-const LeagueCardHeading = styled(Heading)`
-  font-weight: 400;
-  margin: 0;
-`;
-
-const BoldText = styled.span`
-  font-size: 1.2rem;
-  font-weight: 700;
-`;
-
-const BigBoldText = styled(BoldText)`
-  font-size: 1.4rem;
-`;
 
 export default LeaguesCardsList;

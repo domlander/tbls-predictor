@@ -1,6 +1,6 @@
 export default {
   white: "#FFF",
-  whiteOpacity20: "rgba(255, 255, 255, 0.2)",
+  whiteOpacity33: "rgba(255, 255, 255, 0.2)",
 
   grey100: "#FAFAFA",
   grey200: "#EEEEEE",

@@ -3,7 +3,7 @@
     flex-direction: column;
     gap: 4em;
     padding: 6em;
-    background-color: var(--blackblue300);
+    background-color: var(--blackblue400);
     border-radius: 1em;
 
     @media (max-width: 980px) {

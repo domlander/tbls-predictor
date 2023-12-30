@@ -1,6 +1,6 @@
 "use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 
 import Applicant from "src/types/Applicant";
@@ -10,16 +10,15 @@ import processJoinLeagueRequest from "src/actions/processJoinLeagueRequest";
 
 interface Props {
   applicants: Applicant[];
-  setApplicants: Dispatch<SetStateAction<Applicant[]>>;
   leagueId: number;
 }
 
 const LeagueApplicantsRequests = ({
-  applicants,
-  setApplicants,
+  applicants: initialApplicants,
   leagueId,
 }: Props) => {
   const [userFeedback, setUserFeedback] = useState<string>("");
+  const [applicants, setApplicants] = useState<Applicant[]>(initialApplicants);
 
   const handleAcceptOrReject = (applicantId: string, shouldAccept: boolean) => {
     processJoinLeagueRequest(leagueId, applicantId, shouldAccept).then(

@@ -1,21 +1,14 @@
-"use client";
-
-import styled from "styled-components";
 import Heading from "src/components/Heading";
 
 export default function Maintenance() {
   return (
-    <Container>
+    <div>
       <Heading level="h2" variant="secondary">
         Come back later...
       </Heading>
-      <Message>The site is currently under maintenance</Message>
-    </Container>
+      <p style={{ fontSize: "2rem" }}>
+        The site is currently under maintenance
+      </p>
+    </div>
   );
 }
-
-const Container = styled.div``;
-
-const Message = styled.p`
-  font-size: 1rem;
-`;

@@ -1,8 +1,6 @@
-"use client";
-
-import styled from "styled-components";
-import UserIcon from "src/components/UserIcon";
-import HeaderLink from "../HeaderLink";
+import Link from "next/link";
+import HeaderUserIcon from "../HeaderUserIcon";
+import styles from "./HeaderBar.module.css";
 
 export interface Props {
   initial: string;
@@ -11,62 +9,29 @@ export interface Props {
 }
 
 const HeaderBar = ({ initial, isLoading, handleClick }: Props) => (
-  <Container>
-    <nav>
-      <ul>
-        <HeaderLink text="Home" link="/" />
-        <HeaderLink text="Predictions" link="/predictions" />
-        <HeaderLink text="Leagues" link="/leagues" />
-        <HeaderLink text="Table" link="/premierleague" />
+  <div className={styles.container}>
+    <nav className={styles.nav}>
+      <ul className={styles.ul}>
+        <li className={styles.li}>
+          <Link href="/">Home</Link>
+        </li>
+        <li className={styles.li}>
+          <Link href="/predictions">Predictions</Link>
+        </li>
+        <li className={styles.li}>
+          <Link href="/leagues">Leagues</Link>
+        </li>
+        <li className={styles.li}>
+          <Link href="/premierleague">Table</Link>
+        </li>
       </ul>
     </nav>
-    <div>
-      {!isLoading ? (
-        <UserIcon initial={initial} handleClick={handleClick} />
-      ) : null}
-    </div>
-  </Container>
+    <HeaderUserIcon
+      initial={initial}
+      isLoading={isLoading}
+      handleClick={handleClick}
+    />
+  </div>
 );
-
-const Container = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--header-background);
-  height: 4rem;
-  font-size: 0.9rem;
-  padding-right: 1em;
-  gap: 2em;
-
-  @media (max-width: 768px) {
-    height: 3rem;
-    font-size: 0.7rem;
-  }
-
-  nav {
-    height: 100%;
-    width: 100%;
-
-    // Select all header items excluding the first three
-    @media (max-width: 768px) {
-      li:nth-child(n + 4) {
-        display: none;
-      }
-    }
-  }
-
-  ul {
-    height: 100%;
-    display: flex;
-    gap: 4em;
-    margin-left: 4em;
-    width: fit-content;
-
-    @media (max-width: 480px) {
-      gap: 3em;
-      margin-left: 3em;
-    }
-  }
-`;
 
 export default HeaderBar;

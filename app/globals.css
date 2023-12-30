@@ -1,6 +1,6 @@
 :root {
   --white: hsl(0, 0%, 100%);
-  --whiteOpacity20: #ffffff33;
+  --whiteOpacity33: #ffffff33;
 
   --grey100: hsl(0, 0%, 98%);
   --grey200: hsl(0, 0%, 93%);
@@ -17,16 +17,17 @@
 
   --cyan100: hsl(174, 24%, 56%);
   --cyan200: hsl(174, 25%, 53%);
-  --cyan300: hsl(176, 87%, 37%);
-  --cyan500: hsl(176, 54%, 36%);
-  --cyan600: hsl(176, 54%, 26%);
+  --cyan300: hsl(174, 26%, 49%);
+  --cyan500: hsl(174, 54%, 36%);
+  --cyan600: hsl(174, 54%, 26%);
 
   --blackblue200: hsl(210, 24%, 16%);
   --blackblue300: hsl(212, 27%, 14%);
-  --blackblue400: hsl(212, 29%, 12%);
+  --blackblue300opacity80: hsl(212, 27%, 14%, 0.8);
+  --blackblue400: hsl(212, 28%, 11%);
   --blackblue400opacity50: hsla(212, 29%, 12%, 0.5);
-  --blackblue450: hsl(208, 37%, 10%);
-  --blackblue500: hsl(208, 37%, 8%);
+  --blackblue450: hsl(208, 29%, 10%);
+  --blackblue500: hsl(208, 29%, 8%);
   --blackblue600: hsl(207, 44%, 5%);
 
   --green300: hsl(120, 30%, 46%);;
@@ -39,18 +40,13 @@
   --red500: hsl(0, 92%, 24%);
 }
 
-html {
-  --background: hsl(212, 29%, 12%); 
-  --header-background: hsl(212, 27%, 14%);
-}
-
 body {
   margin: 0;
   padding: 0;
   font-size: 10px;
   color: var(--grey100);
   min-height: 100vh;
-  background-color: var(--background);
+  background-color: var(--blackblue500);
 }
 
 table {

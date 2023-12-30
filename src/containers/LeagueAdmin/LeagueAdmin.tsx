@@ -1,12 +1,9 @@
-"use client";
-
-import { useState } from "react";
-import styled from "styled-components";
 import User from "src/types/User";
 import Applicant from "src/types/Applicant";
-import LeagueApplicants from "src/components/LeagueApplicantsRequests";
+import LeagueApplicantsRequests from "src/components/LeagueApplicantsRequests";
 import LeagueParticipants from "src/components/LeagueParticipants";
 import Heading from "src/components/Heading";
+import styles from "./LeagueAdmin.module.css";
 
 interface Props {
   leagueId: number;
@@ -18,33 +15,20 @@ interface Props {
 const LeagueAdminContainer = ({
   leagueId,
   leagueName,
-  applicants: initialApplicants,
+  applicants,
   participants,
 }: Props) => {
-  const [applicants, setApplicants] = useState<Applicant[]>(initialApplicants);
-
   return (
-    <Container>
+    <div className={styles.container}>
       <Heading level="h1" variant="secondary">
         {leagueName} - Admin
       </Heading>
       <>
-        <LeagueApplicants
-          applicants={applicants}
-          setApplicants={setApplicants}
-          leagueId={leagueId}
-        />
+        <LeagueApplicantsRequests applicants={applicants} leagueId={leagueId} />
         <LeagueParticipants participants={participants} />
       </>
-    </Container>
+    </div>
   );
 };
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 2em;
-  padding: 0 1em;
-`;
 
 export default LeagueAdminContainer;

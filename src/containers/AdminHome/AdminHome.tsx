@@ -1,9 +1,6 @@
-"use client";
-
 import Link from "next/link";
-import styled from "styled-components";
 import Heading from "src/components/Heading";
-import colours from "src/styles/colours";
+import styles from "./AdminHome.module.css";
 
 const AdminHome = () => (
   <section>
@@ -11,33 +8,19 @@ const AdminHome = () => (
       Admin
     </Heading>
     <ul>
-      <Li>
+      <li className={styles.listItem}>
         <Link href="admin/updateResults">Update Results</Link>
-      </Li>
-      <Li>
+      </li>
+      <li className={styles.listItem}>
         <Link href="admin/manageFixtures">Manage Fixtures</Link>
-      </Li>
-      <Li>
+      </li>
+      <li className={styles.listItem}>
         <Link href="admin/updatePredictions">
           Add/edit predictions (in development)
         </Link>
-      </Li>
+      </li>
     </ul>
   </section>
 );
-
-const Li = styled.li`
-  font-size: 2rem;
-  margin: 2rem 0;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  padding: 0 1em;
-
-  a {
-    &:hover {
-      color: ${colours.cyan300};
-    }
-  }
-`;
 
 export default AdminHome;

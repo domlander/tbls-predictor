@@ -1,0 +1,25 @@
+.container {
+  border-radius: 2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 1.2em;
+  width: 4.2em;
+  background-color: var(--gold500);
+};
+.container.perfect {
+  background-color: var(--gold500);
+}
+.container.correct {
+  background-color: var(--green500);
+}
+.container.bigBoyBonus {
+  background-color: var(--red500);
+  width: 2em;
+}
+
+.label {
+  font-size: 0.7em;
+  text-align: center;
+  color: var(--grey100)
+}

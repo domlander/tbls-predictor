@@ -1,7 +1,7 @@
 .container {
   margin-top: 6em;
   padding: 2em 4em 4em;
-  background-color: var(--blackblue300);
+  background-color: var(--blackblue400);
   border-radius: 1em;
 
   @media (max-width: 768px) {

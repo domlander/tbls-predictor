@@ -1,0 +1,54 @@
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 3em;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    grid-gap: 2em;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    grid-gap: 1em;
+  }
+}
+
+.leagueCard {
+  max-width: 400px;
+  border: 1px solid var(--grey300);
+  background-color: var(--blackblue300);
+  padding: 3em 3em 2em;
+  cursor: pointer;
+}
+.leagueCard:hover,
+.leagueCard:focus {
+  background-color: var(--blackblue300opacity80);
+  outline: 1px solid var(--grey300);
+}
+
+.heading {
+  font-weight: 400;
+}
+
+.leagueCardText {
+  font-size: 1rem;
+  margin-top: 1em;
+}
+.leagueCardText:first-child {
+  font-size: 1.2rem;
+}
+
+.leagueCardText:first-of-type {
+  margin-top: 2em;
+}
+
+.bold {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+ 
+.position {
+  font-size: 1.4rem;
+  font-weight: 700;
+}

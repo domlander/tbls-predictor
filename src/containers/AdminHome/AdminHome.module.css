@@ -1,0 +1,10 @@
+.listItem {
+  font-size: 2rem;
+  margin: 2rem 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  padding: 0 1em;
+}
+.listItem:hover {
+  color: var(--cyan300)
+}
