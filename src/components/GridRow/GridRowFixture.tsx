@@ -105,9 +105,13 @@ const EmptySpace = styled.div<{ $topRow: boolean }>`
 `;
 
 const Kickoff = styled(GridItemKickoff)<{ $locked: boolean; $topRow: boolean }>`
-  color: ${({ $locked }) => ($locked ? colours.grey500 : colours.grey200)};
+  color: ${({ $locked }) => ($locked ? colours.grey500 : colours.grey300)};
   border-top: ${({ $topRow }) =>
     !$topRow ? `1px solid ${colours.whiteOpacity20}` : "none"};
+
+  @media (max-width: 375px) {
+    font-size: 0.8em;
+  }
 `;
 
 const HomeTeam = styled(GridItemHomeTeam)<{

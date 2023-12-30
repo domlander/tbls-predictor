@@ -190,6 +190,7 @@ const AdminManageFixtures = ({ gameweek: initialGameweek }: Props) => {
 const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(12, 1fr);
+  padding: 0 1em;
 `;
 
 const DbFixturesPanel = styled.div`

@@ -70,7 +70,8 @@ const ButtonStyles = styled.button<{
   padding: 0 1em;
   width: 100%;
   &:hover {
-    outline: none;
+    outline: 1px solid
+      ${({ $variant }) => variants[$variant].hoverBackgroundColour};
     background-color: ${({ disabled, $variant }) =>
       disabled
         ? variants[$variant].backgroundColour
@@ -80,6 +81,11 @@ const ButtonStyles = styled.button<{
   &:focus {
     background-color: ${({ $variant }) =>
       variants[$variant].hoverBackgroundColour};
+  }
+
+  &:active {
+    background-color: ${({ $variant }) => variants[$variant].backgroundColour};
+    outline: 1px solid ${({ $variant }) => variants[$variant].backgroundColour};
   }
 `;
 

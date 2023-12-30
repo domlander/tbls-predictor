@@ -9,7 +9,7 @@ type Props = {
 
 const Leagues = ({ activeLeagues }: Props) => {
   return (
-    <section className={styles.section}>
+    <section className={styles.container}>
       <Heading level="h1" variant="secondary">
         My Leagues
       </Heading>

@@ -52,11 +52,9 @@ const Home = ({
         />
       </article>
       <Suspense fallback={<UserStatsLoading />}>
-        {/* @ts-expect-error Server Component */}
         <UserStats />
       </Suspense>
       <Suspense fallback={<MyLeaguesLoading />}>
-        {/* @ts-expect-error Server Component */}
         <MyLeagues
           userId={userId}
           fixtures={fixtures}

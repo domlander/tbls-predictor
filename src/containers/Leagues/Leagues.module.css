@@ -2,4 +2,10 @@
     display: flex;
     flex-direction: column;
     gap: 4em;
+    margin: 2em 0;
+    padding: 0 1em;
+
+    @media (max-width: 480px) {
+        gap: 2em;
+    }
 }

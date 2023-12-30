@@ -1,8 +1,6 @@
 "use client";
 
 import styled from "styled-components";
-
-import pageSizes from "src/styles/pageSizes";
 import UserIcon from "src/components/UserIcon";
 import HeaderLink from "../HeaderLink";
 
@@ -40,7 +38,7 @@ const Container = styled.header`
   padding-right: 1em;
   gap: 2em;
 
-  @media (max-width: ${pageSizes.tablet}) {
+  @media (max-width: 768px) {
     height: 3rem;
     font-size: 0.7rem;
   }
@@ -50,7 +48,7 @@ const Container = styled.header`
     width: 100%;
 
     // Select all header items excluding the first three
-    @media (max-width: ${pageSizes.tablet}) {
+    @media (max-width: 768px) {
       li:nth-child(n + 4) {
         display: none;
       }
@@ -64,7 +62,7 @@ const Container = styled.header`
     margin-left: 4em;
     width: fit-content;
 
-    @media (max-width: ${pageSizes.mobileL}) {
+    @media (max-width: 480px) {
       gap: 3em;
       margin-left: 3em;
     }

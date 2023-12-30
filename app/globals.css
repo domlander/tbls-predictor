@@ -1,46 +1,47 @@
 :root {
-  --white: #FFF;
-  --whiteOpacity20: rgba(255, 255, 255, 0.2);
+  --white: hsl(0, 0%, 100%);
+  --whiteOpacity20: #ffffff33;
 
-  --grey100: #FAFAFA;
-  --grey200: #EEEEEE;
-  --grey300: #D6D6D6;
-  --grey400: #C4C4C4;
-  --grey500: #969696;
-  --grey600: #767676;
-  --grey700: #424242;
-  --grey500opacity50: #96969680;
+  --grey100: hsl(0, 0%, 98%);
+  --grey200: hsl(0, 0%, 93%);
+  --grey300: hsl(0, 0%, 84%);
+  --grey400: hsl(0, 0%, 77%);
+  --grey500: hsl(0, 0%, 59%);
+  --grey600: hsl(0, 0%, 46%);
+  --grey700: hsl(0, 0%, 26%);
+  --grey500opacity50: hsla(0, 0%, 59%, 0.502);
 
-  --black100: #333333;
-  --black700: #111111;
-  --black: #000;
+  --black100: hsl(0, 0%, 20%);
+  --black700: hsl(0, 0%, 7%);
+  --black: hsl(0, 0%, 0%);
 
-  --cyan50: #8cfdf5;
-  --cyan100: #66FCF1;
-  --cyan300: #0cb3a7;
-  --cyan500: #2B8E87;
-  --cyan600: #1f6762;
+  --cyan100: hsl(174, 24%, 56%);
+  --cyan200: hsl(174, 25%, 53%);
+  --cyan300: hsl(176, 87%, 37%);
+  --cyan500: hsl(176, 54%, 36%);
+  --cyan600: hsl(176, 54%, 26%);
 
-  --blackblue300: #1c2733;
-  --blackblue400: #151D26;
-  --blackblue400opacity50: #151D2680;
-  --blackblue450: #101a23;
-  --blackblue500: #0D151C;
-  --blackblue600: #070d12;
+  --blackblue200: hsl(210, 24%, 16%);
+  --blackblue300: hsl(212, 27%, 14%);
+  --blackblue400: hsl(212, 29%, 12%);
+  --blackblue400opacity50: hsla(212, 29%, 12%, 0.5);
+  --blackblue450: hsl(208, 37%, 10%);
+  --blackblue500: hsl(208, 37%, 8%);
+  --blackblue600: hsl(207, 44%, 5%);
 
-  --green300: hsl(120deg 30% 46%);;
-  --green500: #036305;
+  --green300: hsl(120, 30%, 46%);;
+  --green500: hsl(121, 94%, 20%);
 
-  --gold300: #B8A006;
-  --gold500: #625504;
+  --gold300: hsl(52, 94%, 37%);
+  --gold500: hsl(52, 92%, 20%);
 
-  --red300: hsl(0deg 30% 54%);
-  --red500: #760505;
+  --red300: hsl(0, 30%, 54%);
+  --red500: hsl(0, 92%, 24%);
 }
 
 html {
-  --background: #151D26; 
-  --header-background: #1c2733;
+  --background: hsl(212, 29%, 12%); 
+  --header-background: hsl(212, 27%, 14%);
 }
 
 body {
@@ -71,25 +72,34 @@ h1, h2, h3, h4 ,h5, h6 {
 }
 
 h1 {
-  font-size: 2.4rem;
+  font-size: 2rem;
   margin: 1em 0;
 
-  @media (max-width: 425px) {
-    font-size: 2rem;
+  @media (max-width: 768px) {
+    font-size: 1.8rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.5rem;
   }
 }
 
 h2 {
   font-weight: 300;
   letter-spacing: -1px;
-  font-size: 2.2rem;
-  @media (max-width: 425px) {
-    font-size: 1.6rem;
+  font-size: 1.6rem;
+
+  @media (max-width: 480px) {
+    font-size: 1.3rem;
   }
 }
 
 h3 { 
-  font-size: 1.8rem;
+  font-size: 1.4rem;
+  
+  @media (max-width: 480px) {
+    font-size: 1.2rem;
+  }
 }
 
 a {

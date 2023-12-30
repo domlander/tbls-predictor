@@ -185,7 +185,11 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  max-width: 800px;
+  gap: 3em;
+
+  @media (max-width: 768px) {
+    gap: 2em;
+  }
 `;
 
 const NoFixtures = styled.section`
@@ -199,7 +203,7 @@ const NoFixtures = styled.section`
 
     &:hover,
     &:focus {
-      color: ${colours.cyan100};
+      color: ${colours.cyan200};
     }
   }
 `;

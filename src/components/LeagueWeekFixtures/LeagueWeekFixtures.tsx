@@ -126,7 +126,7 @@ const ClickableFixture = styled(StyledFixture)`
 
   &:hover,
   &:focus {
-    color: ${colours.cyan100};
+    color: ${colours.cyan200};
   }
 `;
 

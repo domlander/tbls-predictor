@@ -51,7 +51,7 @@ const Container = styled.section`
 
     &:hover,
     &:focus {
-      color: ${colours.cyan100};
+      color: ${colours.cyan200};
       text-decoration: none;
     }
   }

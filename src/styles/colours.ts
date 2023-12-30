@@ -15,9 +15,9 @@ export default {
   black700: "#111111",
   black: "#000",
 
-  cyan50: "#8cfdf5",
-  cyan100: "#66FCF1",
-  cyan300: "#0cb3a7",
+  cyan100: "#6faea8",
+  cyan200: "#69a59f",
+  cyan300: "#579891",
   cyan500: "#2B8E87",
   cyan600: "#1f6762",
 
@@ -36,10 +36,4 @@ export default {
 
   red300: "hsl(0deg 30% 54%)",
   red500: "#760505",
-};
-
-export const scoreColours: { [id: number]: string } = {
-  3: "#dbdea4",
-  1: "#c4fdac",
-  0: "#ffdad8",
 };

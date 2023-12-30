@@ -31,6 +31,7 @@ const Li = styled.li`
   margin: 2rem 0;
   text-decoration: underline;
   text-underline-offset: 3px;
+  padding: 0 1em;
 
   a {
     &:hover {

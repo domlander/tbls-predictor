@@ -2,8 +2,6 @@
 
 import styled from "styled-components";
 import Link from "next/link";
-import colours from "src/styles/colours";
-import pageSizes from "src/styles/pageSizes";
 
 export interface Props {
   label: string;
@@ -26,17 +24,20 @@ const Container = styled.li`
   text-align: center;
 
   a {
-    color: ${colours.grey300};
+    color: var(--grey300);
     font-size: 1.8rem;
     cursor: pointer;
 
     &:hover,
     &:focus {
-      color: ${colours.cyan100};
+      color: var(--cyan100);
     }
 
-    @media (max-width: ${pageSizes.mobileL}) {
+    @media (max-width: 768px) {
       font-size: 1.6rem;
+    }
+    @media (max-width: 480px) {
+      font-size: 1.4rem;
     }
   }
 `;

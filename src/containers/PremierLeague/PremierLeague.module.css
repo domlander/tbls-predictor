@@ -3,6 +3,7 @@
     flex-direction: column;
     align-items: flex-start;
     margin-left: 2em;
+    padding: 0 1em;
 
     @media (max-width: 768px) {
         margin-left: 0;
@@ -37,25 +38,23 @@
 
 @keyframes skeletonLoading {
     0% {
-      background-position: -800px 0;
+        background-position: -800px 0;
     }
+
     100% {
-      background-position: 800px 0;
+        background-position: 800px 0;
     }
 }
 
 .loadingRow {
-  width: calc(100% - 1em);
-  height: 1.5em;
-  margin-left: 1em;
-  animation: skeletonLoading 1s linear infinite forwards;
-  background: linear-gradient(
-      to right,
-      var(--blackblue400) 4%,
-      var(--grey700) 25%,
-      var(--blackblue400) 36%
-    )
-    0% 0% / 1500px 100%;
+    width: calc(100% - 1em);
+    height: 1.5em;
+    margin-left: 1em;
+    animation: skeletonLoading 1s linear infinite forwards;
+    background: linear-gradient(to right,
+            var(--blackblue400) 4%,
+            var(--grey700) 25%,
+            var(--blackblue400) 36%) 0% 0% / 1500px 100%;
 }
 
 .headerRow {
@@ -75,7 +74,7 @@
         font-size: 0.8rem;
     }
 }
-    
+
 .headerData:nth-child(2) {
     justify-self: flex-start;
     padding-left: 1.25em;
@@ -108,32 +107,35 @@
     height: 20px;
     border-radius: 20px;
     text-align: center;
-  
+
     @media (max-width: 768px) {
-      font-size: 0.9rem;
-      width: 18px;
-      height: 18px;
+        font-size: 0.9rem;
+        width: 18px;
+        height: 18px;
     }
 }
+
 .position.winner {
     background-color: var(--gold500);
 }
+
 .position.championsLeague {
     background-color: var(--green500);
 }
+
 .position.relegation {
     background-color: var(--red500);
 }
 
 .team {
-  justify-self: flex-start;
-  font-size: 1.2rem;
-  font-weight: 400;
-  padding-left: 1em;
+    justify-self: flex-start;
+    font-size: 1.2rem;
+    font-weight: 400;
+    padding-left: 1em;
 
-  @media (max-width: 768px) {
-    font-size: 1rem;
-  }
+    @media (max-width: 768px) {
+        font-size: 1rem;
+    }
 }
 
 .points {

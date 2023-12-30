@@ -73,7 +73,7 @@
 
 .participant:hover,
 .participant:focus {
-    color: var(--cyan100);
+    color: var(--cyan200);
 }
 
 .totalPoints {
@@ -183,7 +183,7 @@
 
 .clickableRowHeading:hover,
 .clickableRowHeading:focus {
-    color: var(--cyan100);
+    color: var(--cyan200);
 }
 
 .weekText {
@@ -216,5 +216,5 @@
 
 .weekNumber:hover,
 .weekNumber:focus {
-    color: var(--cyan100);
+    color: var(--cyan200);
 }

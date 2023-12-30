@@ -12,7 +12,6 @@ import { useSession } from "next-auth/react";
 
 import HeaderBar from "src/components/HeaderBar";
 import Sidebar from "src/components/Sidebar";
-import pageSizes from "src/styles/pageSizes";
 import colours from "src/styles/colours";
 
 const DEFAULT_USERNAME = "Me";
@@ -76,12 +75,16 @@ const Container = styled.div`
 `;
 
 const InnerContainer = styled.main`
-  max-width: 992px;
+  max-width: calc(970px - 3.2em);
   margin: 0 auto;
   padding-bottom: 6em;
 
-  @media (max-width: ${pageSizes.laptop}) {
+  @media (max-width: 970px) {
     margin: 0 1.6em;
+  }
+
+  @media (max-width: 480px) {
+    margin: 0;
   }
 `;
 

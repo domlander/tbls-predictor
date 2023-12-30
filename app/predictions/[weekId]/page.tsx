@@ -8,6 +8,7 @@ import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import sortFixtures from "utils/sortFixtures";
 import generateRecentFixturesByTeam from "utils/generateRecentFixturesByTeam";
 import { authOptions } from "app/api/auth/[...nextauth]/route";
+import styles from "./page.module.css";
 
 export const dynamic = "force-dynamic";
 
@@ -64,14 +65,16 @@ const Page = async ({ params }: { params: Params }) => {
   });
 
   return (
-    <Predictions
-      fixtures={sortFixtures(thisGwFixtures)}
-      predictions={predictions}
-      weekId={weekId}
-      recentFixturesByTeam={JSON.parse(JSON.stringify(recentFixturesByTeam))}
-      firstGameweek={firstGameweek}
-      lastGameweek={lastGameweek}
-    />
+    <div className={styles.container}>
+      <Predictions
+        fixtures={sortFixtures(thisGwFixtures)}
+        predictions={predictions}
+        weekId={weekId}
+        recentFixturesByTeam={JSON.parse(JSON.stringify(recentFixturesByTeam))}
+        firstGameweek={firstGameweek}
+        lastGameweek={lastGameweek}
+      />
+    </div>
   );
 };
 

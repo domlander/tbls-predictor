@@ -95,7 +95,7 @@ const PredictionsTable = ({
           variant="secondary"
           handleClick={() => setDisplayForm(!displayForm)}
         >
-          {displayForm ? "Hide form" : "Show form"}
+          {displayForm ? "Hide team form" : "Show team form"}
         </StatsToggle>
       </StatsToggleContainer>
       <form onSubmit={handleSubmit}>
@@ -224,26 +224,32 @@ const Table = styled.div<{ $displayStats: boolean }>`
   grid-auto-rows: ${({ $displayStats }) =>
     $displayStats ? "4.8em 1fr" : "4.8em"};
 
-  @media (max-width: ${pageSizes.tablet}) {
+  @media (max-width: 768px) {
     grid-template-columns: 7em 0.8fr auto 5px auto 1fr;
+    grid-auto-rows: 3.4em;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 6em 0.8fr auto 5px auto 1fr;
     grid-auto-rows: 3em;
   }
 
-  @media (max-width: ${pageSizes.mobileM}) {
-    grid-template-columns: 6em 0.8fr auto 5px auto 1fr;
+  @media (max-width: 375px) {
+    grid-template-columns: 5em 0.8fr auto 5px auto 1fr;
+    grid-auto-rows: 2.8em;
   }
 
   > div,
   input {
     font-size: 2em;
-    @media (max-width: ${pageSizes.tablet}) {
-      font-size: 1.2em;
+    @media (max-width: 768px) {
+      font-size: 1.3em;
     }
-    @media (max-width: ${pageSizes.mobileL}) {
-      font-size: 1.1em;
+    @media (max-width: 480px) {
+      font-size: 1.05em;
     }
-    @media (max-width: ${pageSizes.mobileM}) {
-      font-size: 1em;
+    @media (max-width: 375px) {
+      font-size: 0.95em;
     }
   }
 `;

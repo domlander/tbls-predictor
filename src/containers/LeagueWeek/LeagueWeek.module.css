@@ -1,6 +1,7 @@
 .container {
   max-width: 768px;
   margin: 0 auto;
+  padding: 0 1em;
   display: flex;
   flex-direction: column;
 }
@@ -45,7 +46,7 @@
 }
 .breadcrumbsLink:hover,
 .breadcrumbsLink:focus {
-  color: var(--cyan100);
+  color: var(--cyan200);
 }
 
 .loading {

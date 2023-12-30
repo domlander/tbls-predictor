@@ -44,6 +44,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2em;
+  padding: 0 1em;
 `;
 
 export default LeagueAdminContainer;

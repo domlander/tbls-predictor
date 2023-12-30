@@ -50,6 +50,7 @@ const ChangeUsernameForm = ({ initialUsername }: Props) => {
 const Container = styled.section`
   max-width: 450px;
   margin: 0 auto;
+  padding: 0 1em;
   display: flex;
   flex-direction: column;
   gap: 4em;

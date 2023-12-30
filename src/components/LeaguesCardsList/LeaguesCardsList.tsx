@@ -4,8 +4,6 @@ import styled from "styled-components";
 import Link from "next/link";
 
 import UserLeague from "src/types/UserLeague";
-import pageSizes from "src/styles/pageSizes";
-import colours from "src/styles/colours";
 import Heading from "src/components/Heading";
 import { positionify } from "utils/positionify";
 
@@ -68,23 +66,31 @@ const LeaguesCardsList = ({ leagues }: Props) => {
 
 const Container = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, calc(400px - 1.5em));
+  grid-template-columns: 1fr 1fr;
   grid-gap: 3em;
 
-  @media (max-width: ${pageSizes.tablet}) {
+  @media (max-width: 768px) {
     grid-template-columns: 1fr;
+    grid-gap: 2em;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    grid-gap: 1em;
   }
 `;
 
 const LeagueCard = styled.div`
-  border: 1px solid ${colours.grey300};
-  background-color: ${colours.blackblue400};
+  max-width: 400px;
+  border: 1px solid var(--grey300);
+  background-color: var(--blackblue200);
   padding: 3em 3em 2em;
   cursor: pointer;
 
   &:hover,
   &:focus {
-    background-color: #ffffff10;
+    background-color: #ffffff20;
+    outline: 2px solid var(--grey300);
   }
 
   p {

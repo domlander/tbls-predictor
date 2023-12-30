@@ -113,7 +113,7 @@ const AdminUpdateResults = ({ fixtures }: Props) => {
     : scores.filter((score) => new Date(score.kickoff) <= lastWeek);
 
   return (
-    <>
+    <Container>
       <Heading level="h1" variant="secondary">
         Update Results
       </Heading>
@@ -157,9 +157,13 @@ const AdminUpdateResults = ({ fixtures }: Props) => {
             <UserFeedback>Save successful!</UserFeedback>
           ) : null)}
       </form>
-    </>
+    </Container>
   );
 };
+
+const Container = styled.div`
+  padding: 0 1em;
+`;
 
 const ButtonContainer = styled.div`
   margin-top: 1.6em;
