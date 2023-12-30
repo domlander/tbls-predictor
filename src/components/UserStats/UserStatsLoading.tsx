@@ -9,11 +9,15 @@ const UserStatsLoading = () => {
       </Heading>
       <div className={styles.stats}>
         <div className={styles.stat}>
-          <div>Perfect %</div>
+          Total predictions
           <div className={styles.loading} />
         </div>
         <div className={styles.stat}>
-          <div>Correct %</div>
+          Perfect %
+          <div className={styles.loading} />
+        </div>
+        <div className={styles.stat}>
+          Correct %
           <div className={styles.loading} />
         </div>
       </div>
