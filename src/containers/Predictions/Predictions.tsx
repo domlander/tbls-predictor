@@ -185,10 +185,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 3em;
+  gap: 1em;
 
   @media (max-width: 768px) {
-    gap: 2em;
+    gap: 1em;
   }
 `;
 

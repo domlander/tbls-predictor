@@ -23,12 +23,12 @@
   height: 100%;
   display: flex;
   gap: 4em;
-  margin-left: 4em;
+  padding-left: 4em;
   width: fit-content;
 
   @media (max-width: 480px) {
     gap: 3em;
-    margin-left: 3em;
+    padding-left: 2em;
   }
 }
 

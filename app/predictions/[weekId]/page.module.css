@@ -1,16 +1,16 @@
 .container {
   margin-top: 6em;
-  padding: 2em 4em 4em;
+  padding: 1em 4em;
   background-color: var(--blackblue400);
   border-radius: 1em;
 
   @media (max-width: 768px) {
-    margin-top: 4em;
+    margin-top: 2em;
     padding: 1em 2em 2em;
   }
   
   @media (max-width: 480px) {
-    padding: 2em 1em;
+    padding: 1em;
     border-radius: 0;
   }
 }
