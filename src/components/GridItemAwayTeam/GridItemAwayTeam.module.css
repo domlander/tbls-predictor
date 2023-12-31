@@ -6,6 +6,10 @@
   padding-right: 0.4em;
   color: var(--grey200);
   border-top: 1px solid var(--whiteOpacity33);
+
+  @media (max-width: 480px) {
+    padding-left: 0.5em;
+  }
 }
 .container.locked {
   justify-content: flex-start;
@@ -18,7 +22,7 @@
 .bbbButton {
   color: var(--cyan300);
   background-color: var(--blackblue500);
-  border: var(--cyan500);
+  border: 1px solid var(--cyan500);
   border-radius: 0.2em;
   cursor: pointer;
   line-height: 1.3em;
@@ -29,10 +33,10 @@
   }
 }
 
-.bbbButton.isBbbSelected {
+.bbbButton.isSelected {
   color: var(--blackblue500);
   background-color: var(--cyan300);
-  border: var(--cyan300);
+  border: 1px solid var(--cyan300);
 }
 
 .bbbButton:hover,

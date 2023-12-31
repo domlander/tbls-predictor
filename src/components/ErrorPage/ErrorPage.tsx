@@ -35,7 +35,7 @@ const Title = styled.h1`
   font-size: 7rem;
   margin-bottom: 0;
 
-  @media (max-width: ${pageSizes.mobileL}) {
+  @media (max-width: 375px) {
     font-size: 5rem;
   }
 `;
@@ -44,7 +44,7 @@ const ButtonContainer = styled.div`
   width: 50%;
   margin-top: 4em;
 
-  @media (max-width: ${pageSizes.mobileL}) {
+  @media (max-width: 375px) {
     width: 100%;
   }
 `;

@@ -140,15 +140,12 @@ const PredictionsTable = ({
                       homeGoals !== null && awayGoals !== null ? (
                         <AwayTeam>
                           <span>{awayTeam}</span>
-                          <span
-                            style={{ display: "flex", gap: "0.5em" }}
-                            className={chivoMono.className}
-                          >
+                          <FullTimeResult className={chivoMono.className}>
                             <span>FT</span>
                             <span>
                               {homeGoals}-{awayGoals}
                             </span>
-                          </span>
+                          </FullTimeResult>
                         </AwayTeam>
                       ) : (
                         <span>{awayTeam}</span>
@@ -233,30 +230,42 @@ const Table = styled.div<{ $displayStats: boolean }>`
 
   @media (max-width: 768px) {
     grid-template-columns: 7em 0.8fr auto 5px auto 1fr;
-    grid-auto-rows: 3.4em;
+    grid-auto-rows: 3.8em;
   }
 
   @media (max-width: 480px) {
-    grid-template-columns: 6em 0.8fr auto 5px auto 1fr;
-    grid-auto-rows: 3em;
+    grid-template-columns: 6em 0.8fr auto 4px auto 1fr;
+    grid-auto-rows: 3.4em;
   }
 
   @media (max-width: 375px) {
-    grid-template-columns: 5em 0.8fr auto 5px auto 1fr;
+    grid-template-columns: 5em 0.8fr auto 2px auto 1fr;
     grid-auto-rows: 2.8em;
   }
 
-  > div,
+  > div {
+    font-size: 2em;
+    @media (max-width: 768px) {
+      font-size: 1.4em;
+    }
+    @media (max-width: 480px) {
+      font-size: 1.2em;
+    }
+    @media (max-width: 375px) {
+      font-size: 0.9em;
+    }
+  }
+
   input {
     font-size: 2em;
     @media (max-width: 768px) {
-      font-size: 1.3em;
+      font-size: 1.6em;
     }
     @media (max-width: 480px) {
-      font-size: 1.05em;
+      font-size: 1.4em;
     }
     @media (max-width: 375px) {
-      font-size: 0.95em;
+      font-size: 1.1em;
     }
   }
 `;
@@ -286,30 +295,29 @@ const AwayTeam = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+`;
 
-  span:nth-child(2) {
-    display: flex;
-    align-items: center;
-    font-size: 1rem;
-    color: ${colours.grey600};
+const FullTimeResult = styled.span`
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 1rem;
+  color: var(--grey600);
 
-    @media (max-width: ${pageSizes.tablet}) {
-      font-size: 0.7rem;
-    }
-
-    @media (max-width: ${pageSizes.mobileL}) {
-      font-size: 0.5rem;
-    }
-
-    @media (max-width: ${pageSizes.mobileM}) {
-      display: none;
-    }
+  @media (max-width: 768px) {
+    font-size: 0.75rem;
+  }
+  @media (max-width: 480px) {
+    font-size: 0.6rem;
+  }
+  @media (max-width: 375px) {
+    display: none;
   }
 `;
 
 const UserFeedback = styled.p`
   order: 2;
-  color: ${colours.cyan300};
+  color: var(--cyan300);
   font-size: 1.8em;
   font-style: italic;
   margin: 0;

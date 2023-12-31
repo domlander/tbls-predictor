@@ -40,6 +40,10 @@ const Container = styled.div`
   padding-left: 0.4em;
   padding-right: 1em;
 
+  @media (max-width: 480px) {
+    padding-right: 0.5em;
+  }
+
   span {
     text-align: right;
   }
