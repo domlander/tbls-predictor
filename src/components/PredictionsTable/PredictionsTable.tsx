@@ -3,6 +3,7 @@
 import { FormEvent, Fragment, useEffect, useState } from "react";
 import styled from "styled-components";
 
+import { chivoMono } from "app/fonts";
 import { calculateGameweekScore } from "utils/calculateGameweekScore";
 import isPastDeadline from "utils/isPastDeadline";
 import {
@@ -139,8 +140,14 @@ const PredictionsTable = ({
                       homeGoals !== null && awayGoals !== null ? (
                         <AwayTeam>
                           <span>{awayTeam}</span>
-                          <span>
-                            FT {homeGoals} - {awayGoals}
+                          <span
+                            style={{ display: "flex", gap: "0.5em" }}
+                            className={chivoMono.className}
+                          >
+                            <span>FT</span>
+                            <span>
+                              {homeGoals}-{awayGoals}
+                            </span>
                           </span>
                         </AwayTeam>
                       ) : (

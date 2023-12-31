@@ -3,14 +3,13 @@
 import Link from "next/link";
 import styled from "styled-components";
 
+import { chivoMono } from "app/fonts";
 import {
   formatFixtureKickoffTime,
   whenIsTheFixture,
 } from "utils/kickoffDateHelpers";
 import Fixture from "src/types/Fixture";
 import LeagueWeekPrediction from "src/components/LeagueWeekPrediction";
-import colours from "src/styles/colours";
-import pageSizes from "src/styles/pageSizes";
 import calculatePredictionScore from "utils/calculatePredictionScore";
 import isPastDeadline from "utils/isPastDeadline";
 
@@ -41,18 +40,20 @@ const LeagueWeekFixtures = ({ weekId, fixtures }: Props) => {
               </Kickoff>
               {isPastDeadline(kickoff) ? (
                 <UnclickableFixture>
-                  {homeTeam}
-                  &nbsp;&nbsp;
-                  {homeGoals} - {awayGoals}
-                  &nbsp;&nbsp;
-                  {awayTeam}
+                  <HomeTeam>{homeTeam}</HomeTeam>
+                  <span className={chivoMono.className}>
+                    {homeGoals}-{awayGoals}
+                  </span>
+                  <AwayTeam>{awayTeam}</AwayTeam>
                 </UnclickableFixture>
               ) : (
-                <ClickableFixture>
-                  <Link href={`/predictions/${weekId}`}>
-                    {homeTeam} vs {awayTeam}
-                  </Link>
-                </ClickableFixture>
+                <Link href={`/predictions/${weekId}`}>
+                  <ClickableFixture>
+                    <HomeTeam>{homeTeam}</HomeTeam>
+                    <span>&nbsp;&nbsp;vs&nbsp;&nbsp;</span>
+                    <AwayTeam>{awayTeam}</AwayTeam>
+                  </ClickableFixture>
+                </Link>
               )}
             </FixtureRow>
             {isPastDeadline(kickoff) ? (
@@ -89,15 +90,23 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-items: stretch;
-  background-color: ${colours.blackblue400opacity50};
+  background-color: var(--blackblue400opacity50);
   margin: 0.4em 0;
   padding: 1.2em 0.8em 1.6em;
   border-radius: 0.2em;
+
+  @media (max-width: 480px) {
+    padding: 1.2em 0.4em 1.6em;
+  }
 `;
 
 const FixtureRow = styled.div`
   width: 100%;
   display: flex;
+
+  a {
+    width: 100%;
+  }
 `;
 
 const Kickoff = styled.div`
@@ -105,29 +114,42 @@ const Kickoff = styled.div`
   text-align: center;
   align-self: center;
   font-size: 0.8rem;
-  color: ${colours.grey400};
+  color: var(--grey400);
 `;
 
-const StyledFixture = styled.div`
+const StyledFixture = styled.span`
   flex-basis: 100%;
   text-align: center;
   font-size: 1.1rem;
+  display: grid;
 
-  @media (max-width: ${pageSizes.tablet}) {
+  @media (max-width: 768px) {
     font-size: 0.9rem;
   }
 `;
 
-const UnclickableFixture = styled(StyledFixture)``;
+const UnclickableFixture = styled(StyledFixture)`
+  grid-template-columns: 1fr 40px 1fr;
+  gap: 0.5em;
+`;
 
 const ClickableFixture = styled(StyledFixture)`
+  grid-template-columns: 1fr min-content 1fr;
   text-decoration: underline;
   text-underline-offset: 2px;
 
   &:hover,
   &:focus {
-    color: ${colours.cyan200};
+    color: var(--cyan200);
   }
+`;
+
+const HomeTeam = styled.span`
+  text-align: right;
+`;
+
+const AwayTeam = styled.span`
+  text-align: left;
 `;
 
 const PredictionRow = styled.div`
@@ -136,7 +158,7 @@ const PredictionRow = styled.div`
   margin-top: 1em;
   font-size: 1.1rem;
 
-  @media (max-width: ${pageSizes.tablet}) {
+  @media (max-width: 768px) {
     font-size: 0.8rem;
   }
 `;

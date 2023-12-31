@@ -1,6 +1,7 @@
 import { Fragment } from "react";
 import Link from "next/link";
 
+import { chivoMono } from "app/fonts";
 import User from "src/types/User";
 import styles from "./WeeklyScoresTable.module.css";
 
@@ -50,7 +51,10 @@ const WeeklyScoresTable = ({
             <div className={styles.headerDataBlank} />
           </div>
           {users.map(({ id, weeklyPoints }) => (
-            <div key={id} className={styles.allPointsData}>
+            <div
+              key={id}
+              className={[chivoMono.className, styles.allPointsData].join(" ")}
+            >
               <div className={styles.tableDataBlank} />
               {weeklyPoints?.map(({ week, points }) => (
                 <div className={styles.tableData} key={`${id}${week}`}>

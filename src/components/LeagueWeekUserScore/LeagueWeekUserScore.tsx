@@ -1,22 +1,15 @@
 "use client";
 
+import { chivoMono } from "app/fonts";
 import styled from "styled-components";
-
 import pageSizes from "src/styles/pageSizes";
-import { Patrick_Hand as PatrickHand } from "next/font/google";
-
-const patrickHand = PatrickHand({
-  subsets: ["latin"],
-  weight: "400",
-  display: "swap",
-});
 
 export type Props = {
   score: number;
 };
 
 const LeagueWeekUserScore = ({ score }: Props) => (
-  <Total className={patrickHand.className}>{score}</Total>
+  <Total className={chivoMono.className}>{score}</Total>
 );
 
 const Total = styled.div`

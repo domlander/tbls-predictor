@@ -1,9 +1,16 @@
-import { Work_Sans as WorkSans } from "next/font/google";
+import { Chivo as Chivo } from "next/font/google";
+import { Chivo_Mono as ChivoMono } from "next/font/google";
 
-const workSans = WorkSans({
+const chivoMono = ChivoMono({
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+});
+
+const chivo = Chivo({
   subsets: ["latin"],
   weight: ["300", "400"],
   display: "swap",
 });
 
-export { workSans };
+export { chivoMono, chivo };

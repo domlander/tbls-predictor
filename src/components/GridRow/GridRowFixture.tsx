@@ -62,36 +62,36 @@ const GridRow = ({
         <EmptySpace $topRow={topRow} />
       ) : (
         <>
-          <Score
+          <ScoreInput
             fixtureId={fixtureId}
             goals={homeGoals}
             isHome
-            isScoreEditable={!locked}
-            $topRow={topRow}
+            isEditable={!locked}
+            isTopRow={topRow}
             updateGoals={updateGoals}
           />
           <Divider $locked={locked} $topRow={topRow}>
             -
           </Divider>
-          <Score
+          <ScoreInput
             fixtureId={fixtureId}
             goals={awayGoals}
             isHome={false}
-            isScoreEditable={!locked}
-            $topRow={topRow}
+            isEditable={!locked}
+            isTopRow={topRow}
             updateGoals={updateGoals}
           />
         </>
       )}
-      <AwayTeam
+      <GridItemAwayTeam
         fixtureId={fixtureId}
         handleBbbUpdate={handleBbbUpdate}
         isBbbLocked={isBbbLocked}
         isBbbSelected={isBigBoyBonus}
         label={awayTeam}
         isLoaded={isLoaded}
-        $locked={locked}
-        $topRow={topRow}
+        locked={locked}
+        isTopRow={topRow}
       />
     </>
   );
@@ -119,26 +119,6 @@ const HomeTeam = styled(GridItemHomeTeam)<{
   $topRow: boolean;
 }>`
   color: ${({ $locked }) => ($locked ? colours.grey500 : colours.grey200)};
-  border-top: ${({ $topRow }) =>
-    !$topRow ? `1px solid ${colours.whiteOpacity33}` : "none"};
-`;
-
-const AwayTeam = styled(GridItemAwayTeam)<{
-  $locked: boolean;
-  $topRow: boolean;
-}>`
-  color: ${({ $locked }) => ($locked ? colours.grey500 : colours.grey200)};
-  border-top: ${({ $topRow }) =>
-    !$topRow ? `1px solid ${colours.whiteOpacity33}` : "none"};
-`;
-
-const Score = styled(ScoreInput)<{
-  isScoreEditable: boolean;
-  $topRow: boolean;
-}>`
-  color: ${({ isScoreEditable }) =>
-    !isScoreEditable ? colours.grey500 : colours.grey200};
-  border: 0;
   border-top: ${({ $topRow }) =>
     !$topRow ? `1px solid ${colours.whiteOpacity33}` : "none"};
 `;

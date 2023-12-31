@@ -1,3 +1,4 @@
+import { chivoMono } from "app/fonts";
 import userStats from "src/actions/userStats";
 import styles from "./UserStats.module.css";
 import Heading from "../Heading";
@@ -35,13 +36,21 @@ const UserStatsComponent = ({
       <div className={styles.stats}>
         <div className={styles.stat}>
           Total predictions
-          <div className={styles.statPerc}>{numPredictions}</div>
+          <div className={[chivoMono.className, styles.statPerc].join(" ")}>
+            {numPredictions}
+          </div>
         </div>
         <div className={styles.stat}>
-          Perfect %<div className={styles.statPerc}>{perfectPerc}</div>
+          Perfect %
+          <div className={[chivoMono.className, styles.statPerc].join(" ")}>
+            {perfectPerc}
+          </div>
         </div>
         <div className={styles.stat}>
-          Correct %<div className={styles.statPerc}>{correctPerc}</div>
+          Correct %
+          <div className={[chivoMono.className, styles.statPerc].join(" ")}>
+            {correctPerc}
+          </div>
         </div>
       </div>
     </article>

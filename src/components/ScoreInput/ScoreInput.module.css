@@ -1,0 +1,31 @@
+.input {
+  width: 2em;
+  background-color: inherit;
+  text-align: center;
+  border: 0;
+  border-top: 1px solid var(--whiteOpacity33);  
+  color: var(--grey500);
+
+  /* Firefox */
+  -moz-appearance: textfield;
+}
+.input:focus {
+  outline: none;
+}
+.input::placeholder {
+  color:var(--grey500opacity50);
+}
+.input.editable {
+  color: var(--grey200)
+}
+.input.topRow {
+  border-top: none;
+}
+
+/* Hide arrows */
+/* Chrome, Safari, Edge, Opera */
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

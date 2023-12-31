@@ -1,19 +1,17 @@
 "use client";
 
 import { KeyboardEvent } from "react";
+import { chivoMono } from "app/fonts";
 import Fixture from "src/types/Fixture";
-import styled from "styled-components";
-import colours from "src/styles/colours";
+import styles from "./ScoreInput.module.css";
 
-interface StyleProps {
-  isScoreEditable: boolean;
-}
-
-export type Props = StyleProps & {
+export type Props = {
   fixtureId: Fixture["id"];
   goals: string;
   className?: string;
   isHome: boolean;
+  isTopRow: boolean;
+  isEditable: boolean;
   updateGoals: (
     fixtureId: number,
     isHomeTeam: boolean,
@@ -78,17 +76,17 @@ const ScoreInput = ({
   fixtureId,
   goals,
   isHome,
-  isScoreEditable,
+  isEditable,
+  isTopRow,
   updateGoals,
-  className,
 }: Props) => {
   const name = `${isHome ? "home" : "away"}-score-${fixtureId}`;
 
   return (
-    <Input
+    <input
       autoComplete="off"
-      placeholder={isScoreEditable ? "?" : ""}
-      disabled={!isScoreEditable}
+      placeholder={isEditable ? "?" : ""}
+      disabled={!isEditable}
       maxLength={1}
       name={name}
       onChange={(event) => {
@@ -102,34 +100,16 @@ const ScoreInput = ({
       onKeyDown={preventNonNumericInputs}
       type="number"
       value={goals}
-      className={className}
+      className={[
+        chivoMono.className,
+        styles.input,
+        isTopRow && styles.topRow,
+        isEditable && styles.editable,
+      ].join(" ")}
       pattern="[0-9]"
       inputMode="numeric"
     />
   );
 };
-
-const Input = styled.input`
-  width: 2em;
-  background-color: inherit;
-  text-align: center;
-  &:focus {
-    outline: none;
-  }
-  &::placeholder {
-    color: ${colours.grey500opacity50};
-  }
-
-  /* Hide arrows */
-  /* Chrome, Safari, Edge, Opera */
-  &::-webkit-outer-spin-button,
-  &::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  /* Firefox */
-  -moz-appearance: textfield;
-`;
 
 export default ScoreInput;

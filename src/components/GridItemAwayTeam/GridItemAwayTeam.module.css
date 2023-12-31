@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 1em;
+  padding-right: 0.4em;
+  color: var(--grey200);
+  border-top: 1px solid var(--whiteOpacity33);
+}
+.container.locked {
+  justify-content: flex-start;
+  color: var(--grey500);
+}
+.container.topRow {
+  border-top: none;
+}
+
+.bbbButton {
+  color: var(--cyan300);
+  background-color: var(--blackblue500);
+  border: var(--cyan500);
+  border-radius: 0.2em;
+  cursor: pointer;
+  line-height: 1.3em;
+
+  padding: 0px 0.4em;
+  @media (max-width: 480px) {
+    padding: 0 0.3em;
+  }
+}
+
+.bbbButton.isBbbSelected {
+  color: var(--blackblue500);
+  background-color: var(--cyan300);
+  border: var(--cyan300);
+}
+
+.bbbButton:hover,
+.bbbButton:focus {
+  background-color: var(--cyan300);
+  color: var(--blackblue500);
+  border: 1px solid var(--cyan300);
+}

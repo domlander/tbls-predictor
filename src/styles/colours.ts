@@ -11,7 +11,7 @@ export default {
   grey700: "#424242",
   grey500opacity50: "#96969680",
 
-  black100: "#333333",
+  black100: "#2e2e2e",
   black700: "#111111",
   black: "#000",
 

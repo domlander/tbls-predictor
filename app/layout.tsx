@@ -3,7 +3,7 @@ import Maintenance from "src/containers/Maintenance";
 import StyledComponentsRegistry from "lib/registry";
 import AuthProvider from "./AuthProvider";
 import InnerLayout from "./InnerLayout";
-import { workSans } from "./fonts";
+import { chivo } from "./fonts";
 import "./globals.css";
 
 interface Props {
@@ -18,7 +18,7 @@ const RootLayout = ({ children }: Props) => {
       {isMaintenanceMode ? (
         <Maintenance />
       ) : (
-        <html lang="en" className={workSans.className}>
+        <html lang="en" className={chivo.className}>
           <body>
             <StyledComponentsRegistry>
               <InnerLayout>{children}</InnerLayout>

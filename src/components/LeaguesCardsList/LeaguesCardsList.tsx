@@ -38,8 +38,8 @@ const LeaguesCardsList = ({ leagues }: Props) => {
                   (weeksToGo ? (
                     <p className={styles.leagueCardText}>
                       Current position:{" "}
-                      <span className={styles.position}>{displayPosition}</span>{" "}
-                      of <span className={styles.bold}>{numParticipants}</span>
+                      <span className={styles.bold}>{displayPosition}</span> of{" "}
+                      <span className={styles.bold}>{numParticipants}</span>
                     </p>
                   ) : (
                     <p className={styles.leagueCardText}>

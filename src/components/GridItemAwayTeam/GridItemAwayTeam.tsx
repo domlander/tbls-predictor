@@ -1,9 +1,10 @@
 "use client";
 
+import { ReactNode } from "react";
 import styled from "styled-components";
 import colours from "src/styles/colours";
 import pageSizes from "src/styles/pageSizes";
-import { ReactNode } from "react";
+import styles from "./GridItemAwayTeam.module.css";
 
 export type Props = {
   className?: string;
@@ -13,49 +14,43 @@ export type Props = {
   isBbbSelected?: boolean;
   label: string | ReactNode;
   isLoaded: boolean;
-  $locked: boolean;
+  locked: boolean;
+  isTopRow: boolean;
 };
 
-const GridItem = ({
-  className,
+const GridItemAwayTeam = ({
   fixtureId,
   handleBbbUpdate,
   isBbbLocked = false,
   isBbbSelected = false,
   label = "",
   isLoaded = false,
-  $locked,
-}: Props) => (
-  <Container $isBbbLocked={isBbbLocked} className={className}>
-    {label}
-    {isLoaded && !$locked && !isBbbLocked && handleBbbUpdate && (
-      <BbbButton
-        $isBbbSelected={isBbbSelected}
-        onClick={(e) => {
-          e.preventDefault();
-          handleBbbUpdate(fixtureId);
-        }}
-      >
-        2X
-      </BbbButton>
-    )}
-  </Container>
-);
-
-const Container = styled.div<{
-  $isBbbLocked: Props["isBbbLocked"];
-}>`
-  display: flex;
-  justify-content: ${({ $isBbbLocked }) =>
-    !$isBbbLocked ? "space-between" : "flex-start"};
-  align-items: center;
-  padding-left: 1em;
-  padding-right: 0.4em;
-
-  span {
-    text-align: left;
-  }
-`;
+  locked,
+  isTopRow,
+}: Props) => {
+  return (
+    <div
+      className={[
+        styles.container,
+        locked && styles.locked,
+        isTopRow && styles.topRow,
+      ].join(" ")}
+    >
+      {label}
+      {isLoaded && !locked && !isBbbLocked && handleBbbUpdate && (
+        <BbbButton
+          $isBbbSelected={isBbbSelected}
+          onClick={(e) => {
+            e.preventDefault();
+            handleBbbUpdate(fixtureId);
+          }}
+        >
+          2X
+        </BbbButton>
+      )}
+    </div>
+  );
+};
 
 const BbbButton = styled.button<{
   $isBbbSelected: Props["isBbbSelected"];
@@ -83,4 +78,4 @@ const BbbButton = styled.button<{
   }
 `;
 
-export default GridItem;
+export default GridItemAwayTeam;
