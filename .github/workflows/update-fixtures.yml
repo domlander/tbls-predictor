@@ -11,4 +11,4 @@ jobs:
         env:
           SECRET: ${{ secrets.ACTIONS_SECRET }}
         run: |
-          curl "https://www.desmondtwotwo.com/api/populateFixtures?numGameweeks=3&persist=true&secret=$SECRET"
+          curl -X POST "https://www.desmondtwotwo.com/api/populateFixtures?numGameweeks=3&persist=true&secret=$SECRET"

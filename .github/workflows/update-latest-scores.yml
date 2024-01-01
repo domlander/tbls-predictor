@@ -18,4 +18,4 @@ jobs:
         env:
           SECRET: ${{ secrets.ACTIONS_SECRET }}
         run: |
-          curl "https://www.desmondtwotwo.com/api/fetchLatestScores?secret=$SECRET"
+          curl -X POST "https://www.desmondtwotwo.com/api/fetchLatestScores?secret=$SECRET"
