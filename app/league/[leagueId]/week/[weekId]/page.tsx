@@ -7,7 +7,7 @@ import UserPoints from "src/types/UserPoints";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import calculatePredictionScore from "utils/calculatePredictionScore";
 import getWeekPoints from "utils/getWeekPoints";
-import MissingPrediction from "src/types/MissingPrediction";
+import { getMissingPredictions } from "utils/getMissingPredictions";
 
 // TODO: investigate how caching with revalidate works in serverless environments.
 // Caching results for 30 secs/longer with revalidate on data update would work better
@@ -70,34 +70,17 @@ const Page = async ({ params }: { params: Params }) => {
 
   const users = league.users
     .map((user) => {
-      const missingPredictions: MissingPrediction[] = [];
-      fixtures.forEach((fixture) => {
-        const isMissingPrediction =
-          user.predictions.findIndex((p) => p.fixtureId === fixture.id) === -1;
+      const predictions = [
+        ...user.predictions,
+        ...getMissingPredictions(user.predictions, fixtures),
+      ];
 
-        // Add missed predictions as 0-0
-        if (isMissingPrediction) {
-          missingPredictions.push({
-            fixtureId: fixture.id,
-            homeGoals: 0,
-            awayGoals: 0,
-            bigBoyBonus: false,
-            fixture: {
-              gameweek: weekId,
-              homeGoals: fixture.homeGoals,
-              awayGoals: fixture.awayGoals,
-            },
-          });
-        }
-      });
-
-      const predictions = [...user.predictions, ...missingPredictions];
-      const points = getWeekPoints(fixtures, predictions);
+      const weekPoints = getWeekPoints(fixtures, predictions);
 
       return {
         ...user,
         predictions,
-        weekPoints: points,
+        weekPoints,
       };
     })
     .sort((a, b) => {

@@ -6,7 +6,7 @@ type Prediction = {
   homeGoals: number | null;
   awayGoals: number | null;
   bigBoyBonus: boolean;
-  score: number | null;
+  score?: number | null;
 };
 
 export default Prediction;
