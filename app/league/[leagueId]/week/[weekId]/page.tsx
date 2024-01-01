@@ -62,7 +62,7 @@ const Page = async ({ params }: { params: Params }) => {
     return redirect(`/league/${leagueId}`);
   }
 
-  const fixtures = await prisma.fixture.findMany({
+  const gameweekFixtures = await prisma.fixture.findMany({
     where: {
       gameweek: weekId,
     },
@@ -72,10 +72,10 @@ const Page = async ({ params }: { params: Params }) => {
     .map((user) => {
       const predictions = [
         ...user.predictions,
-        ...getMissingPredictions(user.predictions, fixtures),
+        ...getMissingPredictions(user.predictions, gameweekFixtures),
       ];
 
-      const weekPoints = getWeekPoints(fixtures, predictions);
+      const weekPoints = getWeekPoints(gameweekFixtures, predictions);
 
       return {
         ...user,
@@ -87,10 +87,12 @@ const Page = async ({ params }: { params: Params }) => {
       return b.weekPoints - a.weekPoints || (b.id > a.id ? 1 : -1);
     });
 
-  const fixturesWithPredictions: Fixture[] = fixtures.map((fixture) => ({
-    ...fixture,
-    predictions: [],
-  }));
+  const fixturesWithPredictions: Fixture[] = gameweekFixtures.map(
+    (fixture) => ({
+      ...fixture,
+      predictions: [],
+    })
+  );
 
   fixturesWithPredictions.forEach((fixture) => {
     users.forEach((user) => {

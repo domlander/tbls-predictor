@@ -3,6 +3,7 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "app/api/auth/[...nextauth]/route";
 import prisma from "prisma/client";
+import calculatePredictionScore from "utils/calculatePredictionScore";
 
 const userStats = async (): Promise<{
   perfectPerc: number;
@@ -25,11 +26,6 @@ const userStats = async (): Promise<{
             },
           },
         },
-        where: {
-          score: {
-            not: null,
-          },
-        },
       },
     },
     where: {
@@ -42,12 +38,22 @@ const userStats = async (): Promise<{
     return null;
   }
 
-  const correctPredictions = predictions.filter(
+  const predictionsWithScore = predictions.map((prediction) => ({
+    ...prediction,
+    score: calculatePredictionScore(
+      [prediction.homeGoals, prediction.awayGoals, prediction.bigBoyBonus],
+      [prediction.fixture.homeGoals, prediction.fixture.awayGoals]
+    ),
+  }));
+
+  const correctPredictions = predictionsWithScore.filter(
     ({ score }) => score !== null && score > 0
   ).length;
-  const perfectPredictions = predictions.filter(
+
+  const perfectPredictions = predictionsWithScore.filter(
     ({ score }) => score !== null && score >= 3
   ).length;
+
   const totalPredictions = predictions.length;
 
   const numPredictions = predictions.length;
