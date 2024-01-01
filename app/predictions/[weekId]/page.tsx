@@ -9,6 +9,7 @@ import sortFixtures from "utils/sortFixtures";
 import generateRecentFixturesByTeam from "utils/generateRecentFixturesByTeam";
 import { authOptions } from "app/api/auth/[...nextauth]/route";
 import styles from "./page.module.css";
+import calculatePredictionScore from "utils/calculatePredictionScore";
 
 export const dynamic = "force-dynamic";
 
@@ -61,14 +62,29 @@ const Page = async ({ params }: { params: Params }) => {
           id: true,
         },
       },
+      fixture: {
+        select: {
+          homeGoals: true,
+          awayGoals: true,
+        },
+      },
     },
   });
+
+  // Don't trust the score in the predictions table
+  const predictionsWithScore = predictions.map((prediction) => ({
+    ...prediction,
+    score: calculatePredictionScore(
+      [prediction.homeGoals, prediction.awayGoals, prediction.bigBoyBonus],
+      [prediction.fixture.homeGoals, prediction.fixture.awayGoals]
+    ),
+  }));
 
   return (
     <div className={styles.container}>
       <Predictions
         fixtures={sortFixtures(thisGwFixtures)}
-        predictions={predictions}
+        predictions={predictionsWithScore}
         weekId={weekId}
         recentFixturesByTeam={JSON.parse(JSON.stringify(recentFixturesByTeam))}
         firstGameweek={firstGameweek}

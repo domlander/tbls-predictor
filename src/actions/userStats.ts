@@ -38,6 +38,7 @@ const userStats = async (): Promise<{
     return null;
   }
 
+  // Don't trust the score in the predictions table
   const predictionsWithScore = predictions.map((prediction) => ({
     ...prediction,
     score: calculatePredictionScore(
