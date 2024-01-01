@@ -39,13 +39,19 @@ const userStats = async (): Promise<{
   }
 
   // Don't trust the score in the predictions table
-  const predictionsWithScore = predictions.map((prediction) => ({
-    ...prediction,
-    score: calculatePredictionScore(
-      [prediction.homeGoals, prediction.awayGoals, prediction.bigBoyBonus],
-      [prediction.fixture.homeGoals, prediction.fixture.awayGoals]
-    ),
-  }));
+  const predictionsWithScore = predictions
+    .map((prediction) => ({
+      ...prediction,
+      score: calculatePredictionScore(
+        [prediction.homeGoals, prediction.awayGoals, prediction.bigBoyBonus],
+        [prediction.fixture.homeGoals, prediction.fixture.awayGoals]
+      ),
+    }))
+    .filter(
+      ({ fixture }) =>
+        typeof fixture.homeGoals === "number" &&
+        typeof fixture.awayGoals === "number"
+    );
 
   const correctPredictions = predictionsWithScore.filter(
     ({ score }) => score !== null && score > 0

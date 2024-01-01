@@ -45,7 +45,6 @@ const isInvokedByGithubAction = (secret: string | null, gaSecret: string) => {
   If a goal has been scored, calls the updateFixtureResults API to update the
   fixture score and subsequent predictions score for all predictions.
 */
-
 export async function POST(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const secret = searchParams.get("secret");
