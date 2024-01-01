@@ -33,31 +33,30 @@ const userStats = async (): Promise<{
     },
   });
 
-  const predictions = user?.predictions;
-  if (!predictions?.length) {
-    return null;
-  }
-
-  // Don't trust the score in the predictions table
-  const predictionsWithScore = predictions
+  const predictions = user?.predictions
+    .filter(
+      ({ fixture }) =>
+        typeof fixture.homeGoals === "number" &&
+        typeof fixture.awayGoals === "number"
+    )
+    // Don't trust the score in the predictions table
     .map((prediction) => ({
       ...prediction,
       score: calculatePredictionScore(
         [prediction.homeGoals, prediction.awayGoals, prediction.bigBoyBonus],
         [prediction.fixture.homeGoals, prediction.fixture.awayGoals]
       ),
-    }))
-    .filter(
-      ({ fixture }) =>
-        typeof fixture.homeGoals === "number" &&
-        typeof fixture.awayGoals === "number"
-    );
+    }));
 
-  const correctPredictions = predictionsWithScore.filter(
+  if (!predictions?.length) {
+    return null;
+  }
+
+  const correctPredictions = predictions.filter(
     ({ score }) => score !== null && score > 0
   ).length;
 
-  const perfectPredictions = predictionsWithScore.filter(
+  const perfectPredictions = predictions.filter(
     ({ score }) => score !== null && score >= 3
   ).length;
 
