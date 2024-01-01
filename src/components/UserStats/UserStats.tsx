@@ -6,9 +6,13 @@ import Heading from "../Heading";
 const UserStats = async () => {
   const stats = await userStats();
 
-  const numPredictions = stats?.numPredictions.toString() ?? "???";
-  const perfectPerc = stats?.perfectPerc?.toFixed(1) ?? "???";
-  const correctPerc = stats?.correctPerc.toFixed(1) ?? "???";
+  const numPredictions = stats?.numPredictions.toString();
+  const perfectPerc = stats?.perfectPerc?.toFixed(1);
+  const correctPerc = stats?.correctPerc.toFixed(1);
+
+  if (!numPredictions || !perfectPerc || !correctPerc) {
+    return null;
+  }
 
   return (
     <UserStatsComponent
