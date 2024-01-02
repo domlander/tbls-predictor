@@ -48,7 +48,7 @@
 
 .skeleton {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 400px);
+    grid-template-columns: repeat(auto-fill, 370px);
     grid-gap: 3em;
     
     @media (max-width: 768px) {
@@ -57,7 +57,7 @@
 }
 
 .skeletonInner {
-    height: 200px;
+    height: 160px;
     border: 1px solid var(--grey500);
     animation: skeletonLoading 1s linear infinite forwards;
     background: linear-gradient(

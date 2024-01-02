@@ -9,6 +9,7 @@ const MyLeaguesLoading = () => {
       </Heading>
       <div className={styles.skeleton}>
         <div className={styles.skeletonInner} />
+        <div className={styles.skeletonInner} />
       </div>
     </article>
   );

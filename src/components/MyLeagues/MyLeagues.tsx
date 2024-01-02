@@ -2,22 +2,15 @@ import Link from "next/link";
 
 import Heading from "src/components/Heading";
 import LeaguesCardsList from "src/components/LeaguesCardsList";
-import Fixture from "src/types/Fixture";
-import getUsersActiveLeagues from "utils/getUsersActiveLeagues";
+import fetchUsersActiveLeagues from "src/actions/fetchUsersActiveLeagues";
 import styles from "./MyLeagues.module.css";
 
 type Props = {
   userId: string;
-  fixtures: Fixture[];
-  currentGameweek: number;
 };
 
-const MyLeagues = async ({ userId, fixtures, currentGameweek }: Props) => {
-  const activeLeagues = await getUsersActiveLeagues(
-    userId,
-    fixtures,
-    currentGameweek
-  );
+const MyLeagues = async ({ userId }: Props) => {
+  const activeLeagues = await fetchUsersActiveLeagues(userId);
 
   return (
     <article className={styles.container}>

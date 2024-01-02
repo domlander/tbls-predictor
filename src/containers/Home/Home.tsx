@@ -28,7 +28,6 @@ const Home = ({
   predictions,
   recentFixturesByTeam,
   userId,
-  currentGameweek,
 }: Props) => {
   return (
     <section className={styles.container}>
@@ -55,11 +54,7 @@ const Home = ({
         <UserStats />
       </Suspense>
       <Suspense fallback={<MyLeaguesLoading />}>
-        <MyLeagues
-          userId={userId}
-          fixtures={fixtures}
-          currentGameweek={currentGameweek}
-        />
+        <MyLeagues userId={userId} />
       </Suspense>
     </section>
   );

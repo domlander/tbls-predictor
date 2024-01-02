@@ -1,40 +1,28 @@
-import { getServerSession } from "next-auth/next";
+import { Suspense } from "react";
 import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth/next";
 
-import prisma from "prisma/client";
 import { authOptions } from "app/api/auth/[...nextauth]/route";
-import Leagues from "src/containers/Leagues";
-import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
-import getUsersActiveLeagues from "utils/getUsersActiveLeagues";
+import MyLeaguesLoading from "src/components/MyLeagues/MyLeaguesLoading";
+import MyLeagues from "src/components/MyLeagues";
+import styles from "./page.module.css";
 
 export const dynamic = "force-dynamic";
 
 const Page = async () => {
   const session = await getServerSession(authOptions);
-
   const userId = session?.user?.id;
   if (!userId) {
     return redirect("/signIn");
   }
 
-  const fixtures = await prisma.fixture.findMany({
-    select: {
-      id: true,
-      gameweek: true,
-      kickoff: true,
-      homeGoals: true,
-      awayGoals: true,
-    },
-  });
-  const currentGameweek = calculateCurrentGameweek(fixtures);
-
-  const activeLeagues = await getUsersActiveLeagues(
-    userId,
-    fixtures,
-    currentGameweek
+  return (
+    <section className={styles.container}>
+      <Suspense fallback={<MyLeaguesLoading />}>
+        <MyLeagues userId={userId} />
+      </Suspense>
+    </section>
   );
-
-  return <Leagues activeLeagues={activeLeagues} />;
 };
 
 export default Page;

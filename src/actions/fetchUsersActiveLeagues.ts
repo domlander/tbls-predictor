@@ -1,16 +1,19 @@
-import prisma from "prisma/client";
-import Fixture from "src/types/Fixture";
-import UserLeague from "src/types/UserLeague";
-import getWeeklyPoints from "./getWeeklyPoints";
-import calculateWeeksUntilStart from "./calculateWeeksUntilStart";
-import calculateWeeksToGo from "./calculateWeeksToGo";
-import calculateUsersLeaguePosition from "./calculateUsersLeaguePosition";
+"use server";
 
-const getUsersActiveLeagues = async (
-  userId: string,
-  fixtures: Pick<Fixture, "id" | "gameweek" | "homeGoals" | "awayGoals">[],
-  currentGameweek: number
+import prisma from "prisma/client";
+import UserLeague from "src/types/UserLeague";
+import getWeeklyPoints from "../../utils/getWeeklyPoints";
+import calculateWeeksUntilStart from "../../utils/calculateWeeksUntilStart";
+import calculateWeeksToGo from "../../utils/calculateWeeksToGo";
+import calculateUsersLeaguePosition from "../../utils/calculateUsersLeaguePosition";
+import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
+
+const fetchUsersActiveLeagues = async (
+  userId: string
 ): Promise<UserLeague[]> => {
+  const fixtures = await prisma.fixture.findMany();
+  const currentGameweek = calculateCurrentGameweek(fixtures);
+
   // Get all users leagues and all users that belong to those leagues, including their predictions
   const userLeagues = await prisma.user.findUnique({
     include: {
@@ -78,4 +81,4 @@ const getUsersActiveLeagues = async (
   );
 };
 
-export default getUsersActiveLeagues;
+export default fetchUsersActiveLeagues;
