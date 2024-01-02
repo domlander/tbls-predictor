@@ -64,7 +64,7 @@ const LeagueWeekContainer = ({
               : `/league/${leagueId}/week/${gameweek + 1}`
           }
         />
-        <section>
+        <section className={styles.scoresContainer}>
           <LeagueWeekUserTotals users={usersGameweekPoints} />
           {!fixtures?.length ? (
             <div className={styles.loading}>

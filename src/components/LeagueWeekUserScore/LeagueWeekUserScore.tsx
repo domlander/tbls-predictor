@@ -2,7 +2,6 @@
 
 import { chivoMono } from "app/fonts";
 import styled from "styled-components";
-import pageSizes from "src/styles/pageSizes";
 
 export type Props = {
   score: number;
@@ -14,12 +13,15 @@ const LeagueWeekUserScore = ({ score }: Props) => (
 
 const Total = styled.div`
   font-size: 4em;
-  line-height: 1.4em;
+  line-height: 1.6em;
   letter-spacing: 0.05em;
-  margin-bottom: 0.4em;
 
-  @media (max-width: ${pageSizes.tablet}) {
+  @media (max-width: 768px) {
     font-size: 3em;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 2.4em;
   }
 `;
 

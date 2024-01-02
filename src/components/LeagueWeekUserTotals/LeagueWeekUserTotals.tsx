@@ -26,7 +26,7 @@ const LeagueWeekUserTotals = ({ users }: Props) => {
 
 const Container = styled.div<{ $numUsers: number }>`
   width: 100%;
-  margin-bottom: 1.5em;
+  margin-bottom: 1em;
   display: grid;
   grid-template-columns: ${({ $numUsers }) => `repeat(${$numUsers}, 1fr)`};
   justify-items: center;
@@ -34,16 +34,21 @@ const Container = styled.div<{ $numUsers: number }>`
   top: 0;
   background: ${colours.blackblue400};
   /* box-shadow: offset-x | offset-y | blur-radius | color */
-  box-shadow: 0 10px 10px ${colours.blackblue400};
+  box-shadow: 0 1em 1em ${colours.blackblue400};
 `;
 
 const Username = styled.div`
   margin-top: 1.5em;
   text-align: center;
+  color: var(--grey200);
   font-size: 1.2rem;
 
-  @media (max-width: ${pageSizes.tablet}) {
-    font-size: 0.8rem;
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.7rem;
   }
 `;
 

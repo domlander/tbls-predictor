@@ -91,12 +91,18 @@ const Container = styled.div`
   flex-direction: column;
   justify-items: stretch;
   background-color: var(--blackblue400opacity50);
-  margin: 0.4em 0;
-  padding: 1.2em 0.8em 1.6em;
   border-radius: 0.2em;
+  padding: 1.6em 1em;
+  gap: 1.2em;
+
+  @media (max-width: 768px) {
+    padding: 1.4em 1em;
+    gap: 1em;
+  }
 
   @media (max-width: 480px) {
-    padding: 1.2em 0.4em 1.6em;
+    padding: 1.2em 1em;
+    gap: 0.8em;
   }
 `;
 
@@ -113,18 +119,27 @@ const Kickoff = styled.div`
   flex-basis: 8em;
   text-align: center;
   align-self: center;
-  font-size: 0.8rem;
   color: var(--grey400);
+  font-size: 0.8rem;
+
+  @media (max-width: 480px) {
+    font-size: 0.7rem;
+  }
 `;
 
 const StyledFixture = styled.span`
   flex-basis: 100%;
   text-align: center;
   font-size: 1.1rem;
+  color: var(--grey300);
   display: grid;
 
   @media (max-width: 768px) {
     font-size: 0.9rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
   }
 `;
 
@@ -155,7 +170,6 @@ const AwayTeam = styled.span`
 const PredictionRow = styled.div`
   display: flex;
   justify-content: space-around;
-  margin-top: 1em;
   font-size: 1.1rem;
 
   @media (max-width: 768px) {
