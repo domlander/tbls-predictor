@@ -3,7 +3,6 @@
 import styled from "styled-components";
 
 import UserPoints from "src/types/UserPoints";
-import pageSizes from "src/styles/pageSizes";
 import colours from "src/styles/colours";
 import LeagueWeekUserScore from "../LeagueWeekUserScore";
 
