@@ -12,18 +12,18 @@ const LeagueWeekUserScore = ({ score }: Props) => (
 );
 
 const Total = styled.div`
-  font-size: 2.8rem;
-  line-height: 2.8rem;
+  font-size: 2.5rem;
+  line-height: 2.5rem;
   letter-spacing: 0.05em;
 
   @media (max-width: 768px) {
-    font-size: 2.4rem;
-    line-height: 2.4rem;
+    font-size: 2.2rem;
+    line-height: 2.2rem;
   }
 
   @media (max-width: 480px) {
-    font-size: 2rem;
-    line-height: 2rem;
+    font-size: 1.8rem;
+    line-height: 1.8rem;
   }
 `;
 
