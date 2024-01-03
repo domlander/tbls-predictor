@@ -54,7 +54,7 @@ const Username = styled.div`
   }
 
   @media (max-width: 480px) {
-    font-size: 0.7rem;
+    font-size: 0.8rem;
   }
 `;
 

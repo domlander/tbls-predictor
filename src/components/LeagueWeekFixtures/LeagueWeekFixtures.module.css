@@ -32,6 +32,7 @@
   align-self: center;
   color: var(--grey400);
   font-size: 0.8rem;
+  letter-spacing: -0.02rem;
   
   @media (max-width: 480px) {
     font-size: 0.7rem;
@@ -41,16 +42,16 @@
 .styledFixture {
   flex-basis: 100%;
   text-align: center;
-  font-size: 1rem;
+  font-size: 1.1rem;
   color: var(--grey200);
   display: grid;
   
   @media (max-width: 768px) {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
   
   @media (max-width: 480px) {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
 }
 
