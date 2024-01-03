@@ -93,11 +93,11 @@ const Container = styled.div`
   background-color: var(--blackblue400opacity50);
   border-radius: 0.2em;
   padding: 1.6em 1em;
-  gap: 1.2em;
+  gap: 1.4em;
 
   @media (max-width: 768px) {
     padding: 1.4em 1em;
-    gap: 1em;
+    gap: 1.2em;
   }
 
   @media (max-width: 480px) {
@@ -129,7 +129,7 @@ const Kickoff = styled.div`
 const StyledFixture = styled.span`
   flex-basis: 100%;
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 1rem;
   color: var(--grey200);
   display: grid;
 

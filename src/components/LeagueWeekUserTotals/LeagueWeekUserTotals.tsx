@@ -25,20 +25,26 @@ const LeagueWeekUserTotals = ({ users }: Props) => {
 
 const Container = styled.div<{ $numUsers: number }>`
   width: 100%;
+  padding: 2em 0 1em;
   margin-bottom: 1.4em;
   display: grid;
   grid-template-columns: ${({ $numUsers }) => `repeat(${$numUsers}, 1fr)`};
   justify-items: center;
-  gap: 0.4em;
+  gap: 1.2em;
   position: sticky;
   top: 0;
   background: ${colours.blackblue400};
   /* box-shadow: offset-x | offset-y | blur-radius | color */
   box-shadow: 0 1em 1em ${colours.blackblue400};
+
+  @media (max-width: 768px) {
+    padding: 1.6em 0 0.8em;
+    margin-bottom: 1.2em;
+    gap: 1em;
+  }
 `;
 
 const Username = styled.div`
-  margin-top: 1.5em;
   text-align: center;
   color: var(--grey200);
   font-size: 1.2rem;
