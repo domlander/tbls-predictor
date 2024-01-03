@@ -102,7 +102,6 @@ const Container = styled.div`
 
   @media (max-width: 480px) {
     padding: 1.2em 1em;
-    gap: 0.8em;
   }
 `;
 
@@ -131,7 +130,7 @@ const StyledFixture = styled.span`
   flex-basis: 100%;
   text-align: center;
   font-size: 1.1rem;
-  color: var(--grey300);
+  color: var(--grey200);
   display: grid;
 
   @media (max-width: 768px) {

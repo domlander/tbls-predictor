@@ -25,10 +25,11 @@ const LeagueWeekUserTotals = ({ users }: Props) => {
 
 const Container = styled.div<{ $numUsers: number }>`
   width: 100%;
-  margin-bottom: 1em;
+  margin-bottom: 1.4em;
   display: grid;
   grid-template-columns: ${({ $numUsers }) => `repeat(${$numUsers}, 1fr)`};
   justify-items: center;
+  gap: 0.4em;
   position: sticky;
   top: 0;
   background: ${colours.blackblue400};
