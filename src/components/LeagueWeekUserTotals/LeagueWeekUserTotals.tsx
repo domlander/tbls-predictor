@@ -30,7 +30,7 @@ const Container = styled.div<{ $numUsers: number }>`
   display: grid;
   grid-template-columns: ${({ $numUsers }) => `repeat(${$numUsers}, 1fr)`};
   justify-items: center;
-  gap: 1.2em;
+  gap: 1.6em;
   position: sticky;
   top: 0;
   background: ${colours.blackblue400};
@@ -40,7 +40,7 @@ const Container = styled.div<{ $numUsers: number }>`
   @media (max-width: 768px) {
     padding: 1.6em 0 0.8em;
     margin-bottom: 1.2em;
-    gap: 1em;
+    gap: 1.4em;
   }
 `;
 

@@ -1,0 +1,28 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.prediction {
+  color: var(--grey400);
+  padding: 0.1em 0.5em;
+  border-radius: 2em;
+  margin-top: 0;
+
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+  }
+}
+
+.prediction.perfect {
+  background-color: var(--gold500);
+}
+
+.prediction.correct {
+  background-color: var(--green500);
+}
+
+.prediction.bigBoyBonus {
+  margin-top: 2px;
+}

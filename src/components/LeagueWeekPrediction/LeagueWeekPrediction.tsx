@@ -1,8 +1,5 @@
-"use client";
-
-import styled from "styled-components";
 import { chivoMono } from "app/fonts";
-import colours from "src/styles/colours";
+import styles from "./LeagueWeekPrediction.module.css";
 
 export type Props = {
   homeGoals: number;
@@ -17,40 +14,30 @@ const LeagueWeekPrediction = ({
   score,
   isBigBoyBonus,
 }: Props) => {
+  let chip = "";
+  if (score >= 3) chip = "perfect";
+  else if (score >= 1) chip = "correct";
+
   return (
-    <PredictionContainer className={chivoMono.className}>
-      <Prediction $score={score}>
-        {homeGoals}-{awayGoals}
-      </Prediction>
-      {isBigBoyBonus && (
-        <Prediction $score={score} $isBigBoyBonus>
-          {homeGoals}-{awayGoals}
-        </Prediction>
+    <div
+      className={[chivoMono.className, styles.container, styles[chip]].join(
+        " "
       )}
-    </PredictionContainer>
+    >
+      <div className={[styles.prediction, styles[chip]].join(" ")}>
+        {homeGoals}-{awayGoals}
+      </div>
+      {isBigBoyBonus && (
+        <div
+          className={[styles.prediction, styles[chip], styles.bigBoyBonus].join(
+            " "
+          )}
+        >
+          {homeGoals}-{awayGoals}
+        </div>
+      )}
+    </div>
   );
 };
-
-const PredictionContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const Prediction = styled.div<{ $score: number; $isBigBoyBonus?: boolean }>`
-  background-color: ${({ $score }) => {
-    if ($score >= 3) return colours.gold500;
-    if ($score >= 1) return colours.green500;
-    return "inherit";
-  }};
-  color: ${colours.grey400};
-  padding: 0.1em 0.5em;
-  border-radius: 2em;
-  margin-top: ${({ $isBigBoyBonus }) => ($isBigBoyBonus ? "2px" : "0")};
-
-  @media (max-width: 480px) {
-    font-size: 0.8rem;
-  }
-`;
 
 export default LeagueWeekPrediction;
