@@ -4,7 +4,6 @@ import Link from "next/link";
 import styled from "styled-components";
 
 import League from "src/types/League";
-import colours from "src/styles/colours";
 import Heading from "src/components/Heading";
 
 export interface Props {
@@ -51,7 +50,7 @@ const Container = styled.section`
 
     &:hover,
     &:focus {
-      color: ${colours.cyan200};
+      color: var(--cyan200);
       text-decoration: none;
     }
   }

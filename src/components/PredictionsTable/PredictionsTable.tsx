@@ -12,7 +12,6 @@ import {
 } from "utils/kickoffDateHelpers";
 import useTransientState from "src/hooks/useTransientState";
 import FixtureWithPrediction from "src/types/FixtureWithPrediction";
-import colours from "src/styles/colours";
 import pageSizes from "src/styles/pageSizes";
 import Button from "src/components/Button";
 import Fixture from "src/types/Fixture";
@@ -328,7 +327,7 @@ const UserFeedback = styled.p`
 `;
 
 const GameweekScore = styled.p`
-  color: ${colours.grey400};
+  color: var(--grey400);
   margin: 1.4rem 0 0 1rem;
   font-size: 2em;
 

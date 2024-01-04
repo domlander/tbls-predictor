@@ -5,7 +5,6 @@ import dayjs from "dayjs";
 import styled from "styled-components";
 
 import Fixture from "src/types/Fixture";
-import colours from "src/styles/colours";
 import Button from "../Button";
 import Heading from "../Heading";
 
@@ -77,12 +76,12 @@ const FixturesTable = styled.div`
 
   span {
     font-size: 1.2rem;
-    color: ${colours.grey200};
+    color: var(--grey200);
   }
 
   input {
-    background-color: ${colours.blackblue600};
-    color: ${colours.grey100};
+    background-color: var(--blackblue600);
+    color: var(--grey100);
     font-size: 1rem;
     width: 9em;
   }

@@ -7,7 +7,6 @@ import Link from "next/link";
 
 import WeekNavigator from "src/components/WeekNavigator";
 import PredictionsTable from "src/components/PredictionsTable";
-import colours from "src/styles/colours";
 import type Fixture from "src/types/Fixture";
 import type Prediction from "src/types/Prediction";
 import type TeamFixtures from "src/types/TeamFixtures";
@@ -203,7 +202,7 @@ const NoFixtures = styled.section`
 
     &:hover,
     &:focus {
-      color: ${colours.cyan200};
+      color: var(--cyan200);
     }
   }
 `;

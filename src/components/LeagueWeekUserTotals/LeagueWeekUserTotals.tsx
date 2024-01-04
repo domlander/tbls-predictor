@@ -1,9 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-
 import UserPoints from "src/types/UserPoints";
-import colours from "src/styles/colours";
 import LeagueWeekUserScore from "../LeagueWeekUserScore";
 
 export type Props = {

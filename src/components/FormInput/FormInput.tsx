@@ -2,7 +2,6 @@
 
 import { ChangeEvent } from "react";
 import styled from "styled-components";
-import colours from "src/styles/colours";
 
 type Props = {
   placeholder?: string;
@@ -40,15 +39,15 @@ const FormInput = ({
 const Input = styled.input`
   height: 2.4em;
   width: 12em;
-  background-color: ${colours.grey200};
-  color: ${colours.black100};
+  background-color: var(--grey200);
+  color: var(--black100);
   border-radius: 0.2em;
   font-size: 1.6em;
   border: 0;
   padding-left: 1em;
 
   &:placeholder {
-    color: ${colours.grey500};
+    color: var(--grey500);
   }
 
   &:hover,
@@ -56,7 +55,7 @@ const Input = styled.input`
     height: 2.2em;
     width: 11.9em;
     outline: none;
-    border: 0.1em solid ${colours.grey300};
+    border: 0.1em solid var(--grey300);
     padding-left: 0.9em;
   }
 `;

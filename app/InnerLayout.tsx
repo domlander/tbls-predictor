@@ -12,7 +12,6 @@ import { useSession } from "next-auth/react";
 
 import HeaderBar from "src/components/HeaderBar";
 import Sidebar from "src/components/Sidebar";
-import colours from "src/styles/colours";
 
 const DEFAULT_USERNAME = "Me";
 
@@ -114,12 +113,12 @@ const slideout = keyframes`
 `;
 
 const pulse = keyframes`
-  from { color: ${colours.grey400} }
-  to { color: ${colours.white} }
+  from { color: var(--grey400) }
+  to { color: var(--white) }
 `;
 
 const LoadingBanner = styled.div<{ show: boolean }>`
-  background-color: ${colours.cyan500};
+  background-color: var(--cyan500);
   position: fixed;
   left: 0;
   top: 0;
@@ -141,7 +140,7 @@ const LoadingBanner = styled.div<{ show: boolean }>`
   p {
     font-size: 1rem;
     animation: ${pulse} 1s infinite alternate;
-    color: ${colours.white};
+    color: var(--white);
     margin: 0;
     z-index: 2;
   }

@@ -2,8 +2,6 @@
 
 import Link from "next/link";
 import styled from "styled-components";
-
-import pageSizes from "src/styles/pageSizes";
 import Button from "src/components/Button";
 import Heading from "src/components/Heading";
 

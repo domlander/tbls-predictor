@@ -4,7 +4,6 @@ import { signOut } from "next-auth/react";
 import styled from "styled-components";
 
 import pageSizes from "src/styles/pageSizes";
-import colours from "src/styles/colours";
 import SidebarHeader from "../SidebarHeader";
 import SidebarMenuItem from "../SidebarMenuItem";
 
@@ -77,7 +76,7 @@ const Container = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-  background-color: ${colours.blackblue450};
+  background-color: var(--blackblue450);
 
   @media (max-width: ${pageSizes.mobileM}) {
     width: 100%;

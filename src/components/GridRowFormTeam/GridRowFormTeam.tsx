@@ -61,7 +61,7 @@ const Match = styled.div<{ $isHome: boolean }>`
   display: flex;
   flex-direction: ${({ $isHome }) => ($isHome ? "row" : "row-reverse")};
   justify-content: flex-end;
-  color: ${colours.grey300};
+  color: var(--grey300);
   font-size: 0.9rem;
   font-weight: 300;
 `;
@@ -79,7 +79,7 @@ const Result = styled.div<{ result: MatchResult }>`
 const KickoffDate = styled.div<{ $isHome: boolean }>`
   flex-basis: 4em;
   text-align: ${({ $isHome }) => ($isHome ? "end" : "start")};
-  color: ${colours.grey500};
+  color: var(--grey500);
 `;
 
 const NoForm = styled.div<{ $isHome: boolean }>`
@@ -88,7 +88,7 @@ const NoForm = styled.div<{ $isHome: boolean }>`
   padding-left: ${({ $isHome }) => ($isHome ? "0" : "1.6em")};
   padding-right: ${({ $isHome }) => ($isHome ? "1.6em" : "0")};
   text-align: ${({ $isHome }) => ($isHome ? "end" : "start")};
-  color: ${colours.grey300};
+  color: var(--grey300);
   font-size: 0.8rem !important;
   font-weight: 300;
 `;

@@ -9,7 +9,6 @@ import {
 } from "utils/kickoffDateHelpers";
 import Fixture from "src/types/Fixture";
 import pageSizes from "src/styles/pageSizes";
-import colours from "src/styles/colours";
 import GridRow from "src/components/GridRow";
 import Heading from "src/components/Heading";
 import Button from "src/components/Button";
@@ -189,7 +188,7 @@ const Table = styled.div`
 `;
 
 const UserFeedback = styled.p`
-  color: ${colours.cyan300};
+  color: var(--cyan300);
   font-size: 1.8em;
   font-style: italic;
   margin-top: 1em;

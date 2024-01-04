@@ -4,7 +4,6 @@ import styled from "styled-components";
 import Image from "next/image";
 import cross from "public/images/Cross.svg";
 import UserIcon from "src/components/UserIcon";
-import colours from "src/styles/colours";
 
 const MAX_USERNAME_LENGTH = 16;
 
@@ -41,7 +40,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: ${colours.blackblue450};
+  background-color: var(--blackblue450);
 `;
 
 const User = styled.div`
@@ -52,7 +51,7 @@ const User = styled.div`
 
 const Username = styled.p`
   margin-left: 1.2em;
-  color: ${colours.grey200};
+  color: var(--grey200);
   font-size: 1.4em; // TODO: use font with consistent letter box-sizing, so we know how many letters to allow
   font-weight: 400;
 `;
@@ -65,7 +64,7 @@ const ImageContainer = styled.div`
 
   &:focus,
   &:hover {
-    outline: 1px solid ${colours.grey100};
+    outline: 1px solid var(--grey100);
   }
 `;
 

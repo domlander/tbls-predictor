@@ -13,7 +13,7 @@
   outline: none;
 }
 .input::placeholder {
-  color:var(--grey500opacity50);
+  color: var(--grey500opacity50);
 }
 .input.editable {
   color: var(--grey200)
