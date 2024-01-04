@@ -21,10 +21,10 @@ const UserIcon = ({ initial, handleClick }: Props) => {
 };
 
 const sharedCircleStyles = css`
-  background-color: ${colours.blackblue400};
-  color: ${colours.cyan500};
+  background-color: var(--blackblue400);
+  color: var(--cyan500);
   border-radius: 50%;
-  border: 0.1em solid ${colours.cyan500};
+  border: 0.1em solid var(--cyan500);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,8 +38,8 @@ const ClickableCircle = styled.button`
 
   &:focus, 
   &:hover {
-    color: ${colours.blackblue500};
-    background-color: ${colours.cyan500};
+    color: var(--blackblue500);
+    background-color: var(--cyan500);
   }
 `;
 

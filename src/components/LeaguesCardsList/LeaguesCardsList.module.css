@@ -23,7 +23,11 @@
 }
 .leagueCard:hover,
 .leagueCard:focus {
-  background-color: var(--blackblue300opacity80);
+  background-color: var(--blackblue200);
+  outline: 1px solid var(--grey300);
+}
+.leagueCard:active {
+  background-color: var(--blackblue300);
   outline: 1px solid var(--grey300);
 }
 

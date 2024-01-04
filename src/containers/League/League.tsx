@@ -25,40 +25,37 @@ const LeagueContainer = ({
   fixtureWeeksAvailable,
 }: Props) => {
   return (
-    <>
-      <div className={styles.container}>
-        <LeagueAdminLink administratorId={administratorId} leagueId={id} />
+    <div className={styles.container}>
+      <LeagueAdminLink administratorId={administratorId} leagueId={id} />
+      <section className={styles.table}>
+        <Heading level="h2" as="h1" variant="secondary">
+          {leagueName}
+        </Heading>
+        {!fixtureWeeksAvailable?.length ? (
+          <section>
+            <p className={styles.notStartedText}>
+              This league starts in gameweek{" "}
+              <Link
+                className={styles.notStartedLink}
+                href={`/predictions/${gameweekStart}`}
+              >
+                {gameweekStart}
+              </Link>
+            </p>
+          </section>
+        ) : (
+          <WeeklyScoresTable
+            users={users}
+            leagueId={id}
+            fixtureWeeksAvailable={fixtureWeeksAvailable}
+          />
+        )}
+      </section>
 
-        <section className={styles.table}>
-          <Heading level="h2" as="h1" variant="secondary">
-            {leagueName}
-          </Heading>
-          {!fixtureWeeksAvailable?.length ? (
-            <section>
-              <p className={styles.notStartedText}>
-                This league starts in gameweek{" "}
-                <Link
-                  className={styles.notStartedLink}
-                  href={`/predictions/${gameweekStart}`}
-                >
-                  {gameweekStart}
-                </Link>
-              </p>
-            </section>
-          ) : (
-            <WeeklyScoresTable
-              users={users}
-              leagueId={id}
-              fixtureWeeksAvailable={fixtureWeeksAvailable}
-            />
-          )}
-        </section>
-
-        <p className={styles.finalWeekText}>
-          The league runs until gameweek {gameweekEnd}
-        </p>
-      </div>
-    </>
+      <p className={styles.finalWeekText}>
+        The league runs until gameweek {gameweekEnd}
+      </p>
+    </div>
   );
 };
 

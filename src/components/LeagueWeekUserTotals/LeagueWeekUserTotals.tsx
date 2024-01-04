@@ -33,9 +33,9 @@ const Container = styled.div<{ $numUsers: number }>`
   gap: 1.4em;
   position: sticky;
   top: 0;
-  background: ${colours.blackblue400};
+  background: var(--blackblue400opacity75);
   /* box-shadow: offset-x | offset-y | blur-radius | color */
-  box-shadow: 0 1em 1em ${colours.blackblue400};
+  box-shadow: 0 1em 1em var(--blackblue400opacity75);
 
   @media (max-width: 768px) {
     padding: 1.6em 0 0.8em;
