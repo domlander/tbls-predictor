@@ -1,8 +1,6 @@
-"use client";
-
-import styled from "styled-components";
 import User from "src/types/User";
 import Heading from "../Heading";
+import styles from "./LeagueParticipants.module.css";
 
 interface Props {
   participants: Pick<User, "id" | "username">[];
@@ -14,14 +12,11 @@ const LeagueParticipants = ({ participants }: Props) => (
       Participants
     </Heading>
     {participants?.map((participant) => (
-      <UserLabel key={participant.id}>{participant.username}</UserLabel>
+      <p className={styles.label} key={participant.id}>
+        {participant.username}
+      </p>
     ))}
   </div>
 );
-
-const UserLabel = styled.p`
-  font-size: 2em;
-  margin-right: 1em;
-`;
 
 export default LeagueParticipants;

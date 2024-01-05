@@ -1,13 +1,11 @@
-"use client";
-
-import styled from "styled-components";
-import Fixture from "src/types/Fixture";
-import colours from "src/styles/colours";
 import { ReactNode } from "react";
+
+import Fixture from "src/types/Fixture";
 import GridItemHomeTeam from "../GridItemHomeTeam";
 import GridItemAwayTeam from "../GridItemAwayTeam";
 import GridItemKickoff from "../GridItemKickoff";
 import ScoreInput from "../ScoreInput";
+import styles from "./GridRowFixture.module.css";
 
 export type Props = {
   fixtureId: Fixture["id"];
@@ -24,7 +22,6 @@ export type Props = {
     homeGoals: string
   ) => void;
   predictionScore?: number;
-  isLoading: boolean;
   isLoaded: boolean;
   locked: boolean;
   topRow: boolean;
@@ -42,7 +39,6 @@ const GridRow = ({
   isBbbLocked,
   updateGoals,
   predictionScore,
-  isLoading,
   isLoaded,
   locked,
   topRow,
@@ -50,39 +46,39 @@ const GridRow = ({
 }: Props) => {
   return (
     <>
-      <Kickoff $locked={locked} label={kickoff} $topRow={topRow} />
-      <HomeTeam
+      <GridItemKickoff locked={locked} label={kickoff} topRow={topRow} />
+      <GridItemHomeTeam
         isBbb={isBbbLocked && isBigBoyBonus}
         label={homeTeam}
-        $locked={locked}
+        locked={locked}
         predictionScore={predictionScore}
-        $topRow={topRow}
+        topRow={topRow}
       />
-      {!isLoaded || isLoading ? (
-        <EmptySpace $topRow={topRow} />
-      ) : (
-        <>
-          <ScoreInput
-            fixtureId={fixtureId}
-            goals={homeGoals}
-            isHome
-            isEditable={!locked}
-            isTopRow={topRow}
-            updateGoals={updateGoals}
-          />
-          <Divider $locked={locked} $topRow={topRow}>
-            -
-          </Divider>
-          <ScoreInput
-            fixtureId={fixtureId}
-            goals={awayGoals}
-            isHome={false}
-            isEditable={!locked}
-            isTopRow={topRow}
-            updateGoals={updateGoals}
-          />
-        </>
-      )}
+      <ScoreInput
+        fixtureId={fixtureId}
+        goals={homeGoals}
+        isHome
+        isEditable={!locked}
+        isTopRow={topRow}
+        updateGoals={updateGoals}
+      />
+      <span
+        className={[
+          styles.divider,
+          topRow && styles.topRow,
+          locked && styles.locked,
+        ].join(" ")}
+      >
+        -
+      </span>
+      <ScoreInput
+        fixtureId={fixtureId}
+        goals={awayGoals}
+        isHome={false}
+        isEditable={!locked}
+        isTopRow={topRow}
+        updateGoals={updateGoals}
+      />
       <GridItemAwayTeam
         fixtureId={fixtureId}
         handleBbbUpdate={handleBbbUpdate}
@@ -96,41 +92,5 @@ const GridRow = ({
     </>
   );
 };
-
-const EmptySpace = styled.div<{ $topRow: boolean }>`
-  grid-column: span 3;
-  width: calc(4em + 13px);
-  border-top: ${({ $topRow }) =>
-    !$topRow ? `1px solid ${colours.whiteOpacity33}` : "none"};
-`;
-
-const Kickoff = styled(GridItemKickoff)<{ $locked: boolean; $topRow: boolean }>`
-  color: ${({ $locked }) => ($locked ? colours.grey500 : colours.grey300)};
-  border-top: ${({ $topRow }) =>
-    !$topRow ? `1px solid ${colours.whiteOpacity33}` : "none"};
-
-  @media (max-width: 375px) {
-    font-size: 0.8em;
-  }
-`;
-
-const HomeTeam = styled(GridItemHomeTeam)<{
-  $locked: boolean;
-  $topRow: boolean;
-}>`
-  color: ${({ $locked }) => ($locked ? colours.grey500 : colours.grey200)};
-  border-top: ${({ $topRow }) =>
-    !$topRow ? `1px solid ${colours.whiteOpacity33}` : "none"};
-`;
-
-const Divider = styled.span<{ $locked: boolean; $topRow: boolean }>`
-  border-top: ${({ $topRow }) =>
-    !$topRow ? `1px solid ${colours.whiteOpacity33}` : "none"};
-  color: ${({ $locked }) => ($locked ? colours.grey500 : colours.grey200)};
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
 
 export default GridRow;

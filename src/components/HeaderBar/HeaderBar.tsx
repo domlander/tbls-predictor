@@ -1,6 +1,6 @@
 import Link from "next/link";
-import HeaderUserIcon from "../HeaderUserIcon";
 import styles from "./HeaderBar.module.css";
+import UserIcon from "../UserIcon";
 
 export interface Props {
   initial: string;
@@ -26,11 +26,11 @@ const HeaderBar = ({ initial, isLoading, handleClick }: Props) => (
         </li>
       </ul>
     </nav>
-    <HeaderUserIcon
-      initial={initial}
-      isLoading={isLoading}
-      handleClick={handleClick}
-    />
+    <div>
+      {!isLoading ? (
+        <UserIcon initial={initial} handleClick={handleClick} />
+      ) : null}
+    </div>
   </div>
 );
 

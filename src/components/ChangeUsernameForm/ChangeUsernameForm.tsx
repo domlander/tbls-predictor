@@ -1,13 +1,13 @@
 "use client";
 
-import styled from "styled-components";
 import { useFormState, useFormStatus } from "react-dom";
+import { useState } from "react";
 
 import updateUsername from "src/actions/updateUsername";
-import { useState } from "react";
 import Button from "../Button";
 import FormInput from "../FormInput";
 import Heading from "../Heading";
+import styles from "./ChangeUsernameForm.module.css";
 
 export interface Props {
   initialUsername: string;
@@ -21,12 +21,12 @@ const ChangeUsernameForm = ({ initialUsername }: Props) => {
   const { pending } = useFormStatus();
 
   return (
-    <Container>
+    <section className={styles.container}>
       <Heading level="h2" variant="secondary">
         Update username
       </Heading>
       <form action={formAction}>
-        <Label>
+        <label className={styles.label}>
           Username:
           <FormInput
             type="text"
@@ -35,45 +35,16 @@ const ChangeUsernameForm = ({ initialUsername }: Props) => {
             onChange={(e) => setUsername(e.target.value)}
             maxLength={20}
           />
-        </Label>
-        <ButtonContainer>
+        </label>
+        <div className={styles.buttons}>
           <Button type="submit" disabled={pending} variant="primary">
             Update
           </Button>
-        </ButtonContainer>
-        {state && <Feedback>{state?.message}</Feedback>}
+        </div>
+        {state && <p className={styles.feedback}>{state?.message}</p>}
       </form>
-    </Container>
+    </section>
   );
 };
-
-const Container = styled.section`
-  max-width: 450px;
-  margin: 0 auto;
-  padding: 0 1em;
-  display: flex;
-  flex-direction: column;
-  gap: 4em;
-`;
-
-const Label = styled.label`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 1.6em;
-
-  input {
-    font-size: 1.2em;
-  }
-`;
-
-const ButtonContainer = styled.div`
-  margin: 3.2em 0;
-`;
-
-const Feedback = styled.p`
-  font-size: 1.6em;
-  font-style: italic;
-`;
 
 export default ChangeUsernameForm;

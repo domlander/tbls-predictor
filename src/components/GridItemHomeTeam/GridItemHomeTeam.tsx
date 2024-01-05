@@ -1,59 +1,40 @@
-"use client";
-
-import styled from "styled-components";
 import Chip from "../Chip";
+import styles from "./GridItemHomeTeam.module.css";
 
 export type Props = {
-  className?: string;
   isBbb?: boolean;
   label: string;
   predictionScore?: number;
+  locked?: boolean;
+  topRow?: boolean;
 };
 
-const GridItem = ({
-  className,
+const GridItemHomeTeam = ({
   isBbb = false,
   label,
   predictionScore,
+  topRow = false,
+  locked = false,
 }: Props) => {
   return (
-    <Container className={className}>
-      <span>{label}</span>
+    <div
+      className={[
+        styles.container,
+        topRow && styles.topRow,
+        locked && styles.locked,
+      ].join(" ")}
+    >
+      <span className={styles.label}>{label}</span>
       {(isBbb || predictionScore) && (
-        <ChipContainer>
+        <div className={styles.chips}>
           {predictionScore && predictionScore >= 1 && (
             <Chip variant={predictionScore >= 3 ? "perfect" : "correct"} />
           )}
           {isBbb && <Chip variant="bigBoyBonus" />}
-        </ChipContainer>
+        </div>
       )}
-    </Container>
+    </div>
   );
 };
 
-const Container = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  background-color: inherit;
-  padding-left: 0.4em;
-  padding-right: 1em;
-
-  @media (max-width: 480px) {
-    padding-right: 0.5em;
-  }
-
-  span {
-    text-align: right;
-  }
-`;
-
-const ChipContainer = styled.div`
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  display: flex;
-`;
-
-export default GridItem;
+export default GridItemHomeTeam;

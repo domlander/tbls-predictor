@@ -1,9 +1,8 @@
-"use client";
-
-import styled from "styled-components";
 import Image from "next/image";
 import cross from "public/images/Cross.svg";
 import UserIcon from "src/components/UserIcon";
+import styles from "./SidebarHeader.module.css";
+import { chivoMono } from "app/fonts";
 
 const MAX_USERNAME_LENGTH = 16;
 
@@ -14,58 +13,24 @@ export interface Props {
 }
 
 const SidebarHeader = ({ username, isLoading, handleClick }: Props) => (
-  <Container>
+  <div className={styles.container}>
     {!isLoading ? (
-      <User>
+      <div className={styles.user}>
         <UserIcon initial={username ? username[0].toUpperCase() : ""} />
-        <Username>
+        <p className={[chivoMono.className, styles.username].join(" ")}>
           {username.length > MAX_USERNAME_LENGTH
             ? `${username.substring(0, MAX_USERNAME_LENGTH - 2)}...`
             : username}
-        </Username>
-      </User>
+        </p>
+      </div>
     ) : (
       // Ensure that flex positioning still works correctly
       <div />
     )}
-    <ImageContainer tabIndex={0} onClick={handleClick}>
+    <div className={styles.crossIcon} tabIndex={0} onClick={handleClick}>
       <Image src={cross} alt="close sidebar cross" />
-    </ImageContainer>
-  </Container>
+    </div>
+  </div>
 );
-
-const Container = styled.div`
-  width: 100%;
-  height: 5em;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--blackblue500);
-`;
-
-const User = styled.div`
-  display: flex;
-  align-items: center;
-  padding-left: 1.6em;
-`;
-
-const Username = styled.p`
-  margin-left: 1.2em;
-  color: var(--grey200);
-  font-size: 1.4em; // TODO: use font with consistent letter box-sizing, so we know how many letters to allow
-  font-weight: 400;
-`;
-
-const ImageContainer = styled.div`
-  margin-right: 1.6em;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-
-  &:focus,
-  &:hover {
-    outline: 1px solid var(--grey100);
-  }
-`;
 
 export default SidebarHeader;

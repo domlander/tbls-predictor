@@ -1,0 +1,24 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1em;
+
+  @media (max-width: 768px) {
+    gap: 1em;
+  }
+}
+
+.noFixtures {
+  font-size: 1rem;
+}
+
+.noFixturesLink {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.noFixturesLink:hover,
+.noFixturesLink:focus {
+  color: var(--cyan300);
+}

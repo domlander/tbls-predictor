@@ -1,7 +1,5 @@
-"use client";
-
 import { ChangeEvent } from "react";
-import styled from "styled-components";
+import styles from "./FormInput.module.css";
 
 type Props = {
   placeholder?: string;
@@ -24,10 +22,11 @@ const FormInput = ({
   type = "text",
   pattern,
 }: Props) => (
-  <Input
+  <input
     type={type}
     name={name}
     value={value}
+    className={styles.input}
     placeholder={placeholder}
     onChange={onChange}
     minLength={minLength}
@@ -35,29 +34,5 @@ const FormInput = ({
     pattern={pattern}
   />
 );
-
-const Input = styled.input`
-  height: 2.4em;
-  width: 12em;
-  background-color: var(--grey200);
-  color: var(--black100);
-  border-radius: 0.2em;
-  font-size: 1.6em;
-  border: 0;
-  padding-left: 1em;
-
-  &:placeholder {
-    color: var(--grey500);
-  }
-
-  &:hover,
-  &:focus {
-    height: 2.2em;
-    width: 11.9em;
-    outline: none;
-    border: 0.1em solid var(--grey300);
-    padding-left: 0.9em;
-  }
-`;
 
 export default FormInput;

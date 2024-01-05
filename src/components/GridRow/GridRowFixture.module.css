@@ -1,0 +1,22 @@
+.emptySpace {
+  grid-column: span 3;
+  width: calc(4em + 13px);
+  border-top: 1px solid var(--whiteOpacity33);
+}
+
+.divider {
+  border-top: 1px solid var(--whiteOpacity33);
+  color: var(--grey200);
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.locked {
+  color: var(--grey500);
+}
+
+.topRow {
+  border-top: none
+}

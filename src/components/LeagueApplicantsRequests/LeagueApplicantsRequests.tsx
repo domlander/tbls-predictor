@@ -1,12 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import styled from "styled-components";
-
 import Applicant from "src/types/Applicant";
 import Button from "../Button";
 import Heading from "../Heading";
 import processJoinLeagueRequest from "src/actions/processJoinLeagueRequest";
+import styles from "./LeagueApplicantsRequests.module.css";
 
 interface Props {
   applicants: Applicant[];
@@ -41,55 +40,35 @@ const LeagueApplicantsRequests = ({
         Requests
       </Heading>
       {!validApplicants?.length ? (
-        <Label>No valid applicants</Label>
+        <p className={styles.label}>No valid applicants</p>
       ) : (
         validApplicants.map(({ user }) => {
           return (
-            <RequestsContainer key={user.id}>
-              <Label>{user.username}</Label>
-              <ButtonContainer>
+            <div className={styles.requestsContainer} key={user.id}>
+              <p className={styles.label}>{user.username}</p>
+              <div className={styles.buttonContainer}>
                 <Button
                   variant="primary"
                   handleClick={() => handleAcceptOrReject(user.id, true)}
                 >
                   Accept
                 </Button>
-              </ButtonContainer>
-              <ButtonContainer>
+              </div>
+              <div className={styles.buttonContainer}>
                 <Button
                   variant="primary"
                   handleClick={() => handleAcceptOrReject(user.id, false)}
                 >
                   Reject
                 </Button>
-              </ButtonContainer>
-            </RequestsContainer>
+              </div>
+            </div>
           );
         })
       )}
-      {userFeedback && <Feedback>{userFeedback}</Feedback>}
+      {userFeedback && <p className={styles.feedback}>{userFeedback}</p>}
     </div>
   );
 };
-
-const RequestsContainer = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const ButtonContainer = styled.div`
-  width: 200px;
-  margin: 1em;
-`;
-
-const Label = styled.p`
-  font-size: 2em;
-  margin-right: 1em;
-`;
-
-const Feedback = styled.p`
-  font-size: 1.6em;
-  font-style: italic;
-`;
 
 export default LeagueApplicantsRequests;

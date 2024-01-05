@@ -155,7 +155,6 @@ const PredictionsTable = ({
                     isBigBoyBonus={bigBoyBonus}
                     isBbbLocked={isBbbLockedForGameweek}
                     predictionScore={predictionScore ?? undefined}
-                    isLoading={state === "LOADING"}
                     isLoaded={!!predictions}
                     locked={!predictions || isLoading || isLocked}
                     topRow={i === 0}
@@ -242,28 +241,28 @@ const Table = styled.div<{ $displayStats: boolean }>`
   }
 
   > div {
-    font-size: 1.8em;
+    font-size: 1.1rem;
     @media (max-width: 768px) {
-      font-size: 1.4em;
+      font-size: 0.9rem;
     }
     @media (max-width: 480px) {
-      font-size: 1.2em;
+      font-size: 0.75rem;
     }
     @media (max-width: 375px) {
-      font-size: 0.9em;
+      font-size: 0.65rem;
     }
   }
 
   input {
-    font-size: 2em;
+    font-size: 1.2rem;
     @media (max-width: 768px) {
-      font-size: 1.6em;
+      font-size: 1rem;
     }
     @media (max-width: 480px) {
-      font-size: 1.4em;
+      font-size: 0.8rem;
     }
     @media (max-width: 375px) {
-      font-size: 1.1em;
+      font-size: 0.7rem;
     }
   }
 `;

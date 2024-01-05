@@ -1,32 +1,21 @@
-"use client";
-
-import styled from "styled-components";
+import styles from "./GridItemKickoff.module.css";
 
 export type Props = {
-  className?: string;
   label: string;
+  locked: boolean;
+  topRow: boolean;
 };
 
-const GridItemKickoff = ({ className, label }: Props) => (
-  <Kickoff className={className}>{label}</Kickoff>
+const GridItemKickoff = ({ label, locked, topRow }: Props) => (
+  <span
+    className={[
+      styles.kickoff,
+      locked && styles.locked,
+      topRow && styles.topRow,
+    ].join(" ")}
+  >
+    {label}
+  </span>
 );
-
-const Kickoff = styled.span`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  padding-left: 4px;
-
-  font-size: 0.9rem;
-  @media (max-width: 768px) {
-    font-size: 0.7rem;
-  }
-  @media (max-width: 480px) {
-    font-size: 0.55rem;
-  }
-  @media (max-width: 375px) {
-    font-size: 0.45rem;
-  }
-`;
 
 export default GridItemKickoff;

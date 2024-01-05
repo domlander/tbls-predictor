@@ -1,0 +1,33 @@
+.container {
+  width: 100%;
+  height: 5em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--blackblue500);
+}
+
+.user {
+  display: flex;
+  gap: 2em;
+  align-items: center;
+  padding-left: 1.6em;
+}
+
+.username {
+  color: var(--grey200);
+  font-size: 1rem; 
+  font-weight: 400;
+}
+
+.crossIcon {
+  margin-right: 1.6em;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.crossIcon:focus,  
+.crossIcon:hover {
+  outline: 1px solid var(--grey100);
+}

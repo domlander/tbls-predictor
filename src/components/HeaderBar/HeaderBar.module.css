@@ -38,7 +38,7 @@
   flex-direction: column;
   justify-content: center;
   color: var(--grey400);
-  font-size: 1.2em;
+  font-size: 1rem;
   cursor: pointer;
 }
 

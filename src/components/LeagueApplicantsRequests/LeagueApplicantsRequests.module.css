@@ -1,0 +1,19 @@
+.requestsContainer {
+  display: flex;
+  align-items: center;
+}
+
+.buttonContainer {
+  width: 200px;
+  margin: 1em;
+}
+
+.label {
+  font-size: 2em;
+  margin-right: 1em;
+}
+
+.feedback {
+  font-size: 1.6em;
+  font-style: italic;
+}

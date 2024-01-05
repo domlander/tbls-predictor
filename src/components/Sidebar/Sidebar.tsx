@@ -19,6 +19,7 @@ const Sidebar = ({ username, isLoggedIn, isLoading, handleClick }: Props) => {
         handleClick={handleClick}
       />
       <ul className={styles.sidebarItemsContainer}>
+        <SidebarMenuItem onClick={handleClick} label="Home" url="/" />
         <SidebarMenuItem
           onClick={handleClick}
           label="My Predictions"

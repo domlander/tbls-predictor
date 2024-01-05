@@ -2,14 +2,9 @@
     display: flex;
     flex-direction: column;
     gap: 4em;
-    padding: 4em 2em;
+    padding: 4em;
     background-color: var(--blackblue400);
     border-radius: 1em;
-
-    @media (max-width: 980px) {
-        gap: 3em;
-        padding: 3em 2em;
-    }
   
     @media (max-width: 768px) {
       padding: 3em 2em;

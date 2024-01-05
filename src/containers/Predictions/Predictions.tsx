@@ -1,7 +1,6 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import styled from "styled-components";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 
@@ -12,6 +11,7 @@ import type Prediction from "src/types/Prediction";
 import type TeamFixtures from "src/types/TeamFixtures";
 import type User from "src/types/User";
 import updatePredictions from "src/actions/updatePredictions";
+import styles from "./Predictions.module.css";
 
 export type UpdatePredictionsInputType = {
   userId: User["id"];
@@ -142,16 +142,19 @@ const Predictions = ({
 
   if (!fixtures?.length)
     return (
-      <NoFixtures>
+      <section className={styles.noFixtures}>
         <p>No fixtures found for gameweek {weekId}</p>
         <p>
-          Go to <Link href="/predictions">this weeks predictions</Link>
+          Go to{" "}
+          <Link className={styles.noFixturesLink} href="/predictions">
+            this weeks predictions
+          </Link>
         </p>
-      </NoFixtures>
+      </section>
     );
 
   return (
-    <Container>
+    <div className={styles.container}>
       {weekId && firstGameweek && lastGameweek && (
         <WeekNavigator
           week={weekId}
@@ -176,35 +179,8 @@ const Predictions = ({
         isSaving={isSaving}
         isSaveError={isSaveError}
       />
-    </Container>
+    </div>
   );
 };
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 1em;
-
-  @media (max-width: 768px) {
-    gap: 1em;
-  }
-`;
-
-const NoFixtures = styled.section`
-  p {
-    font-size: 1rem;
-  }
-
-  a {
-    text-decoration: underline;
-    text-underline-offset: 3px;
-
-    &:hover,
-    &:focus {
-      color: var(--cyan200);
-    }
-  }
-`;
 
 export default Predictions;

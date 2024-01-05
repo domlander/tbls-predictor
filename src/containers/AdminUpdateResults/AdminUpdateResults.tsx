@@ -137,7 +137,6 @@ const AdminUpdateResults = ({ fixtures }: Props) => {
               awayGoals={score.awayGoals?.toString() || ""}
               updateGoals={updateGoals}
               locked={false}
-              isLoading={false}
               isLoaded
               topRow={i === 0}
             />

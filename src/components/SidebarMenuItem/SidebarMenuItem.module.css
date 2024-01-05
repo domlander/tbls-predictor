@@ -1,0 +1,24 @@
+.listItem {
+  width: 100%;
+  height: 1.8em;
+  text-align: center;
+  font-size: 1.8rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.6rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.4rem;
+  }
+}
+
+.link {
+  color: var(--grey300);
+  cursor: pointer;
+}
+
+.link:hover,
+.link:focus {
+  color: var(--cyan100);
+}
