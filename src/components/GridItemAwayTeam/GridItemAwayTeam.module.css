@@ -21,7 +21,7 @@
 
 .bbbButton {
   color: var(--cyan300);
-  background-color: var(--blackblue500);
+  background-color: var(--blackblue600);
   border: 1px solid var(--cyan500);
   border-radius: 0.2em;
   cursor: pointer;
@@ -34,7 +34,7 @@
 }
 
 .bbbButton.isSelected {
-  color: var(--blackblue500);
+  color: var(--blackblue600);
   background-color: var(--cyan300);
   border: 1px solid var(--cyan300);
 }
@@ -42,6 +42,6 @@
 .bbbButton:hover,
 .bbbButton:focus {
   background-color: var(--cyan300);
-  color: var(--blackblue500);
+  color: var(--blackblue600);
   border: 1px solid var(--cyan300);
 }

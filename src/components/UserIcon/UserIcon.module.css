@@ -1,0 +1,27 @@
+.circle {
+  background-color: var(--blackblue400);
+  color: var(--cyan500);
+  border-radius: 50%;
+  border: 0.1em solid var(--cyan500);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3.2em;
+  width: 3.2em;
+}
+
+.clickableCircle {
+  composes: circle;
+
+  cursor: pointer;
+}
+
+.clickableCircle:focus, 
+.clickableCircle:hover {
+  color: var(--blackblue600);
+  background-color: var(--cyan500);
+}
+
+.name { 
+  font-size: 1.8em;
+}

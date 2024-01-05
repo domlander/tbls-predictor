@@ -40,7 +40,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--blackblue450);
+  background-color: var(--blackblue500);
 `;
 
 const User = styled.div`

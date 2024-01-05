@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   justify-items: stretch;
-  background-color: var(--blackblue400opacity75);
+  background-color: var(--blackblue500);
   border-radius: 0.2em;
   padding: 1.6em 1em;
   gap: 1.4em;
@@ -57,12 +57,14 @@
 
 .unclickableFixture {
   composes: styledFixture;
+
   grid-template-columns: 1fr 40px 1fr;
   gap: 0.5em;
 }
 
 .clickableFixture {
   composes: styledFixture;
+
   grid-template-columns: 1fr min-content 1fr;
   text-decoration: underline;
   text-underline-offset: 2px;

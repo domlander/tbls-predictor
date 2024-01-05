@@ -74,7 +74,7 @@ const Container = styled.div`
   position: absolute;
   top: 0;
   right: 0;
-  background-color: var(--blackblue450);
+  background-color: var(--blackblue500);
 
   @media (max-width: 480px) {
     width: 100%;

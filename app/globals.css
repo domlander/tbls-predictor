@@ -24,10 +24,9 @@
   --blackblue200: hsl(212, 27%, 24%);
   --blackblue300: hsl(212, 27%, 18%);
   --blackblue400: hsl(212, 28%, 14%);
-  --blackblue400opacity75: hsla(212, 28%, 12%, 0.75);
-  --blackblue450: hsl(208, 29%, 10%);
-  --blackblue500: hsl(208, 29%, 8%);
-  --blackblue600: hsl(207, 44%, 5%);
+  --blackblue500: hsl(208, 29%, 10%);
+  --blackblue600: hsl(208, 29%, 8%);
+  --blackblue700: hsl(207, 44%, 5%);
 
   --green300: hsl(120, 30%, 46%);;
   --green500: hsl(121, 94%, 20%);
@@ -45,7 +44,7 @@ body {
   font-size: 10px;
   color: var(--grey100);
   min-height: 100vh;
-  background-color: var(--blackblue500);
+  background-color: var(--blackblue600);
 }
 
 table {

@@ -240,7 +240,7 @@ const FixturesTable = styled.div`
   }
 
   input {
-    background-color: var(--blackblue600);
+    background-color: var(--blackblue700);
     color: var(--grey100);
     font-size: 1rem;
     width: 9em;
