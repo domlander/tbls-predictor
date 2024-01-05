@@ -10,11 +10,9 @@ const LeagueWeekUserTotals = ({ users }: Props) => {
   return (
     <div className={styles.container}>
       {users.map(({ id, username, points }) => (
-        <div className={styles.user}>
-          <div className={styles.name} key={id}>
-            {username}
-          </div>
-          <LeagueWeekUserScore key={id} score={points} />
+        <div className={styles.user} key={id}>
+          <div className={styles.name}>{username}</div>
+          <LeagueWeekUserScore score={points} />
         </div>
       ))}
     </div>
