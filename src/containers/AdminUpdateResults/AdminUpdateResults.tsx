@@ -8,7 +8,6 @@ import {
   whenIsTheFixture,
 } from "utils/kickoffDateHelpers";
 import Fixture from "src/types/Fixture";
-import pageSizes from "src/styles/pageSizes";
 import GridRow from "src/components/GridRow";
 import Heading from "src/components/Heading";
 import Button from "src/components/Button";
@@ -177,12 +176,12 @@ const Table = styled.div`
   grid-template-columns: 11em 1fr auto 5px auto 1fr;
   grid-auto-rows: 4em;
 
-  @media (max-width: ${pageSizes.tablet}) {
+  @media (max-width: 768px) {
     grid-template-columns: 7em 1fr auto 5px auto 1fr;
     grid-auto-rows: 3em;
   }
 
-  @media (max-width: ${pageSizes.mobileM}) {
+  @media (max-width: 480px) {
     grid-template-columns: 6em 1fr auto 5px auto 1fr;
   }
 `;

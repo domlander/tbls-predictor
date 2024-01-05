@@ -12,7 +12,6 @@ import {
 } from "utils/kickoffDateHelpers";
 import useTransientState from "src/hooks/useTransientState";
 import FixtureWithPrediction from "src/types/FixtureWithPrediction";
-import pageSizes from "src/styles/pageSizes";
 import Button from "src/components/Button";
 import Fixture from "src/types/Fixture";
 import GridRow from "src/components/GridRow";
@@ -216,7 +215,7 @@ const StatsToggle = styled(Button)`
   font-size: 0.9rem !important;
   margin-bottom: 0.4em;
 
-  @media (max-width: ${pageSizes.tablet}) {
+  @media (max-width: 768px) {
     display: none;
   }
 `;
@@ -243,7 +242,7 @@ const Table = styled.div<{ $displayStats: boolean }>`
   }
 
   > div {
-    font-size: 2em;
+    font-size: 1.8em;
     @media (max-width: 768px) {
       font-size: 1.4em;
     }
@@ -321,7 +320,7 @@ const UserFeedback = styled.p`
   font-style: italic;
   margin: 0;
 
-  @media (max-width: ${pageSizes.tablet}) {
+  @media (max-width: 768px) {
     margin-top: 1em;
   }
 `;
@@ -331,12 +330,12 @@ const GameweekScore = styled.p`
   margin: 1.4rem 0 0 1rem;
   font-size: 2em;
 
-  @media (max-width: ${pageSizes.tablet}) {
+  @media (max-width: 768px) {
     margin: 1rem 0 0 0.7rem;
     font-size: 1rem;
   }
 
-  @media (max-width: ${pageSizes.mobileM}) {
+  @media (max-width: 480px) {
     margin: 0.8rem 0 0 0.5rem;
     font-size: 0.8rem;
   }

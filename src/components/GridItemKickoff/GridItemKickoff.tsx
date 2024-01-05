@@ -1,7 +1,6 @@
 "use client";
 
 import styled from "styled-components";
-import pageSizes from "src/styles/pageSizes";
 
 export type Props = {
   className?: string;
@@ -18,12 +17,15 @@ const Kickoff = styled.span`
   align-items: center;
   padding-left: 4px;
 
-  font-size: 1.6em;
-  @media (max-width: ${pageSizes.tablet}) {
-    font-size: 1em;
+  font-size: 0.9rem;
+  @media (max-width: 768px) {
+    font-size: 0.7rem;
   }
-  @media (max-width: ${pageSizes.mobileM}) {
-    font-size: 0.9em;
+  @media (max-width: 480px) {
+    font-size: 0.55rem;
+  }
+  @media (max-width: 375px) {
+    font-size: 0.45rem;
   }
 `;
 

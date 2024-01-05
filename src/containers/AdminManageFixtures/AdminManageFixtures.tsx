@@ -12,7 +12,6 @@ import arrowRightDisabled from "public/images/ArrowRightDisabled.svg";
 import Heading from "src/components/Heading";
 import Button from "src/components/Button";
 import Fixture from "src/types/Fixture";
-import pageSizes from "src/styles/pageSizes";
 import ManageFixturesDb from "src/components/ManageFixturesDb/ManageFixturesDb";
 import fetchGameweekFixtures from "src/actions/fetchGameweekFixtures";
 import updateFixturesDatabase from "src/actions/updateFixtures";
@@ -194,14 +193,14 @@ const Container = styled.div`
 
 const DbFixturesPanel = styled.div`
   grid-column: 1 / span 6;
-  @media (max-width: ${pageSizes.laptop}) {
+  @media (max-width: 1024px) {
     grid-column: 1 / span 12;
   }
 `;
 
 const FplFixturesPanel = styled.div`
   grid-column: 8 / span 5;
-  @media (max-width: ${pageSizes.laptop}) {
+  @media (max-width: 1024px) {
     grid-column: 1 / span 12;
   }
 
