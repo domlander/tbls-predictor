@@ -1,12 +1,7 @@
-"use client";
-
-import styled from "styled-components";
-
 import type Fixture from "src/types/Fixture";
-import type { Result as MatchResult } from "utils/getMatchResultText";
-import colours from "src/styles/colours";
 import { getShortDateKickoffTime } from "utils/kickoffDateHelpers";
 import getMatchResultText from "utils/getMatchResultText";
+import styles from "./GridRowFormTeam.module.css";
 
 export type Props = {
   team: Fixture["homeTeam"];
@@ -16,11 +11,23 @@ export type Props = {
 
 const GridRowFormTeam = ({ team, recentFixtures, isHome = false }: Props) => {
   if (!recentFixtures.length) {
-    return <NoForm $isHome={isHome}>No previous matches</NoForm>;
+    return (
+      <div
+        className={[styles.noForm, isHome ? styles.home : styles.away].join(
+          " "
+        )}
+      >
+        No previous matches
+      </div>
+    );
   }
 
   return (
-    <Form $isHome={isHome}>
+    <div
+      className={[styles.container, isHome ? styles.home : styles.away].join(
+        " "
+      )}
+    >
       {recentFixtures.map(
         ({ id, homeTeam, awayTeam, homeGoals, awayGoals, kickoff }) => {
           const teamGoals = team === homeTeam ? homeGoals : awayGoals;
@@ -30,67 +37,36 @@ const GridRowFormTeam = ({ team, recentFixtures, isHome = false }: Props) => {
           const oppo = homeTeam === team ? `vs ${awayTeam}` : `at ${homeTeam}`;
 
           return (
-            <Match key={id} $isHome={isHome}>
-              <Result result={result}>
+            <div
+              key={id}
+              className={[
+                styles.match,
+                isHome ? styles.home : styles.away,
+              ].join(" ")}
+            >
+              <div
+                className={[
+                  styles.result,
+                  result === "Won" && styles.won,
+                  result === "Lost" && styles.lost,
+                ].join(" ")}
+              >
                 {result} {homeGoals}-{awayGoals} {oppo}
-              </Result>
-              <KickoffDate $isHome={isHome}>
+              </div>
+              <div
+                className={[
+                  styles.kickoff,
+                  isHome ? styles.home : styles.away,
+                ].join(" ")}
+              >
                 {getShortDateKickoffTime(kickoff)}
-              </KickoffDate>
-            </Match>
+              </div>
+            </div>
           );
         }
       )}
-    </Form>
+    </div>
   );
 };
-
-const Form = styled.div<{ $isHome: boolean }>`
-  display: flex;
-  flex-direction: column;
-  gap: 0.1em;
-  padding-top: 0.4em;
-  padding-bottom: 1em;
-  align-items: ${({ $isHome }) => ($isHome ? "flex-end" : "flex-start")};
-  padding-left: ${({ $isHome }) => ($isHome ? "0" : "1em")};
-  padding-right: ${({ $isHome }) => ($isHome ? "1em" : "0")};
-`;
-
-const Match = styled.div<{ $isHome: boolean }>`
-  width: 100%;
-  display: flex;
-  flex-direction: ${({ $isHome }) => ($isHome ? "row" : "row-reverse")};
-  justify-content: flex-end;
-  color: var(--grey300);
-  font-size: 0.9rem;
-  font-weight: 300;
-`;
-
-const getResultColour = (result: MatchResult): string => {
-  if (result === "Won") return colours.green300;
-  if (result === "Lost") return colours.red300;
-  return colours.grey500;
-};
-
-const Result = styled.div<{ result: MatchResult }>`
-  color: ${({ result }) => getResultColour(result)};
-`;
-
-const KickoffDate = styled.div<{ $isHome: boolean }>`
-  flex-basis: 4em;
-  text-align: ${({ $isHome }) => ($isHome ? "end" : "start")};
-  color: var(--grey500);
-`;
-
-const NoForm = styled.div<{ $isHome: boolean }>`
-  padding-top: 0.4em;
-  padding-bottom: 1em;
-  padding-left: ${({ $isHome }) => ($isHome ? "0" : "1.6em")};
-  padding-right: ${({ $isHome }) => ($isHome ? "1.6em" : "0")};
-  text-align: ${({ $isHome }) => ($isHome ? "end" : "start")};
-  color: var(--grey300);
-  font-size: 0.8rem !important;
-  font-weight: 300;
-`;
 
 export default GridRowFormTeam;

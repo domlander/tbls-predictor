@@ -1,10 +1,7 @@
-"use client";
-
-import styled from "styled-components";
-
 import UserLeague from "src/types/UserLeague";
 import Heading from "src/components/Heading";
 import LeaguesCardsList from "../LeaguesCardsList";
+import styles from "./MyFinishedLeagues.module.css";
 
 export interface Props {
   leagues: UserLeague[];
@@ -12,19 +9,13 @@ export interface Props {
 
 const MyFinishedLeagues = ({ leagues }: Props) => {
   return (
-    <Container>
+    <section className={styles.container}>
       <Heading level="h2" variant="secondary">
         Finished leagues
       </Heading>
       <LeaguesCardsList leagues={leagues} />
-    </Container>
+    </section>
   );
 };
-
-const Container = styled.section`
-  display: flex;
-  flex-direction: column;
-  gap: 2em;
-`;
 
 export default MyFinishedLeagues;

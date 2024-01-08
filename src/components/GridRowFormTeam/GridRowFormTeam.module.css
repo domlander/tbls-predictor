@@ -1,0 +1,71 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1em;
+  padding-top: 0.4em;
+  padding-bottom: 1em;
+}
+.container.home {
+  align-items: flex-end;
+  padding-left: 0;
+  padding-right: 1em;
+}
+.container.away {
+  align-items: flex-start;
+  padding-left: 1em;
+  padding-right: 0;
+}
+
+.match {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  color: var(--grey300);
+  font-size: 0.9rem;
+  font-weight: 300;
+}
+.match.home {
+  flex-direction: row;
+}
+.match.away {
+  flex-direction: row-reverse;
+}
+
+.result {
+  color: var(--grey500);
+}
+.result.won {
+  color: var(--green300);
+}
+.result.lost {
+  color: var(--red300);
+}
+
+.kickoff {
+  flex-basis: 4em;
+  color: var(--grey500);
+}
+.kickoff.home {
+  text-align: end;
+}
+.kickoff.away {
+  text-align: start;
+}
+
+.noForm {
+  padding-top: 0.4em;
+  padding-bottom: 1em;
+  color: var(--grey400);
+  font-size: 0.8rem !important;
+  font-weight: 300;
+}
+.noForm.home {
+  padding-left: 0;
+  padding-right: 1.6em;
+  text-align: end;
+}
+.noForm.away {
+  padding-left: 1.6em;
+  padding-right: 0;
+  text-align: start;
+}
