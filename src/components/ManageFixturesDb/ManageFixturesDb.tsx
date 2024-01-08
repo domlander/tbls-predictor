@@ -1,12 +1,10 @@
-"use client";
-
 import { FormEventHandler, Fragment } from "react";
 import dayjs from "dayjs";
-import styled from "styled-components";
 
 import Fixture from "src/types/Fixture";
 import Button from "../Button";
 import Heading from "../Heading";
+import styles from "./ManageFixturesDb.module.css";
 
 export interface Props {
   fixtures: Fixture[];
@@ -24,17 +22,17 @@ const ManageFixturesDb = ({
   submitFixtures,
 }: Props) => {
   return (
-    <Form onSubmit={submitFixtures}>
+    <form className={styles.form} onSubmit={submitFixtures}>
       <Heading level="h2" variant="secondary">
         DB Fixtures
       </Heading>
       {!fixtures?.length ? (
         <div>No fixtures found.</div>
       ) : (
-        <FixturesTable>
-          <span>Kickoff</span>
-          <span>Home team</span>
-          <span>Away team</span>
+        <div className={styles.table}>
+          <span className={styles.span}>Kickoff</span>
+          <span className={styles.span}>Home team</span>
+          <span className={styles.span}>Away team</span>
           {fixtures.map(({ id, kickoff, homeTeam, awayTeam }) => (
             <Fragment key={id}>
               <div>{dayjs(kickoff).format("DD/MM/YYYY HH:mm")}</div>
@@ -42,6 +40,7 @@ const ManageFixturesDb = ({
                 type="text"
                 id="homeTeam"
                 name="homeTeam"
+                className={styles.input}
                 value={homeTeam}
                 onChange={(e) => {
                   updateFixtures(id, true, e.target.value);
@@ -51,6 +50,7 @@ const ManageFixturesDb = ({
                 type="text"
                 id="awayTeam"
                 name="awayTeam"
+                className={styles.input}
                 value={awayTeam}
                 onChange={(e) => {
                   updateFixtures(id, false, e.target.value);
@@ -58,39 +58,13 @@ const ManageFixturesDb = ({
               />
             </Fragment>
           ))}
-        </FixturesTable>
+        </div>
       )}
       <Button type="submit" variant="primary">
         Save Fixtures
       </Button>
-    </Form>
+    </form>
   );
 };
-
-const FixturesTable = styled.div`
-  display: grid;
-  grid-template-columns: 11em 1fr 1fr;
-  grid-auto-rows: 2.2em;
-  align-items: center;
-  font-size: 1rem;
-
-  span {
-    font-size: 1.2rem;
-    color: var(--grey200);
-  }
-
-  input {
-    background-color: var(--blackblue700);
-    color: var(--grey100);
-    font-size: 1rem;
-    width: 9em;
-  }
-`;
-
-const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  gap: 2em;
-`;
 
 export default ManageFixturesDb;

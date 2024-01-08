@@ -2,7 +2,6 @@
 
 import { FormEvent, Fragment, useEffect, useState } from "react";
 import Image from "next/image";
-import styled from "styled-components";
 import dayjs from "dayjs";
 
 import arrowLeft from "public/images/ArrowLeft.svg";
@@ -15,6 +14,7 @@ import Fixture from "src/types/Fixture";
 import ManageFixturesDb from "src/components/ManageFixturesDb/ManageFixturesDb";
 import fetchGameweekFixtures from "src/actions/fetchGameweekFixtures";
 import updateFixturesDatabase from "src/actions/updateFixtures";
+import styles from "./AdminManageFixtures.module.css";
 
 interface Props {
   gameweek: number;
@@ -100,14 +100,15 @@ const AdminManageFixtures = ({ gameweek: initialGameweek }: Props) => {
   };
 
   return (
-    <Container>
-      <StyledWeekNavigator>
+    <div className={styles.container}>
+      <div className={styles.navigator}>
         {gameweek !== 1 ? (
           <Image
             onClick={() => {
               setFixturesFromApi([]);
               setGameweek((x) => x - 1);
             }}
+            className={styles.navigatorButton}
             src={arrowLeft}
             alt="Go to previous week"
           />
@@ -123,31 +124,32 @@ const AdminManageFixtures = ({ gameweek: initialGameweek }: Props) => {
               setFixturesFromApi([]);
               setGameweek((x) => x + 1);
             }}
+            className={styles.navigatorButton}
             src={arrowRight}
             alt="Go to next week"
           />
         ) : (
           <Image src={arrowRightDisabled} alt="disabled navigation" />
         )}
-      </StyledWeekNavigator>
+      </div>
 
-      <DbFixturesPanel>
+      <div className={styles.dbFixturesPanel}>
         <ManageFixturesDb
           fixtures={fixtures}
           updateFixtures={updateFixtures}
           submitFixtures={submitFixtures}
         />
-      </DbFixturesPanel>
+      </div>
 
-      <FplFixturesPanel>
+      <div className={styles.fplFixturesPanel}>
         <Heading level="h2" variant="secondary">
           API Fixtures
         </Heading>
         {fixturesFromApi?.length ? (
-          <FixturesTable>
-            <span>Kickoff</span>
-            <span>Home team</span>
-            <span>Away team</span>
+          <div className={styles.fplFixtureTable}>
+            <span className={styles.tableHeading}>Kickoff</span>
+            <span className={styles.tableHeading}>Home team</span>
+            <span className={styles.tableHeading}>Away team</span>
             {fixturesFromApi.map(({ kickoff, homeTeam, awayTeam }) => (
               <Fragment key={`${homeTeam}-${awayTeam}`}>
                 <div>{dayjs(kickoff).format("DD/MM/YYYY HH:mm")}</div>
@@ -155,9 +157,9 @@ const AdminManageFixtures = ({ gameweek: initialGameweek }: Props) => {
                 <div>{awayTeam}</div>
               </Fragment>
             ))}
-          </FixturesTable>
+          </div>
         ) : (
-          <p>
+          <p className={styles.fetchMessage}>
             Fetch fresh fixture data for Gameweek {gameweek}. This will send a
             GET request to FPL Towers&rsquo; API.
           </p>
@@ -180,71 +182,9 @@ const AdminManageFixtures = ({ gameweek: initialGameweek }: Props) => {
             {savingApiDataToDB ? "Saving..." : "Save to database"}
           </Button>
         ) : null}
-      </FplFixturesPanel>
-    </Container>
+      </div>
+    </div>
   );
 };
-
-const Container = styled.div`
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  padding: 0 1em;
-`;
-
-const DbFixturesPanel = styled.div`
-  grid-column: 1 / span 6;
-  @media (max-width: 1024px) {
-    grid-column: 1 / span 12;
-  }
-`;
-
-const FplFixturesPanel = styled.div`
-  grid-column: 8 / span 5;
-  @media (max-width: 1024px) {
-    grid-column: 1 / span 12;
-  }
-
-  display: flex;
-  flex-direction: column;
-  gap: 2em;
-
-  p {
-    font-size: 1rem;
-    padding: 1em;
-    background: #c9c9a8;
-    color: var(--black100);
-  }
-`;
-
-const StyledWeekNavigator = styled.div`
-  grid-column: 1 / span 12;
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-
-  img:hover {
-    cursor: pointer;
-  }
-`;
-
-const FixturesTable = styled.div`
-  display: grid;
-  grid-template-columns: 11em 1fr 1fr;
-  grid-auto-rows: 2.2em;
-  align-items: center;
-  font-size: 1rem;
-
-  span {
-    font-size: 1.2rem;
-    color: var(--grey200);
-  }
-
-  input {
-    background-color: var(--blackblue700);
-    color: var(--grey100);
-    font-size: 1rem;
-    width: 9em;
-  }
-`;
 
 export default AdminManageFixtures;

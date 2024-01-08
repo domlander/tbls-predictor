@@ -1,7 +1,6 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import styled from "styled-components";
 
 import {
   formatFixtureKickoffTime,
@@ -12,6 +11,7 @@ import GridRow from "src/components/GridRow";
 import Heading from "src/components/Heading";
 import Button from "src/components/Button";
 import useTransientState from "src/hooks/useTransientState";
+import styles from "./AdminUpdateResults.module.css";
 
 interface Props {
   fixtures: Fixture[];
@@ -111,18 +111,18 @@ const AdminUpdateResults = ({ fixtures }: Props) => {
     : scores.filter((score) => new Date(score.kickoff) <= lastWeek);
 
   return (
-    <Container>
+    <div className={styles.container}>
       <Heading level="h1" variant="secondary">
         Update Results
       </Heading>
-      <Tab
+      <Button
         variant="secondary"
         handleClick={() => setIsCurrentGameweekTab((x) => !x)}
       >
         {isCurrentGameweekTab ? "Old" : "Now"}
-      </Tab>
-      <form onSubmit={handleSubmit}>
-        <Table>
+      </Button>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <div className={styles.table}>
           {scoresToDisplay.map((score, i) => (
             <GridRow
               key={score.id}
@@ -141,55 +141,19 @@ const AdminUpdateResults = ({ fixtures }: Props) => {
               topRow={i === 0}
             />
           ))}
-        </Table>
-        <ButtonContainer>
-          <Button type="submit" variant="primary">
-            Save
-          </Button>
-        </ButtonContainer>
+        </div>
+        <Button type="submit" variant="primary">
+          Save
+        </Button>
         {showFeedback &&
           (isSaving ? (
-            <UserFeedback>Saving...</UserFeedback>
+            <p className={styles.feedback}>Saving...</p>
           ) : isSaved ? (
-            <UserFeedback>Save successful!</UserFeedback>
+            <p className={styles.feedback}>Save successful!</p>
           ) : null)}
       </form>
-    </Container>
+    </div>
   );
 };
-
-const Container = styled.div`
-  padding: 0 1em;
-`;
-
-const ButtonContainer = styled.div`
-  margin-top: 1.6em;
-`;
-
-const Tab = styled(Button)`
-  margin-bottom: 1em;
-`;
-
-const Table = styled.div`
-  display: grid;
-  grid-template-columns: 11em 1fr auto 5px auto 1fr;
-  grid-auto-rows: 4em;
-
-  @media (max-width: 768px) {
-    grid-template-columns: 7em 1fr auto 5px auto 1fr;
-    grid-auto-rows: 3em;
-  }
-
-  @media (max-width: 480px) {
-    grid-template-columns: 6em 1fr auto 5px auto 1fr;
-  }
-`;
-
-const UserFeedback = styled.p`
-  color: var(--cyan300);
-  font-size: 1.8em;
-  font-style: italic;
-  margin-top: 1em;
-`;
 
 export default AdminUpdateResults;
