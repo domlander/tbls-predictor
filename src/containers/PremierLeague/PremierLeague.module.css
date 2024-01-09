@@ -52,9 +52,9 @@
     margin-left: 1em;
     animation: skeletonLoading 1s linear infinite forwards;
     background: linear-gradient(to right,
-            var(--blackblue400) 4%,
-            var(--grey700) 25%,
-            var(--blackblue400) 36%) 0% 0% / 1500px 100%;
+        var(--blackblue400) 4%,
+        var(--grey700) 25%,
+        var(--blackblue400) 36%) 0% 0% / 1500px 100%;
 }
 
 .headerRow {

@@ -91,9 +91,9 @@ const PremierLeague = ({
                 return (
                   <div className={styles.row} key={team}>
                     <div
-                      className={[
-                        (styles.position, styles[positionClass]),
-                      ].join(" ")}
+                      className={[styles.position, styles[positionClass]].join(
+                        " "
+                      )}
                     >
                       {i + 1}
                     </div>
