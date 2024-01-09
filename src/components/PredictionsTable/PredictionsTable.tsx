@@ -88,14 +88,14 @@ const PredictionsTable = ({
   );
 
   return (
-    <Container>
+    <article>
       <StatsToggleContainer>
-        <StatsToggle
+        <Button
           variant="secondary"
           handleClick={() => setDisplayForm(!displayForm)}
         >
           {displayForm ? "Hide team form" : "Show team form"}
-        </StatsToggle>
+        </Button>
       </StatsToggleContainer>
       <form onSubmit={handleSubmit}>
         <Table $displayStats={displayForm}>
@@ -200,19 +200,17 @@ const PredictionsTable = ({
           <GameweekScore>{`Result: ${gameweekScore} points`}</GameweekScore>
         ) : null}
       </form>
-    </Container>
+    </article>
   );
 };
 
-const Container = styled.article``;
-
 const StatsToggleContainer = styled.div`
   width: max-content;
-`;
+  padding-bottom: 0.4em;
 
-const StatsToggle = styled(Button)`
-  font-size: 0.9rem !important;
-  margin-bottom: 0.4em;
+  button {
+    font-size: 0.9rem;
+  }
 
   @media (max-width: 768px) {
     display: none;
