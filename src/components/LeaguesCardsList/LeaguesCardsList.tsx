@@ -27,13 +27,7 @@ const LeaguesCardsList = ({ leagues }: Props) => {
           return (
             <section className={styles.leagueCard} key={id} tabIndex={0}>
               <Link href={`/league/${id}`} tabIndex={-1}>
-                <Heading
-                  level="h2"
-                  variant="secondary"
-                  className={styles.heading}
-                >
-                  {name}
-                </Heading>
+                <Heading level="h2">{name}</Heading>
                 {isPositionRelevant &&
                   (weeksToGo ? (
                     <p className={styles.leagueCardText}>

@@ -34,7 +34,7 @@ const UserStatsComponent = ({
 }) => {
   return (
     <article className={styles.container}>
-      <Heading level="h2" as="h1" variant="secondary">
+      <Heading level="h2" as="h1">
         My stats
       </Heading>
       <div className={styles.stats}>

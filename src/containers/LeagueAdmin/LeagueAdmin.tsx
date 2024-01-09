@@ -20,9 +20,7 @@ const LeagueAdminContainer = ({
 }: Props) => {
   return (
     <div className={styles.container}>
-      <Heading level="h1" variant="secondary">
-        {leagueName} - Admin
-      </Heading>
+      <Heading level="h1">{leagueName} - Admin</Heading>
       <>
         <LeagueApplicantsRequests applicants={applicants} leagueId={leagueId} />
         <LeagueParticipants participants={participants} />

@@ -36,9 +36,7 @@ const LeagueApplicantsRequests = ({
 
   return (
     <div>
-      <Heading level="h2" variant="secondary">
-        Requests
-      </Heading>
+      <Heading level="h2">Requests</Heading>
       {!validApplicants?.length ? (
         <p className={styles.label}>No valid applicants</p>
       ) : (

@@ -31,10 +31,6 @@
   outline: 1px solid var(--grey300);
 }
 
-.heading {
-  font-weight: 400;
-}
-
 .leagueCardText {
   font-size: 1rem;
   margin-top: 1em;

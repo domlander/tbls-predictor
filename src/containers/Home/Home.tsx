@@ -33,7 +33,7 @@ const Home = ({
     <section className={styles.container}>
       <article className={styles.predictions}>
         <div className={styles.predictionsHeader}>
-          <Heading level="h2" as="h1" variant="secondary">
+          <Heading level="h2" as="h1">
             Gameweek {weekId}
           </Heading>
           <Link

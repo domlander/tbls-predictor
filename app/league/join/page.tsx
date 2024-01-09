@@ -16,9 +16,7 @@ const Page = async () => {
 
   return (
     <section className={styles.container}>
-      <Heading level="h1" variant="secondary">
-        Join League
-      </Heading>
+      <Heading level="h1">Join League</Heading>
       <Form />
     </section>
   );

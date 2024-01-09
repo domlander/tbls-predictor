@@ -8,9 +8,7 @@ type Props = {
 const AccountContainer = ({ username }: Props) => {
   return (
     <>
-      <Heading level="h1" variant="secondary">
-        Account
-      </Heading>
+      <Heading level="h1">Account</Heading>
       <ChangeUsernameForm initialUsername={username} />
     </>
   );

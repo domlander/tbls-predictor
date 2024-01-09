@@ -23,9 +23,7 @@ const ManageFixturesDb = ({
 }: Props) => {
   return (
     <form className={styles.form} onSubmit={submitFixtures}>
-      <Heading level="h2" variant="secondary">
-        DB Fixtures
-      </Heading>
+      <Heading level="h2">DB Fixtures</Heading>
       {!fixtures?.length ? (
         <div>No fixtures found.</div>
       ) : (

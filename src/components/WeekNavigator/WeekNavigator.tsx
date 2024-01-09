@@ -24,9 +24,7 @@ const WeekNavigator = ({ prevGameweekUrl, nextGameweekUrl, week }: Props) => (
     ) : (
       <Image src={arrowLeftDisabled} alt="disabled navigation" priority />
     )}
-    <Heading level="h1" variant="secondary">
-      Gameweek {week}
-    </Heading>
+    <Heading level="h1">Gameweek {week}</Heading>
     {nextGameweekUrl ? (
       <Link href={nextGameweekUrl}>
         <Image src={arrowRight} alt="Go to next week" />

@@ -30,11 +30,12 @@
 }
 .button.secondary:hover,
 .button.secondary:focus {
-  background-color: var(--grey400);
   color: var(--blackblue400);
+  background-color: var(--grey400);
   outline: 1px solid var(--blackblue400);
 }
 .button.secondary:active {
+  color: var(--grey300);
   background-color: var(--blackblue400);
   outline: 1px solid var(--blackblue400);
 }

@@ -14,7 +14,7 @@ const MyLeagues = async ({ userId }: Props) => {
 
   return (
     <article className={styles.container}>
-      <Heading level="h2" as="h1" variant="secondary">
+      <Heading level="h2" as="h1">
         My leagues
       </Heading>
       {!activeLeagues?.length ? (

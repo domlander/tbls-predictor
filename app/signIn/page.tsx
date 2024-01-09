@@ -19,9 +19,7 @@ const Page = async () => {
 
   return (
     <section>
-      <Heading level="h1" variant="secondary">
-        Welcome!
-      </Heading>
+      <Heading level="h1">Welcome!</Heading>
       <div className={styles.buttonContainer}>
         <SignInButton />
       </div>

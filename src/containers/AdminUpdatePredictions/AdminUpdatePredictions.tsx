@@ -4,9 +4,7 @@ import Heading from "src/components/Heading";
 
 const AdminUpdatePredictions = () => (
   <section>
-    <Heading level="h1" variant="secondary">
-      Update Predictions
-    </Heading>
+    <Heading level="h1">Update Predictions</Heading>
     <p>No functionality yet</p>
   </section>
 );

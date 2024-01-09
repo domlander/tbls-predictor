@@ -115,9 +115,7 @@ const AdminManageFixtures = ({ gameweek: initialGameweek }: Props) => {
         ) : (
           <Image src={arrowLeftDisabled} alt="disabled navigation" />
         )}
-        <Heading level="h1" variant="secondary">
-          Week {gameweek}
-        </Heading>
+        <Heading level="h1">Week {gameweek}</Heading>
         {gameweek !== 38 ? (
           <Image
             onClick={() => {
@@ -142,9 +140,7 @@ const AdminManageFixtures = ({ gameweek: initialGameweek }: Props) => {
       </div>
 
       <div className={styles.fplFixturesPanel}>
-        <Heading level="h2" variant="secondary">
-          API Fixtures
-        </Heading>
+        <Heading level="h2">API Fixtures</Heading>
         {fixturesFromApi?.length ? (
           <div className={styles.fplFixtureTable}>
             <span className={styles.tableHeading}>Kickoff</span>

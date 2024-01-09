@@ -27,9 +27,7 @@ const Page = async () => {
 
   return (
     <section className={styles.container}>
-      <Heading level="h1" variant="secondary">
-        Create League
-      </Heading>
+      <Heading level="h1">Create League</Heading>
       <Form currentGameweek={currentGameweek} userId={session.user.id} />
     </section>
   );

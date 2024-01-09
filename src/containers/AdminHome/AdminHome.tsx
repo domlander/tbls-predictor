@@ -4,9 +4,7 @@ import styles from "./AdminHome.module.css";
 
 const AdminHome = () => (
   <section>
-    <Heading level="h1" variant="secondary">
-      Admin
-    </Heading>
+    <Heading level="h1">Admin</Heading>
     <ul>
       <li className={styles.listItem}>
         <Link href="admin/updateResults">Update Results</Link>

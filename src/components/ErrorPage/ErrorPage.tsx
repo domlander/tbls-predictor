@@ -10,7 +10,7 @@ export interface Props {
 const ErrorPage = ({ type }: Props) => (
   <div className={styles.container}>
     <h1 className={styles.title}>{type}</h1>
-    <Heading level="h2" variant="secondary">
+    <Heading level="h2">
       {type === "404" ? "Ooooooooooooooops!" : "Something went wrong..."}
     </Heading>
     <div className={styles.button}>

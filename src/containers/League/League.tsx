@@ -28,7 +28,7 @@ const LeagueContainer = ({
     <div className={styles.container}>
       <LeagueAdminLink administratorId={administratorId} leagueId={id} />
       <section className={styles.table}>
-        <Heading level="h2" as="h1" variant="secondary">
+        <Heading level="h2" as="h1">
           {leagueName}
         </Heading>
         {!fixtureWeeksAvailable?.length ? (

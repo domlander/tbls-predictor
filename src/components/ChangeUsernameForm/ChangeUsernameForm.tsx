@@ -22,9 +22,7 @@ const ChangeUsernameForm = ({ initialUsername }: Props) => {
 
   return (
     <section className={styles.container}>
-      <Heading level="h2" variant="secondary">
-        Update username
-      </Heading>
+      <Heading level="h2">Update username</Heading>
       <form action={formAction}>
         <label className={styles.label}>
           Username:

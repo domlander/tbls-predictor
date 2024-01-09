@@ -1,17 +1,10 @@
 .heading {
+    color: var(--grey300);
     text-align: left;
     margin: 0;
 }
 
 .h1 {
     text-align: center;
-    margin: "1em 0";
-}
-
-.primary {
-    color: var(--cyan500);
-}
-
-.secondary {
-    color: var(--grey300);
+    margin: 1em 0;
 }

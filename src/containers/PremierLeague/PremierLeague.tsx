@@ -1,5 +1,4 @@
 import { Fragment } from "react";
-import cx from "classnames";
 import Heading from "src/components/Heading";
 import type { PremierLeagueTeam } from "src/types/PremierLeagueTeam";
 import styles from "./PremierLeague.module.css";
@@ -39,9 +38,7 @@ const PremierLeague = ({
 }: Props) => {
   return (
     <div className={styles.container}>
-      <Heading level="h1" variant="secondary">
-        {heading}
-      </Heading>
+      <Heading level="h1">{heading}</Heading>
       <div className={isPredictedLeague ? styles.predictedTable : styles.table}>
         <div className={styles.headerRow}>
           <div className={styles.headerData} />
@@ -93,7 +90,11 @@ const PremierLeague = ({
                 const positionClass = getPositionColour(i + 1);
                 return (
                   <div className={styles.row} key={team}>
-                    <div className={cx(styles.position, styles[positionClass])}>
+                    <div
+                      className={[
+                        (styles.position, styles[positionClass]),
+                      ].join(" ")}
+                    >
                       {i + 1}
                     </div>
                     <div className={styles.team}>{team}</div>

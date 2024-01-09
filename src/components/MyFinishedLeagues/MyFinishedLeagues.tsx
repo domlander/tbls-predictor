@@ -10,9 +10,7 @@ export interface Props {
 const MyFinishedLeagues = ({ leagues }: Props) => {
   return (
     <section className={styles.container}>
-      <Heading level="h2" variant="secondary">
-        Finished leagues
-      </Heading>
+      <Heading level="h2">Finished leagues</Heading>
       <LeaguesCardsList leagues={leagues} />
     </section>
   );
