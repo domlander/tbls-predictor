@@ -4,21 +4,23 @@ import { MouseEvent, ReactNode } from "react";
 import styles from "./Button.module.css";
 
 export type Props = {
+  variant: "primary" | "secondary";
   children: ReactNode;
   disabled?: boolean;
   handleClick?: (e: MouseEvent<HTMLElement>) => void;
   id?: string;
   type?: "button" | "submit";
-  variant: "primary" | "secondary";
+  size?: "small" | "regular";
 };
 
 const Button = ({
+  variant,
   children,
   disabled = false,
   handleClick,
   id,
   type = "button",
-  variant,
+  size = "regular",
 }: Props) => (
   <button
     className={[
@@ -26,6 +28,7 @@ const Button = ({
       disabled && styles.disabled,
       variant === "primary" && styles.primary,
       variant === "secondary" && styles.secondary,
+      size === "small" && styles.small,
     ].join(" ")}
     disabled={disabled}
     id={id}

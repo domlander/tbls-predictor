@@ -1,7 +1,6 @@
 "use client";
 
 import { FormEvent, Fragment, useEffect, useState } from "react";
-import styled from "styled-components";
 
 import { chivoMono } from "app/fonts";
 import { calculateGameweekScore } from "utils/calculateGameweekScore";
@@ -19,6 +18,7 @@ import Prediction from "src/types/Prediction";
 import TeamFixtures from "src/types/TeamFixtures";
 import combineFixturesAndPredictions from "utils/combineFixturesAndPredictions";
 import GridRowForm from "../GridRowForm";
+import styles from "./PredictionsTable.module.css";
 
 const StateFeedback = {
   LOADING: "Loading predictions...",
@@ -89,16 +89,21 @@ const PredictionsTable = ({
 
   return (
     <article>
-      <StatsToggleContainer>
+      <div className={styles.statsToggleContainer}>
         <Button
           variant="secondary"
           handleClick={() => setDisplayForm(!displayForm)}
+          size="small"
         >
           {displayForm ? "Hide team form" : "Show team form"}
         </Button>
-      </StatsToggleContainer>
+      </div>
       <form onSubmit={handleSubmit}>
-        <Table $displayStats={displayForm}>
+        <div
+          className={[styles.table, displayForm && styles.displayForm].join(
+            " "
+          )}
+        >
           {fixturesWithPredictions.map(
             (
               {
@@ -136,15 +141,20 @@ const PredictionsTable = ({
                     homeTeam={homeTeam}
                     awayTeam={
                       homeGoals !== null && awayGoals !== null ? (
-                        <AwayTeam>
+                        <div className={styles.awayTeam}>
                           <span>{awayTeam}</span>
-                          <FullTimeResult className={chivoMono.className}>
+                          <span
+                            className={[
+                              chivoMono.className,
+                              styles.fullTimeResult,
+                            ].join(" ")}
+                          >
                             <span>FT</span>
                             <span>
                               {homeGoals}-{awayGoals}
                             </span>
-                          </FullTimeResult>
-                        </AwayTeam>
+                          </span>
+                        </div>
                       ) : (
                         <span>{awayTeam}</span>
                       )
@@ -172,13 +182,13 @@ const PredictionsTable = ({
               );
             }
           )}
-        </Table>
+        </div>
         {isAlwaysEditable ||
         fixturesWithPredictions.some(
           (prediction) => !isPastDeadline(prediction.kickoff)
         ) ? (
-          <ButtonsAndMessageContainer>
-            <ButtonContainer>
+          <div className={styles.buttonsAndMessageContainer}>
+            <div className={styles.buttonContainer}>
               <Button
                 id="save"
                 type="submit"
@@ -189,153 +199,21 @@ const PredictionsTable = ({
                   ? StateFeedback[state]
                   : "Save predictions"}
               </Button>
-            </ButtonContainer>
+            </div>
             {state !== "LOADING" && state !== "SAVING" ? (
-              <UserFeedback>{StateFeedback[state]}</UserFeedback>
+              <p className={styles.userFeedback}>{StateFeedback[state]}</p>
             ) : (
               <span />
             )}
-          </ButtonsAndMessageContainer>
+          </div>
         ) : gameweekScore !== null ? (
-          <GameweekScore>{`Result: ${gameweekScore} points`}</GameweekScore>
+          <p
+            className={styles.gameweekScore}
+          >{`Result: ${gameweekScore} points`}</p>
         ) : null}
       </form>
     </article>
   );
 };
-
-const StatsToggleContainer = styled.div`
-  width: max-content;
-  padding-bottom: 0.4em;
-
-  button {
-    font-size: 0.9rem;
-  }
-
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
-
-const Table = styled.div<{ $displayStats: boolean }>`
-  display: grid;
-  grid-template-columns: 11em 0.8fr auto 5px auto 1fr;
-  grid-auto-rows: ${({ $displayStats }) =>
-    $displayStats ? "4.8em 1fr" : "4.8em"};
-
-  @media (max-width: 768px) {
-    grid-template-columns: 7em 0.8fr auto 5px auto 1fr;
-    grid-auto-rows: 3.8em;
-  }
-
-  @media (max-width: 480px) {
-    grid-template-columns: 6em 0.8fr auto 4px auto 1fr;
-    grid-auto-rows: 3.4em;
-  }
-
-  @media (max-width: 375px) {
-    grid-template-columns: 5em 0.8fr auto 2px auto 1fr;
-    grid-auto-rows: 2.8em;
-  }
-
-  > div {
-    font-size: 1.1rem;
-    @media (max-width: 768px) {
-      font-size: 0.9rem;
-    }
-    @media (max-width: 480px) {
-      font-size: 0.75rem;
-    }
-    @media (max-width: 375px) {
-      font-size: 0.65rem;
-    }
-  }
-
-  input {
-    font-size: 1.2rem;
-    @media (max-width: 768px) {
-      font-size: 1rem;
-    }
-    @media (max-width: 480px) {
-      font-size: 0.8rem;
-    }
-    @media (max-width: 375px) {
-      font-size: 0.7rem;
-    }
-  }
-`;
-
-const ButtonsAndMessageContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-top: 1.6rem;
-
-  @media (max-width: 650px) {
-    flex-direction: column;
-    align-items: stretch;
-  }
-`;
-
-const ButtonContainer = styled.div`
-  order: 3;
-
-  @media (max-width: 650px) {
-    order: 1;
-    flex-basis: auto;
-  }
-`;
-
-const AwayTeam = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-`;
-
-const FullTimeResult = styled.span`
-  display: flex;
-  align-items: center;
-  gap: 0.5em;
-  font-size: 1rem;
-  color: var(--grey600);
-
-  @media (max-width: 768px) {
-    font-size: 0.75rem;
-  }
-  @media (max-width: 480px) {
-    font-size: 0.6rem;
-  }
-  @media (max-width: 375px) {
-    display: none;
-  }
-`;
-
-const UserFeedback = styled.p`
-  order: 2;
-  color: var(--cyan300);
-  font-size: 1.8em;
-  font-style: italic;
-  margin: 0;
-
-  @media (max-width: 768px) {
-    margin-top: 1em;
-  }
-`;
-
-const GameweekScore = styled.p`
-  color: var(--grey400);
-  margin: 1.4rem 0 0 1rem;
-  font-size: 2em;
-
-  @media (max-width: 768px) {
-    margin: 1rem 0 0 0.7rem;
-    font-size: 1rem;
-  }
-
-  @media (max-width: 480px) {
-    margin: 0.8rem 0 0 0.5rem;
-    font-size: 0.8rem;
-  }
-`;
 
 export default PredictionsTable;

@@ -6,6 +6,17 @@
   border-top: 1px solid var(--whiteOpacity33);  
   color: var(--grey500);
 
+  font-size: 1.2rem;
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+  @media (max-width: 480px) {
+    font-size: 0.8rem;
+  }
+  @media (max-width: 375px) {
+    font-size: 0.7rem;
+  }
+
   /* Firefox */
   -moz-appearance: textfield;
 }

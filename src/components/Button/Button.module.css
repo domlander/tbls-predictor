@@ -6,6 +6,10 @@
   width: 100%;
 }
 
+.button.small {
+  font-size: 0.9rem;
+}
+
 .button.primary {
   color: var(--black700);
   background-color: var(--cyan300);
