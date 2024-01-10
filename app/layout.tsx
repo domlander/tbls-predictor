@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react";
 import Maintenance from "src/containers/Maintenance";
-import StyledComponentsRegistry from "lib/registry";
 import AuthProvider from "./AuthProvider";
 import InnerLayout from "./InnerLayout";
 import { chivo } from "./fonts";
@@ -20,9 +19,7 @@ const RootLayout = ({ children }: Props) => {
       ) : (
         <html lang="en" className={chivo.className}>
           <body>
-            <StyledComponentsRegistry>
-              <InnerLayout>{children}</InnerLayout>
-            </StyledComponentsRegistry>
+            <InnerLayout>{children}</InnerLayout>
           </body>
         </html>
       )}

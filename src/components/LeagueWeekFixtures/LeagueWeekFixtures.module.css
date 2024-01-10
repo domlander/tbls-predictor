@@ -39,7 +39,7 @@
   }
 }
 
-.styledFixture {
+.fixture {
   flex-basis: 100%;
   text-align: center;
   font-size: 1.1rem;
@@ -56,14 +56,14 @@
 }
 
 .unclickableFixture {
-  composes: styledFixture;
+  composes: fixture;
 
   grid-template-columns: 1fr 40px 1fr;
   gap: 0.5em;
 }
 
 .clickableFixture {
-  composes: styledFixture;
+  composes: fixture;
 
   grid-template-columns: 1fr min-content 1fr;
   text-decoration: underline;
