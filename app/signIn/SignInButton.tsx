@@ -9,7 +9,7 @@ import Button from "src/components/Button";
 const SignInButton = () => {
   return (
     <Button handleClick={() => signIn()} type="button" variant="primary">
-      Sign in
+      Play for free
     </Button>
   );
 };
