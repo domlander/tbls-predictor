@@ -1,15 +1,18 @@
 .container {
-    height: 60vh;
-    margin-top: 8em;
-    margin-left: 8em;
+    height: 100vh;
     background: url(/images/background.svg) no-repeat center center;
+}
+
+.content {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     gap: 4em;
 
+    padding: 8em;
     @media (max-width: 480px) {
-        margin-left: 2em;
+        padding-top: 4em;
+        padding-left: 2em;
     }
 }
 

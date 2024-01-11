@@ -15,13 +15,17 @@ const Page = async () => {
   }
 
   return (
-    <section className={styles.container}>
-      <h1 className={styles.heading}>Predictor</h1>
-      <p className={styles.text}>Premier League final score prediction game</p>
-      <div className={styles.buttonContainer}>
-        <SignInButton />
-      </div>
-    </section>
+    <main className={styles.container}>
+      <section className={styles.content}>
+        <h1 className={styles.heading}>Predictor</h1>
+        <p className={styles.text}>
+          Premier League final score prediction game
+        </p>
+        <div className={styles.buttonContainer}>
+          <SignInButton />
+        </div>
+      </section>
+    </main>
   );
 };
 
