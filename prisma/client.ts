@@ -6,29 +6,24 @@
    global variables are not reloaded:
 
    https://www.prisma.io/docs/concepts/components/prisma-client/working-with-prismaclient/instantiate-prisma-client#prevent-hot-reloading-from-creating-new-instances-of-prismaclient
+
+   Updated 11-01-2024: latest recommendation, resolves typescript errors
+   https://www.prisma.io/docs/orm/more/help-and-troubleshooting/help-articles/nextjs-prisma-client-dev-practices
  */
 
 import { PrismaClient } from "@prisma/client";
 import { withAccelerate } from "@prisma/extension-accelerate";
 
+const prismaClientSingleton = () => {
+  return new PrismaClient().$extends(withAccelerate());
+};
+
 declare global {
-  namespace NodeJS {
-    interface Global {
-      prisma: PrismaClient;
-    }
-  }
+  var prisma: undefined | ReturnType<typeof prismaClientSingleton>;
 }
 
-// eslint-disable-next-line import/no-mutable-exports
-let prisma: PrismaClient;
-
-if (process.env.ENVIRONMENT === "production") {
-  prisma = new PrismaClient().$extends(withAccelerate());
-} else {
-  if (!global.prisma) {
-    global.prisma = new PrismaClient();
-  }
-  prisma = global.prisma;
-}
+const prisma = globalThis.prisma ?? prismaClientSingleton();
 
 export default prisma;
+
+if (process.env.NODE_ENV !== "production") globalThis.prisma = prisma;
