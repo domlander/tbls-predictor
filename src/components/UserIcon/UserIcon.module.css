@@ -1,8 +1,8 @@
 .circle {
   background-color: var(--blackblue400);
-  color: var(--cyan500);
+  color: var(--cyan400);
   border-radius: 50%;
-  border: 0.1em solid var(--cyan500);
+  border: 0.1em solid var(--cyan400);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,7 +19,7 @@
 .clickableCircle:focus, 
 .clickableCircle:hover {
   color: var(--blackblue600);
-  background-color: var(--cyan500);
+  background-color: var(--cyan400);
 }
 
 .name { 

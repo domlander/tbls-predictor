@@ -50,7 +50,7 @@
 }
 
 .loadingBanner {
-  background-color: var(--cyan500);
+  background-color: var(--cyan400);
   position: fixed;
   left: 0;
   top: 0;

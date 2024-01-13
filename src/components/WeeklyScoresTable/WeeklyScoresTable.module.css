@@ -114,7 +114,7 @@
 
 .allPointsWrapper::-webkit-scrollbar-thumb {
     /* Foreground */
-    background: var(--cyan600);
+    background: var(--cyan500);
 }
 
 .allPointsWrapper::-webkit-scrollbar-track {

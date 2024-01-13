@@ -30,7 +30,7 @@
 .bbbButton {
   color: var(--cyan300);
   background-color: var(--blackblue600);
-  border: 1px solid var(--cyan500);
+  border: 1px solid var(--cyan400);
   border-radius: 0.2em;
   cursor: pointer;
   line-height: 1.3em;

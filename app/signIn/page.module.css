@@ -1,24 +1,27 @@
 .container {
     height: 100vh;
-    background: url(/images/background.svg) no-repeat center center;
+    background: url(/images/background.svg) repeat center center;
 }
 
 .content {
+    width: 60vw;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     gap: 4em;
+    padding: 12em;
 
-    padding: 8em;
     @media (max-width: 480px) {
-        padding-top: 4em;
-        padding-left: 2em;
+        width: 100%;
+        padding-left: 4em;
     }
 }
 
 .heading {
     font-size: 3.6rem;
     line-height: 1.2;
+    color: var(--grey200);
     letter-spacing: 0.03em;
     margin: 0;
 }
@@ -26,10 +29,11 @@
 .text {
     font-size: 1.6rem;
     line-height: 1.5;
+    color: var(--grey300);
     margin: 0;
 }
 
 .buttonContainer {
     width: fit-content;
-    margin-top: 4em;
+    margin-top: 1em;
 }
