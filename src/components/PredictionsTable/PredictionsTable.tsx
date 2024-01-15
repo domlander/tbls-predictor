@@ -195,9 +195,7 @@ const PredictionsTable = ({
                 variant="primary"
                 disabled={state === "LOADING" || state === "SAVING"}
               >
-                {state === "LOADING" || state === "SAVING"
-                  ? StateFeedback[state]
-                  : "Save predictions"}
+                Save predictions
               </Button>
             </div>
             {state !== "LOADING" && state !== "SAVING" ? (
