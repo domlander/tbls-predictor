@@ -1,5 +1,5 @@
 export type PremierLeagueTeam = {
-  team: string;
+  name: string;
   points: number;
   wins: number;
   draws: number;

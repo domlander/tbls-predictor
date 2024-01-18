@@ -29,8 +29,8 @@
   outline: 1px solid var(--cyan400);
 }
 .button.primary:active {
-  background-color: var(--cyan500);
-  outline: 2px solid var(--cyan500);
+  background-color: var(--cyan400);
+  outline: 1px solid var(--cyan004);
 }
 
 .button.secondary {

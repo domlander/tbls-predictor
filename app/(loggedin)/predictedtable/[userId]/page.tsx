@@ -86,7 +86,8 @@ const Page = async ({ params }: { params: { userId: string } }) => {
   ).map((team) => ({
     ...team,
     predictedPoints: team.points,
-    points: premierLeagueTable.find((t) => t.team === team.team)?.points || 0,
+    points:
+      premierLeagueTable.find(({ name }) => name === team.name)?.points || 0,
   }));
 
   // Adjust the name of the team to include position difference

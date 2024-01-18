@@ -7,6 +7,10 @@ type FixtureType = Pick<
   "homeTeam" | "awayTeam" | "homeGoals" | "awayGoals"
 >;
 
+const pointAdjustments = [
+  { team: "Everton", adjustment: -10, reason: "financial fair play" },
+];
+
 const calculateGoalDifference = (team: PremierLeagueTeam): number => {
   const goalsScored = team.homeGoals + team.awayGoals;
   const goalsConceded = team.homeGoalsConceded + team.awayGoalsConceded;
@@ -16,13 +20,13 @@ const calculateGoalDifference = (team: PremierLeagueTeam): number => {
 
 const addTeamToTable = (
   table: PremierLeagueTeam[],
-  team: string,
+  name: string,
   isHome: boolean,
   goals: number,
   conceded: number
 ) => {
   table.push({
-    team,
+    name,
     points: calculateMatchResult(goals, conceded) || 0,
     wins: goals > conceded ? 1 : 0,
     draws: goals === conceded ? 1 : 0,
@@ -36,10 +40,10 @@ const addTeamToTable = (
 
 const addTeamToTableWithoutFixture = (
   teams: PremierLeagueTeam[],
-  team: PremierLeagueTeam["team"]
+  name: PremierLeagueTeam["name"]
 ) => {
   teams.push({
-    team,
+    name,
     points: 0,
     wins: 0,
     draws: 0,
@@ -52,16 +56,16 @@ const addTeamToTableWithoutFixture = (
 };
 
 const generatePremTable = (fixtures: FixtureType[]): PremierLeagueTeam[] => {
-  const table = fixtures.reduce(
-    (teams, { homeTeam, awayTeam, homeGoals, awayGoals }) => {
+  const table = fixtures
+    .reduce((teams, { homeTeam, awayTeam, homeGoals, awayGoals }) => {
       if (homeGoals === null || awayGoals === null) {
-        const tableHomeTeam = teams.find(({ team }) => team === homeTeam);
+        const tableHomeTeam = teams.find(({ name }) => name === homeTeam);
 
         if (!tableHomeTeam) {
           addTeamToTableWithoutFixture(teams, homeTeam);
         }
 
-        const tableAwayTeam = teams.find(({ team }) => team === homeTeam);
+        const tableAwayTeam = teams.find(({ name }) => name === homeTeam);
         if (!tableAwayTeam) {
           addTeamToTableWithoutFixture(teams, awayTeam);
         }
@@ -69,7 +73,7 @@ const generatePremTable = (fixtures: FixtureType[]): PremierLeagueTeam[] => {
         return teams;
       }
 
-      const tableHomeTeam = teams.find(({ team }) => team === homeTeam);
+      const tableHomeTeam = teams.find(({ name }) => name === homeTeam);
       if (!tableHomeTeam) {
         addTeamToTable(teams, homeTeam, true, homeGoals, awayGoals);
       } else {
@@ -84,7 +88,7 @@ const generatePremTable = (fixtures: FixtureType[]): PremierLeagueTeam[] => {
         tableHomeTeam.homeGoalsConceded += awayGoals || 0;
       }
 
-      const tableAwayTeam = teams.find(({ team }) => team === awayTeam);
+      const tableAwayTeam = teams.find(({ name }) => name === awayTeam);
       if (!tableAwayTeam) {
         addTeamToTable(teams, awayTeam, false, awayGoals, homeGoals);
       } else {
@@ -100,9 +104,18 @@ const generatePremTable = (fixtures: FixtureType[]): PremierLeagueTeam[] => {
       }
 
       return teams;
-    },
-    [] as PremierLeagueTeam[]
-  );
+    }, [] as PremierLeagueTeam[])
+    .map((team) => {
+      const ptsAdjustment = pointAdjustments
+        .filter((edits) => edits.team === team.name)
+        .reduce((total, { adjustment }) => total + adjustment, 0);
+
+      return {
+        ...team,
+        name: team.name + (ptsAdjustment ? "*" : ""),
+        points: team.points + ptsAdjustment,
+      };
+    });
 
   const enhancedTable: PremierLeagueTeam[] = table.map((team) => ({
     ...team,
@@ -120,7 +133,7 @@ const generatePremTable = (fixtures: FixtureType[]): PremierLeagueTeam[] => {
       b.points - a.points ||
       calculateGoalDifference(b) - calculateGoalDifference(a) || // Goal diff
       b.homeGoals + b.awayGoals - (a.homeGoals + a.homeGoals) || // Goals scored
-      a.team.localeCompare(b.team)
+      a.name.localeCompare(b.name)
     );
   });
 

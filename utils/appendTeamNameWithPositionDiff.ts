@@ -7,7 +7,7 @@ export const appendTeamNameWithPositionDiff = (
   return predictedTable.map((team, i) => {
     const position = i + 1;
     const actualPosition =
-      actualTable.findIndex((t) => t.team === team.team) + 1;
+      actualTable.findIndex(({ name }) => name === team.name) + 1;
     const difference = actualPosition - position;
 
     let text = "";
@@ -21,7 +21,7 @@ export const appendTeamNameWithPositionDiff = (
 
     return {
       ...team,
-      team: `${team.team} ${text}`,
+      team: `${team.name} ${text}`,
     };
   });
 };

@@ -106,12 +106,13 @@
 .userFeedback {
   order: 2;
   color: var(--cyan300);
-  font-size: 0.8rem;
+  font-size: 1.1rem;
   font-style: italic;
   margin: 0;
   
   @media (max-width: 768px) {
     margin-top: 1em;
+    font-size: 0.9rem;
   }
 }
 

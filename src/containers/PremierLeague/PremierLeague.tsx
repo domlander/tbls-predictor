@@ -74,7 +74,7 @@ const PremierLeague = ({
           : teams?.map(
               (
                 {
-                  team,
+                  name,
                   played,
                   wins,
                   draws,
@@ -89,7 +89,7 @@ const PremierLeague = ({
               ) => {
                 const positionClass = getPositionColour(i + 1);
                 return (
-                  <div className={styles.row} key={team}>
+                  <div className={styles.row} key={name}>
                     <div
                       className={[styles.position, styles[positionClass]].join(
                         " "
@@ -97,7 +97,7 @@ const PremierLeague = ({
                     >
                       {i + 1}
                     </div>
-                    <div className={styles.team}>{team}</div>
+                    <div className={styles.team}>{name}</div>
                     <div>{played}</div>
                     <div>{wins}</div>
                     <div>{draws}</div>
