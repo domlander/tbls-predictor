@@ -17,17 +17,17 @@
 .leagueCard {
   max-width: 400px;
   border: 1px solid var(--grey300);
-  background-color: var(--blackblue300);
+  background-color: var(--blackblue400);
   padding: 3em 3em 2em;
   cursor: pointer;
 }
 .leagueCard:hover,
 .leagueCard:focus {
-  background-color: var(--blackblue200);
+  background-color: var(--blackblue300);
   outline: 1px solid var(--grey300);
 }
 .leagueCard:active {
-  background-color: var(--blackblue300);
+  background-color: var(--blackblue400);
   outline: 1px solid var(--grey300);
 }
 

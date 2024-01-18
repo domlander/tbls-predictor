@@ -1,13 +1,13 @@
 .button {
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 300;
-  height: 2.2em;
+  height: 2.6em;
   padding: 0 1.6em;
   width: 100%;
 
   @media (max-width: 480px) {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
 }
 
@@ -41,9 +41,9 @@
 }
 .button.secondary:hover,
 .button.secondary:focus {
-  color: var(--blackblue400);
-  background-color: var(--grey400);
-  outline: 1px solid var(--blackblue400);
+  color: var(--grey200);
+  background-color: var(--blackblue300);
+  outline: 1px solid var(--grey200);
 }
 .button.secondary:active {
   color: var(--grey300);
