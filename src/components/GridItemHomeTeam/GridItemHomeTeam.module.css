@@ -6,7 +6,7 @@
   color: var(--grey200);
   background-color: inherit;
   padding-left: 0.4em;
-  padding-right: 1em;
+  padding-right: 0.8em;
   border-top: 1px solid var(--whiteOpacity33);
 
   font-size: 1.1rem;
@@ -15,7 +15,6 @@
   }
   @media (max-width: 480px) {
     font-size: 0.75rem;
-    padding-right: 0.5em;
   }
   @media (max-width: 375px) {
     font-size: 0.65rem;

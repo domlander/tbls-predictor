@@ -1,20 +1,15 @@
 .input {
-  width: 2em;
+  width: 1.8em;
+  padding: 0;
   background-color: inherit;
-  text-align: center;
   border: 0;
   border-top: 1px solid var(--whiteOpacity33);  
   color: var(--grey500);
+  text-align: center;
 
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   @media (max-width: 768px) {
     font-size: 1rem;
-  }
-  @media (max-width: 480px) {
-    font-size: 0.8rem;
-  }
-  @media (max-width: 375px) {
-    font-size: 0.7rem;
   }
 
   /* Firefox */
@@ -26,9 +21,11 @@
 .input::placeholder {
   color: var(--grey500opacity50);
 }
+
 .input.editable {
-  color: var(--grey200)
+  color: var(--grey300);
 }
+
 .input.topRow {
   border-top: none;
 }

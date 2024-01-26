@@ -105,6 +105,7 @@ const ScoreInput = ({
         styles.input,
         isTopRow && styles.topRow,
         isEditable && styles.editable,
+        isHome && styles.home,
       ].join(" ")}
       pattern="[0-9]"
       inputMode="numeric"
