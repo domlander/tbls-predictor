@@ -1,0 +1,30 @@
+@keyframes skeletonLoading {
+  0% {
+      background-position: -600px 0
+  }
+  100% {
+      background-position: 0px 0;
+  }
+}
+
+.middle {
+  grid-column: span 3;
+  width: 85px;
+  border-top: 1px solid var(--whiteOpacity33);
+  animation: skeletonLoading 1.3s linear infinite forwards;
+  background: linear-gradient(
+      to right,
+      var(--blackblue400) 4%,
+      var(--grey700) 22%,
+      var(--blackblue400) 36%
+    )
+    0% 0% / 800px 100%;
+
+  @media (max-width: 768px) {
+    width: 62px;
+  }
+}
+
+.middle.topRow {
+  border-top: none
+}

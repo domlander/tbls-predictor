@@ -5,20 +5,6 @@ import { chivoMono } from "app/fonts";
 import Fixture from "src/types/Fixture";
 import styles from "./ScoreInput.module.css";
 
-export type Props = {
-  fixtureId: Fixture["id"];
-  goals: string;
-  className?: string;
-  isHome: boolean;
-  isTopRow: boolean;
-  isEditable: boolean;
-  updateGoals: (
-    fixtureId: number,
-    isHomeTeam: boolean,
-    homeGoals: string
-  ) => void;
-};
-
 const matchSingleDigitOrEmptyStringRegex = /^$|^[0-9]$/;
 
 const preventNonNumericInputs = (event: KeyboardEvent<HTMLInputElement>) => {
@@ -70,6 +56,20 @@ const focusNextElement = (name: string, value: string) => {
       if (saveButton) saveButton.focus();
     }
   }
+};
+
+export type Props = {
+  fixtureId: Fixture["id"];
+  goals: string;
+  className?: string;
+  isHome: boolean;
+  isTopRow: boolean;
+  isEditable: boolean;
+  updateGoals: (
+    fixtureId: number,
+    isHomeTeam: boolean,
+    homeGoals: string
+  ) => void;
 };
 
 const ScoreInput = ({
