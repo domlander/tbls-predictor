@@ -3,6 +3,7 @@
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "app/api/auth/[...nextauth]/route";
 import prisma from "prisma/client";
+import { revalidatePath } from "next/cache";
 
 const processJoinLeagueRequest = async (
   leagueId: number,
@@ -73,6 +74,8 @@ const processJoinLeagueRequest = async (
         },
       },
     });
+
+    revalidatePath(`league/${leagueId}/admin`, "page");
   } else {
     // Reject league join application
     await prisma.applicant.update({

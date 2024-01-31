@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth/next";
 import * as Sentry from "@sentry/nextjs";
 import dayjs from "dayjs";
+import { revalidatePath } from "next/cache";
 
 import prisma from "prisma/client";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
@@ -201,6 +202,9 @@ const populateFixtures = async (
         const client = await clientPromise;
         const db = client.db("tbls_db");
         await db.collection("logs").insertMany(logs);
+
+        revalidatePath("/", "page");
+        revalidatePath(`/predictions/${theGameweek}`, "page");
       } catch (error) {
         Sentry.captureException(`Logging failed. ${error}`);
       }
