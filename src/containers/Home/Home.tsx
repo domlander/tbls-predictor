@@ -8,7 +8,6 @@ import MyLeagues from "src/components/MyLeagues";
 import MyLeaguesLoading from "src/components/MyLeagues/MyLeaguesLoading";
 import UserStats from "src/components/UserStats";
 import UserStatsLoading from "src/components/UserStats/UserStatsLoading";
-import Prediction from "src/types/Prediction";
 import User from "src/types/User";
 import Predictions from "../Predictions";
 import styles from "./Home.module.css";
@@ -16,19 +15,12 @@ import styles from "./Home.module.css";
 interface Props {
   weekId: number;
   fixtures: Fixture[];
-  predictions: Prediction[];
   recentFixturesByTeam: TeamFixtures[];
   userId: User["id"];
   currentGameweek: number;
 }
 
-const Home = ({
-  weekId,
-  fixtures,
-  predictions,
-  recentFixturesByTeam,
-  userId,
-}: Props) => {
+const Home = ({ weekId, fixtures, recentFixturesByTeam, userId }: Props) => {
   return (
     <section className={styles.container}>
       <article className={styles.predictions}>
@@ -45,7 +37,6 @@ const Home = ({
         </div>
         <Predictions
           fixtures={fixtures}
-          predictions={predictions}
           weekId={weekId}
           recentFixturesByTeam={recentFixturesByTeam}
         />
