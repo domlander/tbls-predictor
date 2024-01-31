@@ -17,20 +17,28 @@
   padding: 0 1em;
 }
 
+.button.disabled {
+  opacity: 50%;
+  pointer-events: none;
+}
+
 .button.primary {
   color: var(--cyan004);
   background-color: var(--cyan500);
   border: 0;
   border-radius: 0.1em;
 }
-.button.primary:focus,
-.button.primary:hover {
+.button.primary:focus:not(.disabled),
+.button.primary:hover:not(.disabled) {
   background-color: var(--cyan400);
   outline: 1px solid var(--cyan400);
 }
-.button.primary:active {
+.button.primary:active:not(.disabled) {
   background-color: var(--cyan400);
   outline: 1px solid var(--cyan004);
+}
+.button.primary.disabled {
+  color: var(--blackblue400);
 }
 
 .button.secondary {
@@ -39,19 +47,18 @@
   border: 1px solid var(--grey300);
   border-radius: 0.4em;
 }
-.button.secondary:hover,
-.button.secondary:focus {
+.button.secondary:hover:not(.disabled),
+.button.secondary:focus:not(.disabled) {
   color: var(--grey200);
   background-color: var(--blackblue300);
   outline: 1px solid var(--grey200);
 }
-.button.secondary:active {
+.button.secondary:active:not(.disabled) {
   color: var(--grey300);
   background-color: var(--blackblue400);
   outline: 1px solid var(--blackblue400);
 }
-
-.button.disabled {
-  opacity: 50%;
-  color: var(--blackblue400);
+.button.secondary.disabled {
+  color: var(--grey300);
 }
+
