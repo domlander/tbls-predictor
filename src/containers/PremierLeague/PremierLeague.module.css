@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    margin-top: 1em;
     margin-left: 2em;
     padding: 0 1em;
 
@@ -33,6 +34,18 @@
 
     @media (max-width: 768px) {
         grid-template-columns: max-content minmax(max-content, 14em) repeat(7, 2em);
+    }
+}
+
+.explainer {
+    max-width: 600px;
+    color: var(--grey200);
+    margin-bottom: 2em;
+    font-size: 0.9rem;
+    font-style: italic;
+
+    @media (max-width: 768px) {
+        font-size: 0.7rem;
     }
 }
 

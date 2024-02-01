@@ -2,6 +2,7 @@ import { chivoMono } from "app/fonts";
 import userStats from "src/actions/userStats";
 import styles from "./UserStats.module.css";
 import Heading from "../Heading";
+import Link from "next/link";
 
 const UserStats = async () => {
   const stats = await userStats();
@@ -56,6 +57,9 @@ const UserStatsComponent = ({
             {correctPerc}
           </div>
         </div>
+      </div>
+      <div className={styles.predictedTable}>
+        <Link href="/predictedtable">My predicted table</Link>
       </div>
     </article>
   );

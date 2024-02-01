@@ -44,6 +44,18 @@
   }
 }
 
+.predictedTable {
+  font-size: 1.2rem;
+  color: var(--grey300);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+}
+
 @keyframes skeletonLoading {
   0% {
       background-position: -800px 0

@@ -39,6 +39,12 @@ const PremierLeague = ({
   return (
     <div className={styles.container}>
       <Heading level="h1">{heading}</Heading>
+      {isPredictedLeague ? (
+        <p className={styles.explainer}>
+          The Premier League table if all of your predictions were perfect.
+          Missed predictions use the actual result of the game.
+        </p>
+      ) : null}
       <div className={isPredictedLeague ? styles.predictedTable : styles.table}>
         <div className={styles.headerRow}>
           <div className={styles.headerData} />
