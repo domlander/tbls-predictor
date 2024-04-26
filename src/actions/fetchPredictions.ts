@@ -17,42 +17,46 @@ const fetchPredictions = async (
     return { predictions: [] };
   }
 
-  const predictions = await prisma.prediction.findMany({
+  /**
+   * Find all fixtures for the gameweek
+   */
+  const fixtures = await prisma.fixture.findMany({
     where: {
-      AND: [
-        { userId: session.user.id },
-        {
-          fixture: {
-            gameweek: weekId,
-          },
-        },
-      ],
+      gameweek: weekId,
     },
     include: {
-      user: {
-        select: {
-          id: true,
-        },
-      },
-      fixture: {
-        select: {
-          homeGoals: true,
-          awayGoals: true,
+      predictions: {
+        where: {
+          userId: session.user.id,
         },
       },
     },
   });
 
-  // Don't trust the score in the predictions table
-  const predictionsWithScore = predictions.map((prediction) => ({
-    ...prediction,
-    score: calculatePredictionScore(
-      [prediction.homeGoals, prediction.awayGoals, prediction.bigBoyBonus],
-      [prediction.fixture.homeGoals, prediction.fixture.awayGoals]
-    ),
-  }));
+  /**
+   * Uses 0-0 as the prediction if none found.
+   */
+  const predictions = fixtures.map((fixture) => {
+    const prediction = fixture.predictions[0] || {
+      homeGoals: 0,
+      awayGoals: 0,
+      bigBoyBonus: false,
+    };
 
-  return { predictions: predictionsWithScore };
+    return {
+      user: { id: session.user.id },
+      fixtureId: fixture.id,
+      homeGoals: prediction.homeGoals,
+      awayGoals: prediction.awayGoals,
+      bigBoyBonus: prediction.bigBoyBonus,
+      score: calculatePredictionScore(
+        [prediction.homeGoals, prediction.awayGoals, prediction.bigBoyBonus],
+        [fixture.homeGoals, fixture.awayGoals]
+      ),
+    };
+  });
+
+  return { predictions };
 };
 
 export default fetchPredictions;
