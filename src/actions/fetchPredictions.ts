@@ -33,13 +33,10 @@ const fetchPredictions = async (
     },
   });
 
-  /**
-   * Uses 0-0 as the prediction if none found.
-   */
   const predictions = fixtures.map((fixture) => {
     const prediction = fixture.predictions[0] || {
-      homeGoals: 0,
-      awayGoals: 0,
+      homeGoals: null,
+      awayGoals: null,
       bigBoyBonus: false,
     };
 
