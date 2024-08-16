@@ -11,17 +11,13 @@ import type FixtureWithPrediction from "src/types/FixtureWithPrediction";
 import GridRowForm from "src/components/GridRowForm";
 import Button from "src/components/Button";
 import type Fixture from "src/types/Fixture";
-import GridRow from "src/components/GridRow";
+import GridRow from "src/components/GridRowFixture";
 import type User from "src/types/User";
 import type Prediction from "src/types/Prediction";
 import type TeamFixtures from "src/types/TeamFixtures";
 import combineFixturesAndPredictions from "utils/combineFixturesAndPredictions";
 import { calculateGameweekScore } from "utils/calculateGameweekScore";
 import isPastDeadline from "utils/isPastDeadline";
-import {
-  formatFixtureKickoffTime,
-  whenIsTheFixture,
-} from "utils/kickoffDateHelpers";
 import styles from "./PredictionsTable.module.css";
 
 const StateFeedback = {
@@ -78,8 +74,6 @@ const PredictionsForm = ({
 
   const fixturesWithPredictions: FixtureWithPrediction[] =
     combineFixturesAndPredictions(fixtures, predictions || []);
-
-  const firstFixtureKickoffTiming = whenIsTheFixture(fixtures[0].kickoff);
   const gameweekScore = calculateGameweekScore(fixturesWithPredictions);
   const isBbbLockedForGameweek = fixturesWithPredictions.some(
     ({ bigBoyBonus, kickoff }) => bigBoyBonus && isPastDeadline(kickoff)
@@ -222,10 +216,8 @@ const PredictionsForm = ({
                 <Fragment key={fixtureId}>
                   <GridRow
                     fixtureId={fixtureId}
-                    kickoff={formatFixtureKickoffTime(
-                      kickoff,
-                      firstFixtureKickoffTiming
-                    )}
+                    kickoff={kickoff}
+                    firstFixtureInWeekKickoff={fixtures[0].kickoff}
                     homeTeam={homeTeam}
                     awayTeam={
                       homeGoals !== null && awayGoals !== null ? (

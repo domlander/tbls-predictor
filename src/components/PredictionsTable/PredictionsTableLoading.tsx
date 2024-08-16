@@ -1,9 +1,4 @@
 import { Fragment } from "react";
-
-import {
-  formatFixtureKickoffTime,
-  whenIsTheFixture,
-} from "utils/kickoffDateHelpers";
 import Button from "src/components/Button";
 import Fixture from "src/types/Fixture";
 import styles from "./PredictionsTable.module.css";
@@ -15,8 +10,6 @@ interface Props {
 }
 
 const PredictionsTableLoading = ({ fixtures }: Props) => {
-  const firstFixtureKickoffTiming = whenIsTheFixture(fixtures[0].kickoff);
-
   return (
     <article>
       <div className={styles.statsToggleContainer}>
@@ -31,10 +24,8 @@ const PredictionsTableLoading = ({ fixtures }: Props) => {
               <Fragment key={id}>
                 <GridRowFixtureLoading
                   fixtureId={id}
-                  kickoff={formatFixtureKickoffTime(
-                    kickoff,
-                    firstFixtureKickoffTiming
-                  )}
+                  kickoff={kickoff}
+                  firstFixtureInWeekKickoff={fixtures[0].kickoff}
                   homeTeam={homeTeam}
                   awayTeam={
                     homeGoals !== null && awayGoals !== null ? (

@@ -26,19 +26,6 @@
   width: 100%;
 }
 
-.kickoff {
-  flex-basis: 8em;
-  text-align: center;
-  align-self: center;
-  color: var(--grey400);
-  font-size: 0.8rem;
-  letter-spacing: -0.02rem;
-  
-  @media (max-width: 480px) {
-    font-size: 0.7rem;
-  }
-}
-
 .fixture {
   flex-basis: 100%;
   text-align: center;

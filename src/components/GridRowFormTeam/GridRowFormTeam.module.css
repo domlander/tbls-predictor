@@ -41,17 +41,6 @@
   color: var(--red300);
 }
 
-.kickoff {
-  flex-basis: 4em;
-  color: var(--grey500);
-}
-.kickoff.home {
-  text-align: end;
-}
-.kickoff.away {
-  text-align: start;
-}
-
 .noForm {
   padding-top: 0.4em;
   padding-bottom: 1em;

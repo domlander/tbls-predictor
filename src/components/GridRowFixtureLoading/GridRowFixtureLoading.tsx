@@ -7,7 +7,8 @@ import styles from "./GridRowFixtureLoading.module.css";
 
 export type Props = {
   fixtureId: Fixture["id"];
-  kickoff: string;
+  kickoff: Date;
+  firstFixtureInWeekKickoff: Date;
   homeTeam: Fixture["homeTeam"];
   awayTeam: Fixture["awayTeam"] | ReactNode;
   topRow: boolean;
@@ -16,13 +17,19 @@ export type Props = {
 const GridRowFixtureLoading = ({
   fixtureId,
   kickoff,
+  firstFixtureInWeekKickoff,
   homeTeam,
   awayTeam,
   topRow,
 }: Props) => {
   return (
     <>
-      <GridItemKickoff locked={true} label={kickoff} topRow={topRow} />
+      <GridItemKickoff
+        kickoff={kickoff}
+        firstFixtureInWeekKickoff={firstFixtureInWeekKickoff}
+        locked={true}
+        topRow={topRow}
+      />
       <GridItemHomeTeam
         isBbb={false}
         label={homeTeam}

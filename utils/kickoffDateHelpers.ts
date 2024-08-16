@@ -2,7 +2,23 @@ import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
 import tz from "dayjs/plugin/timezone";
 
-type DateFormat = "past" | "today" | "soon" | "future";
+export type FixtureDateTimeFormat =
+  /**
+   * Yesterday or earlier
+   */
+  | "past"
+  /**
+   * Today
+   */
+  | "today"
+  /**
+   * Between tomorrow and 6 days from now
+   */
+  | "soon"
+  /**
+   * At least 7 days or more in the future
+   */
+  | "future";
 
 dayjs.extend(utc);
 dayjs.extend(tz);
@@ -40,7 +56,7 @@ const getLocalKickoffTime = (dateInput: Date | string) => {
 
 export function formatFixtureKickoffTime(
   dateInput: Date | string,
-  when: DateFormat = "future"
+  when: FixtureDateTimeFormat = "future"
 ) {
   const localTime = getLocalKickoffTime(dateInput);
   const dateFormat = dateFormatDictionary[when];
@@ -48,7 +64,9 @@ export function formatFixtureKickoffTime(
   return dayjs(localTime).format(dateFormat);
 }
 
-export function whenIsTheFixture(dateInput: Date | string): DateFormat {
+export function whenIsTheFixture(
+  dateInput: Date | string
+): FixtureDateTimeFormat {
   const fixture = getLocalKickoffTime(dateInput);
 
   // Edge case: If the match is 7 days away, the match is classified as being far away

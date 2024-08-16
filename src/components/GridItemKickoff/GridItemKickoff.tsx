@@ -1,21 +1,38 @@
+"use client";
+
+import {
+  formatFixtureKickoffTime,
+  whenIsTheFixture,
+} from "utils/kickoffDateHelpers";
 import styles from "./GridItemKickoff.module.css";
 
 export type Props = {
-  label: string;
+  kickoff: Date;
+  firstFixtureInWeekKickoff: Date;
   locked: boolean;
   topRow: boolean;
 };
 
-const GridItemKickoff = ({ label, locked, topRow }: Props) => (
-  <span
-    className={[
-      styles.kickoff,
-      locked && styles.locked,
-      topRow && styles.topRow,
-    ].join(" ")}
-  >
-    {label}
-  </span>
-);
+const GridItemKickoff = ({
+  kickoff,
+  firstFixtureInWeekKickoff,
+  locked,
+  topRow,
+}: Props) => {
+  const fixturesFormat = whenIsTheFixture(firstFixtureInWeekKickoff);
+  const formattedKickoff = formatFixtureKickoffTime(kickoff, fixturesFormat);
+
+  return (
+    <span
+      className={[
+        styles.kickoff,
+        locked && styles.locked,
+        topRow && styles.topRow,
+      ].join(" ")}
+    >
+      {formattedKickoff}
+    </span>
+  );
+};
 
 export default GridItemKickoff;

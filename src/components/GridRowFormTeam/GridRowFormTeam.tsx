@@ -1,7 +1,7 @@
 import type Fixture from "src/types/Fixture";
-import { getShortDateKickoffTime } from "utils/kickoffDateHelpers";
 import getMatchResultText from "utils/getMatchResultText";
 import styles from "./GridRowFormTeam.module.css";
+import GridRowKickoff from "../GridRowKickoff";
 
 export type Props = {
   team: Fixture["homeTeam"];
@@ -53,14 +53,7 @@ const GridRowFormTeam = ({ team, recentFixtures, isHome = false }: Props) => {
               >
                 {result} {homeGoals}-{awayGoals} {oppo}
               </div>
-              <div
-                className={[
-                  styles.kickoff,
-                  isHome ? styles.home : styles.away,
-                ].join(" ")}
-              >
-                {getShortDateKickoffTime(kickoff)}
-              </div>
+              <GridRowKickoff kickoff={kickoff} isHome={isHome} />
             </div>
           );
         }

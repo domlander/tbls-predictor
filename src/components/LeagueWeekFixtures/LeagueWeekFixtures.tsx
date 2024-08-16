@@ -1,11 +1,8 @@
 import Link from "next/link";
 
 import { chivoMono } from "app/fonts";
-import {
-  formatFixtureKickoffTime,
-  whenIsTheFixture,
-} from "utils/kickoffDateHelpers";
 import Fixture from "src/types/Fixture";
+import KickoffTime from "src/components/LeagueWeekKickoff";
 import LeagueWeekPrediction from "src/components/LeagueWeekPrediction";
 import calculatePredictionScore from "utils/calculatePredictionScore";
 import isPastDeadline from "utils/isPastDeadline";
@@ -17,8 +14,6 @@ export type Props = {
 };
 
 const LeagueWeekFixtures = ({ weekId, fixtures }: Props) => {
-  const firstFixtureKickoffTiming = whenIsTheFixture(fixtures[0].kickoff);
-
   return (
     <>
       {fixtures.map(
@@ -33,9 +28,10 @@ const LeagueWeekFixtures = ({ weekId, fixtures }: Props) => {
         }) => (
           <section className={styles.container} key={id}>
             <div className={styles.fixtureRow}>
-              <div className={styles.kickoff}>
-                {formatFixtureKickoffTime(kickoff, firstFixtureKickoffTiming)}
-              </div>
+              <KickoffTime
+                kickoff={kickoff}
+                firstFixtureInWeek={fixtures[0].kickoff}
+              />
               {isPastDeadline(kickoff) ? (
                 <span className={styles.unclickableFixture}>
                   <span className={styles.homeTeam}>{homeTeam}</span>

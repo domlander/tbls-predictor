@@ -2,12 +2,8 @@
 
 import { FormEvent, useEffect, useState } from "react";
 
-import {
-  formatFixtureKickoffTime,
-  whenIsTheFixture,
-} from "utils/kickoffDateHelpers";
 import Fixture from "src/types/Fixture";
-import GridRow from "src/components/GridRow";
+import GridRow from "src/components/GridRowFixture";
 import Heading from "src/components/Heading";
 import Button from "src/components/Button";
 import useTransientState from "src/hooks/useTransientState";
@@ -96,8 +92,6 @@ const AdminUpdateResults = ({ fixtures }: Props) => {
 
   if (!scores?.length) return <Heading level="h1">No fixtures</Heading>;
 
-  const firstFixtureKickoffTiming = whenIsTheFixture(scores[0].kickoff);
-
   const lastWeek = new Date();
   lastWeek.setDate(lastWeek.getDate() - 6);
 
@@ -120,10 +114,8 @@ const AdminUpdateResults = ({ fixtures }: Props) => {
             <GridRow
               key={score.id}
               fixtureId={score.id}
-              kickoff={formatFixtureKickoffTime(
-                score.kickoff,
-                firstFixtureKickoffTiming
-              )}
+              kickoff={score.kickoff}
+              firstFixtureInWeekKickoff={scores[0].kickoff}
               homeTeam={score.homeTeam}
               awayTeam={score.awayTeam}
               homeGoals={score.homeGoals?.toString() || ""}
