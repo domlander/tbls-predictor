@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { chivoMono } from "app/fonts";
 import Fixture from "src/types/Fixture";
-import KickoffTime from "src/components/LeagueWeekKickoff";
+import LeagueWeekKickoff from "src/components/LeagueWeekKickoff";
 import LeagueWeekPrediction from "src/components/LeagueWeekPrediction";
 import calculatePredictionScore from "utils/calculatePredictionScore";
 import isPastDeadline from "utils/isPastDeadline";
@@ -28,7 +28,7 @@ const LeagueWeekFixtures = ({ weekId, fixtures }: Props) => {
         }) => (
           <section className={styles.container} key={id}>
             <div className={styles.fixtureRow}>
-              <KickoffTime
+              <LeagueWeekKickoff
                 kickoff={kickoff}
                 firstFixtureInWeek={fixtures[0].kickoff}
               />

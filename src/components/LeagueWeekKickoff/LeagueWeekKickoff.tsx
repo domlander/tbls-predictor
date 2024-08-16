@@ -5,20 +5,25 @@ import {
   whenIsTheFixture,
 } from "utils/kickoffDateHelpers";
 import styles from "./LeagueWeekKickoff.module.css";
+import { useEffect, useState } from "react";
 
 export type Props = {
   kickoff: Date;
   firstFixtureInWeek: Date;
 };
 
-const LeagueWeekKickoff = ({ kickoff, firstFixtureInWeek }: Props) => {
-  const firstFixtureKickoffTiming = whenIsTheFixture(firstFixtureInWeek);
+const LeagueWeekKickoff = ({
+  kickoff: kickoffServerTime,
+  firstFixtureInWeek,
+}: Props) => {
+  const fixturesFormat = whenIsTheFixture(firstFixtureInWeek);
+  const [kickoffTime, setKickoffTime] = useState<string | null>(null);
 
-  return (
-    <div className={styles.kickoff}>
-      {formatFixtureKickoffTime(kickoff, firstFixtureKickoffTiming)}
-    </div>
-  );
+  useEffect(() => {
+    setKickoffTime(formatFixtureKickoffTime(kickoffServerTime, fixturesFormat));
+  }, [kickoffServerTime]);
+
+  return <div className={styles.kickoff}>{kickoffTime}</div>;
 };
 
 export default LeagueWeekKickoff;

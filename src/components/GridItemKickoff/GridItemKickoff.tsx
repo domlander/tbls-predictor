@@ -5,6 +5,7 @@ import {
   whenIsTheFixture,
 } from "utils/kickoffDateHelpers";
 import styles from "./GridItemKickoff.module.css";
+import { useEffect, useState } from "react";
 
 export type Props = {
   kickoff: Date;
@@ -14,13 +15,17 @@ export type Props = {
 };
 
 const GridItemKickoff = ({
-  kickoff,
+  kickoff: kickoffServerTime,
   firstFixtureInWeekKickoff,
   locked,
   topRow,
 }: Props) => {
   const fixturesFormat = whenIsTheFixture(firstFixtureInWeekKickoff);
-  const formattedKickoff = formatFixtureKickoffTime(kickoff, fixturesFormat);
+  const [kickoffTime, setKickoffTime] = useState<string | null>(null);
+
+  useEffect(() => {
+    setKickoffTime(formatFixtureKickoffTime(kickoffServerTime, fixturesFormat));
+  }, [kickoffServerTime]);
 
   return (
     <span
@@ -30,7 +35,7 @@ const GridItemKickoff = ({
         topRow && styles.topRow,
       ].join(" ")}
     >
-      {formattedKickoff}
+      {kickoffTime}
     </span>
   );
 };
