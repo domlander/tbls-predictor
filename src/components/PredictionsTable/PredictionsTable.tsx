@@ -191,6 +191,7 @@ const PredictionsForm = ({
               {
                 fixtureId,
                 kickoff,
+                isFinished,
                 homeTeam,
                 homeGoals,
                 awayTeam,
@@ -229,7 +230,7 @@ const PredictionsForm = ({
                               styles.fullTimeResult,
                             ].join(" ")}
                           >
-                            <span>FT</span>
+                            {isFinished && <span>FT</span>}
                             <span>
                               {homeGoals}-{awayGoals}
                             </span>

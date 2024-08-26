@@ -2,15 +2,15 @@ import { getServerSession } from "next-auth/next";
 import * as Sentry from "@sentry/nextjs";
 import dayjs from "dayjs";
 import { revalidatePath } from "next/cache";
+import { NextRequest } from "next/server";
 
+import { authOptions } from "../auth/[...nextauth]/route";
 import prisma from "prisma/client";
+import clientPromise from "lib/mongodb";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
-import { getFixturesFromApiForGameweek } from "utils/fplApi";
+import { getFixturesFromApi } from "utils/fplApi";
 import Fixture from "src/types/Fixture";
 import LogMessage, { LOG_MESSAGE_TYPE } from "src/types/LogMessage";
-import clientPromise from "../../../lib/mongodb";
-import { authOptions } from "../auth/[...nextauth]/route";
-import { NextRequest } from "next/server";
 import sortFixtures from "utils/sortFixtures";
 
 const getGameweekFromParam = (param: string | null) => {
@@ -39,14 +39,14 @@ const getNumGameweeksFromParam = (param: string | null) => {
   return 1;
 };
 
-const fetchApiData = async (gameweek: number, numGameweeks: number) => {
-  const results = [];
-  for (let i = gameweek; i <= Math.min(gameweek + numGameweeks - 1, 38); i++) {
-    results.push(getFixturesFromApiForGameweek(i));
-  }
-
-  const data = await Promise.all(results);
-  return data;
+const fetchApiData = async (firstGameweek: number, numGameweeks: number) => {
+  return await Promise.all(
+    [...Array(Math.min(firstGameweek + numGameweeks - 1, 38)).keys()]
+      .map((x) => x + firstGameweek)
+      .map(async (gameweek) => {
+        return await getFixturesFromApi(gameweek);
+      })
+  );
 };
 
 /*

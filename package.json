@@ -1,6 +1,7 @@
 {
   "name": "tbls-predictor",
   "version": "1.0.0",
+  "packageManager": "yarn@1.22.22",
   "scripts": {
     "dev": "next -p 3001",
     "build": "next build",

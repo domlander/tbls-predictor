@@ -93,6 +93,7 @@ model Fixture {
   homeGoals      Int?            @map("home_goals") @db.SmallInt
   awayGoals      Int?            @map("away_goals") @db.SmallInt
   kickoff        DateTime        @db.Timestamptz(6)
+  isFinished     Boolean         @default(false)
   predictions    Prediction[]
   predictionLogs PredictionLog[]
 

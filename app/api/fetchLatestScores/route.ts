@@ -2,7 +2,7 @@
 import { getServerSession } from "next-auth/next";
 import dayjs from "dayjs";
 import { PrismaClient } from "@prisma/client";
-import { getFixturesFromApiForGameweek } from "utils/fplApi";
+import { getFixturesFromApi } from "utils/fplApi";
 import Fixture from "src/types/Fixture";
 import { calculateCurrentGameweek } from "../../../utils/calculateCurrentGameweek";
 import { authOptions } from "../auth/[...nextauth]/route";
@@ -16,21 +16,15 @@ const prisma = new PrismaClient({
   },
 });
 
-const hasScoreChanged = (
-  oldScore: [number | null, number | null],
-  newScore: [number | null, number | null]
-) => oldScore[0] !== newScore[0] || oldScore[1] !== newScore[1];
-
 /**
- * Returns true if the match has started at maximum 150 minutes ago.
- * Matches usually finish after 110-120 mins after kickoff, so there is a little extra
- * time given, in case of injuries.
+ * Returns true if the match has started at maximum 180 minutes ago.
+ * Matches typically finish 110-120 mins after kickoff.
  */
 export const isGameLiveOrRecentlyFinished = (kickoff: Date): boolean => {
   const now = dayjs();
-  const kickoffPlus150Minutes = dayjs(kickoff).add(150, "minute");
+  const kickoffPlus180Minutes = dayjs(kickoff).add(180, "minute");
 
-  return now > dayjs(kickoff) && now < kickoffPlus150Minutes;
+  return now > dayjs(kickoff) && now < kickoffPlus180Minutes;
 };
 
 const isInvokedByGithubAction = (secret: string | null, gaSecret: string) => {
@@ -41,7 +35,8 @@ const isInvokedByGithubAction = (secret: string | null, gaSecret: string) => {
   Fetches the up-to-date results of a live or recently finished 
   fixture in the current gameweek using the FPL API.
 
-  Makes NO changes if there is not a live game (kickoff between now and 150 minutes from now)
+  Makes NO changes if there is not a live (or recently finished) game.
+
   If a goal has been scored, calls the updateFixtureResults API to update the
   fixture score and subsequent predictions score for all predictions.
 */
@@ -107,31 +102,32 @@ export async function POST(request: NextRequest) {
     log += `fixture: ${homeTeam} - ${awayTeam}\n`;
   })}`;
 
-  const fixturesFromApi = await getFixturesFromApiForGameweek(currentGameweek);
+  const freshFixtureData = await getFixturesFromApi(currentGameweek);
 
   const fixturesToUpdate = liveFixtures.reduce((acc, fixture) => {
-    const matchingFixtureFromApi = fixturesFromApi.find(
+    const matchingFixture = freshFixtureData.find(
       // If two teams playing against each other twice in a gameweek becomes a thing, we can compare on the day as well
       ({ homeTeam, awayTeam }) =>
         homeTeam === fixture.homeTeam && awayTeam === fixture.awayTeam
     );
-    if (!matchingFixtureFromApi) return acc;
+    if (!matchingFixture) return acc;
 
-    log += `Checking ${matchingFixtureFromApi.homeTeam} vs ${matchingFixtureFromApi.awayTeam} fixture\n`;
+    log += `Checking ${matchingFixture.homeTeam} vs ${matchingFixture.awayTeam} fixture\n`;
 
     if (
-      hasScoreChanged(
-        [fixture.homeGoals, fixture.awayGoals],
-        [matchingFixtureFromApi.homeGoals, matchingFixtureFromApi.awayGoals]
-      )
+      fixture.homeGoals !== matchingFixture.homeGoals ||
+      fixture.awayGoals !== matchingFixture.awayGoals ||
+      fixture.isFinished !== matchingFixture.isFinished
     ) {
       acc.push({
         ...fixture,
-        homeGoals: matchingFixtureFromApi?.homeGoals ?? null,
-        awayGoals: matchingFixtureFromApi?.awayGoals ?? null,
+        homeGoals: matchingFixture?.homeGoals ?? null,
+        awayGoals: matchingFixture?.awayGoals ?? null,
       });
 
-      log += `Will update score to ${matchingFixtureFromApi?.homeGoals} - ${matchingFixtureFromApi?.awayGoals}\n`;
+      log += `New data: ${matchingFixture?.homeGoals} - ${
+        matchingFixture?.awayGoals
+      }${matchingFixture.isFinished ? " FT" : ""}\n`;
     }
 
     return acc;

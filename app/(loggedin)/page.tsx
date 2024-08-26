@@ -60,6 +60,7 @@ const Page = async () => {
       awayTeam: true,
       homeGoals: true,
       awayGoals: true,
+      isFinished: true,
     },
   });
 

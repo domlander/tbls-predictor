@@ -5,6 +5,7 @@ type FixtureWithPrediction = {
   fixtureId: Fixture["id"];
   gameweek: Fixture["gameweek"];
   kickoff: Fixture["kickoff"];
+  isFinished: Fixture["isFinished"];
   homeTeam: Fixture["homeTeam"];
   awayTeam: Fixture["awayTeam"];
   homeGoals: Fixture["homeGoals"];

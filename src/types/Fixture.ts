@@ -8,6 +8,7 @@ type Fixture = {
   awayTeam: string;
   homeGoals: number | null;
   awayGoals: number | null;
+  isFinished: boolean;
   predictions?: Prediction[];
 };
 

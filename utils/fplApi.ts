@@ -31,6 +31,7 @@ export const mapFplApiFixtureToFixture = (
   awayTeam: teamsDictionary[fixture.team_a],
   homeGoals: fixture.team_h_score ?? null,
   awayGoals: fixture.team_a_score ?? null,
+  isFinished: fixture.finished,
   kickoff: dayjs(fixture.kickoff_time).utc(true).toDate(),
 });
 
@@ -61,9 +62,9 @@ export const teamsDictionary: TeamsDictionary = {
 };
 
 /**
- *  Fetches fixtures from the FPL API and maps to our Fixture type
+ *  Fetches fixtures from the FPL API
  */
-export const getFixturesFromApiForGameweek = async (gameweek: number) => {
+export const getFixturesFromApi = async (gameweek: number) => {
   const url = `${FPL_API_FIXTURES_ENDPOINT}/?event=${gameweek}`;
 
   let apiData;
@@ -82,9 +83,9 @@ export const getFixturesFromApiForGameweek = async (gameweek: number) => {
     );
   }
 
-  const fixturesFromApi: Fixture[] = apiData.map((fixture: FplApiFixture) =>
+  const fixtures: Fixture[] = apiData.map((fixture: FplApiFixture) =>
     mapFplApiFixtureToFixture(fixture, gameweek)
   );
 
-  return fixturesFromApi;
+  return fixtures;
 };
