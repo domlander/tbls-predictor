@@ -1,12 +1,11 @@
-import { authOptions } from "app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth/next";
+import { auth } from "auth";
 import AdminUpdatePredictions from "src/containers/AdminUpdatePredictions";
 
 export const dynamic = "force-dynamic";
 
 const Page = async () => {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session) {
     return redirect("/signIn");
   }

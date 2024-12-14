@@ -1,8 +1,8 @@
 "use server";
 
-import { getServerSession } from "next-auth/next";
+import { auth } from "auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "app/api/auth/[...nextauth]/route";
+
 import prisma from "prisma/client";
 import { isUserAlreadyBelongToLeague } from "utils/isUserAlreadyBelongToLeague";
 import isUserAppliedToLeague from "utils/isUserAppliedToLeague";
@@ -13,7 +13,7 @@ const requestToJoinLeague = async (
 ): Promise<{ message: string }> => {
   const leagueId = parseInt(formData.get("id") as string);
 
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   const userId = session?.user.id;
   if (!userId) {
     return { message: "Please log in to join a league" };

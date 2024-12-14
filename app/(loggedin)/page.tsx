@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getServerSession } from "next-auth/next";
+import { auth } from "auth";
 import { redirect } from "next/navigation";
 
 import prisma from "prisma/client";
@@ -7,7 +7,6 @@ import Home from "src/containers/Home";
 import sortFixtures from "utils/sortFixtures";
 import generateRecentFixturesByTeam from "utils/generateRecentFixturesByTeam";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
-import { authOptions } from "app/api/auth/[...nextauth]/route";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 const Page = async () => {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session?.user?.email) {
     return redirect("/signIn");
   }

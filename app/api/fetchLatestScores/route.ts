@@ -1,11 +1,10 @@
 /* eslint-disable camelcase */
-import { getServerSession } from "next-auth/next";
+import { auth } from "auth";
 import dayjs from "dayjs";
 import { PrismaClient } from "@prisma/client";
 import { getFixturesFromApi } from "utils/fplApi";
 import Fixture from "src/types/Fixture";
 import { calculateCurrentGameweek } from "../../../utils/calculateCurrentGameweek";
-import { authOptions } from "../auth/[...nextauth]/route";
 import { NextRequest } from "next/server";
 
 const prisma = new PrismaClient({
@@ -67,7 +66,7 @@ export async function POST(request: NextRequest) {
     );
 
   if (!isInvokedByGithubAction(secret, process.env.ACTIONS_SECRET)) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (session?.user?.email !== process.env.ADMIN_EMAIL) {
       return Response.json(
         { message: "You are not authorised to perform this action" },

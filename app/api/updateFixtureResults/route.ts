@@ -1,8 +1,8 @@
-import { getServerSession } from "next-auth/next";
+import { auth } from "auth";
 import * as Sentry from "@sentry/nextjs";
 import { Fixture, Prediction, Prisma, PrismaClient } from "@prisma/client";
 import calculatePredictionScore from "../../../utils/calculatePredictionScore";
-import { authOptions } from "../auth/[...nextauth]/route";
+
 import { NextRequest } from "next/server";
 
 const prisma = new PrismaClient({
@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
     );
 
   if (secret !== process.env.ACTIONS_SECRET) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (session?.user?.email !== process.env.ADMIN_EMAIL) {
       return Response.json(
         { message: "You are not authorised to perform this action" },

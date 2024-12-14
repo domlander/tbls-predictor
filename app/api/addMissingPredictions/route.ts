@@ -1,8 +1,7 @@
 /* eslint-disable camelcase */
 import { NextRequest } from "next/server";
-import { getServerSession } from "next-auth/next";
+import { auth } from "auth";
 import { Prediction, Prisma, PrismaClient } from "@prisma/client";
-import { authOptions } from "../auth/[...nextauth]/route";
 
 const prisma = new PrismaClient({
   datasources: {
@@ -95,7 +94,7 @@ export async function POST(request: NextRequest) {
     );
 
   if (secret !== process.env.ACTIONS_SECRET) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (session?.user?.email !== process.env.ADMIN_EMAIL) {
       return Response.json(
         { message: "You are not authorised to perform this action" },

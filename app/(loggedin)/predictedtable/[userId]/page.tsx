@@ -11,7 +11,8 @@ export const dynamic = "force-dynamic";
  * Provides a league table to show the user what the league table would
  * look like if their own predictions were the true results.
  */
-const Page = async ({ params }: { params: { userId: string } }) => {
+const Page = async (props: { params: Promise<{ userId: string }> }) => {
+  const params = await props.params;
   const userId = params?.userId;
   if (typeof userId !== "string") return redirect("/");
 

@@ -1,13 +1,12 @@
 // import prisma from "prisma/client";
-import { getServerSession } from "next-auth/next";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { auth } from "auth";
 
 /*
   Populates the Fixture table in the DB with dummy fixtures.
   Clears the entire table first before repopulating with data.
 */
 export async function POST() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
 
   if (!process.env.ADMIN_EMAIL) {
     return Response.json(

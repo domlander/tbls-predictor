@@ -14,7 +14,8 @@ export const dynamic = "force-dynamic";
 
 type Params = { leagueId: string };
 
-const Page = async ({ params }: { params: Params }) => {
+const Page = async (props: { params: Promise<Params> }) => {
+  const params = await props.params;
   const leagueId = convertUrlParamToNumber(params?.leagueId);
   if (!leagueId || leagueId <= 0) return redirectInternal("/leagues");
 

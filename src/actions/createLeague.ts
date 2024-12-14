@@ -1,8 +1,8 @@
 "use server";
 
-import { getServerSession } from "next-auth/next";
+import { auth } from "auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "app/api/auth/[...nextauth]/route";
+
 import prisma from "prisma/client";
 
 const createLeague = async (
@@ -32,7 +32,7 @@ const createLeague = async (
     return { message: "Invalid value for weeks to run" };
   }
 
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session) {
     return { message: "An error has occured" };
   }

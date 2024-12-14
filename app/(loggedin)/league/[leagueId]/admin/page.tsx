@@ -1,18 +1,17 @@
-import { getServerSession } from "next-auth/next";
 import prisma from "prisma/client";
-
-import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
-import { authOptions } from "app/api/auth/[...nextauth]/route";
-import LeagueAdmin from "src/containers/LeagueAdmin";
 import { redirect } from "next/navigation";
+import { auth } from "auth";
+import LeagueAdmin from "src/containers/LeagueAdmin";
+import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 
 // We get the users session, so don't use caching
 export const dynamic = "force-dynamic";
 
 type Params = { leagueId: string };
 
-const Page = async ({ params }: { params: Params }) => {
-  const session = await getServerSession(authOptions);
+const Page = async (props: { params: Promise<Params> }) => {
+  const params = await props.params;
+  const session = await auth();
   const userId = session?.user?.id;
   if (!userId) {
     return {

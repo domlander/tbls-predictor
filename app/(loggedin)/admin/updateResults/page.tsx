@@ -1,15 +1,13 @@
 import prisma from "prisma/client";
-
-import sortFixtures from "utils/sortFixtures";
-import UpdateResults from "src/containers/AdminUpdateResults";
-import { authOptions } from "app/api/auth/[...nextauth]/route";
 import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth/next";
+import { auth } from "auth";
+import UpdateResults from "src/containers/AdminUpdateResults";
+import sortFixtures from "utils/sortFixtures";
 
 export const dynamic = "force-dynamic";
 
 const Page = async () => {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   if (!session) {
     return redirect("/signIn");
   }

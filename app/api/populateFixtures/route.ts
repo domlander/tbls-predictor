@@ -1,10 +1,9 @@
-import { getServerSession } from "next-auth/next";
+import { auth } from "auth";
 import * as Sentry from "@sentry/nextjs";
 import dayjs from "dayjs";
 import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 
-import { authOptions } from "../auth/[...nextauth]/route";
 import prisma from "prisma/client";
 import clientPromise from "lib/mongodb";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
@@ -256,7 +255,7 @@ export async function POST(request: NextRequest) {
     );
 
   if (secret !== process.env.ACTIONS_SECRET) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (session?.user?.email !== process.env.ADMIN_EMAIL) {
       return Response.json(
         { message: "You are not authorised to perform this action" },

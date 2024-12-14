@@ -1,7 +1,5 @@
-import { getServerSession } from "next-auth/next";
+import { auth } from "auth";
 import { redirect } from "next/navigation";
-
-import { authOptions } from "app/api/auth/[...nextauth]/route";
 import prisma from "prisma/client";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 
@@ -21,14 +19,13 @@ const getCurrentGameweekFromFixtures = async () => {
 };
 
 const Page = async () => {
-  return Promise.all([
-    getServerSession(authOptions),
-    getCurrentGameweekFromFixtures(),
-  ]).then(([session, currentGameweek]) => {
-    return !session?.user.id
-      ? redirect("/signIn")
-      : redirect(`/predictions/${currentGameweek}`);
-  });
+  return Promise.all([auth(), getCurrentGameweekFromFixtures()]).then(
+    ([session, currentGameweek]) => {
+      return !session?.user.id
+        ? redirect("/signIn")
+        : redirect(`/predictions/${currentGameweek}`);
+    }
+  );
 };
 
 export default Page;

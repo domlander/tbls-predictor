@@ -5,26 +5,16 @@ const nextConfig = {
     // Warning: This allows production builds to successfully complete even if your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
-  // Optional build-time configuration options
-  sentry: {
-    // See the sections below for information on the following options:
-    //   'Configure Source Maps':
-    //     - disableServerWebpackPlugin
-    //     - disableClientWebpackPlugin
-    hideSourceMaps: true,
-    //     - widenClientFileUpload
-    //   'Configure Legacy Browser Support':
-    //     - transpileClientSDK
-    //   'Configure Serverside Auto-instrumentation':
-    //     - autoInstrumentServerFunctions
-    //     - excludeServerRoutes
-    //   'Configure Tunneling to avoid Ad-Blockers':
-    //     - tunnelRoute
+  experimental: {
+    instrumentationHook: true,
   },
 };
 
+/**
+ * Additional config options for the Sentry webpack plugin.
+ */
 const sentryWebpackPluginOptions = {
-  // Additional config options for the Sentry webpack plugin. Keep in mind that
+  // Keep in mind that
   // the following options are set automatically, and overriding them is not
   // recommended:
   //   release, url, configFile, stripPrefix, urlPrefix, include, ignore
@@ -41,5 +31,27 @@ const sentryWebpackPluginOptions = {
   // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
 
+/**
+ * Optional build-time configuration options
+ */
+const sentryOptions = {
+  // See the sections below for information on the following options:
+  //   'Configure Source Maps':
+  //     - disableServerWebpackPlugin
+  //     - disableClientWebpackPlugin
+  hideSourceMaps: true,
+  //     - widenClientFileUpload
+  //   'Configure Legacy Browser Support':
+  //     - transpileClientSDK
+  //   'Configure Serverside Auto-instrumentation':
+  //     - autoInstrumentServerFunctions
+  //     - excludeServerRoutes
+  //   'Configure Tunneling to avoid Ad-Blockers':
+  //     - tunnelRoute
+};
+
 // Make sure adding Sentry options is the last code to run before exporting
-module.exports = withSentryConfig(nextConfig, sentryWebpackPluginOptions);
+module.exports = withSentryConfig(nextConfig, {
+  ...sentryWebpackPluginOptions,
+  ...sentryOptions,
+});
