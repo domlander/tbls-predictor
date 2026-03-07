@@ -42,8 +42,8 @@ This project was initialised using one of the Next.js example projects:
 
 ### Technical challenges
 
-1. Initially wanted to use Mongo, but data is highly relational which meant SQL was a better fit.
-1. Prisma's documentation isn't clear with regards to explicit many-to-many relationships. Followed the answer provided here as an implementation guide: https://github.com/prisma/prisma/issues/2162
+1. Initially I wanted to use Mongo, but data is highly relational which meant SQL was a better fit.
+1. Prisma's documentation isn't clear with regards to explicit many-to-many relationships. I followed the answer provided here as an implementation guide: https://github.com/prisma/prisma/issues/2162
 
 ### Preparation for new season
 

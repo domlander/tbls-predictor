@@ -7,9 +7,11 @@ type FixtureType = Pick<
   "homeTeam" | "awayTeam" | "homeGoals" | "awayGoals"
 >;
 
-const pointAdjustments = [
-  { team: "Everton", adjustment: -10, reason: "financial fair play" },
-];
+const pointAdjustments: { team: string; adjustment: number; reason: string }[] =
+  [
+    // Example:
+    // { team: "Everton", adjustment: -10, reason: "financial fair play" },
+  ];
 
 const calculateGoalDifference = (team: PremierLeagueTeam): number => {
   const goalsScored = team.homeGoals + team.awayGoals;
@@ -23,7 +25,7 @@ const addTeamToTable = (
   name: string,
   isHome: boolean,
   goals: number,
-  conceded: number
+  conceded: number,
 ) => {
   table.push({
     name,
@@ -40,7 +42,7 @@ const addTeamToTable = (
 
 const addTeamToTableWithoutFixture = (
   teams: PremierLeagueTeam[],
-  name: PremierLeagueTeam["name"]
+  name: PremierLeagueTeam["name"],
 ) => {
   teams.push({
     name,

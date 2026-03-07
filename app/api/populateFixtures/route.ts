@@ -44,7 +44,7 @@ const fetchApiData = async (firstGameweek: number, numGameweeks: number) => {
       .map((x) => x + firstGameweek)
       .map(async (gameweek) => {
         return await getFixturesFromApi(gameweek);
-      })
+      }),
   );
 };
 
@@ -59,7 +59,7 @@ const fetchApiData = async (firstGameweek: number, numGameweeks: number) => {
 const populateFixtures = async (
   theGameweek: number,
   apiFixtures: Fixture[],
-  dbFixtures: Fixture[]
+  dbFixtures: Fixture[],
 ) => {
   const fixturesToAdd: Fixture[] = [];
   const fixturesToUpdate: Fixture[] = [];
@@ -70,7 +70,7 @@ const populateFixtures = async (
     const matchingDbFixture = dbFixtures.find(
       (dbFixture) =>
         dbFixture.homeTeam === apiFixture.homeTeam &&
-        dbFixture.awayTeam === apiFixture.awayTeam
+        dbFixture.awayTeam === apiFixture.awayTeam,
     );
 
     if (!matchingDbFixture) {
@@ -93,7 +93,7 @@ const populateFixtures = async (
     const matchingApiFixture = apiFixtures.find(
       (apiFixture) =>
         apiFixture.homeTeam === dbFixture.homeTeam &&
-        apiFixture.awayTeam === dbFixture.awayTeam
+        apiFixture.awayTeam === dbFixture.awayTeam,
     );
 
     if (!matchingApiFixture) {
@@ -129,7 +129,7 @@ const populateFixtures = async (
               kickoff,
             },
           });
-        }
+        },
       )
       ?.filter((x) => !!x);
   }
@@ -165,7 +165,7 @@ const populateFixtures = async (
               kickoff,
             },
           });
-        }
+        },
       )
       ?.filter((x) => !!x);
   }
@@ -242,7 +242,7 @@ export async function POST(request: NextRequest) {
   if (!process.env.ADMIN_EMAIL) {
     return Response.json(
       { message: "Please ensure the ADMIN_EMAIL environment variable is set" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -251,7 +251,7 @@ export async function POST(request: NextRequest) {
       {
         message: "Please ensure the ACTIONS_SECRET environment variable is set",
       },
-      { status: 500 }
+      { status: 500 },
     );
 
   if (secret !== process.env.ACTIONS_SECRET) {
@@ -259,7 +259,7 @@ export async function POST(request: NextRequest) {
     if (session?.user?.email !== process.env.ADMIN_EMAIL) {
       return Response.json(
         { message: "You are not authorised to perform this action" },
-        { status: 401 }
+        { status: 401 },
       );
     }
   }

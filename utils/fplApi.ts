@@ -24,7 +24,7 @@ export const FPL_API_FIXTURES_ENDPOINT =
 
 export const mapFplApiFixtureToFixture = (
   fixture: FplApiFixture,
-  currentGameweek: number
+  currentGameweek: number,
 ): Partial<Fixture> => ({
   gameweek: currentGameweek,
   homeTeam: teamsDictionary[fixture.team_h],
@@ -44,19 +44,19 @@ export const teamsDictionary: TeamsDictionary = {
   3: "Bournemouth",
   4: "Brentford",
   5: "Brighton",
-  6: "Chelsea",
-  7: "Crystal Palace",
-  8: "Everton",
-  9: "Fulham",
-  10: "Ipswich",
-  11: "Leicester",
+  6: "Burnley",
+  7: "Chelsea",
+  8: "Crystal Palace",
+  9: "Everton",
+  10: "Fulham",
+  11: "Leeds",
   12: "Liverpool",
   13: "Man City",
   14: "Man Utd",
   15: "Newcastle",
   16: "Nott'm Forest",
-  17: "Southampton",
-  18: "Spurs",
+  17: "Spurs",
+  18: "Sunderland",
   19: "West Ham",
   20: "Wolves",
 };
@@ -79,12 +79,12 @@ export const getFixturesFromApi = async (gameweek: number) => {
   } catch (e) {
     Sentry.captureException(e);
     throw new Error(
-      `There was an error fetching fixture data from the FPL API:\n${e}`
+      `There was an error fetching fixture data from the FPL API:\n${e}`,
     );
   }
 
   const fixtures: Fixture[] = apiData.map((fixture: FplApiFixture) =>
-    mapFplApiFixtureToFixture(fixture, gameweek)
+    mapFplApiFixtureToFixture(fixture, gameweek),
   );
 
   return fixtures;

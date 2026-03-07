@@ -37,14 +37,14 @@ const AdminManageFixtures = ({ gameweek: initialGameweek }: Props) => {
   const updateFixtures = (
     fixtureId: number,
     isHomeTeam: boolean,
-    text: string
+    text: string,
   ): void => {
     // Make a copy of current state
     const fixturesCopy: Fixture[] = [...fixtures];
 
     // Find the fixture we've changed
     const editedFixture = fixturesCopy.find(
-      (fixture) => fixture.id === fixtureId
+      (fixture) => fixture.id === fixtureId,
     );
     if (!editedFixture) return;
 
@@ -80,7 +80,7 @@ const AdminManageFixtures = ({ gameweek: initialGameweek }: Props) => {
         id,
         homeTeam,
         awayTeam,
-      })
+      }),
     );
 
     updateFixturesDatabase(fixturesWithoutKickoff);
