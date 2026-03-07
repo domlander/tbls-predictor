@@ -5,11 +5,12 @@ import { revalidatePath } from "next/cache";
 import { NextRequest } from "next/server";
 
 import prisma from "prisma/client";
-import clientPromise from "lib/mongodb";
+// import clientPromise from "lib/mongodb";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 import { getFixturesFromApi } from "utils/fplApi";
 import Fixture from "src/types/Fixture";
-import LogMessage, { LOG_MESSAGE_TYPE } from "src/types/LogMessage";
+import LogMessage from "src/types/LogMessage";
+// import LogMessage, { LOG_MESSAGE_TYPE } from "src/types/LogMessage";
 import sortFixtures from "utils/sortFixtures";
 
 const getGameweekFromParam = (param: string | null) => {
@@ -192,15 +193,15 @@ const populateFixtures = async (
 
   if (promises?.length) {
     await Promise.all(promises).then(async () => {
-      const logs = logMessages.map((log) => ({
-        code: LOG_MESSAGE_TYPE[log.type],
-        ...log,
-      }));
+      // const logs = logMessages.map((log) => ({
+      //   code: LOG_MESSAGE_TYPE[log.type],
+      //   ...log,
+      // }));
 
       try {
-        const client = await clientPromise;
-        const db = client.db("tbls_db");
-        await db.collection("logs").insertMany(logs);
+        // const client = await clientPromise;
+        // const db = client.db("tbls_db");
+        // await db.collection("logs").insertMany(logs);
 
         revalidatePath("/", "page");
         revalidatePath(`/predictions/${theGameweek}`, "page");
@@ -209,17 +210,16 @@ const populateFixtures = async (
       }
     });
   } else {
-    const message = `The populateFixtures serverless function has been run and found no differences between the FPL API and the DB for gameweek ${theGameweek}`;
-
-    try {
-      const client = await clientPromise;
-      const db = client.db("tbls_db");
-      await db
-        .collection("logs")
-        .insertOne({ type: "populate_fixtures_no_change", message });
-    } catch (error) {
-      Sentry.captureException(`Logging failed. ${error}`);
-    }
+    // const message = `The populateFixtures serverless function has been run and found no differences between the FPL API and the DB for gameweek ${theGameweek}`;
+    // try {
+    //   const client = await clientPromise;
+    //   const db = client.db("tbls_db");
+    //   await db
+    //     .collection("logs")
+    //     .insertOne({ type: "populate_fixtures_no_change", message });
+    // } catch (error) {
+    //   Sentry.captureException(`Logging failed. ${error}`);
+    // }
   }
 };
 
