@@ -41,10 +41,10 @@ interface TeamsDictionary {
 export const teamsDictionary: TeamsDictionary = {
   1: "Arsenal",
   2: "Aston Villa",
-  3: "Bournemouth",
-  4: "Brentford",
-  5: "Brighton",
-  6: "Burnley",
+  3: "Burnley", // Note: not in alphabetical order, but in order of team ID in FPL API
+  4: "Bournemouth",
+  5: "Brentford",
+  6: "Brighton",
   7: "Chelsea",
   8: "Crystal Palace",
   9: "Everton",
@@ -55,8 +55,8 @@ export const teamsDictionary: TeamsDictionary = {
   14: "Man Utd",
   15: "Newcastle",
   16: "Nott'm Forest",
-  17: "Spurs",
-  18: "Sunderland",
+  17: "Sunderland",
+  18: "Spurs",
   19: "West Ham",
   20: "Wolves",
 };
