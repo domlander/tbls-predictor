@@ -50,7 +50,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "jest": "^27.5.1",
     "prisma": "6.0.0",
-    "typescript": "^5.3.3"
+    "typescript": "5.9.3"
   },
   "license": "MIT"
 }
