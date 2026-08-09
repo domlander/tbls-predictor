@@ -1,12 +1,5 @@
 const { withSentryConfig } = require("@sentry/nextjs");
 
-const nextConfig = {
-  eslint: {
-    // Warning: This allows production builds to successfully complete even if your project has ESLint errors.
-    ignoreDuringBuilds: true,
-  },
-};
-
 /**
  * Additional config options for the Sentry webpack plugin.
  */
@@ -48,7 +41,7 @@ const sentryOptions = {
 };
 
 // Make sure adding Sentry options is the last code to run before exporting
-module.exports = withSentryConfig(nextConfig, {
+module.exports = withSentryConfig({}, {
   ...sentryWebpackPluginOptions,
   ...sentryOptions,
 });
