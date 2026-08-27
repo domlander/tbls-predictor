@@ -27,7 +27,7 @@ const Page = async (props: { params: Promise<Params> }) => {
       users: {
         select: {
           id: true,
-          username: true,
+          name: true,
           predictions: {
             select: {
               fixtureId: true,
@@ -65,7 +65,7 @@ const Page = async (props: { params: Promise<Params> }) => {
     const predictions = user.predictions.filter(
       (prediction) =>
         prediction.fixture.gameweek >= league.gameweekStart &&
-        prediction.fixture.gameweek <= league.gameweekEnd
+        prediction.fixture.gameweek <= league.gameweekEnd,
     );
 
     /**
@@ -80,12 +80,12 @@ const Page = async (props: { params: Promise<Params> }) => {
       fixtures,
       predictions,
       league.gameweekStart,
-      league.gameweekEnd
+      league.gameweekEnd,
     );
 
     const totalPoints = weeklyPoints.reduce(
       (acc, cur) => acc + (cur.points || 0),
-      0
+      0,
     );
 
     return {
@@ -98,15 +98,15 @@ const Page = async (props: { params: Promise<Params> }) => {
   const currentGameweek = calculateCurrentGameweek(fixtures);
   const sortedUsers = users
     .sort((a, b) => b.totalPoints - a.totalPoints || (b.id > a.id ? 1 : -1))
-    .map(({ id, username, totalPoints, weeklyPoints }) => ({
+    .map(({ id, name, totalPoints, weeklyPoints }) => ({
       id,
-      username,
+      username: name,
       totalPoints,
       weeklyPoints: [
         ...weeklyPoints.filter(
           ({ week }) =>
             week >= league.gameweekStart &&
-            week <= Math.min(league.gameweekEnd, currentGameweek)
+            week <= Math.min(league.gameweekEnd, currentGameweek),
         ),
       ].reverse(),
     }));

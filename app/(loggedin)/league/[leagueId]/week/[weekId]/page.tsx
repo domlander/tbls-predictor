@@ -34,7 +34,7 @@ const Page = async (props: { params: Promise<Params> }) => {
       users: {
         select: {
           id: true,
-          username: true,
+          name: true,
           predictions: {
             select: {
               fixtureId: true,
@@ -92,13 +92,13 @@ const Page = async (props: { params: Promise<Params> }) => {
     (fixture) => ({
       ...fixture,
       predictions: [],
-    })
+    }),
   );
 
   fixturesWithPredictions.forEach((fixture) => {
     users.forEach((user) => {
       const userPrediction = user.predictions.find(
-        ({ fixtureId }) => fixtureId === fixture.id
+        ({ fixtureId }) => fixtureId === fixture.id,
       );
 
       const prediction = {
@@ -115,7 +115,7 @@ const Page = async (props: { params: Promise<Params> }) => {
             userPrediction.awayGoals ?? 0,
             userPrediction.bigBoyBonus ?? false,
           ],
-          [userPrediction.fixture.homeGoals, userPrediction.fixture.awayGoals]
+          [userPrediction.fixture.homeGoals, userPrediction.fixture.awayGoals],
         );
 
         fixture.predictions?.push({
@@ -138,11 +138,11 @@ const Page = async (props: { params: Promise<Params> }) => {
   });
 
   const usersGameweekPoints: UserPoints[] = users.map(
-    ({ id, username, weekPoints }) => ({
+    ({ id, name, weekPoints }) => ({
       id,
-      username: username || "unknown",
+      username: name || "unknown",
       points: weekPoints || 0,
-    })
+    }),
   );
 
   return (

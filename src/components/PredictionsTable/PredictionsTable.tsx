@@ -1,9 +1,8 @@
 "use client";
 
 import { FormEvent, Fragment, useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-
 import { chivoMono } from "app/fonts";
+import { authClient } from "auth-client";
 import updatePredictions from "src/actions/updatePredictions";
 import useTransientState from "src/hooks/useTransientState";
 import ShowTeamFormButton from "src/components/ShowTeamFormButton";
@@ -48,7 +47,7 @@ const PredictionsForm = ({
   recentFixturesByTeam,
   predictions: initialPredictions,
 }: Props) => {
-  const { data: session } = useSession();
+  const { data: session } = authClient.useSession();
   const userId = session?.user?.id;
   const [isSaved, setIsSaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -76,7 +75,7 @@ const PredictionsForm = ({
     combineFixturesAndPredictions(fixtures, predictions || []);
   const gameweekScore = calculateGameweekScore(fixturesWithPredictions);
   const isBbbLockedForGameweek = fixturesWithPredictions.some(
-    ({ bigBoyBonus, kickoff }) => bigBoyBonus && isPastDeadline(kickoff)
+    ({ bigBoyBonus, kickoff }) => bigBoyBonus && isPastDeadline(kickoff),
   );
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -91,7 +90,7 @@ const PredictionsForm = ({
         awayGoals: parseInt(prediction.awayGoals?.toString() || "") ?? null,
         bigBoyBonus: prediction.bigBoyBonus,
         score: prediction.score ?? null,
-      })
+      }),
     );
 
     setIsSaving(true);
@@ -110,20 +109,20 @@ const PredictionsForm = ({
   const updateGoals = (
     fixtureId: number,
     isHomeTeam: boolean,
-    goals: string
+    goals: string,
   ): void => {
     if (!predictions) return;
 
     // Make a copy of current state
     const updatedPredictions: Prediction[] = JSON.parse(
-      JSON.stringify(predictions)
+      JSON.stringify(predictions),
     );
 
     const predictedGoals = goals === "" ? null : parseInt(goals);
 
     // Find the predicted we've changed
     const editedPrediction = updatedPredictions.find(
-      (prediction) => prediction.fixtureId === fixtureId
+      (prediction) => prediction.fixtureId === fixtureId,
     );
 
     // prediction doesn't yet exist
@@ -153,12 +152,12 @@ const PredictionsForm = ({
 
     // Make a copy of current state
     const updatedPredictions: Prediction[] = JSON.parse(
-      JSON.stringify(predictions)
+      JSON.stringify(predictions),
     );
 
     // Find the predicted we've changed
     const editedPrediction = updatedPredictions.find(
-      (prediction) => prediction.fixtureId === fixtureId
+      (prediction) => prediction.fixtureId === fixtureId,
     );
     if (!editedPrediction) return;
 
@@ -183,7 +182,7 @@ const PredictionsForm = ({
       <form onSubmit={handleSubmit}>
         <div
           className={[styles.table, displayForm && styles.displayForm].join(
-            " "
+            " ",
           )}
         >
           {fixturesWithPredictions.map(
@@ -201,7 +200,7 @@ const PredictionsForm = ({
                 bigBoyBonus,
                 predictionScore,
               },
-              i
+              i,
             ) => {
               const homeForm =
                 recentFixturesByTeam?.find((rf) => rf.team === homeTeam)
@@ -261,11 +260,11 @@ const PredictionsForm = ({
                   )}
                 </Fragment>
               );
-            }
+            },
           )}
         </div>
         {fixturesWithPredictions.some(
-          (prediction) => !isPastDeadline(prediction.kickoff)
+          (prediction) => !isPastDeadline(prediction.kickoff),
         ) ? (
           <div className={styles.buttonsAndMessageContainer}>
             <div className={styles.buttonContainer}>

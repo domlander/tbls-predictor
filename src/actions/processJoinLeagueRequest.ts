@@ -1,16 +1,18 @@
 "use server";
 
 import { auth } from "auth";
-
+import { headers } from "next/headers";
 import prisma from "prisma/client";
 import { revalidatePath } from "next/cache";
 
 const processJoinLeagueRequest = async (
   leagueId: number,
   applicantId: string,
-  isAccepted: boolean
+  isAccepted: boolean,
 ): Promise<{ message: string }> => {
-  const session = await auth();
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
   if (!session) {
     return { message: "An error has occured" };
   }
@@ -41,7 +43,7 @@ const processJoinLeagueRequest = async (
   if (
     !league.applicants.some(
       (applicant) =>
-        applicant.userId === applicantId && applicant.status === "applied"
+        applicant.userId === applicantId && applicant.status === "applied",
     )
   ) {
     return {

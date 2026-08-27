@@ -1,5 +1,6 @@
 import * as Sentry from "@sentry/nextjs";
 import { auth } from "auth";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import prisma from "prisma/client";
 import Account from "src/containers/Account/Account";
@@ -8,7 +9,9 @@ import { generateDefaultUsername } from "utils/generateDefaultUsername";
 export const dynamic = "force-dynamic";
 
 const Page = async () => {
-  const session = await auth();
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
   if (!session?.user?.id) {
     return redirect("/signIn");
   }
@@ -25,7 +28,7 @@ const Page = async () => {
     return redirect("/");
   }
 
-  let username = user?.username;
+  let username = user?.name;
 
   /**
    * Give the user a default username if he doesn't have one
@@ -41,7 +44,7 @@ const Page = async () => {
         email: user.email,
       },
       data: {
-        username: defaultUsername,
+        name: defaultUsername,
       },
     });
     username = defaultUsername;

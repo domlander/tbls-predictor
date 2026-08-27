@@ -19,10 +19,10 @@ const Page = async (props: { params: Promise<{ userId: string }> }) => {
   const user = await prisma.user.findUnique({
     where: { id: userId },
     select: {
-      username: true,
+      name: true,
     },
   });
-  if (!user?.username) return redirect("/");
+  if (!user?.name) return redirect("/");
 
   const fixtures = await prisma.fixture.findMany({
     select: {
@@ -60,13 +60,14 @@ const Page = async (props: { params: Promise<{ userId: string }> }) => {
 
   // Filter out future predictions
   const predictionsWithResult = predictions.filter(
-    (pred) => pred.fixture.homeGoals !== null && pred.fixture.awayGoals !== null
+    (pred) =>
+      pred.fixture.homeGoals !== null && pred.fixture.awayGoals !== null,
   );
 
   // Use the prediction as the result. If no prediction, use the actual result of the match.
   const trueResults = fixtures.map((fixture) => {
     const prediction = predictionsWithResult.find(
-      (p) => p.fixtureId === fixture.id
+      (p) => p.fixtureId === fixture.id,
     );
     if (!prediction) {
       return fixture;
@@ -83,7 +84,7 @@ const Page = async (props: { params: Promise<{ userId: string }> }) => {
   const table = generatePremTable(fixtures);
 
   const predictedTable: PremierLeagueTeam[] = generatePremTable(
-    trueResults
+    trueResults,
   ).map((team) => ({
     ...team,
     predictedPoints: team.points,
@@ -94,13 +95,13 @@ const Page = async (props: { params: Promise<{ userId: string }> }) => {
   // Adjust the name of the team to include position difference
   const predictedPositions = appendTeamNameWithPositionDiff(
     predictedTable,
-    table
+    table,
   );
 
   return (
     <PremierLeague
       teams={predictedPositions}
-      heading={`${user.username}'s predicted league`}
+      heading={`${user.name}'s predicted league`}
       loading={false}
       isPredictedLeague
     />

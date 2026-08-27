@@ -1,19 +1,21 @@
 "use server";
 
 import { auth } from "auth";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-
 import prisma from "prisma/client";
 import { isUserAlreadyBelongToLeague } from "utils/isUserAlreadyBelongToLeague";
 import isUserAppliedToLeague from "utils/isUserAppliedToLeague";
 
 const requestToJoinLeague = async (
   _: { message: string } | null,
-  formData: FormData
+  formData: FormData,
 ): Promise<{ message: string }> => {
   const leagueId = parseInt(formData.get("id") as string);
 
-  const session = await auth();
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
   const userId = session?.user.id;
   if (!userId) {
     return { message: "Please log in to join a league" };

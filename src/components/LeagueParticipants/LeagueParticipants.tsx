@@ -1,9 +1,9 @@
-import User from "src/types/User";
+import Participant from "src/types/Participant";
 import Heading from "../Heading";
 import styles from "./LeagueParticipants.module.css";
 
 interface Props {
-  participants: Pick<User, "id" | "username">[];
+  participants: Participant[];
 }
 
 const LeagueParticipants = ({ participants }: Props) => (

@@ -1,6 +1,7 @@
 import { Suspense } from "react";
-import { redirect } from "next/navigation";
 import { auth } from "auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 import MyLeaguesLoading from "src/components/MyLeagues/MyLeaguesLoading";
 import MyLeagues from "src/components/MyLeagues";
@@ -9,7 +10,9 @@ import styles from "./page.module.css";
 export const dynamic = "force-dynamic";
 
 const Page = async () => {
-  const session = await auth();
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
   const userId = session?.user?.id;
   if (!userId) {
     return redirect("/signIn");

@@ -1,13 +1,14 @@
 "use server";
 
 import { auth } from "auth";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import prisma from "prisma/client";
 
 const createLeague = async (
   _: { message: string } | null,
-  formData: FormData
+  formData: FormData,
 ): Promise<{ message: string }> => {
   const name = formData.get("name") as string;
   const start = parseInt(formData.get("start") as string);
@@ -32,7 +33,9 @@ const createLeague = async (
     return { message: "Invalid value for weeks to run" };
   }
 
-  const session = await auth();
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
   if (!session) {
     return { message: "An error has occured" };
   }

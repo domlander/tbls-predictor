@@ -1,4 +1,4 @@
-import User from "src/types/User";
+import Participant from "src/types/Participant";
 import Applicant from "src/types/Applicant";
 import LeagueApplicantsRequests from "src/components/LeagueApplicantsRequests";
 import LeagueParticipants from "src/components/LeagueParticipants";
@@ -9,7 +9,7 @@ interface Props {
   leagueId: number;
   leagueName: string;
   applicants: Applicant[];
-  participants: Pick<User, "id" | "username">[];
+  participants: Participant[];
 }
 
 const LeagueAdminContainer = ({
