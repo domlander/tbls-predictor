@@ -1,12 +1,12 @@
 "use server";
 
 import { auth } from "auth";
-
+import { headers } from "next/headers";
 import prisma from "prisma/client";
 
 const updateUsername = async (
   _: any,
-  formData: FormData
+  formData: FormData,
 ): Promise<{ message: string }> => {
   const username = formData.get("username");
 
@@ -18,7 +18,9 @@ const updateUsername = async (
     return { message: "Select a username between 3 and 20 characters" };
   }
 
-  const session = await auth();
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
   if (!session) {
     return { message: "An error has occured" };
   }
@@ -29,7 +31,7 @@ const updateUsername = async (
         id: session.user.id,
       },
       data: {
-        username,
+        name: username,
       },
     });
     return { message: "Success! Username has been updated!" };

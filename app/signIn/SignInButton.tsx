@@ -1,6 +1,6 @@
 "use client";
 
-import { signIn } from "next-auth/react";
+import { authClient } from "auth-client";
 import Button from "src/components/Button";
 
 // TODO: We are wrapping all pages in _app.tsx with the Layout component, as every component needs the layout
@@ -8,9 +8,23 @@ import Button from "src/components/Button";
 // We can't use useSession in _app.js, which is why we're loading the header.
 const SignInButton = () => {
   return (
-    <Button handleClick={() => signIn()} type="button" variant="primary">
-      Play for free
-    </Button>
+    <>
+      <Button
+        handleClick={async () => {
+          await authClient.signIn.social({
+            provider: "google",
+          });
+        }}
+        type="button"
+        variant="primary"
+      >
+        Sign in with Google
+      </Button>
+
+      {/* <Button handleClick={() => signIn()} type="button" variant="primary">
+        Sign in with email
+      </Button> */}
+    </>
   );
 };
 

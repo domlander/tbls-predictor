@@ -1,17 +1,19 @@
 "use server";
 
 import { auth } from "auth";
-
+import { headers } from "next/headers";
 import prisma from "prisma/client";
 import calculatePredictionScore from "utils/calculatePredictionScore";
 import Prediction from "src/types/Prediction";
 
 const fetchPredictions = async (
-  weekId: number
+  weekId: number,
 ): Promise<{
   predictions: Prediction[];
 }> => {
-  const session = await auth();
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
   if (!session?.user.id) {
     // TODO: Can we redirect to sign in here?
     return { predictions: [] };
@@ -48,7 +50,7 @@ const fetchPredictions = async (
       bigBoyBonus: prediction.bigBoyBonus,
       score: calculatePredictionScore(
         [prediction.homeGoals, prediction.awayGoals, prediction.bigBoyBonus],
-        [fixture.homeGoals, fixture.awayGoals]
+        [fixture.homeGoals, fixture.awayGoals],
       ),
     };
   });

@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "auth";
-
+import { headers } from "next/headers";
 import prisma from "prisma/client";
 import calculatePredictionScore from "utils/calculatePredictionScore";
 
@@ -10,7 +10,9 @@ const userStats = async (): Promise<{
   correctPerc: number;
   numPredictions: number;
 } | null> => {
-  const session = await auth();
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
   if (!session?.user.id) {
     return null;
   }
@@ -37,14 +39,14 @@ const userStats = async (): Promise<{
     .filter(
       ({ fixture }) =>
         typeof fixture.homeGoals === "number" &&
-        typeof fixture.awayGoals === "number"
+        typeof fixture.awayGoals === "number",
     )
     // Don't trust the score in the predictions table
     .map((prediction) => ({
       ...prediction,
       score: calculatePredictionScore(
         [prediction.homeGoals, prediction.awayGoals, prediction.bigBoyBonus],
-        [prediction.fixture.homeGoals, prediction.fixture.awayGoals]
+        [prediction.fixture.homeGoals, prediction.fixture.awayGoals],
       ),
     }));
 
@@ -53,11 +55,11 @@ const userStats = async (): Promise<{
   }
 
   const correctPredictions = predictions.filter(
-    ({ score }) => score !== null && score > 0
+    ({ score }) => score !== null && score > 0,
   ).length;
 
   const perfectPredictions = predictions.filter(
-    ({ score }) => score !== null && score >= 3
+    ({ score }) => score !== null && score >= 3,
   ).length;
 
   const totalPredictions = predictions.length;

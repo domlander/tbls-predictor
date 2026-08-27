@@ -2,12 +2,12 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "lib": [
       "dom",
       "es2019"
     ],
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowJs": true,
     "noEmit": true,
     "strict": true,
@@ -42,6 +42,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
-, "sentry.client.config.js"  ]
+    ".next/types/**/*.ts",
+    "sentry.client.config.js",
+    ".next/dev/types/**/*.ts"
+  ]
 }

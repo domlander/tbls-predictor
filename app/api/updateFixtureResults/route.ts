@@ -1,4 +1,5 @@
 import { auth } from "auth";
+import { headers } from "next/headers";
 import * as Sentry from "@sentry/nextjs";
 import { Fixture, Prediction, Prisma, PrismaClient } from "@prisma/client";
 import calculatePredictionScore from "../../../utils/calculatePredictionScore";
@@ -26,7 +27,7 @@ export async function POST(request: NextRequest) {
   if (!process.env.ADMIN_EMAIL) {
     return Response.json(
       { message: "Please ensure the ADMIN_EMAIL environment variable is set" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -35,15 +36,17 @@ export async function POST(request: NextRequest) {
       {
         message: "Please ensure the ACTIONS_SECRET environment variable is set",
       },
-      { status: 500 }
+      { status: 500 },
     );
 
   if (secret !== process.env.ACTIONS_SECRET) {
-    const session = await auth();
+    const session = await auth.api.getSession({
+      headers: await headers(), // you need to pass the headers object.
+    });
     if (session?.user?.email !== process.env.ADMIN_EMAIL) {
       return Response.json(
         { message: "You are not authorised to perform this action" },
-        { status: 401 }
+        { status: 401 },
       );
     }
   }
@@ -64,7 +67,7 @@ export async function POST(request: NextRequest) {
 const updateFixtureScoreAndEvaluatePredictions = async (
   fixtureId: number,
   homeGoals?: number | null,
-  awayGoals?: number | null
+  awayGoals?: number | null,
 ) => {
   if (typeof homeGoals !== "number" || typeof awayGoals !== "number") {
     return;
@@ -78,7 +81,7 @@ const updateFixtureScoreAndEvaluatePredictions = async (
 const updateFixtureScore = async (
   id: number,
   homeGoals: number,
-  awayGoals: number
+  awayGoals: number,
 ) => {
   try {
     await prisma.fixture.update({
@@ -101,7 +104,7 @@ const updateFixtureScore = async (
 const findAllPredictionsAndUpdateScore = async (
   fixtureId: number,
   homeGoals: number,
-  awayGoals: number
+  awayGoals: number,
 ) => {
   const predictions = await prisma.prediction.findMany({
     where: {
@@ -140,7 +143,7 @@ const findAllPredictionsAndUpdateScore = async (
       });
 
       results.push(dbUpdate);
-    }
+    },
   );
 
   try {

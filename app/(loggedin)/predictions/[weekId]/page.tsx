@@ -1,5 +1,6 @@
-import { redirect } from "next/navigation";
 import { auth } from "auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 
 import prisma from "prisma/client";
 import Predictions from "src/containers/Predictions";
@@ -16,11 +17,14 @@ type Params = { weekId: string };
 
 const Page = async (props: { params: Promise<Params> }) => {
   const params = await props.params;
+
   const weekId = convertUrlParamToNumber(params?.weekId);
   if (!weekId || weekId <= 0) return redirect("/");
 
-  const session = await auth();
-  if (!session?.user.id) {
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
+  if (!session?.user?.id) {
     return redirect("/signIn");
   }
 
@@ -36,11 +40,11 @@ const Page = async (props: { params: Promise<Params> }) => {
       }
       return acc;
     },
-    { firstGameweek: weekId, lastGameweek: weekId }
+    { firstGameweek: weekId, lastGameweek: weekId },
   );
 
   const thisGwFixtures = fixtures.filter(
-    (fixture) => fixture.gameweek === weekId
+    (fixture) => fixture.gameweek === weekId,
   );
 
   const recentFixturesByTeam = generateRecentFixturesByTeam(fixtures, weekId);

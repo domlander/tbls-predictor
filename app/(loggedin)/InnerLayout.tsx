@@ -1,7 +1,7 @@
 "use client";
 
-import React, { ReactNode, useState } from "react";
-import { useSession } from "next-auth/react";
+import { ReactNode, useState } from "react";
+import { authClient } from "auth-client";
 
 import HeaderBar from "src/components/HeaderBar";
 import Sidebar from "src/components/Sidebar";
@@ -14,17 +14,17 @@ interface Props {
 }
 
 const Layout = ({ children }: Props) => {
-  const { data: session, status } = useSession();
+  const { data: session, isPending } = authClient.useSession();
+  const isLoggedIn = !!session;
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const username =
-    (status === "authenticated" && session?.user?.username) || DEFAULT_USERNAME;
+  const username = (isLoggedIn && session?.user?.name) || DEFAULT_USERNAME;
 
   return (
     <div className={styles.container}>
       <div className={[styles.mainContent].join(" ")}>
         <HeaderBar
           initial={username[0].toUpperCase()}
-          isLoading={status === "loading"}
+          isLoading={isPending}
           handleClick={() => setIsSidebarOpen((isOpen) => !isOpen)}
         />
         <main className={styles.innerContainer}>{children}</main>
@@ -37,8 +37,8 @@ const Layout = ({ children }: Props) => {
       >
         <Sidebar
           username={username}
-          isLoggedIn={status === "authenticated"}
-          isLoading={status === "loading"}
+          isLoggedIn={isLoggedIn}
+          isLoading={isPending}
           handleClick={() => setIsSidebarOpen((isOpen) => !isOpen)}
         />
       </div>

@@ -1,12 +1,10 @@
 ## Database
 
-There is a postgresql database hosted with Heroku.
-
-Heroku rotates credentials periodically and updates applications where this database is attached.
+There is a postgresql database.
 
 ## Identity
 
-We use [NextAuth.js](https://github.com/nextauthjs/next-auth) and the postgresql database to achieve sign in functionality.
+We use [Better-Auth.js](https://better-auth.com/) and the postgresql database for sign in.
 
 ## Data Proxy
 

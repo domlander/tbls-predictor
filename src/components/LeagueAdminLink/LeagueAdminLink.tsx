@@ -1,6 +1,6 @@
 "use client";
 
-import { useSession } from "next-auth/react";
+import { authClient } from "auth-client";
 import Link from "next/link";
 import styles from "./LeagueAdminLink.module.css";
 
@@ -10,7 +10,7 @@ export interface Props {
 }
 
 const LeagueAdminLink = ({ administratorId, leagueId }: Props) => {
-  const { data: session } = useSession();
+  const { data: session } = authClient.useSession();
 
   return session?.user?.id === administratorId ? (
     <Link className={styles.link} href={`/league/${leagueId}/admin`}>

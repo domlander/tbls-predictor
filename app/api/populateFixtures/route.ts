@@ -1,4 +1,5 @@
 import { auth } from "auth";
+import { headers } from "next/headers";
 import * as Sentry from "@sentry/nextjs";
 import dayjs from "dayjs";
 import { revalidatePath } from "next/cache";
@@ -255,7 +256,9 @@ export async function POST(request: NextRequest) {
     );
 
   if (secret !== process.env.ACTIONS_SECRET) {
-    const session = await auth();
+    const session = await auth.api.getSession({
+      headers: await headers(), // you need to pass the headers object.
+    });
     if (session?.user?.email !== process.env.ADMIN_EMAIL) {
       return Response.json(
         { message: "You are not authorised to perform this action" },

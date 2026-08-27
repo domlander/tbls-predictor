@@ -1,4 +1,5 @@
 import { auth } from "auth";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import prisma from "prisma/client";
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
@@ -19,12 +20,16 @@ const getCurrentGameweekFromFixtures = async () => {
 };
 
 const Page = async () => {
-  return Promise.all([auth(), getCurrentGameweekFromFixtures()]).then(
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
+
+  return Promise.all([session, getCurrentGameweekFromFixtures()]).then(
     ([session, currentGameweek]) => {
-      return !session?.user.id
+      return !session?.user?.id
         ? redirect("/signIn")
         : redirect(`/predictions/${currentGameweek}`);
-    }
+    },
   );
 };
 

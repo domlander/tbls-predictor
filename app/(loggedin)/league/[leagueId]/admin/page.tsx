@@ -1,8 +1,10 @@
 import prisma from "prisma/client";
 import { redirect } from "next/navigation";
 import { auth } from "auth";
+import { headers } from "next/headers";
 import LeagueAdmin from "src/containers/LeagueAdmin";
 import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
+import Participant from "src/types/Participant";
 
 // We get the users session, so don't use caching
 export const dynamic = "force-dynamic";
@@ -11,8 +13,11 @@ type Params = { leagueId: string };
 
 const Page = async (props: { params: Promise<Params> }) => {
   const params = await props.params;
-  const session = await auth();
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
   const userId = session?.user?.id;
+
   if (!userId) {
     return {
       props: {},
@@ -48,9 +53,9 @@ const Page = async (props: { params: Promise<Params> }) => {
     return redirect("/signIn");
   }
 
-  const participants = league.users.map(({ id, username }) => ({
+  const participants: Participant[] = league.users.map(({ id, name }) => ({
     id,
-    username,
+    username: name,
   }));
 
   return (

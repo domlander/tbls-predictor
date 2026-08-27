@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { auth } from "auth";
-
+import { headers } from "next/headers";
 import styles from "./page.module.css";
 import SignInButton from "./SignInButton";
 
@@ -10,7 +10,9 @@ export const dynamic = "force-dynamic";
 // except for this page. For now we are covering it up so the user cannot see it.
 // We can't use useSession in _app.js, which is why we're loading the header.
 const Page = async () => {
-  const session = await auth();
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
   if (session?.user.id) {
     return redirect("/");
   }

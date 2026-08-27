@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import { auth } from "auth";
+import { headers } from "next/headers";
 import dayjs from "dayjs";
 import { PrismaClient } from "@prisma/client";
 import { getFixturesFromApi } from "utils/fplApi";
@@ -44,16 +45,19 @@ export async function POST(request: NextRequest) {
   const secret = searchParams.get("secret");
   const startTime = new Date();
 
-  if (!process.env.NEXTAUTH_URL)
+  if (!process.env.BETTER_AUTH_URL)
     return Response.json(
-      { message: "Please ensure the NEXTAUTH_URL environment variable is set" },
-      { status: 500 }
+      {
+        message:
+          "Please ensure the BETTER_AUTH_URL environment variable is set",
+      },
+      { status: 500 },
     );
 
   if (!process.env.ADMIN_EMAIL) {
     return Response.json(
       { message: "Please ensure the ADMIN_EMAIL environment variable is set" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -62,15 +66,17 @@ export async function POST(request: NextRequest) {
       {
         message: "Please ensure the ACTIONS_SECRET environment variable is set",
       },
-      { status: 500 }
+      { status: 500 },
     );
 
   if (!isInvokedByGithubAction(secret, process.env.ACTIONS_SECRET)) {
-    const session = await auth();
+    const session = await auth.api.getSession({
+      headers: await headers(), // you need to pass the headers object.
+    });
     if (session?.user?.email !== process.env.ADMIN_EMAIL) {
       return Response.json(
         { message: "You are not authorised to perform this action" },
-        { status: 401 }
+        { status: 401 },
       );
     }
   }
@@ -82,14 +88,14 @@ export async function POST(request: NextRequest) {
   const fixtures = await prisma.fixture.findMany();
   const currentGameweek = calculateCurrentGameweek(fixtures);
   const fixturesFromDb = fixtures.filter(
-    ({ gameweek }) => gameweek === currentGameweek
+    ({ gameweek }) => gameweek === currentGameweek,
   );
 
   log += `Current Gameweek: ${currentGameweek}\n`;
   log += `fixturesFromDb: ${JSON.stringify(fixturesFromDb)}\n`;
 
   const liveFixtures = fixturesFromDb.filter(({ kickoff }) =>
-    isGameLiveOrRecentlyFinished(kickoff)
+    isGameLiveOrRecentlyFinished(kickoff),
   );
   if (!liveFixtures?.length) {
     log += "No live games found\n";
@@ -107,7 +113,7 @@ export async function POST(request: NextRequest) {
     const matchingFixture = freshFixtureData.find(
       // If two teams playing against each other twice in a gameweek becomes a thing, we can compare on the day as well
       ({ homeTeam, awayTeam }) =>
-        homeTeam === fixture.homeTeam && awayTeam === fixture.awayTeam
+        homeTeam === fixture.homeTeam && awayTeam === fixture.awayTeam,
     );
     if (!matchingFixture) return acc;
 
@@ -142,7 +148,7 @@ export async function POST(request: NextRequest) {
   });
 
   fetch(
-    `${process.env.NEXTAUTH_URL}/api/updateFixtureResults?secret=${process.env.ACTIONS_SECRET}`,
+    `${process.env.BASE_URL}/api/updateFixtureResults?secret=${process.env.ACTIONS_SECRET}`,
     {
       method: "post",
       headers: {
@@ -150,7 +156,7 @@ export async function POST(request: NextRequest) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ scores: fixturesToUpdate }),
-    }
+    },
   ).catch((e) => {
     log += `An error occurred: ${e}\n`;
   });

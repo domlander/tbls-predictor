@@ -1,4 +1,4 @@
-import { signOut } from "next-auth/react";
+import { authClient } from "auth-client";
 import SidebarHeader from "../SidebarHeader";
 import SidebarMenuItem from "../SidebarMenuItem";
 import styles from "./Sidebar.module.css";
@@ -57,7 +57,11 @@ const Sidebar = ({ username, isLoggedIn, isLoading, handleClick }: Props) => {
               label="Account"
               url="/account"
             />
-            <SidebarMenuItem onClick={signOut} label="Sign out" url="/signIn" />
+            <SidebarMenuItem
+              onClick={async () => await authClient.signOut()}
+              label="Sign out"
+              url="/signIn"
+            />
           </>
         ) : (
           <SidebarMenuItem onClick={handleClick} label="Sign In" url="/" />

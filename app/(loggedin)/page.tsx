@@ -1,5 +1,7 @@
 import { Metadata } from "next";
 import { auth } from "auth";
+import { headers } from "next/headers";
+
 import { redirect } from "next/navigation";
 
 import prisma from "prisma/client";
@@ -21,7 +23,10 @@ export const metadata: Metadata = {
 };
 
 const Page = async () => {
-  const session = await auth();
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
+
   if (!session?.user?.email) {
     return redirect("/signIn");
   }
@@ -36,7 +41,7 @@ const Page = async () => {
 
   // TODO: Can we move this to account creation?
   // Give user a username if they do not have one.
-  if (!user?.username) {
+  if (!user?.name) {
     let username = session.user.email.split("@")[0];
 
     if (username.length < 3) username += "_user";
@@ -45,7 +50,7 @@ const Page = async () => {
         email: session.user.email,
       },
       data: {
-        username,
+        name: username,
       },
     });
   }
@@ -66,12 +71,12 @@ const Page = async () => {
   const currentGameweek = calculateCurrentGameweek(fixtures);
 
   const sortedFixtures = sortFixtures(
-    fixtures.filter(({ gameweek }) => gameweek === currentGameweek)
+    fixtures.filter(({ gameweek }) => gameweek === currentGameweek),
   );
 
   const recentFixturesByTeam = generateRecentFixturesByTeam(
     fixtures,
-    currentGameweek
+    currentGameweek,
   );
 
   return (

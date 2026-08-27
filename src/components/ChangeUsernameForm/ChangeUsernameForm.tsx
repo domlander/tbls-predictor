@@ -1,7 +1,7 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
-import { useState } from "react";
+import { useActionState, useState } from "react";
+import { useFormStatus } from "react-dom";
 
 import updateUsername from "src/actions/updateUsername";
 import Button from "../Button";
@@ -17,7 +17,7 @@ const initialState = { message: "" };
 
 const ChangeUsernameForm = ({ initialUsername }: Props) => {
   const [username, setUsername] = useState(initialUsername);
-  const [state, formAction] = useFormState(updateUsername, initialState);
+  const [state, formAction] = useActionState(updateUsername, initialState);
   const { pending } = useFormStatus();
 
   return (

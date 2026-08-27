@@ -1,24 +1,26 @@
 // import prisma from "prisma/client";
 import { auth } from "auth";
-
+import { headers } from "next/headers";
 /*
   Populates the Fixture table in the DB with dummy fixtures.
   Clears the entire table first before repopulating with data.
 */
 export async function POST() {
-  const session = await auth();
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
 
   if (!process.env.ADMIN_EMAIL) {
     return Response.json(
       { message: "Please ensure the ADMIN_EMAIL environment variable is set" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
   if (session?.user?.email !== process.env.ADMIN_EMAIL) {
     return Response.json(
       { message: "You are not authorised to perform this action" },
-      { status: 401 }
+      { status: 401 },
     );
   }
 

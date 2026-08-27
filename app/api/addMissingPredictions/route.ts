@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
-import { NextRequest } from "next/server";
 import { auth } from "auth";
+import { headers } from "next/headers";
+import { NextRequest } from "next/server";
 import { Prediction, Prisma, PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient({
@@ -41,7 +42,7 @@ const addMissingPredictionsForFixture = async (fixtureId: number) => {
   });
 
   const usersWithoutPrediction = users.filter(
-    (user) => !user.predictions.length
+    (user) => !user.predictions.length,
   );
 
   usersWithoutPrediction.forEach((user) => {
@@ -81,7 +82,7 @@ export async function POST(request: NextRequest) {
   if (!process.env.ADMIN_EMAIL) {
     return Response.json(
       { message: "Please ensure the ADMIN_EMAIL environment variable is set" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
@@ -90,15 +91,18 @@ export async function POST(request: NextRequest) {
       {
         message: "Please ensure the ACTIONS_SECRET environment variable is set",
       },
-      { status: 500 }
+      { status: 500 },
     );
 
   if (secret !== process.env.ACTIONS_SECRET) {
-    const session = await auth();
+    const session = await auth.api.getSession({
+      headers: await headers(), // you need to pass the headers object.
+    });
+
     if (session?.user?.email !== process.env.ADMIN_EMAIL) {
       return Response.json(
         { message: "You are not authorised to perform this action" },
-        { status: 401 }
+        { status: 401 },
       );
     }
   }
