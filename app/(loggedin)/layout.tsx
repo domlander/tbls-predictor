@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 
 import InnerLayout from "./InnerLayout";
 import "../globals.css";

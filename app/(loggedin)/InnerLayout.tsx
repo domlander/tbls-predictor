@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode, useState } from "react";
+import { ReactNode, useState } from "react";
 import { authClient } from "auth-client";
 
 import HeaderBar from "src/components/HeaderBar";

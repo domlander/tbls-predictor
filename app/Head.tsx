@@ -1,7 +1,5 @@
 "use client";
 
-import React from "react";
-
 const Head = () => {
   <>
     <title>Premier League score predictor game | DesmondTwoTwo</title>

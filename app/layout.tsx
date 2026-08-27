@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import Maintenance from "src/containers/Maintenance";
 import { chivo } from "./fonts";
 import "./globals.css";
