@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import createLeague from "src/actions/createLeague";
 import styles from "./Form.module.css";
 import FeedbackAndButton from "./FeedbackAndButton";
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const Form = ({ currentGameweek, userId }: Props) => {
-  const [state, action] = useFormState(createLeague, null);
+  const [state, action] = useActionState(createLeague, null);
 
   return (
     <form className={styles.form} action={action}>
