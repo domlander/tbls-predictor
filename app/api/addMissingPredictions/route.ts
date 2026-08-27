@@ -2,15 +2,17 @@
 import { auth } from "auth";
 import { headers } from "next/headers";
 import { NextRequest } from "next/server";
-import { Prediction, Prisma, PrismaClient } from "@prisma/client";
+import {
+  Prediction,
+  Prisma,
+  PrismaClient,
+} from "../../../prisma/generated/client";
+import { PrismaPg } from "@prisma/adapter-pg";
 
-const prisma = new PrismaClient({
-  datasources: {
-    db: {
-      url: process.env.DATABASE_URL,
-    },
-  },
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL,
 });
+const prisma = new PrismaClient({ adapter });
 
 const DEFAULT_HOME_GOALS = 0;
 const DEFAULT_AWAY_GOALS = 0;

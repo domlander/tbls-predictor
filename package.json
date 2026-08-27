@@ -7,15 +7,16 @@
     "build": "next build",
     "start": "next start -p 3001",
     "test": "jest --watch",
-    "prisma:generate": "prisma generate --no-engine",
+    "prisma:generate": "prisma generate",
     "vercel-build": "yarn prisma:generate && next build",
     "playwright:run": "yarn playwright test",
     "playwright:open": "yarn playwright test --ui"
   },
   "dependencies": {
     "@better-auth/prisma-adapter": "^1.6.26",
-    "@prisma/client": "6.0.0",
-    "@prisma/extension-accelerate": "^0.6.2",
+    "@prisma/adapter-pg": "7.10.0",
+    "@prisma/client": "7.10.0",
+    "@prisma/extension-accelerate": "3.0.1",
     "@sentry/nextjs": "10.69.0",
     "axios": "^0.24.0",
     "better-auth": "^1.6.26",
@@ -43,7 +44,7 @@
     "eslint": "10.8.1",
     "eslint-config-prettier": "^9.1.0",
     "jest": "^27.5.1",
-    "prisma": "6.0.0",
+    "prisma": "7.10.0",
     "typescript": "5.9.3"
   },
   "license": "MIT",

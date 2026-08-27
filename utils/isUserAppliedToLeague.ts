@@ -1,11 +1,12 @@
-import { Applicant } from "@prisma/client";
+import { Applicant } from "../prisma/generated/client";
 
 export default function isUserAppliedToLeague(
   applicants: Applicant[],
-  userId: string
+  userId: string,
 ) {
   return applicants.some(
     (p) =>
-      p.userId === userId && (p.status === "applied" || p.status === "accepted")
+      p.userId === userId &&
+      (p.status === "applied" || p.status === "accepted"),
   );
 }

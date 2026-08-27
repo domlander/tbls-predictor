@@ -1,10 +1,11 @@
-import prisma from "prisma/client";
 import { redirect } from "next/navigation";
-import { auth } from "auth";
 import { headers } from "next/headers";
+import { auth } from "auth";
+import prisma from "prisma/client";
+import { Prisma } from "prisma/generated/client";
 import LeagueAdmin from "src/containers/LeagueAdmin";
-import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 import Participant from "src/types/Participant";
+import { convertUrlParamToNumber } from "utils/convertUrlParamToNumber";
 
 // We get the users session, so don't use caching
 export const dynamic = "force-dynamic";
@@ -17,7 +18,6 @@ const Page = async (props: { params: Promise<Params> }) => {
     headers: await headers(), // you need to pass the headers object.
   });
   const userId = session?.user?.id;
-
   if (!userId) {
     return {
       props: {},
@@ -46,7 +46,7 @@ const Page = async (props: { params: Promise<Params> }) => {
           status: "applied",
         },
       },
-    },
+    } satisfies Prisma.LeagueInclude,
   });
 
   if (league?.administratorId !== userId) {
@@ -54,7 +54,7 @@ const Page = async (props: { params: Promise<Params> }) => {
   }
 
   const participants: Participant[] = league.users.map(({ id, name }) => ({
-    id,
+    id: id.toLocaleString(),
     username: name,
   }));
 
