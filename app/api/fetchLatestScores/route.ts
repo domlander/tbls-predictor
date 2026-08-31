@@ -2,19 +2,17 @@
 import { auth } from "auth";
 import { headers } from "next/headers";
 import dayjs from "dayjs";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../../../prisma/generated/client";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { getFixturesFromApi } from "utils/fplApi";
 import Fixture from "src/types/Fixture";
 import { calculateCurrentGameweek } from "../../../utils/calculateCurrentGameweek";
 import { NextRequest } from "next/server";
 
-const prisma = new PrismaClient({
-  datasources: {
-    db: {
-      url: process.env.DATABASE_URL,
-    },
-  },
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL,
 });
+const prisma = new PrismaClient({ adapter });
 
 /**
  * Returns true if the match has started at maximum 180 minutes ago.

@@ -9,7 +9,7 @@ import calculateUsersLeaguePosition from "../../utils/calculateUsersLeaguePositi
 import { calculateCurrentGameweek } from "utils/calculateCurrentGameweek";
 
 const fetchUsersActiveLeagues = async (
-  userId: string
+  userId: string,
 ): Promise<UserLeague[]> => {
   const fixtures = await prisma.fixture.findMany();
   const currentGameweek = calculateCurrentGameweek(fixtures);
@@ -62,7 +62,7 @@ const fetchUsersActiveLeagues = async (
             fixtures,
             user.predictions || [],
             league.gameweekStart,
-            league.gameweekEnd
+            league.gameweekEnd,
           ).reduce((acc, cur) => acc + (cur.points || 0), 0),
         }));
 
@@ -71,7 +71,7 @@ const fetchUsersActiveLeagues = async (
           leagueName: league.name,
           weeksUntilStart: calculateWeeksUntilStart(
             currentGameweek,
-            league.gameweekStart
+            league.gameweekStart,
           ),
           weeksToGo: calculateWeeksToGo(currentGameweek, league.gameweekEnd),
           position: calculateUsersLeaguePosition(users, userId),

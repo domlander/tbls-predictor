@@ -1,4 +1,4 @@
-import { LeagueApplicantStatus } from "@prisma/client";
+import { LeagueApplicantStatus } from "../../prisma/generated/client";
 import League from "./League";
 import User from "./User";
 
