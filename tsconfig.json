@@ -3,10 +3,7 @@
     "target": "esnext",
     "module": "esnext",
     "jsx": "react-jsx",
-    "lib": [
-      "dom",
-      "es2019"
-    ],
+    "lib": ["dom", "es2019"],
     "moduleResolution": "bundler",
     "allowJs": true,
     "noEmit": true,
@@ -22,28 +19,25 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "baseUrl": ".",
+    "paths": {
+      "*": ["./*"]
+    },
     "incremental": true,
-    "types": [
-      "node",
-      "jest"
-    ],
+    "types": ["node", "jest"],
     "plugins": [
       {
         "name": "next"
       }
     ]
   },
-  "exclude": [
-    "node_modules",
-    ".next"
-  ],
+  "exclude": ["node_modules", ".next"],
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "sentry.client.config.js",
+    "sentry.server.config.ts",
+    "sentry.edge.config.ts",
     ".next/dev/types/**/*.ts"
   ]
 }
