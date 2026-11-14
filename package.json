@@ -27,10 +27,7 @@
     "nodemailer": "^6.7.2",
     "pg": "8.23.0",
     "react": "19.2.8",
-    "react-dom": "19.2.8",
-    "reflect-metadata": "^0.1.13",
-    "stylis": "^4.3.0",
-    "typeorm": "^0.2.31"
+    "react-dom": "19.2.8"
   },
   "devDependencies": {
     "@playwright/test": "^1.38.1",
