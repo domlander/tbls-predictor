@@ -9,7 +9,6 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Europe/London");
 
-/* eslint-disable camelcase */
 export type FplApiFixture = {
   kickoff_time: string;
   team_h: number;

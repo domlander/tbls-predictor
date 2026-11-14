@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle */
+
 import { MongoClient } from "mongodb";
 
 if (!process.env.MONGODB_URI) {
@@ -9,7 +9,6 @@ const uri = process.env.MONGODB_URI;
 const options = {};
 
 let client;
-// eslint-disable-next-line import/no-mutable-exports
 let clientPromise: Promise<MongoClient>;
 
 if (process.env.NODE_ENV === "development") {

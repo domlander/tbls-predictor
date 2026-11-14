@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { auth } from "auth";
 import { headers } from "next/headers";
 import { NextRequest } from "next/server";

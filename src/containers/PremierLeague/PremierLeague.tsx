@@ -71,7 +71,6 @@ const PremierLeague = ({
         </div>
         {loading
           ? [...Array(20)].map((_, i) => (
-              // eslint-disable-next-line react/no-array-index-key
               <Fragment key={i}>
                 <div className={styles.position}>{i + 1}</div>
                 <div className={styles.loadingRow} />
@@ -91,14 +90,14 @@ const PremierLeague = ({
                   predictedPoints,
                   points,
                 },
-                i
+                i,
               ) => {
                 const positionClass = getPositionColour(i + 1);
                 return (
                   <div className={styles.row} key={name}>
                     <div
                       className={[styles.position, styles[positionClass]].join(
-                        " "
+                        " ",
                       )}
                     >
                       {i + 1}
@@ -125,7 +124,7 @@ const PremierLeague = ({
                     )}
                   </div>
                 );
-              }
+              },
             )}
       </div>
     </div>
