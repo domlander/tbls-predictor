@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@better-auth/prisma-adapter": "1.7.23",
-    "@prisma/adapter-pg": "7.10.0",
-    "@prisma/client": "7.10.0",
+    "@prisma/adapter-pg": "7.10.1",
+    "@prisma/client": "7.10.1",
     "@sentry/nextjs": "11.12.0",
     "axios": "1.21.1",
     "better-auth": "1.7.22",
@@ -42,7 +42,7 @@
     "globals": "17.14.0",
     "jest": "30.5.2",
     "jest-environment-jsdom": "30.5.2",
-    "prisma": "7.10.0",
+    "prisma": "7.10.1",
     "typescript": "5.9.3"
   },
   "license": "MIT",
