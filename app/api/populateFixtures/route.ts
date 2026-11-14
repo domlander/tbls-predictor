@@ -103,9 +103,9 @@ const populateFixtures = async (
     }
   });
 
-  let addPromises: Promise<any>[] = [];
-  let updatePromises: Promise<any>[] = [];
-  let deletePromises: Promise<any>[] = [];
+  let addPromises: Promise<unknown>[] = [];
+  let updatePromises: Promise<unknown>[] = [];
+  let deletePromises: Promise<unknown>[] = [];
 
   const now = dayjs();
 

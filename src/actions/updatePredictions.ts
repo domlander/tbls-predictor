@@ -40,7 +40,7 @@ const updatePredictions = async (
           bigBoyBonus,
         };
 
-        // eslint-disable-next-line consistent-return
+         
         return prisma.prediction.upsert({
           where: {
             fixtureId_userId: { fixtureId, userId },

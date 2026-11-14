@@ -10,7 +10,7 @@ const updateFixturesDatabase = async (
   if (!fixtures?.length) return;
 
   const fixtureUpdates = fixtures.map(({ id, homeTeam, awayTeam }) => {
-    // eslint-disable-next-line consistent-return
+     
     return prisma.fixture.update({
       where: {
         id,

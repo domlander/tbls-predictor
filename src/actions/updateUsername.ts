@@ -5,7 +5,7 @@ import { headers } from "next/headers";
 import prisma from "prisma/client";
 
 const updateUsername = async (
-  _: any,
+  _: unknown,
   formData: FormData,
 ): Promise<{ message: string }> => {
   const username = formData.get("username");
@@ -35,7 +35,7 @@ const updateUsername = async (
       },
     });
     return { message: "Success! Username has been updated!" };
-  } catch (e) {
+  } catch {
     return { message: "Failed to update username" };
   }
 };

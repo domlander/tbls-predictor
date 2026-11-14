@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { auth } from "auth";
 import { headers } from "next/headers";
 import dayjs from "dayjs";
@@ -79,9 +78,8 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  let log = `Running fetchLatestScores function. User authenticated. Time: ${
-    new Date().getMilliseconds() - startTime.getMilliseconds()
-  }\n`;
+  let log = `Running fetchLatestScores function. User authenticated. Time: ${new Date().getMilliseconds() - startTime.getMilliseconds()
+    }\n`;
 
   const fixtures = await prisma.fixture.findMany();
   const currentGameweek = calculateCurrentGameweek(fixtures);
@@ -128,9 +126,8 @@ export async function POST(request: NextRequest) {
         awayGoals: matchingFixture?.awayGoals ?? null,
       });
 
-      log += `New data: ${matchingFixture?.homeGoals} - ${
-        matchingFixture?.awayGoals
-      }${matchingFixture.isFinished ? " FT" : ""}\n`;
+      log += `New data: ${matchingFixture?.homeGoals} - ${matchingFixture?.awayGoals
+        }${matchingFixture.isFinished ? " FT" : ""}\n`;
     }
 
     return acc;

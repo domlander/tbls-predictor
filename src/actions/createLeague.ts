@@ -57,7 +57,7 @@ const createLeague = async (
         },
       },
     });
-  } catch (e) {
+  } catch {
     return { message: "Failed to create league. Please try again later" };
   }
 
